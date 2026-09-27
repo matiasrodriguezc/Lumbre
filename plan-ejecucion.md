@@ -114,7 +114,7 @@ Todo arranca en local con Supabase CLI y Docker; los entornos remotos se conecta
 - [ ] **38. Tablero de costos y alertas** · MAT-247 (parte 2)
 - [ ] **39. Contrato OpenAPI y clientes generados** · MAT-250
 - [ ] **40. App Attest y Play Integrity (verificación en el servidor)** · MAT-253 (parte 1)
-- [ ] **41. Entornos remotos y deploy a staging** · MAT-230 (parte 2)
+- [ ] **41. Entornos remotos y deploy a staging** · MAT-230 (parte 2) · Adelantado en parte el 2026-09-27: `lumbre-dev` (`udewtaksxfnnchuhydnr`) creado en São Paulo, con las 3 migraciones y datos de prueba; verificado por SQL y por la API pública. Faltan staging y prod.
   Conectar dev, staging y prod; deploy a staging; medir el costo real por chispa en `llm_calls`.
   Necesita: H1.
 

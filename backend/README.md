@@ -60,6 +60,19 @@ Frenar el stack:
 cd backend && supabase stop
 ```
 
+## Remoto
+
+| Entorno | Proyecto | Región | Estado |
+|---|---|---|---|
+| dev | `udewtaksxfnnchuhydnr` (organización Lumbre, plan free) | São Paulo (sa-east-1) | Migraciones al día y datos de prueba cargados |
+| staging | — | — | Paso 41 |
+| prod | — | — | Paso 41 |
+
+- API de dev: https://udewtaksxfnnchuhydnr.supabase.co · Dashboard: https://supabase.com/dashboard/project/udewtaksxfnnchuhydnr
+- En dev, los usuarios de prueba (Ana y Beto) **no tienen contraseña**: la API es pública y no se puede entrar con ellos. Los usuarios para iniciar sesión se crean con Auth (paso 20).
+- El historial de migraciones remoto usa las mismas versiones que los archivos de `supabase/migrations/`, así que `supabase db push` solo aplica las nuevas.
+- Para subir migraciones con la CLI: `supabase login`, `supabase link --project-ref udewtaksxfnnchuhydnr` y `supabase db push`.
+
 ## Local
 
 | Servicio | URL |
