@@ -1,0 +1,123 @@
+﻿Tarea,Estado,Área,Fase,Versión,Prioridad,Detalle
+"Design system inicial (tokens, componentes, brand book)",Done,Diseño,F1 Diseño,1.0,P0,"Paleta Sunset Nebula, oscuro y claro, 9 componentes."
+"Logo de Lumbre en SVG (símbolo, ícono, logos)",Done,Diseño,F1 Diseño,1.0,P0,"Filamento en espiral: varilla azul, espiral violeta atrás y magenta adelante."
+Elegir tipografía de marca: Fraunces,Done,Diseño,F1 Diseño,1.0,P0,Fraunces para marca y títulos ≥ 20pt; sistema para el resto.
+Definir navegación flotante (barra + botón Capturar),Done,Diseño,F1 Diseño,1.0,P0,Liquid Glass en iOS; floating toolbar + FAB en Android.
+Plan maestro y plan.md,Done,Producto,F0 Validar,1.0,P0,Documento de referencia con todas las decisiones.
+Esquema base de base de datos (schema.sql),Done,Backend,F2 Backend e IA,1.0,P0,"Conceptos, chispas, cuotas, RLS y consulta de emparejamiento."
+"Nombre ""Chispa""",Cancelled,Negocio y legal,F0 Validar,1.0,P0,Ocupado por la app de citas de Match Group.
+"Mecánica de swipe (""Tinder de ideas"")",Cancelled,Producto,F1 Diseño,1.0,P1,Reemplazada por reveal diario + feedback con motivo.
+Base vectorial dedicada,Cancelled,Backend,F2 Backend e IA,1.0,P1,Se usa pgvector en el mismo Postgres.
+Celery / Airflow para jobs,Cancelled,Backend,F2 Backend e IA,1.0,P2,Se usa pg_cron + pgmq + Edge Functions.
+Límite de bóveda de 150 conceptos en free,Cancelled,Producto,F2 Backend e IA,1.0,P1,La bóveda no genera costo recurrente; queda ilimitada.
+Test del ícono solo con 5 personas sin contexto,Backlog,Diseño,F1 Diseño,1.0,P1,"Riesgo: que se lea como símbolo de medicina o ""$""."
+Cuota de 15 destilaciones de texto en free,Cancelled,Producto,F2 Backend e IA,1.0,P1,Texto y voz ilimitados; la IA procesa formatos ricos en Pro.
+12 entrevistas de validación,To Do,Producto,F0 Validar,1.0,P0,"4 devs, 4 creadores, 4 emprendedores. Cómo tienen ideas y dónde las pierden."
+Búsqueda de marca de Lumbre con abogado,To Do,Negocio y legal,F0 Validar,1.0,P0,"INPI, USPTO y EUIPO, clases 9 y 42. Alternativas: Espurna, Hirameki."
+"Verificar dominio, handles y nombre en tiendas",To Do,Negocio y legal,F0 Validar,1.0,P0,
+Landing con waitlist y demo web de chispa,To Do,Marketing,F0 Validar,1.0,P0,Pegás dos ideas y ves una chispa; una por día por email. Meta: 150+ inscriptos.
+Crear cuentas de servicios,To Do,Negocio y legal,F0 Validar,1.0,P0,"Apple Developer (D-U-N-S si es organización), Google Play, Supabase, Anthropic, RevenueCat, PostHog, Sentry."
+Consultar contador: cobro desde Argentina y entidad que publica,To Do,Negocio y legal,F0 Validar,1.0,P0,
+Definir métrica norte y plan de eventos de analytics,To Do,Producto,F0 Validar,1.0,P1,Norte: ideas guardadas por usuario activo semanal.
+"Build in public: serie diaria ""chispa del día""",To Do,Marketing,F0 Validar,1.0,P1,"X, LinkedIn, TikTok y Reels."
+Waitlist con referidos,To Do,Marketing,F0 Validar,1.0,P1,Subís en la fila invitando. Meta: 1.000 personas antes del lanzamiento.
+Design system en Figma con variables oscuro/claro,Backlog,Diseño,F1 Diseño,1.0,P0,
+Wordmark en curvas + exportes del ícono,Backlog,Diseño,F1 Diseño,1.0,P0,"iOS 1024, dark y tinted; Android adaptive y monochrome."
+Prototipo navegable del loop en iOS y Android,Backlog,Diseño,F1 Diseño,1.0,P0,
+Test del prototipo con 5 personas de la waitlist,Backlog,Producto,F1 Diseño,1.0,P0,Salida: 4 de 5 completan onboarding y guardan una idea.
+Coreografía del reveal de la chispa,Backlog,Diseño,F1 Diseño,1.0,P1,900 ms con háptica; fundido de 200 ms con Reducir movimiento.
+Copy de todas las pantallas y estados (es/en),Backlog,Diseño,F1 Diseño,1.0,P0,
+"Estados vacíos, error, offline y contenido inaccesible",Backlog,Diseño,F1 Diseño,1.0,P1,
+Diseño de la tarjeta para compartir,Backlog,Diseño,F1 Diseño,1.0,P1,
+Diseño del widget,Backlog,Diseño,F1 Diseño,1.0,P1,
+Proyectos Supabase dev/staging/prod + migraciones en git,Backlog,Backend,F2 Backend e IA,1.0,P0,
+"Auth: Sign in with Apple, Google y email mágico",Backlog,Backend,F2 Backend e IA,1.0,P0,
+"RLS + tests ""usuario A no ve datos de B""",Backlog,Backend,F2 Backend e IA,1.0,P0,
+"Cuotas: consume_credit(), plan_limits y usage_ledger",Backlog,Backend,F2 Backend e IA,1.0,P0,Descuento atómico; límites ajustables sin publicar.
+Lista cerrada de dominios con descripción y embedding,Backlog,IA,F2 Backend e IA,1.0,P0,20–25 categorías.
+Elegir modelo de embeddings multilingüe,Backlog,IA,F2 Backend e IA,1.0,P0,Un solo modelo para todo; guardar el nombre junto al vector.
+"Endpoint de captura (texto, voz, selección, OCR)",Backlog,Backend,F2 Backend e IA,1.0,P0,"Limpieza de texto, rate limit de 30/día en free."
+Destilación con JSON estructurado y nivel de confianza,Backlog,IA,F2 Backend e IA,1.0,P0,"Haiku 4.5. Alta se guarda, media borrador, baja cae a ""¿Qué idea te deja esto?""."
+Lectura de links (contenido + metadatos Open Graph),Backlog,Backend,F2 Backend e IA,1.0,P0,Usar primero lo que llega en la captura. Contenido externo como datos.
+Procesamiento de imágenes y PDFs,Backlog,IA,F2 Backend e IA,1.0,P1,Pro. Reducir imágenes antes de enviar; tope de páginas en PDF.
+Clasificación de dominio por embedding (no destilados),Backlog,IA,F2 Backend e IA,1.0,P0,
+"Emparejamiento: banda por usuario, pares únicos, descanso de 3 días",Backlog,IA,F2 Backend e IA,1.0,P0,
+Biblioteca de conceptos invitados por perfil,Backlog,IA,F2 Backend e IA,1.0,P1,Respaldo para que Hoy nunca quede vacía.
+Prompt de chispa + set de evaluación de 100 pares,Backlog,IA,F2 Backend e IA,1.0,P0,"Salida: promedio ≥ 3,5 en ""sorprende"" y ""sirve""."
+Batch nocturno por zona horaria + push,Backlog,Backend,F2 Backend e IA,1.0,P0,Batches API (50% menos).
+Planificador: Haiku/Sonnet con caché y resumen de hilo,Backlog,IA,F2 Backend e IA,1.0,P1,
+"Gateway de IA: reintentos, fallback y tope diario en dólares",Backlog,Backend,F2 Backend e IA,1.0,P0,
+Tabla llm_calls + tablero de costos y alertas,Backlog,Backend,F2 Backend e IA,1.0,P1,
+Webhook de RevenueCat → plan del usuario,Backlog,Backend,F2 Backend e IA,1.0,P0,
+Moderación de entrada/salida y reporte de contenido IA,Backlog,IA,F2 Backend e IA,1.0,P0,Requisito de Google Play.
+Contrato OpenAPI + clientes Swift y Kotlin,Backlog,Backend,F2 Backend e IA,1.0,P1,
+Job de borrado: texto crudo a 30 días y archivos temporales,Backlog,Backend,F2 Backend e IA,1.0,P1,
+Exportar datos y borrar cuenta (backend),Backlog,Backend,F2 Backend e IA,1.0,P0,
+App Attest y Play Integrity en endpoints de IA,Backlog,Backend,F2 Backend e IA,1.0,P1,
+CI/CD: GitHub Actions + fastlane,Backlog,Calidad,F2 Backend e IA,1.0,P1,
+Setup iOS: paquetes LumbreDesign/LumbreCore y tokens generados,Backlog,iOS,F3 iOS,1.0,P0,
+"Onboarding iOS (perfil, semillas, hora, push)",Backlog,iOS,F3 iOS,1.0,P0,
+Hoy iOS con reveal y contador,Backlog,iOS,F3 iOS,1.0,P0,
+TabView flotante con Liquid Glass + botón Capturar,Backlog,iOS,F3 iOS,1.0,P0,GlassEffectContainer; .ultraThinMaterial en versiones anteriores.
+"Sheet de Capturar iOS (texto, voz, link, imagen)",Backlog,iOS,F3 iOS,1.0,P0,
+Share Extension (texto seleccionado + lectura de Safari),Backlog,iOS,F3 iOS,1.0,P0,
+OCR de capturas y escaneo de páginas (VisionKit),Backlog,iOS,F3 iOS,1.0,P1,
+Bóveda iOS con búsqueda y filtros,Backlog,iOS,F3 iOS,1.0,P0,
+Detalle de chispa y de concepto iOS,Backlog,iOS,F3 iOS,1.0,P0,
+Planificador iOS (chat con streaming),Backlog,iOS,F3 iOS,1.0,P1,
+Paywall iOS + RevenueCat,Backlog,iOS,F3 iOS,1.0,P0,"Precios localizados, restaurar compras, términos."
+Widget iOS (WidgetKit),Backlog,iOS,F3 iOS,1.0,P1,
+"App Intents: ""Capturar en Lumbre""",Backlog,iOS,F3 iOS,1.0,P2,
+Tarjeta para compartir iOS,Backlog,iOS,F3 iOS,1.0,P1,
+Perfil y ajustes iOS (incluye borrar cuenta),Backlog,iOS,F3 iOS,1.0,P0,
+Analytics y crashes iOS (PostHog + Sentry),Backlog,iOS,F3 iOS,1.0,P0,
+"Accesibilidad iOS: VoiceOver, Dynamic Type, Reducir movimiento",Backlog,Calidad,F3 iOS,1.0,P0,
+Localización: String Catalogs y strings.xml desde el inicio,Backlog,Calidad,F3 iOS,1.0,P0,
+TestFlight externo con 50–100 personas,Backlog,Producto,F4 Beta iOS,1.0,P0,"Salida: D7 ≥ 15%. Si D7 < 10%, se frena Android."
+Encuesta a los 7 días y 5 llamadas cortas,Backlog,Producto,F4 Beta iOS,1.0,P1,
+"Iterar prompts, onboarding y hora de la chispa con datos reales",Backlog,IA,F4 Beta iOS,1.0,P0,
+"Setup Android: módulos Gradle, Hilt y ColorScheme generado",Backlog,Android,F5 Android,1.0,P0,
+Onboarding Android,Backlog,Android,F5 Android,1.0,P0,
+Hoy Android con reveal,Backlog,Android,F5 Android,1.0,P0,
+Floating toolbar + FAB (M3 Expressive),Backlog,Android,F5 Android,1.0,P0,Verificar la versión de material3.
+Capturar Android + intent ACTION_SEND,Backlog,Android,F5 Android,1.0,P0,
+Cola offline con WorkManager,Backlog,Android,F5 Android,1.0,P0,
+OCR con ML Kit y Document Scanner,Backlog,Android,F5 Android,1.0,P1,
+Bóveda Android,Backlog,Android,F5 Android,1.0,P0,
+Detalle de chispa y de concepto Android,Backlog,Android,F5 Android,1.0,P0,
+Planificador Android,Backlog,Android,F5 Android,1.0,P1,
+Paywall Android (Play Billing vía RevenueCat),Backlog,Android,F5 Android,1.0,P0,
+Widget Android (Glance),Backlog,Android,F5 Android,1.0,P1,
+Tarjeta para compartir Android,Backlog,Android,F5 Android,1.0,P1,
+Perfil y ajustes Android (incluye borrar cuenta),Backlog,Android,F5 Android,1.0,P0,
+Baseline Profiles + pruebas en gama media,Backlog,Android,F5 Android,1.0,P1,"Arranque en frío < 1,5 s."
+Accesibilidad Android: TalkBack y escala de fuente,Backlog,Calidad,F5 Android,1.0,P0,
+Prueba cerrada en Play: 12+ testers por 14 días,Backlog,Lanzamiento,F5 Android,1.0,P0,Obligatorio para cuentas personales nuevas.
+Revisión de seguridad completa,Backlog,Calidad,F6 Endurecer,1.0,P0,"RLS, claves, App Attest, Play Integrity, rate limits."
+Prueba de carga del batch nocturno (10x),Backlog,Calidad,F6 Endurecer,1.0,P1,
+"Términos, privacidad y consentimiento para IA de terceros",Backlog,Negocio y legal,F6 Endurecer,1.0,P0,Ley 25.326 y GDPR si se vende en la UE.
+"Privacy manifest, etiquetas de App Store y Data safety de Play",Backlog,Negocio y legal,F6 Endurecer,1.0,P0,
+"Fichas de tienda es/en, capturas y video",Backlog,Marketing,F6 Endurecer,1.0,P0,"Capturas que muestren el choque, no la lista."
+Pedir Small Business Program de Apple,Backlog,Negocio y legal,F6 Endurecer,1.0,P1,Comisión del 15%.
+Envío a revisión de App Store (cuenta demo + notas),Backlog,Lanzamiento,F7 Lanzamiento iOS,1.0,P0,
+Lanzamiento iOS por fases de 7 días,Backlog,Lanzamiento,F7 Lanzamiento iOS,1.0,P0,"Salida: crash-free > 99,5%."
+"Product Hunt, comunidades y email a la waitlist",Backlog,Marketing,F7 Lanzamiento iOS,1.0,P0,
+Códigos de oferta para 20 creadores,Backlog,Marketing,F7 Lanzamiento iOS,1.0,P2,
+Postular la app para featuring en App Store,Backlog,Marketing,F7 Lanzamiento iOS,1.0,P2,
+Rollout Android 10% → 50% → 100%,Backlog,Lanzamiento,F8 Lanzamiento Android,1.0,P0,Mirar Android Vitals.
+Campaña de lanzamiento LATAM,Backlog,Marketing,F8 Lanzamiento Android,1.0,P1,
+Modo problema,Next Version,Producto,F9 Operar,1.1,P1,El usuario escribe un problema y Lumbre elige conceptos para aplicarle.
+Proyectos con tablero,Next Version,Producto,F9 Operar,1.1,P1,"1 en free, ilimitados en Pro."
+"Export a Notion, Linear y GitHub",Next Version,Producto,F9 Operar,1.1,P1,Pro.
+Videos y podcasts por link,Next Version,Producto,F9 Operar,1.1,P1,Pro. Transcripción por vías permitidas.
+"Importar subrayados (Kindle, Apple Books, Readwise)",Next Version,Producto,F9 Operar,1.1,P1,Hasta 50 en free.
+"Importar notas (Markdown, Notion, Apple Notes, Keep)",Next Version,Producto,F9 Operar,1.1,P1,Hasta 50 en free.
+Resumen semanal,Next Version,Producto,F9 Operar,1.1,P1,
+Experimentos de paywall y hora de la chispa,Next Version,Producto,F9 Operar,1.1,P1,PostHog.
+Grafo de conceptos,Next Version,Producto,F9 Operar,2.0,P2,Pro.
+Reenvío de email a una dirección personal,Next Version,Producto,F9 Operar,2.0,P2,
+Extensión de navegador,Next Version,Producto,F9 Operar,2.0,P2,
+Modo de notas manuscritas,Next Version,Producto,F9 Operar,2.0,P2,
+"iPad, Mac y web de lectura",Next Version,Producto,F9 Operar,2.0,P2,
+Lumbre para equipos,Next Version,Producto,F9 Operar,2.0,P2,Bóveda compartida.
+Sincronización de imágenes con miniaturas,Next Version,Producto,F9 Operar,2.0,P2,Pro.

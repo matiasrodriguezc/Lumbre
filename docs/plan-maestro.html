@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lumbre · Plan maestro de producto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#0A1633;--signal-blue:#2D6CDF;--nebula-violet:#7E22CE;--spark:#FF3EA5;--cream:#FFF7ED;
+  --bg:#0A1633;--surface:#111F45;--surface-alt:#1A2B5C;--ink:#FFF7ED;--ink-muted:#A7B1CE;--border:#26386B;--border-strong:#7384BA;
+  --accent:#FF3EA5;--on-accent:#0A1633;--accent-text:#FF6BB8;--accent-soft:#3A1640;--pro:#7E22CE;--on-pro:#fff;--pro-text:#B98AF0;--info-text:#6E9BF0;
+  --success:#4FD1A5;--warning:#FFC24B;--danger:#FF7A6B;--focus:#FF3EA5;
+  --glow:0 0 32px rgba(255,62,165,.45);--elev:none;
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --text:-apple-system,"SF Pro Text","Roboto Flex",Roboto,system-ui,sans-serif;
+  color-scheme:dark;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
+  --bg:#FFF7ED;--surface:#FFFFFF;--surface-alt:#F5ECDD;--ink:#0A1633;--ink-muted:#4E5878;--border:#E6DDCD;--border-strong:#7A829E;
+  --accent-text:#C2106F;--accent-soft:#FFE0F0;--pro-text:#7E22CE;--info-text:#2458C2;--success:#0F7A57;--warning:#8A5A00;--danger:#B3261E;--focus:#C2106F;
+  --glow:0 8px 24px rgba(194,16,111,.22);--elev:0 1px 2px rgba(10,22,51,.06),0 4px 16px rgba(10,22,51,.06);color-scheme:light}}
+:root[data-theme="light"]{
+  --bg:#FFF7ED;--surface:#FFFFFF;--surface-alt:#F5ECDD;--ink:#0A1633;--ink-muted:#4E5878;--border:#E6DDCD;--border-strong:#7A829E;
+  --accent-text:#C2106F;--accent-soft:#FFE0F0;--pro-text:#7E22CE;--info-text:#2458C2;--success:#0F7A57;--warning:#8A5A00;--danger:#B3261E;--focus:#C2106F;
+  --glow:0 8px 24px rgba(194,16,111,.22);--elev:0 1px 2px rgba(10,22,51,.06),0 4px 16px rgba(10,22,51,.06);color-scheme:light}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 24px);scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--text);-webkit-font-smoothing:antialiased}
+a{color:var(--info-text)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
+h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.01em;line-height:1.1;margin:0;font-variation-settings:"SOFT" 100}
+h2{font-size:clamp(28px,4vw,40px);margin-bottom:12px}
+h3{font-size:22px;margin:32px 0 10px;letter-spacing:-.01em}
+p{margin:0 0 14px;max-width:72ch}
+ul,ol{margin:0 0 16px;padding-left:22px;max-width:74ch}
+li{margin-bottom:6px}
+strong{font-weight:650}
+.wrap{display:grid;grid-template-columns:230px minmax(0,1fr);gap:48px;max-width:1240px;margin:0 auto;padding:0 28px}
+@media (max-width:980px){.wrap{grid-template-columns:1fr;gap:0;padding:0 18px}}
+.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start;padding-top:40px;font-size:14px}
+.toc a{display:block;color:var(--ink-muted);text-decoration:none;padding:5px 0 5px 12px;border-left:2px solid var(--border)}
+.toc a:hover{color:var(--ink);border-left-color:var(--border-strong)}
+.toc .brand{display:flex;align-items:center;gap:10px;margin-bottom:18px;font:700 20px/1 var(--display);color:var(--ink)}
+.toc .brand img{width:32px;height:32px}
+@media (max-width:980px){.toc{display:none}}
+main{min-width:0;padding-bottom:120px}
+section{padding-top:72px}
+.lede{font-size:19px;color:var(--ink-muted);max-width:64ch}
+/* hero */
+.hero{padding-top:56px;display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center}
+.hero img{width:132px;height:132px}
+.hero h1{font-size:clamp(44px,7vw,84px);line-height:.98;letter-spacing:-.02em}
+.hero .sub{margin-top:14px;font-size:19px;color:var(--ink-muted);max-width:60ch}
+@media (max-width:640px){.hero{grid-template-columns:1fr}.hero img{width:96px;height:96px}}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.fact{font-size:14px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:6px 14px;color:var(--ink-muted)}
+.fact b{color:var(--ink);font-weight:600}
+/* collision strip */
+.loop{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:28px 0 8px;border-radius:24px;overflow:hidden;border:1px solid var(--border)}
+.loop>div{padding:20px 18px;background:var(--surface);position:relative}
+.loop>div+div{border-left:1px solid var(--border)}
+.loop .n{font:700 34px/1 var(--display);font-variant-numeric:lining-nums;color:var(--ink-muted)}
+.loop .t{font:650 19px/1.2 var(--display);margin:10px 0 6px}
+.loop p{font-size:15px;color:var(--ink-muted);margin:0}
+.loop .hot{background:var(--accent);color:var(--on-accent)}
+.loop .hot .n,.loop .hot p{color:var(--on-accent)}
+@media (max-width:720px){.loop{grid-template-columns:1fr 1fr}.loop>div:nth-child(3){border-left:0}.loop>div:nth-child(n+3){border-top:1px solid var(--border)}}
+/* callouts */
+.alert{background:var(--accent-soft);border-radius:20px;padding:22px 24px;margin:18px 0}
+.alert h3{margin-top:0;color:var(--ink)}
+.alert p:last-child,.alert ul:last-child{margin-bottom:0}
+.note{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin:16px 0;box-shadow:var(--elev)}
+.note p:last-child{margin-bottom:0}
+/* tables */
+.tbl{overflow-x:auto;margin:14px 0 22px;border:1px solid var(--border);border-radius:16px;background:var(--surface);box-shadow:var(--elev)}
+table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.45;min-width:640px}
+th,td{text-align:left;vertical-align:top;padding:11px 14px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:0}
+th{font-weight:650;color:var(--ink);background:var(--surface-alt)}
+td.k{font-weight:600;white-space:nowrap}
+.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.tag.free{background:var(--surface-alt);color:var(--ink)}
+.tag.pro{background:var(--pro);color:var(--on-pro)}
+.tag.later{background:transparent;color:var(--ink-muted);box-shadow:inset 0 0 0 1px var(--border-strong)}
+.yes{color:var(--success);font-weight:600}
+/* diagram panel (always night) */
+.panel{background:#0A1633;border-radius:24px;padding:24px;overflow-x:auto;margin:18px 0 24px;border:1px solid #26386B}
+.panel pre.mermaid{margin:0;min-width:760px;background:transparent;color:#FFF7ED}
+/* phones */
+.switch{display:inline-flex;background:var(--surface-alt);border-radius:999px;padding:4px;margin:10px 0 22px}
+.switch button{font:600 15px/1 var(--text);border:0;background:transparent;color:var(--ink);padding:10px 18px;border-radius:999px;cursor:pointer;min-height:40px}
+.switch button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.phones{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:28px 22px}
+.shot figcaption{margin-top:12px;font-size:15px;color:var(--ink-muted)}
+.shot figcaption b{display:block;color:var(--ink);font-weight:650;margin-bottom:2px}
+figure{margin:0}
+.ph{--p-bg:#0A1633;--p-s:#111F45;--p-s2:#1A2B5C;--p-ink:#FFF7ED;--p-mut:#A7B1CE;--p-bd:#26386B;--p-bd2:#7384BA;--p-acc-t:#FF6BB8;--p-soft:#3A1640;--p-pro-t:#B98AF0;
+  width:100%;max-width:300px;aspect-ratio:300/620;background:var(--p-bg);color:var(--p-ink);border-radius:42px;border:8px solid #050B1C;position:relative;overflow:hidden;font-family:var(--text);box-shadow:0 20px 50px rgba(5,11,28,.35);display:flex;flex-direction:column}
+.ph.light{--p-bg:#FFF7ED;--p-s:#FFFFFF;--p-s2:#F5ECDD;--p-ink:#0A1633;--p-mut:#4E5878;--p-bd:#E6DDCD;--p-bd2:#7A829E;--p-acc-t:#C2106F;--p-soft:#FFE0F0;--p-pro-t:#7E22CE}
+.sb{height:34px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 12px/1 var(--text);flex:none}
+.sb .isl{width:78px;height:22px;background:#000;border-radius:14px}
+.and .sb .isl{width:10px;height:10px;border-radius:50%}
+.bar{flex:none;padding:4px 16px 8px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.bar .t{font:650 26px/1.1 var(--display);letter-spacing:-.01em}
+.bar .ico{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:var(--p-acc-t)}
+.and .bar .t{font:500 19px/1.2 var(--text);letter-spacing:0}
+.and .bar{padding:8px 12px 10px}
+.bar.inline{display:grid;grid-template-columns:30px 1fr 30px}.bar.inline .t{font:600 15px/1.2 var(--text);letter-spacing:0;text-align:center}
+.and .bar.inline{display:flex;justify-content:flex-start}.and .bar.inline .t{font:500 18px/1.2 var(--text);text-align:left}
+.bd{flex:1;overflow:hidden;padding:0 14px;display:flex;flex-direction:column;gap:10px;font-size:12.5px;line-height:1.4}
+.navwrap{position:absolute;left:10px;right:10px;bottom:12px;display:flex;align-items:center;gap:8px;z-index:3}
+.tabs{flex:1;min-width:0;display:flex;justify-content:space-around;align-items:center;height:54px;padding:0 4px;border-radius:999px;position:relative;
+  background:rgba(17,31,69,.42);-webkit-backdrop-filter:blur(14px) saturate(180%);backdrop-filter:blur(14px) saturate(180%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px rgba(255,255,255,.12),0 8px 24px rgba(0,0,0,.35)}
+.ph.light .tabs{background:rgba(255,255,255,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(10,22,51,.08),0 8px 24px rgba(10,22,51,.14)}
+.tabs>span{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:8.5px;font-weight:600;color:var(--p-ink);height:46px;border-radius:999px;padding:0 2px}
+.tabs svg{width:19px;height:19px}
+.tabs .pill{display:grid;place-items:center}
+.tabs>.on{color:var(--p-acc-t);background:rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
+.ph.light .tabs>.on{background:rgba(10,22,51,.07);box-shadow:none}
+.addb{flex:none;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:26px;font-weight:400;color:#0A1633;
+  background:rgba(255,62,165,.82);-webkit-backdrop-filter:blur(14px) saturate(180%);backdrop-filter:blur(14px) saturate(180%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 0 0 1px rgba(255,255,255,.2),0 8px 24px rgba(255,62,165,.35)}
+.and .navwrap{left:10px;right:10px;bottom:14px;gap:8px}
+.and .tabs{height:58px;padding:0 5px;justify-content:space-between;background:var(--p-s2);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.and.light .tabs,.ph.light.and .tabs{background:#F5ECDD;box-shadow:0 6px 18px rgba(10,22,51,.16)}
+.and .tabs>span{flex:none;flex-direction:row;gap:0;height:44px;min-width:0;padding:0 7px;color:var(--p-mut);font-size:0}
+.and .tabs>.on{background:var(--p-soft);color:var(--p-acc-t);box-shadow:none;gap:5px;font-size:11px;padding:0 10px}
+.ph.light.and .tabs>.on{background:#FFE0F0}
+.and .addb{width:58px;height:58px;border-radius:18px;background:#FF3EA5;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.bd.under{padding-bottom:0}
+.ios-only{display:inline-flex}.and .ios-only{display:none}
+.and-only{display:none}.and .and-only{display:block}
+.meter{display:flex;align-items:center;gap:10px;background:var(--p-s);border:1px solid var(--p-bd);border-radius:999px;padding:5px 12px 5px 5px;align-self:flex-start}
+.meter .n{font:700 18px/1 var(--display);font-variant-numeric:lining-nums tabular-nums;background:var(--p-soft);color:var(--p-acc-t);border-radius:999px;padding:6px 9px}
+.meter b{display:block;font-size:12px}.meter span{font-size:10.5px;color:var(--p-mut)}
+.sp{background:var(--p-s);border-radius:22px;padding:16px 14px 14px;box-shadow:0 0 26px rgba(255,62,165,.4)}
+.ph.light .sp{box-shadow:0 8px 22px rgba(194,16,111,.2)}
+.sp .pair{display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.sp .at{flex:1;background:var(--p-s2);border-radius:8px;padding:6px 8px;font-size:10px;color:var(--p-mut)}
+.sp .at b{display:block;font-size:11.5px;color:var(--p-ink)}
+.sp h4{font:650 23px/1.08 var(--display);letter-spacing:-.01em;margin:0 0 6px}
+.sp p{font-size:12px;margin:0 0 12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;font:600 12px/1 var(--text);border-radius:12px;padding:10px 12px;border:0}
+.btn.p{background:#FF3EA5;color:#0A1633}.btn.s{box-shadow:inset 0 0 0 1.5px var(--p-bd2);color:var(--p-ink);background:transparent}.btn.g{color:var(--p-acc-t);background:transparent;padding-left:4px}
+.btn.pro{background:#7E22CE;color:#fff}
+.btn.full{width:100%;padding:13px}
+.and .btn{border-radius:999px}
+.row{display:flex;gap:6px;flex-wrap:wrap}
+.lbl{font-size:11px;color:var(--p-mut);font-weight:600;margin-top:4px}
+.mini{background:var(--p-s);border:1px solid var(--p-bd);border-radius:14px;padding:10px 12px}
+.mini b{display:block;font-size:12.5px}.mini span{font-size:11px;color:var(--p-mut)}
+.chip{display:inline-block;font-size:10.5px;font-weight:500;border-radius:999px;padding:4px 9px;background:var(--p-s2);color:var(--p-ink)}
+.chip.on{background:var(--p-soft);color:var(--p-acc-t);box-shadow:inset 0 0 0 1.2px #FF3EA5}
+.chip.sel{background:transparent;box-shadow:inset 0 0 0 1.2px var(--p-bd2)}
+.opt{display:flex;gap:10px;align-items:flex-start;background:var(--p-s);border-radius:14px;padding:11px;box-shadow:inset 0 0 0 1.2px var(--p-bd)}
+.opt.on{background:var(--p-soft);box-shadow:inset 0 0 0 2px #FF3EA5}
+.opt i{flex:none;width:28px;height:28px;border-radius:8px;background:var(--p-s2);display:grid;place-items:center;font-style:normal}
+.opt.on i{background:#FF3EA5;color:#0A1633}
+.opt b{display:block;font-size:12.5px}.opt span{font-size:10.5px;color:var(--p-mut)}
+.prog{display:flex;gap:4px}.prog i{flex:1;height:4px;border-radius:4px;background:var(--p-s2)}.prog i.on{background:#FF3EA5}
+.sheet{z-index:5;position:absolute;left:0;right:0;bottom:0;top:120px;background:var(--p-s);border-radius:22px 22px 0 0;padding:8px 14px 14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 -10px 30px rgba(0,0,0,.35)}
+.and .sheet{border-radius:28px 28px 0 0}
+.grab{width:36px;height:5px;border-radius:3px;background:var(--p-bd2);margin:2px auto 4px;opacity:.7}
+.scrim{position:absolute;inset:0;background:rgba(10,22,51,.6);z-index:4}
+.seg{display:flex;background:var(--p-s2);border-radius:9px;padding:2px}
+.seg span{flex:1;text-align:center;font-size:11px;padding:6px 0;border-radius:7px}
+.seg .on{background:var(--p-s);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.and .seg{background:transparent;border-radius:999px;box-shadow:inset 0 0 0 1px var(--p-bd2);padding:0;overflow:hidden}
+.and .seg span{border-radius:0}.and .seg span+span{border-left:1px solid var(--p-bd2)}
+.and .seg .on{background:var(--p-soft);color:var(--p-acc-t);box-shadow:none}
+.field{background:var(--p-s2);border-radius:10px;padding:10px;font-size:12px;min-height:88px;color:var(--p-ink)}
+.and .field{background:transparent;box-shadow:inset 0 0 0 1px var(--p-bd2);border-radius:6px}
+.tog{display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.tog i{width:36px;height:22px;border-radius:11px;background:#FF3EA5;position:relative}.tog i::after{content:"";position:absolute;right:2px;top:2px;width:18px;height:18px;border-radius:50%;background:#fff}
+.and .tog i{width:40px;height:24px;border-radius:12px}.and .tog i::after{background:#0A1633;width:18px;height:18px;top:3px;right:3px}
+.search{background:var(--p-s2);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--p-mut)}
+.and .search{border-radius:999px;padding:10px 14px}
+.cc{background:var(--p-s);border:1px solid var(--p-bd);border-radius:14px;padding:10px 12px}
+.cc b{display:block;font-size:12.5px;margin:6px 0 2px}.cc p{font-size:11.5px;margin:0}.cc span.m{display:block;font-size:10px;color:var(--p-mut);margin-top:6px}
+.bub{max-width:84%;padding:8px 11px;border-radius:15px;font-size:11.5px}
+.bub.me{align-self:flex-end;background:var(--p-s2);border-bottom-right-radius:5px}
+.bub.ai{align-self:flex-start;background:var(--p-s);border:1px solid var(--p-bd);border-bottom-left-radius:5px}
+.bub.ai i{display:block;font-style:normal;font-weight:600;font-size:10px;color:var(--p-pro-t);margin-bottom:2px}
+.inp{display:flex;gap:6px;align-items:center;margin-top:auto;padding-bottom:12px}
+.inp div{flex:1;background:var(--p-s2);border-radius:18px;padding:9px 12px;font-size:11.5px;color:var(--p-mut)}
+.inp i{width:30px;height:30px;border-radius:50%;background:#FF3EA5;display:grid;place-items:center;color:#0A1633;font-style:normal;font-weight:700}
+.plan{border-radius:14px;padding:10px 12px;box-shadow:inset 0 0 0 1.2px var(--p-bd2);background:var(--p-s)}
+.plan.on{box-shadow:inset 0 0 0 2px #7E22CE}
+.plan .bdg{display:inline-block;background:#7E22CE;color:#fff;font-size:9.5px;font-weight:600;border-radius:999px;padding:2px 7px;margin-bottom:4px}
+.plan b{font-size:12.5px}.plan .pr{font:700 18px/1.2 var(--display);color:var(--p-ink)}.plan span{font-size:10.5px;color:var(--p-mut)}
+.chk{display:flex;gap:8px;font-size:12px;align-items:flex-start}.chk::before{content:"✓";color:var(--p-acc-t);font-weight:700}
+.fine{font-size:10px;color:var(--p-mut);text-align:center}
+.star{fill:#FF3EA5}
+/* timeline */
+.phases{list-style:none;padding:0;margin:18px 0;max-width:none;display:flex;flex-direction:column;gap:14px}
+.phase{display:grid;grid-template-columns:120px 1fr;gap:20px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 22px;box-shadow:var(--elev)}
+.phase .w{font:700 15px/1.3 var(--display);color:var(--accent-text)}
+.phase .w span{display:block;font:700 30px/1 var(--display);font-variant-numeric:lining-nums;color:var(--ink);margin-bottom:6px}
+.phase h4{font:650 20px/1.2 var(--display);margin:0 0 8px}
+.phase ul{margin-bottom:8px;list-style:disc}
+.phase .exit{font-size:15px;color:var(--ink-muted);margin:0}
+.phase .exit b{color:var(--ink)}
+@media (max-width:640px){.phase{grid-template-columns:1fr;gap:6px}}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.two .note h3{margin-top:0;font-size:19px}
+.small{font-size:14px;color:var(--ink-muted)}
+.theme{position:absolute;right:16px;top:calc(env(safe-area-inset-top,0px) + 14px);z-index:5;font:600 13px/1 var(--text);background:var(--surface);color:var(--ink);border:1px solid var(--border-strong);border-radius:999px;padding:9px 14px;cursor:pointer}
+</style>
+</head>
+<body>
+<button class="theme" id="themeBtn" type="button" aria-label="Cambiar tema">Tema</button>
+<div class="wrap">
+<aside class="toc" aria-label="Contenido">
+  <div class="brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4wMCwwLjAwKSBzY2FsZSgxLjAwMDApIj48cGF0aCBkPSJNNzEuOTMgNzYuMDUgTDcxLjczIDc1Ljc3IEw3MS4zOSA3NS40OCBMNzAuOTIgNzUuMjAgTDcwLjMzIDc0LjkyIEw2OS42MCA3NC42MyBMNjguNzYgNzQuMzUgTDY3LjgwIDc0LjA3IEw2Ni43MyA3My43OCBMNjUuNTYgNzMuNTAgTDY0LjI5IDczLjIyIEw2Mi45MyA3Mi45MyBMNjEuNDkgNzIuNjUgTDU5Ljk5IDcyLjM3IEw1OC40MiA3Mi4wOCBMNTYuODAgNzEuODAgTDU1LjE0IDcxLjUyIEw1My40NCA3MS4yMyBMNTEuNzMgNzAuOTUgTDUwLjAwIDcwLjY3IEw0OC4yNyA3MC4zOCBMNDYuNTYgNzAuMTAgTDQ0Ljg2IDY5LjgyIEw0My4yMCA2OS41MyBMNDEuNTggNjkuMjUgTDQwLjAxIDY4Ljk3IEwzOC41MSA2OC42OCBMMzcuMDcgNjguNDAgTDM1LjcxIDY4LjEyIEwzNC40NCA2Ny44MyBMMzMuMjcgNjcuNTUgTDMyLjIwIDY3LjI3IEwzMS4yNCA2Ni45OCBMMzAuNDAgNjYuNzAgTDI5LjY3IDY2LjQyIEwyOS4wOCA2Ni4xMyBMMjguNjEgNjUuODUgTDI4LjI3IDY1LjU3IEwyOC4wNyA2NS4yOCBMMjguMDAgNjUuMDAgTDI4LjA3IDY0LjcyIiBmaWxsPSJub25lIiBzdHJva2U9IiM3RTIyQ0UiIHN0cm9rZS13aWR0aD0iNi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNNzEuOTMgNTMuMzggTDcxLjczIDUzLjEwIEw3MS4zOSA1Mi44MiBMNzAuOTIgNTIuNTMgTDcwLjMzIDUyLjI1IEw2OS42MCA1MS45NyBMNjguNzYgNTEuNjggTDY3LjgwIDUxLjQwIEw2Ni43MyA1MS4xMiBMNjUuNTYgNTAuODMgTDY0LjI5IDUwLjU1IEw2Mi45MyA1MC4yNyBMNjEuNDkgNDkuOTggTDU5Ljk5IDQ5LjcwIEw1OC40MiA0OS40MiBMNTYuODAgNDkuMTMgTDU1LjE0IDQ4Ljg1IEw1My40NCA0OC41NyBMNTEuNzMgNDguMjggTDUwLjAwIDQ4LjAwIEw0OC4yNyA0Ny43MiBMNDYuNTYgNDcuNDMgTDQ0Ljg2IDQ3LjE1IEw0My4yMCA0Ni44NyBMNDEuNTggNDYuNTggTDQwLjAxIDQ2LjMwIEwzOC41MSA0Ni4wMiBMMzcuMDcgNDUuNzMgTDM1LjcxIDQ1LjQ1IEwzNC40NCA0NS4xNyBMMzMuMjcgNDQuODggTDMyLjIwIDQ0LjYwIEwzMS4yNCA0NC4zMiBMMzAuNDAgNDQuMDMgTDI5LjY3IDQzLjc1IEwyOS4wOCA0My40NyBMMjguNjEgNDMuMTggTDI4LjI3IDQyLjkwIEwyOC4wNyA0Mi42MiBMMjguMDAgNDIuMzMgTDI4LjA3IDQyLjA1IiBmaWxsPSJub25lIiBzdHJva2U9IiM3RTIyQ0UiIHN0cm9rZS13aWR0aD0iNi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNNzEuOTMgMzAuNzIgTDcxLjczIDMwLjQzIEw3MS4zOSAzMC4xNSBMNzAuOTIgMjkuODcgTDcwLjMzIDI5LjU4IEw2OS42MCAyOS4zMCBMNjguNzYgMjkuMDIgTDY3LjgwIDI4LjczIEw2Ni43MyAyOC40NSBMNjUuNTYgMjguMTcgTDY0LjI5IDI3Ljg4IEw2Mi45MyAyNy42MCBMNjEuNDkgMjcuMzIgTDU5Ljk5IDI3LjAzIEw1OC40MiAyNi43NSBMNTYuODAgMjYuNDcgTDU1LjE0IDI2LjE4IEw1My40NCAyNS45MCBMNTEuNzMgMjUuNjIgTDUwLjAwIDI1LjMzIEw0OC4yNyAyNS4wNSBMNDYuNTYgMjQuNzcgTDQ0Ljg2IDI0LjQ4IEw0My4yMCAyNC4yMCBMNDEuNTggMjMuOTIgTDQwLjAxIDIzLjYzIEwzOC41MSAyMy4zNSBMMzcuMDcgMjMuMDcgTDM1LjcxIDIyLjc4IEwzNC40NCAyMi41MCBMMzMuMjcgMjIuMjIgTDMyLjIwIDIxLjkzIEwzMS4yNCAyMS42NSBMMzAuNDAgMjEuMzcgTDI5LjY3IDIxLjA4IEwyOS4wOCAyMC44MCBMMjguNjEgMjAuNTIgTDI4LjI3IDIwLjIzIEwyOC4wNyAxOS45NSBMMjguMDAgMTkuNjcgTDI4LjA3IDE5LjM4IiBmaWxsPSJub25lIiBzdHJva2U9IiM3RTIyQ0UiIHN0cm9rZS13aWR0aD0iNi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48bGluZSB4MT0iNTAiIHkxPSI2IiB4Mj0iNTAiIHkyPSI5NCIgc3Ryb2tlPSIjMkQ2Q0RGIiBzdHJva2Utd2lkdGg9IjYuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTUwLjAwIDgyLjAwIEw1MS43MyA4MS43MiBMNTMuNDQgODEuNDMgTDU1LjE0IDgxLjE1IEw1Ni44MCA4MC44NyBMNTguNDIgODAuNTggTDU5Ljk5IDgwLjMwIEw2MS40OSA4MC4wMiBMNjIuOTMgNzkuNzMgTDY0LjI5IDc5LjQ1IEw2NS41NiA3OS4xNyBMNjYuNzMgNzguODggTDY3LjgwIDc4LjYwIEw2OC43NiA3OC4zMiBMNjkuNjAgNzguMDMgTDcwLjMzIDc3Ljc1IEw3MC45MiA3Ny40NyBMNzEuMzkgNzcuMTggTDcxLjczIDc2LjkwIEw3MS45MyA3Ni42MiBMNzIuMDAgNzYuMzMgTDcxLjkzIDc2LjA1IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRjNFQTUiIHN0cm9rZS13aWR0aD0iNi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMjguMDcgNjQuNzIgTDI4LjI3IDY0LjQzIEwyOC42MSA2NC4xNSBMMjkuMDggNjMuODcgTDI5LjY3IDYzLjU4IEwzMC40MCA2My4zMCBMMzEuMjQgNjMuMDIgTDMyLjIwIDYyLjczIEwzMy4yNyA2Mi40NSBMMzQuNDQgNjIuMTcgTDM1LjcxIDYxLjg4IEwzNy4wNyA2MS42MCBMMzguNTEgNjEuMzIgTDQwLjAxIDYxLjAzIEw0MS41OCA2MC43NSBMNDMuMjAgNjAuNDcgTDQ0Ljg2IDYwLjE4IEw0Ni41NiA1OS45MCBMNDguMjcgNTkuNjIgTDUwLjAwIDU5LjMzIEw1MS43MyA1OS4wNSBMNTMuNDQgNTguNzcgTDU1LjE0IDU4LjQ4IEw1Ni44MCA1OC4yMCBMNTguNDIgNTcuOTIgTDU5Ljk5IDU3LjYzIEw2MS40OSA1Ny4zNSBMNjIuOTMgNTcuMDcgTDY0LjI5IDU2Ljc4IEw2NS41NiA1Ni41MCBMNjYuNzMgNTYuMjIgTDY3LjgwIDU1LjkzIEw2OC43NiA1NS42NSBMNjkuNjAgNTUuMzcgTDcwLjMzIDU1LjA4IEw3MC45MiA1NC44MCBMNzEuMzkgNTQuNTIgTDcxLjczIDU0LjIzIEw3MS45MyA1My45NSBMNzIuMDAgNTMuNjcgTDcxLjkzIDUzLjM4IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRjNFQTUiIHN0cm9rZS13aWR0aD0iNi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMjguMDcgNDIuMDUgTDI4LjI3IDQxLjc3IEwyOC42MSA0MS40OCBMMjkuMDggNDEuMjAgTDI5LjY3IDQwLjkyIEwzMC40MCA0MC42MyBMMzEuMjQgNDAuMzUgTDMyLjIwIDQwLjA3IEwzMy4yNyAzOS43OCBMMzQuNDQgMzkuNTAgTDM1LjcxIDM5LjIyIEwzNy4wNyAzOC45MyBMMzguNTEgMzguNjUgTDQwLjAxIDM4LjM3IEw0MS41OCAzOC4wOCBMNDMuMjAgMzcuODAgTDQ0Ljg2IDM3LjUyIEw0Ni41NiAzNy4yMyBMNDguMjcgMzYuOTUgTDUwLjAwIDM2LjY3IEw1MS43MyAzNi4zOCBMNTMuNDQgMzYuMTAgTDU1LjE0IDM1LjgyIEw1Ni44MCAzNS41MyBMNTguNDIgMzUuMjUgTDU5Ljk5IDM0Ljk3IEw2MS40OSAzNC42OCBMNjIuOTMgMzQuNDAgTDY0LjI5IDM0LjEyIEw2NS41NiAzMy44MyBMNjYuNzMgMzMuNTUgTDY3LjgwIDMzLjI3IEw2OC43NiAzMi45OCBMNjkuNjAgMzIuNzAgTDcwLjMzIDMyLjQyIEw3MC45MiAzMi4xMyBMNzEuMzkgMzEuODUgTDcxLjczIDMxLjU3IEw3MS45MyAzMS4yOCBMNzIuMDAgMzEuMDAgTDcxLjkzIDMwLjcyIiBmaWxsPSJub25lIiBzdHJva2U9IiNGRjNFQTUiIHN0cm9rZS13aWR0aD0iNi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMjguMDcgMTkuMzggTDI4LjI3IDE5LjEwIEwyOC42MSAxOC44MiBMMjkuMDggMTguNTMgTDI5LjY3IDE4LjI1IEwzMC40MCAxNy45NyBMMzEuMjQgMTcuNjggTDMyLjIwIDE3LjQwIEwzMy4yNyAxNy4xMiBMMzQuNDQgMTYuODMgTDM1LjcxIDE2LjU1IEwzNy4wNyAxNi4yNyBMMzguNTEgMTUuOTggTDQwLjAxIDE1LjcwIEw0MS41OCAxNS40MiBMNDMuMjAgMTUuMTMgTDQ0Ljg2IDE0Ljg1IEw0Ni41NiAxNC41NyBMNDguMjcgMTQuMjggTDUwLjAwIDE0LjAwIiBmaWxsPSJub25lIiBzdHJva2U9IiNGRjNFQTUiIHN0cm9rZS13aWR0aD0iNi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L2c+PC9zdmc+" alt="">Lumbre</div>
+  <a href="#decisiones">Decisiones clave</a>
+  <a href="#nombre">El nombre</a>
+  <a href="#producto">Producto v1</a>
+  <a href="#mejoras">Qué mejoré</a>
+  <a href="#pantallas">Flujo de pantallas</a>
+  <a href="#nativo">Nativo en cada plataforma</a>
+  <a href="#arquitectura">Arquitectura</a>
+  <a href="#ia">Motor de IA</a>
+  <a href="#precios">Costos y precios</a>
+  <a href="#plan">Plan de trabajo</a>
+  <a href="#calidad">Buenas prácticas</a>
+  <a href="#deploy">Deploy a producción</a>
+  <a href="#marketing">Marketing</a>
+  <a href="#metricas">Métricas</a>
+  <a href="#riesgos">Riesgos</a>
+</aside>
+<main>
+<header class="hero">
+  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4wMCwwLjAwKSBzY2FsZSgxLjAwMDApIj48cGF0aCBkPSJNNzEuOTMgNzYuMDUgTDcxLjczIDc1Ljc3IEw3MS4zOSA3NS40OCBMNzAuOTIgNzUuMjAgTDcwLjMzIDc0LjkyIEw2OS42MCA3NC42MyBMNjguNzYgNzQuMzUgTDY3LjgwIDc0LjA3IEw2Ni43MyA3My43OCBMNjUuNTYgNzMuNTAgTDY0LjI5IDczLjIyIEw2Mi45MyA3Mi45MyBMNjEuNDkgNzIuNjUgTDU5Ljk5IDcyLjM3IEw1OC40MiA3Mi4wOCBMNTYuODAgNzEuODAgTDU1LjE0IDcxLjUyIEw1My40NCA3MS4yMyBMNTEuNzMgNzAuOTUgTDUwLjAwIDcwLjY3IEw0OC4yNyA3MC4zOCBMNDYuNTYgNzAuMTAgTDQ0Ljg2IDY5LjgyIEw0My4yMCA2OS41MyBMNDEuNTggNjkuMjUgTDQwLjAxIDY4Ljk3IEwzOC41MSA2OC42OCBMMzcuMDcgNjguNDAgTDM1LjcxIDY4LjEyIEwzNC40NCA2Ny44MyBMMzMuMjcgNjcuNTUgTDMyLjIwIDY3LjI3IEwzMS4yNCA2Ni45OCBMMzAuNDAgNjYuNzAgTDI5LjY3IDY2LjQyIEwyOS4wOCA2Ni4xMyBMMjguNjEgNjUuODUgTDI4LjI3IDY1LjU3IEwyOC4wNyA2NS4yOCBMMjguMDAgNjUuMDAgTDI4LjA3IDY0LjcyIiBmaWxsPSJub25lIiBzdHJva2U9IiM3RTIyQ0UiIHN0cm9rZS13aWR0aD0iNi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNNzEuOTMgNTMuMzggTDcxLjczIDUzLjEwIEw3MS4zOSA1Mi44MiBMNzAuOTIgNTIuNTMgTDcwLjMzIDUyLjI1IEw2OS42MCA1MS45NyBMNjguNzYgNTEuNjggTDY3LjgwIDUxLjQwIEw2Ni43MyA1MS4xMiBMNjUuNTYgNTAuODMgTDY0LjI5IDUwLjU1IEw2Mi45MyA1MC4yNyBMNjEuNDkgNDkuOTggTDU5Ljk5IDQ5LjcwIEw1OC40MiA0OS40MiBMNTYuODAgNDkuMTMgTDU1LjE0IDQ4Ljg1IEw1My40NCA0OC41NyBMNTEuNzMgNDguMjggTDUwLjAwIDQ4LjAwIEw0OC4yNyA0Ny43MiBMNDYuNTYgNDcuNDMgTDQ0Ljg2IDQ3LjE1IEw0My4yMCA0Ni44NyBMNDEuNTggNDYuNTggTDQwLjAxIDQ2LjMwIEwzOC41MSA0Ni4wMiBMMzcuMDcgNDUuNzMgTDM1LjcxIDQ1LjQ1IEwzNC40NCA0NS4xNyBMMzMuMjcgNDQuODggTDMyLjIwIDQ0LjYwIEwzMS4yNCA0NC4zMiBMMzAuNDAgNDQuMDMgTDI5LjY3IDQzLjc1IEwyOS4wOCA0My40NyBMMjguNjEgNDMuMTggTDI4LjI3IDQyLjkwIEwyOC4wNyA0Mi42MiBMMjguMDAgNDIuMzMgTDI4LjA3IDQyLjA1IiBmaWxsPSJub25lIiBzdHJva2U9IiM3RTIyQ0UiIHN0cm9rZS13aWR0aD0iNi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNNzEuOTMgMzAuNzIgTDcxLjczIDMwLjQzIEw3MS4zOSAzMC4xNSBMNzAuOTIgMjkuODcgTDcwLjMzIDI5LjU4IEw2OS42MCAyOS4zMCBMNjguNzYgMjkuMDIgTDY3LjgwIDI4LjczIEw2Ni43MyAyOC40NSBMNjUuNTYgMjguMTcgTDY0LjI5IDI3Ljg4IEw2Mi45MyAyNy42MCBMNjEuNDkgMjcuMzIgTDU5Ljk5IDI3LjAzIEw1OC40MiAyNi43NSBMNTYuODAgMjYuNDcgTDU1LjE0IDI2LjE4IEw1My40NCAyNS45MCBMNTEuNzMgMjUuNjIgTDUwLjAwIDI1LjMzIEw0OC4yNyAyNS4wNSBMNDYuNTYgMjQuNzcgTDQ0Ljg2IDI0LjQ4IEw0My4yMCAyNC4yMCBMNDEuNTggMjMuOTIgTDQwLjAxIDIzLjYzIEwzOC41MSAyMy4zNSBMMzcuMDcgMjMuMDcgTDM1LjcxIDIyLjc4IEwzNC40NCAyMi41MCBMMzMuMjcgMjIuMjIgTDMyLjIwIDIxLjkzIEwzMS4yNCAyMS42NSBMMzAuNDAgMjEuMzcgTDI5LjY3IDIxLjA4IEwyOS4wOCAyMC44MCBMMjguNjEgMjAuNTIgTDI4LjI3IDIwLjIzIEwyOC4wNyAxOS45NSBMMjguMDAgMTkuNjcgTDI4LjA3IDE5LjM4IiBmaWxsPSJub25lIiBzdHJva2U9IiM3RTIyQ0UiIHN0cm9rZS13aWR0aD0iNi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48bGluZSB4MT0iNTAiIHkxPSI2IiB4Mj0iNTAiIHkyPSI5NCIgc3Ryb2tlPSIjMkQ2Q0RGIiBzdHJva2Utd2lkdGg9IjYuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTUwLjAwIDgyLjAwIEw1MS43MyA4MS43MiBMNTMuNDQgODEuNDMgTDU1LjE0IDgxLjE1IEw1Ni44MCA4MC44NyBMNTguNDIgODAuNTggTDU5Ljk5IDgwLjMwIEw2MS40OSA4MC4wMiBMNjIuOTMgNzkuNzMgTDY0LjI5IDc5LjQ1IEw2NS41NiA3OS4xNyBMNjYuNzMgNzguODggTDY3LjgwIDc4LjYwIEw2OC43NiA3OC4zMiBMNjkuNjAgNzguMDMgTDcwLjMzIDc3Ljc1IEw3MC45MiA3Ny40NyBMNzEuMzkgNzcuMTggTDcxLjczIDc2LjkwIEw3MS45MyA3Ni42MiBMNzIuMDAgNzYuMzMgTDcxLjkzIDc2LjA1IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRjNFQTUiIHN0cm9rZS13aWR0aD0iNi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMjguMDcgNjQuNzIgTDI4LjI3IDY0LjQzIEwyOC42MSA2NC4xNSBMMjkuMDggNjMuODcgTDI5LjY3IDYzLjU4IEwzMC40MCA2My4zMCBMMzEuMjQgNjMuMDIgTDMyLjIwIDYyLjczIEwzMy4yNyA2Mi40NSBMMzQuNDQgNjIuMTcgTDM1LjcxIDYxLjg4IEwzNy4wNyA2MS42MCBMMzguNTEgNjEuMzIgTDQwLjAxIDYxLjAzIEw0MS41OCA2MC43NSBMNDMuMjAgNjAuNDcgTDQ0Ljg2IDYwLjE4IEw0Ni41NiA1OS45MCBMNDguMjcgNTkuNjIgTDUwLjAwIDU5LjMzIEw1MS43MyA1OS4wNSBMNTMuNDQgNTguNzcgTDU1LjE0IDU4LjQ4IEw1Ni44MCA1OC4yMCBMNTguNDIgNTcuOTIgTDU5Ljk5IDU3LjYzIEw2MS40OSA1Ny4zNSBMNjIuOTMgNTcuMDcgTDY0LjI5IDU2Ljc4IEw2NS41NiA1Ni41MCBMNjYuNzMgNTYuMjIgTDY3LjgwIDU1LjkzIEw2OC43NiA1NS42NSBMNjkuNjAgNTUuMzcgTDcwLjMzIDU1LjA4IEw3MC45MiA1NC44MCBMNzEuMzkgNTQuNTIgTDcxLjczIDU0LjIzIEw3MS45MyA1My45NSBMNzIuMDAgNTMuNjcgTDcxLjkzIDUzLjM4IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRjNFQTUiIHN0cm9rZS13aWR0aD0iNi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMjguMDcgNDIuMDUgTDI4LjI3IDQxLjc3IEwyOC42MSA0MS40OCBMMjkuMDggNDEuMjAgTDI5LjY3IDQwLjkyIEwzMC40MCA0MC42MyBMMzEuMjQgNDAuMzUgTDMyLjIwIDQwLjA3IEwzMy4yNyAzOS43OCBMMzQuNDQgMzkuNTAgTDM1LjcxIDM5LjIyIEwzNy4wNyAzOC45MyBMMzguNTEgMzguNjUgTDQwLjAxIDM4LjM3IEw0MS41OCAzOC4wOCBMNDMuMjAgMzcuODAgTDQ0Ljg2IDM3LjUyIEw0Ni41NiAzNy4yMyBMNDguMjcgMzYuOTUgTDUwLjAwIDM2LjY3IEw1MS43MyAzNi4zOCBMNTMuNDQgMzYuMTAgTDU1LjE0IDM1LjgyIEw1Ni44MCAzNS41MyBMNTguNDIgMzUuMjUgTDU5Ljk5IDM0Ljk3IEw2MS40OSAzNC42OCBMNjIuOTMgMzQuNDAgTDY0LjI5IDM0LjEyIEw2NS41NiAzMy44MyBMNjYuNzMgMzMuNTUgTDY3LjgwIDMzLjI3IEw2OC43NiAzMi45OCBMNjkuNjAgMzIuNzAgTDcwLjMzIDMyLjQyIEw3MC45MiAzMi4xMyBMNzEuMzkgMzEuODUgTDcxLjczIDMxLjU3IEw3MS45MyAzMS4yOCBMNzIuMDAgMzEuMDAgTDcxLjkzIDMwLjcyIiBmaWxsPSJub25lIiBzdHJva2U9IiNGRjNFQTUiIHN0cm9rZS13aWR0aD0iNi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMjguMDcgMTkuMzggTDI4LjI3IDE5LjEwIEwyOC42MSAxOC44MiBMMjkuMDggMTguNTMgTDI5LjY3IDE4LjI1IEwzMC40MCAxNy45NyBMMzEuMjQgMTcuNjggTDMyLjIwIDE3LjQwIEwzMy4yNyAxNy4xMiBMMzQuNDQgMTYuODMgTDM1LjcxIDE2LjU1IEwzNy4wNyAxNi4yNyBMMzguNTEgMTUuOTggTDQwLjAxIDE1LjcwIEw0MS41OCAxNS40MiBMNDMuMjAgMTUuMTMgTDQ0Ljg2IDE0Ljg1IEw0Ni41NiAxNC41NyBMNDguMjcgMTQuMjggTDUwLjAwIDE0LjAwIiBmaWxsPSJub25lIiBzdHJva2U9IiNGRjNFQTUiIHN0cm9rZS13aWR0aD0iNi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L2c+PC9zdmc+" alt="Símbolo de Lumbre: una varilla azul envuelta por un filamento en espiral violeta y magenta">
+  <div>
+    <h1>Lumbre, de cero a producción</h1>
+    <p class="sub">Plan maestro para construir la app de idea stacking en iOS y Android, nativa en cada una, con IA que cuesta poco y un loop diario que hace volver.</p>
+  </div>
+</header>
+<div class="facts">
+  <span class="fact"><b>~19 semanas</b> a las dos tiendas</span>
+  <span class="fact">Supuesto: <b>1 dev, ~20 h/semana</b></span>
+  <span class="fact">Pro: <b>US$ 6,99/mes · 49,99/año</b></span>
+  <span class="fact">Costo IA objetivo: <b>≤ 30% del ingreso neto</b></span>
+</div>
+<div class="loop" role="list" aria-label="El loop de Lumbre">
+  <div role="listitem"><div class="n">1</div><div class="t">Absorber</div><p>Guardás lo que leés, escuchás o pensás, desde cualquier app.</p></div>
+  <div role="listitem"><div class="n">2</div><div class="t">Destilar</div><p>La IA lo convierte en un concepto atómico: título, tesis, dominio.</p></div>
+  <div role="listitem" class="hot"><div class="n">3</div><div class="t">Chocar</div><p>Cada mañana, dos conceptos lejanos chocan y salta una chispa.</p></div>
+  <div role="listitem"><div class="n">4</div><div class="t">Crear</div><p>La idea baja a un proyecto, un plan y un export a tus herramientas.</p></div>
+</div>
+
+<section id="decisiones">
+<h2>Las decisiones que ordenan todo</h2>
+<p class="lede">Si en algún momento dudás, volvé a esta lista. Todo lo demás del plan se desprende de acá.</p>
+<div class="tbl"><table>
+<tr><th>Decisión</th><th>Qué elegimos</th><th>Por qué</th></tr>
+<tr><td class="k">Clientes</td><td>Dos apps nativas: SwiftUI (iOS) y Jetpack Compose (Android), clientes finos.</td><td>Pediste que se sientan nativas. La lógica pesada vive en el servidor, así que duplicar UI cuesta poco. Kotlin Multiplatform queda como opción solo si la lógica de cliente crece (sync offline complejo).</td></tr>
+<tr><td class="k">Backend</td><td>Supabase: Postgres + pgvector + Auth + Edge Functions + colas + cron.</td><td>Un solo proveedor para datos, vectores, auth y jobs. Ya lo tenés conectado. Escala a decenas de miles de usuarios sin rediseñar.</td></tr>
+<tr><td class="k">IA</td><td>Claude Haiku 4.5 para volumen, Sonnet 5 para el planificador, Batches API para la chispa nocturna.</td><td>Haiku cuesta US$ 1/5 por millón de tokens y el batch corta 50%. La chispa diaria se genera de noche, no cuando el usuario toca.</td></tr>
+<tr><td class="k">Pagos</td><td>RevenueCat sobre StoreKit 2 y Play Billing.</td><td>Un solo modelo de "entitlements" para ambas tiendas, webhooks al backend, paywalls con experimentos.</td></tr>
+<tr><td class="k">Secuencia</td><td>Backend primero, iOS primero, Android 6 semanas después, las dos públicas en la misma ventana.</td><td>iOS concentra el pago; Android concentra la audiencia hispana (en Argentina es mayoría amplia). Lanzar solo iOS en LATAM te deja afuera a casi todos.</td></tr>
+<tr><td class="k">Idioma</td><td>Español rioplatense neutro + inglés desde el día uno.</td><td>El español es tu diferencial y tu voz; el inglés es donde está el ingreso. Strings en catálogos desde el primer commit.</td></tr>
+<tr><td class="k">Loop</td><td>1 chispa gratis por día, notificada a la hora que elige el usuario.</td><td>Escasez que da valor, costo controlado y hábito diario (como Wordle o Duolingo).</td></tr>
+</table></div>
+</section>
+
+<section id="nombre">
+<h2>El nombre: Lumbre</h2>
+<p class="lede">La app se llama Lumbre; lo que genera cada día sigue siendo una chispa. De la chispa sale la lumbre.</p>
+<div class="alert">
+<h3>Por qué dejamos Chispa</h3>
+<p>Chispa es la app de citas para latinos de Match Group (dueños de Tinder), lanzada en 2017, con más de 7 millones de descargas y "Super Chispas" con mecánica de swipe. Pelear ese nombre implicaba riesgo de marca, ASO perdido y confusión de categoría.</p>
+<ul>
+<li>Lumbre es español, corto y poco usado en apps. Su relación con las ideas es indirecta ("encender una idea", "ser una lumbrera"), así que el tagline hace el trabajo: "Lumbre. Donde se encienden las ideas."</li>
+<li>En inglés puede leerse como <em>lumber</em>; es un costo aceptable si el foco inicial es hispano.</li>
+<li>Pendiente en la fase 0: búsqueda de marca en INPI, USPTO y EUIPO (clases 9 y 42) con abogado, más tiendas, dominio y handles.</li>
+</ul>
+</div>
+</section>
+
+<section id="producto">
+<h2>Qué es Lumbre v1</h2>
+<p class="lede">Un segundo cerebro enfocado en recombinar, no en archivar. El alcance se reparte en tres versiones para que la 1.0 salga en tiempo y con calidad.</p>
+<div class="tbl"><table>
+<tr><th>Funcionalidad</th><th>Versión</th><th>Plan</th><th>Detalle</th></tr>
+<tr><td class="k">Onboarding con perfil</td><td>1.0</td><td><span class="tag free">Gratis</span></td><td>Hasta dos perfiles (Software, Contenido, Negocios, Diseño, Curiosidad libre), 3 ideas semilla, hora de la chispa.</td></tr>
+<tr><td class="k">Captura de texto y voz</td><td>1.0</td><td><span class="tag free">Ilimitada</span></td><td>Sheet global, Share Extension (iOS) e intent de compartir (Android), con cola offline. La voz dictada se transcribe en el teléfono y cuenta como texto. Categoría sugerida por embedding, confirmable con un toque. Rate limit anti-abuso de 30 capturas por día.</td></tr>
+<tr><td class="k">Destilación automática</td><td>1.0</td><td><span class="tag free">3–5 de prueba/mes</span> <span class="tag pro">Pro</span></td><td>La IA lee links, imágenes, PDFs y audios largos y saca de 1 a 3 conceptos (título, tesis, principio, dominio) con nivel de confianza. Los textos de menos de 30 palabras se embeben directo, sin gastar destilación.</td></tr>
+<tr><td class="k">Adjuntos en free</td><td>1.0</td><td><span class="tag free">Gratis</span></td><td>Link, imagen, PDF o audio quedan como fuente y el usuario escribe "¿Qué idea te deja esto?" en una línea; esa frase es el concepto. Capturas de pantalla y páginas de libro escaneadas pasan por OCR local y entran como texto.</td></tr>
+<tr><td class="k">Texto seleccionado desde otra app</td><td>1.0</td><td><span class="tag free">Gratis</span></td><td>Llega el fragmento subrayado más la URL de origen. En iOS, la extensión de Safari lee la página tal como la ve el usuario, incluso detrás de su login.</td></tr>
+<tr><td class="k">Chispa diaria</td><td>1.0</td><td><span class="tag free">Gratis</span></td><td>1 por día, generada de noche, con push a la hora elegida. Hasta 2 extra por día ganadas guardando conceptos.</td></tr>
+<tr><td class="k">Feedback de la chispa</td><td>1.0</td><td><span class="tag free">Gratis</span></td><td>"No me sirve" con motivo (obvia, irrelevante, ya la tuve). Ajusta el emparejamiento.</td></tr>
+<tr><td class="k">Tarjeta para compartir</td><td>1.0</td><td><span class="tag free">Gratis</span></td><td>Imagen vertical con la chispa y la marca, lista para historias. Es tu loop de crecimiento.</td></tr>
+<tr><td class="k">Widget</td><td>1.0</td><td><span class="tag free">Gratis</span></td><td>WidgetKit y Glance: chispa del día y botón de captura rápida.</td></tr>
+<tr><td class="k">Bóveda + búsqueda semántica</td><td>1.0</td><td><span class="tag free">Ilimitada</span></td><td>Buscás por significado, no por palabras exactas. Sin tope de tamaño: la bóveda no genera costo recurrente y cuanto más grande, mejores chispas.</td></tr>
+<tr><td class="k">Planificador</td><td>1.0</td><td><span class="tag pro">Pro</span></td><td>Chat anclado a la idea con el contexto del perfil, los dos conceptos y el proyecto. Backlog, abogado del diablo, stack.</td></tr>
+<tr><td class="k">Export Markdown</td><td>1.0</td><td><span class="tag free">Gratis</span></td><td>Idea + plan en .md por la hoja de compartir del sistema.</td></tr>
+<tr><td class="k">Más chispas a pedido</td><td>1.0</td><td><span class="tag pro">Pro</span></td><td>Hasta 10 por día, con tres modos: aleatorio, elegir un concepto, y modo problema.</td></tr>
+<tr><td class="k">Videos y podcasts (link)</td><td>1.1</td><td><span class="tag pro">Pro</span></td><td>Transcripción cuando está disponible por vías permitidas, y conceptos automáticos.</td></tr>
+<tr><td class="k">Importar subrayados y notas</td><td>1.1</td><td><span class="tag free">Hasta 50</span> <span class="tag pro">Ilimitado</span></td><td>Kindle, Apple Books, Readwise, Markdown, Notion, Apple Notes, Keep. Llena la bóveda en el onboarding.</td></tr>
+<tr><td class="k">Modo problema</td><td>1.1</td><td><span class="tag pro">Pro</span></td><td>Escribís un problema y Lumbre elige conceptos de tu bóveda para aplicarle. Es el paso 3 del video hecho función.</td></tr>
+<tr><td class="k">Proyectos con tablero</td><td>1.1</td><td><span class="tag free">1</span> <span class="tag pro">Ilimitados</span></td><td>Ideas, tareas del planificador y notas agrupadas por proyecto.</td></tr>
+<tr><td class="k">Export a Notion, Linear, GitHub</td><td>1.1</td><td><span class="tag pro">Pro</span></td><td>OAuth a cada servicio; issues, páginas o README.</td></tr>
+<tr><td class="k">Resumen semanal</td><td>1.1</td><td><span class="tag free">Gratis</span></td><td>"Tu semana creativa": conceptos nuevos, chispas guardadas, dominios que más chocaron.</td></tr>
+<tr><td class="k">Grafo de conceptos</td><td>2.0</td><td><span class="tag pro">Pro</span></td><td>Mapa visual de la bóveda y de qué chocó con qué.</td></tr>
+<tr><td class="k">Reenvío de email y extensión de navegador</td><td>2.0</td><td><span class="tag later">Más adelante</span></td><td>Una dirección personal para reenviar newsletters; subrayar en la compu.</td></tr>
+<tr><td class="k">iPad, Mac y web de lectura</td><td>2.0</td><td><span class="tag later">Más adelante</span></td><td>SwiftUI multiplataforma para iPad/Mac; web solo para ver y compartir.</td></tr>
+<tr><td class="k">Lumbre para equipos</td><td>2.0</td><td><span class="tag later">Más adelante</span></td><td>Bóveda compartida para agencias y equipos de producto.</td></tr>
+</table></div>
+<div class="note"><p><strong>Si el tiempo aprieta, recortá en este orden:</strong> grafo, proyectos con tablero, exports a terceros, foto, modo problema. Lo que no se toca: onboarding, captura, destilación, chispa diaria con push, bóveda, paywall + planificador y la tarjeta para compartir.</p></div>
+</section>
+
+<section id="mejoras">
+<h2>Qué mejoré del planteo original</h2>
+<p class="lede">La conversación con Gemini tenía la idea correcta. Estos son los ajustes para que funcione en producción.</p>
+<div class="tbl"><table>
+<tr><th>Planteo original</th><th>Cambio</th><th>Por qué</th></tr>
+<tr><td>"Tinder de ideas" con swipe</td><td>Reveal diario + feedback con motivo</td><td>Evita parecerse a la Chispa de citas y te da mejor señal que un swipe (sabés por qué no sirvió).</td></tr>
+<tr><td>Buscar pares con similitud mínima ("ortogonalidad")</td><td>Buscar en una banda de distancia media, de dominios distintos</td><td>Los pares más lejanos producen disparates; los más cercanos, obviedades. La banda media es donde está la sorpresa útil. Se calibra con el feedback.</td></tr>
+<tr><td>Celery / Airflow para el trabajo en segundo plano</td><td>pg_cron + colas (pgmq) + Edge Functions en Supabase</td><td>Cero infraestructura extra para un equipo de una persona.</td></tr>
+<tr><td>Generar la chispa cuando el usuario la pide</td><td>Batch nocturno con la Batches API y push a su hora</td><td>50% más barato, cero espera al abrir la app, picos de tráfico eliminados.</td></tr>
+<tr><td>"Absorbé 2 artículos para desbloquear otra chispa"</td><td>3 conceptos destilados = 1 chispa extra, máximo 2 extra por día</td><td>Sin tope, alguien pega 30 frases basura y te vacía la API. Con tope, el incentivo sigue y el costo queda acotado.</td></tr>
+<tr><td>Destilación con cuota para todos</td><td>Texto y voz ilimitados en free; la IA procesa los formatos ricos (links, imágenes, PDFs, audios) en Pro</td><td>Lo que cuesta es que la IA lea contenido largo, no guardar texto. Free captura sin fricción y ve la magia con algunas pruebas por mes.</td></tr>
+<tr><td>Perfil único al inicio</td><td>Hasta dos perfiles, editables, y un perfil por proyecto</td><td>La misma persona es dev de día y escritor de noche. La lente cambia según el proyecto.</td></tr>
+<tr><td>Captura solo dentro de la app</td><td>Share Extension, intent de compartir, widget, voz y OCR locales</td><td>Las apps de notas mueren por fricción de captura. Guardar tiene que tomar dos toques desde cualquier lado.</td></tr>
+<tr><td>Logo generado como imagen, con degradés</td><td>Símbolo vectorial plano: filamento de foco simplificado</td><td>Una varilla azul (un concepto) envuelta por una espiral violeta y magenta (otro concepto); donde se tocan, se enciende la idea. Se lee a 29px y no depende de dibujar el foco.</td></tr>
+</table></div>
+</section>
+
+<section id="pantallas">
+<h2>Flujo de pantallas</h2>
+<p class="lede">El mapa completo, y abajo las seis pantallas clave con su versión nativa en cada plataforma. Mismo contenido y tokens; cambian navegación, barras, sheets y forma de los controles.</p>
+<div class="panel">
+<pre class="mermaid">
+%%{init: {"theme":"base","themeVariables":{"background":"#0A1633","primaryColor":"#1A2B5C","primaryTextColor":"#FFF7ED","primaryBorderColor":"#7384BA","lineColor":"#FF6BB8","secondaryColor":"#111F45","tertiaryColor":"#111F45","clusterBkg":"#111F45","clusterBorder":"#26386B","edgeLabelBackground":"#0A1633","fontFamily":"system-ui, sans-serif","fontSize":"14px","titleColor":"#FFF7ED"}}}%%
+flowchart LR
+  subgraph E["Entradas"]
+    icon["Ícono de app"]
+    push["Push diaria"]
+    widget["Widget"]
+    share["Compartir desde otra app"]
+  end
+  subgraph O["Onboarding, 90 segundos"]
+    w["Bienvenida"] --> p["Perfil creativo"] --> s["3 ideas semilla"] --> n["Hora de la chispa y permiso de push"] --> r["Primera chispa"]
+  end
+  subgraph T["Tabs"]
+    hoy["Hoy"]
+    bov["Bóveda"]
+    pry["Proyectos"]
+    per["Perfil"]
+  end
+  icon --> w
+  r --> hoy
+  push --> hoy
+  widget --> hoy
+  share --> cap
+  cap["Capturar"] --> dest["Destilando"] --> rev["Revisar concepto"] --> bov
+  hoy --> det["Detalle de chispa"]
+  hoy -->|sin chispas| earn["Cómo ganar una extra"] --> cap
+  det -->|Guardar idea| proy["Proyecto"]
+  det -->|Planificar| plan["Planificador"]
+  det -->|No me sirve| mot["Motivo"]
+  det -->|Compartir| card["Tarjeta para historias"]
+  plan -.->|sin Pro| pay["Paywall"]
+  bov --> con["Detalle de concepto"]
+  bov --> graf["Grafo"]
+  pry --> proy --> exp["Exportar"]
+  proy --> plan
+  per --> aj["Ajustes: perfil, hora, tema"]
+  per --> sus["Suscripción"]
+  per --> priv["Privacidad: exportar y borrar cuenta"]
+  classDef spark fill:#FF3EA5,color:#0A1633,stroke:#FF3EA5
+  classDef pro fill:#7E22CE,color:#FFFFFF,stroke:#7E22CE
+  class r,det spark
+  class plan,pay,graf pro
+</pre>
+</div>
+<p class="small">Magenta: el momento chispa. Violeta: Pro. Capturar no es un tab: es un botón + flotante, separado y a la derecha de la barra de navegación, también flotante. En iOS ambos son de Liquid Glass; en Android, barra flotante y FAB de Material 3 Expressive.</p>
+<div class="switch" role="group" aria-label="Plataforma">
+  <button type="button" data-p="ios" aria-pressed="true">iOS</button>
+  <button type="button" data-p="and" aria-pressed="false">Android</button>
+  <button type="button" data-l="1" aria-pressed="false">Modo claro</button>
+</div>
+<div class="phones" id="phones"><figure class="shot"><div class="ph" role="img"><div class="sb"><span>9:41</span><span class="isl"></span><span>●●●</span></div><div class="bar"><span class="ico">‹</span><span class="t"></span></div><div class="bd"><div class="prog"><i class="on"></i><i class="on"></i><i></i><i></i></div><div style="font:700 22px/1.1 var(--display);letter-spacing:-.02em;margin-top:6px">¿Qué querés crear?</div><div style="color:var(--p-mut);font-size:12px">Elegí hasta dos. Lo podés cambiar cuando quieras.</div><div class="opt on"><i>⟨⟩</i><div><b>Software y apps</b><span>Productos, features, arquitectura</span></div></div><div class="opt"><i>✎</i><div><b>Contenido y escritura</b><span>Guiones, hilos, ensayos, ficción</span></div></div><div class="opt on"><i>◆</i><div><b>Negocios</b><span>Modelos, servicios, oportunidades</span></div></div><div class="opt"><i>◐</i><div><b>Diseño</b><span>Interfaces, marca, producto físico</span></div></div><div style="margin-top:auto;padding-bottom:16px"><span class="btn p full">Continuar</span></div></div></div><figcaption><b>Onboarding: perfil</b>Multi-selección de hasta dos perfiles. Define la lente con la que se eligen y escriben las chispas.</figcaption></figure><figure class="shot"><div class="ph" role="img"><div class="sb"><span>9:41</span><span class="isl"></span><span>●●●</span></div><div class="bar"><span class="t">Hoy</span></div><div class="bd"><div class="meter"><span class="n">0/1</span><span><b>Usaste la chispa de hoy</b><span>Guardá 3 conceptos para ganar 1 extra</span></span></div><div class="sp"><div class="pair"><div class="at">Urbanismo<b>Onda verde de semáforos</b></div><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path class="star" d="M12 1 Q12 12 23 12 Q12 12 12 23 Q12 12 1 12 Q12 12 12 1Z"/></svg><div class="at">Software<b>Code review</b></div></div><h4>Semáforos × code review</h4><p>Si un PR se aprueba rápido, los siguientes del mismo autor entran en una “onda verde” con revisión prioritaria. Premia los PR chicos sin reglas nuevas.</p><div class="row"><span class="btn p">Guardar idea</span><span class="btn s">Planificar</span><span class="btn g">No me sirve</span></div></div><div class="lbl">Ayer</div><div class="mini"><b>Podcast × ruinas</b><span>Guardada en “Canal de YouTube”</span></div></div><div class="navwrap" aria-hidden="true"><nav class="tabs"><span class="on"><span class="pill"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2 Q12 12 22 12 Q12 12 12 22 Q12 12 2 12 Q12 12 12 2Z"/></svg></span>Hoy</span><span><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8l8-4 8 4-8 4-8-4zM4 12l8 4 8-4M4 16l8 4 8-4"/></svg></span>Bóveda</span><span><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></span>Proyectos</span><span><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="4"/><path d="M4 20c1.5-4 14.5-4 16 0"/></svg></span>Perfil</span></nav><span class="addb">＋</span></div></div><figcaption><b>Hoy: la chispa del día</b>El corazón de la app. Una chispa diaria revelada con animación; el contador explica cómo ganar otra.</figcaption></figure><figure class="shot"><div class="ph" role="img"><div class="sb"><span>9:41</span><span class="isl"></span><span>●●●</span></div><div class="bar"><span class="t">Hoy</span></div><div class="bd"><div class="meter"><span class="n">1/1</span><span><b>Chispa disponible</b><span>Se recarga mañana 8:00</span></span></div><div class="mini" style="opacity:.6"><b>Semáforos × code review</b></div></div><div class="navwrap" aria-hidden="true"><nav class="tabs"><span class="on"><span class="pill"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2 Q12 12 22 12 Q12 12 12 22 Q12 12 2 12 Q12 12 12 2Z"/></svg></span>Hoy</span><span><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8l8-4 8 4-8 4-8-4zM4 12l8 4 8-4M4 16l8 4 8-4"/></svg></span>Bóveda</span><span><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></span>Proyectos</span><span><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="4"/><path d="M4 20c1.5-4 14.5-4 16 0"/></svg></span>Perfil</span></nav><span class="addb">＋</span></div><div class="scrim"></div><div class="sheet"><div class="grab"></div><div style="display:flex;justify-content:space-between;align-items:center"><span class="ios-only" style="color:var(--p-acc-t);font-size:12px">Cancelar</span><b style="font-size:14px">Nuevo concepto</b><span class="ios-only" style="font-size:12px;color:var(--p-mut)">&nbsp;</span></div><div class="seg"><span>Texto</span><span class="on">Link</span><span>Voz</span><span>Foto</span></div><div class="field">https://blog.ejemplo.com/ciclones-industriales</div><div class="tog"><span>Destilar automáticamente</span><i></i></div><div style="font-size:10.5px;color:var(--p-mut)">Lumbre lee el artículo y saca los conceptos. Te quedan 3 pruebas este mes · <span style="color:var(--p-pro-t);font-weight:600">Ilimitado en Pro</span></div><div style="margin-top:auto"><span class="btn p full">Guardar concepto</span></div></div></div><figcaption><b>Capturar</b>Sheet global: texto, link, voz o foto. La voz y la foto se procesan en el dispositivo; la destilación corre en el servidor.</figcaption></figure><figure class="shot"><div class="ph" role="img"><div class="sb"><span>9:41</span><span class="isl"></span><span>●●●</span></div><div class="bar"><span class="t">Bóveda</span></div><div class="bd"><div class="search">Buscar ideas, no palabras</div><div class="row"><span class="chip on">Todos</span><span class="chip sel">Ingeniería</span><span class="chip sel">Marketing</span><span class="chip sel">Física</span></div><div class="cc"><span class="chip">Ingeniería</span><b>Separación ciclónica</b><p>Un flujo en espiral separa partículas por fuerza centrífuga, sin filtro.</p><span class="m">De un link · hace 2 días</span></div><div class="cc"><span class="chip">Marketing</span><b>Escasez intencional</b><p>Limitar la oferta sube el valor percibido y la atención.</p><span class="m">Nota de voz · hoy</span></div><div class="cc"><span class="chip">Urbanismo</span><b>Onda verde</b><p>Sincronizar semáforos crea un flujo continuo a velocidad constante.</p><span class="m">Texto · ayer</span></div></div><div class="navwrap" aria-hidden="true"><nav class="tabs"><span><span class="pill"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2 Q12 12 22 12 Q12 12 12 22 Q12 12 2 12 Q12 12 12 2Z"/></svg></span>Hoy</span><span class="on"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8l8-4 8 4-8 4-8-4zM4 12l8 4 8-4M4 16l8 4 8-4"/></svg></span>Bóveda</span><span><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></span>Proyectos</span><span><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="4"/><path d="M4 20c1.5-4 14.5-4 16 0"/></svg></span>Perfil</span></nav><span class="addb">＋</span></div></div><figcaption><b>Bóveda</b>Todo lo guardado como conceptos atómicos. Búsqueda semántica, filtros por dominio y vista de grafo (Pro).</figcaption></figure><figure class="shot"><div class="ph" role="img"><div class="sb"><span>9:41</span><span class="isl"></span><span>●●●</span></div><div class="bar inline"><span class="ico">‹</span><span class="t">Planificar</span><span></span></div><div class="bd"><div class="mini"><b>Semáforos × code review</b><span>Proyecto: Herramientas del equipo</span></div><div class="bub me">¿Cómo lo pruebo sin cambiar el flujo de todo el equipo?</div><div class="bub ai"><i>Planificador</i>Arrancá con un bot que solo etiquete “onda verde” en PRs de autores con 3 aprobaciones rápidas seguidas. Medí tiempo de revisión 2 semanas antes y después.</div><div class="row"><span class="chip sel">Armá un backlog</span><span class="chip sel">Abogado del diablo</span></div><div class="inp"><div>Escribí o preguntá…</div><i>↑</i></div></div></div><figcaption><b>Planificador Pro</b>Chat anclado a una idea: conoce el perfil, los dos conceptos y el proyecto. Respuestas rápidas para bajar a tareas.</figcaption></figure><figure class="shot"><div class="ph" role="img"><div class="sb"><span>9:41</span><span class="isl"></span><span>●●●</span></div><div class="bar"><span class="ico">✕</span><span class="t"></span></div><div class="bd"><div style="text-align:center;margin-top:4px"><svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"><path class="star" d="M12 1 Q12 12 23 12 Q12 12 12 23 Q12 12 1 12 Q12 12 12 1Z"/></svg></div><div style="font:700 22px/1.1 var(--display);text-align:center;letter-spacing:-.02em">Lumbre Pro</div><div class="chk">Hasta 10 chispas por día y modo problema</div><div class="chk">Destilá links, audios y fotos</div><div class="chk">Planificador para cada idea</div><div class="chk">Exportá a Notion, Linear y GitHub</div><div class="plan on"><span class="bdg">Ahorrás 40%</span><br><b>Anual</b> <span class="pr">US$ 49,99</span><br><span>7 días gratis, después US$ 4,17/mes</span></div><div class="plan"><b>Mensual</b> <span class="pr">US$ 6,99</span></div><span class="btn pro full">Probar 7 días gratis</span><div class="fine">Restaurar compras · Términos · Privacidad</div></div></div><figcaption><b>Paywall</b>Aparece al tocar una función Pro, nunca al abrir la app. Precios localizados desde la tienda; restaurar y términos siempre visibles.</figcaption></figure></div>
+
+<h3>Inventario de pantallas</h3>
+<div class="tbl"><table>
+<tr><th>Pantalla</th><th>Qué resuelve</th><th>Estados que hay que diseñar</th></tr>
+<tr><td class="k">Bienvenida</td><td>Explica el método en una frase y una animación del choque.</td><td>Primera vez, usuario que vuelve (ir a login).</td></tr>
+<tr><td class="k">Login</td><td>Sign in with Apple, Google y email con enlace mágico.</td><td>Error de red, cuenta existente en otro método.</td></tr>
+<tr><td class="k">Perfil creativo</td><td>Lente de las chispas.</td><td>Nada elegido (botón deshabilitado), tope de dos.</td></tr>
+<tr><td class="k">Ideas semilla</td><td>Carga 3 conceptos para que la primera chispa sea tuya y no genérica.</td><td>Sugerencias por perfil para quien no sabe qué poner.</td></tr>
+<tr><td class="k">Hora y permiso de push</td><td>Pide el permiso con contexto, no al abrir.</td><td>Permiso denegado (la chispa espera en Hoy igual).</td></tr>
+<tr><td class="k">Hoy</td><td>Chispa del día, contador, historial reciente.</td><td>Por revelar, revelada, sin chispas, generando, error.</td></tr>
+<tr><td class="k">Detalle de chispa</td><td>Los dos conceptos, la idea, acciones.</td><td>Guardada, descartada, compartida.</td></tr>
+<tr><td class="k">Capturar</td><td>Texto, link, voz, foto.</td><td>Sin conexión (queda en cola), adjunto sin prueba disponible (pide la frase), contenido inaccesible, permiso de micrófono o cámara denegado.</td></tr>
+<tr><td class="k">Destilando y Revisar</td><td>Muestra el concepto resultante para editar o aceptar.</td><td>Link que no se puede leer, contenido bloqueado por moderación.</td></tr>
+<tr><td class="k">Bóveda</td><td>Lista, búsqueda, filtros.</td><td>Vacía (invita a capturar), conceptos sin destilar marcados.</td></tr>
+<tr><td class="k">Detalle de concepto</td><td>Tesis editable, original colapsado, chispas donde participó.</td><td>Borrado con deshacer.</td></tr>
+<tr><td class="k">Proyectos y Proyecto</td><td>Ideas y tareas agrupadas.</td><td>Vacío, límite de uno en gratis.</td></tr>
+<tr><td class="k">Planificador</td><td>Chat con contexto y respuestas rápidas.</td><td>Streaming, detener, uso justo alcanzado, error del modelo.</td></tr>
+<tr><td class="k">Paywall</td><td>Planes, prueba, restaurar.</td><td>Precio cargando, compra pendiente, ya suscripto, error de tienda.</td></tr>
+<tr><td class="k">Perfil y ajustes</td><td>Perfiles, hora, tema, idioma, suscripción, privacidad.</td><td>Borrar cuenta con confirmación (obligatorio en ambas tiendas).</td></tr>
+<tr><td class="k">Share Extension e intent</td><td>Guardar desde Safari, YouTube, X, etc.</td><td>Sin sesión iniciada, sin conexión.</td></tr>
+<tr><td class="k">Widgets</td><td>Chispa del día y captura rápida.</td><td>Sin chispa aún, chispa revelada, sin sesión.</td></tr>
+</table></div>
+</section>
+
+<section id="nativo">
+<h2>Nativo en cada plataforma</h2>
+<p class="lede">Lo que se comparte da identidad; lo que se adapta da confianza. Los tokens se generan desde el mismo tokens.json para las dos apps.</p>
+<div class="tbl"><table>
+<tr><th>Elemento</th><th>iOS (SwiftUI)</th><th>Android (Compose, Material 3)</th></tr>
+<tr><td class="k">Navegación</td><td>TabView con 4 tabs: en iOS 26 la barra ya es flotante y de Liquid Glass. Se minimiza al hacer scroll con .tabBarMinimizeBehavior. NavigationStack y large titles</td><td>Barra de navegación flotante tipo floating toolbar de Material 3 Expressive, con el destino activo expandido en pill con etiqueta. TopAppBar y predictive back</td></tr>
+<tr><td class="k">Capturar</td><td>Botón + circular separado, a la derecha de la barra, con .glassEffect tintado en magenta dentro de un GlassEffectContainer para que se funda con la barra. Alternativa: un Tab con role .search, que el sistema ya separa a la derecha, pero es semánticamente búsqueda. Más Share Extension</td><td>FAB a la derecha de la barra flotante (el floating toolbar de M3 Expressive acepta un FAB al lado; API todavía en evolución, verificar la versión de material3). Más intent ACTION_SEND</td></tr>
+<tr><td class="k">Sheets</td><td>.sheet con detents y grabber</td><td>ModalBottomSheet con drag handle</td></tr>
+<tr><td class="k">Tipografía de texto</td><td>SF Pro con Dynamic Type</td><td>Roboto Flex / Roboto con escala de fuente del sistema</td></tr>
+<tr><td class="k">Tipografía de marca</td><td colspan="2">Fraunces (variable, con ejes SOFT y WONK) empaquetada en ambas, solo para el wordmark, títulos de pantalla, el título de la chispa y el contador, siempre a 20pt o más</td></tr>
+<tr><td class="k">Íconos</td><td>SF Symbols</td><td>Material Symbols Rounded</td></tr>
+<tr><td class="k">Botones</td><td>.borderedProminent tintado, esquinas de 14pt</td><td>Button de M3 con forma pill</td></tr>
+<tr><td class="k">Segmentado</td><td>Picker .segmented</td><td>SegmentedButton</td></tr>
+<tr><td class="k">Colores</td><td>Color Assets Any/Dark generados</td><td>ColorScheme propio generado; dynamic color opcional en ajustes</td></tr>
+<tr><td class="k">Háptica del reveal</td><td>.sensoryFeedback(.success)</td><td>HapticFeedbackConstants.CONFIRM</td></tr>
+<tr><td class="k">Widgets</td><td>WidgetKit (+ Lock Screen y StandBy)</td><td>Jetpack Glance</td></tr>
+<tr><td class="k">Atajos</td><td>App Intents: "Capturar en Lumbre" en Siri y Atajos</td><td>App Shortcuts estáticos y dinámicos</td></tr>
+<tr><td class="k">IA local (opcional)</td><td>Foundation Models framework en dispositivos compatibles</td><td>Gemini Nano vía ML Kit GenAI en dispositivos compatibles</td></tr>
+<tr><td class="k">Voz y OCR</td><td>Speech (SpeechAnalyzer) y Vision</td><td>SpeechRecognizer y ML Kit Text Recognition</td></tr>
+<tr><td class="k">Cache local</td><td>SwiftData</td><td>Room + WorkManager para la cola offline</td></tr>
+<tr><td class="k">Pagos</td><td colspan="2">RevenueCat sobre StoreKit 2 y Play Billing, mismo entitlement "pro"</td></tr>
+</table></div>
+</section>
+
+<section id="arquitectura">
+<h2>Arquitectura</h2>
+<p class="lede">Clientes finos, servidor que manda. Ninguna clave de IA vive en la app: todo pasa por un gateway que mide, limita y registra.</p>
+<div class="panel">
+<pre class="mermaid">
+%%{init: {"theme":"base","themeVariables":{"background":"#0A1633","primaryColor":"#1A2B5C","primaryTextColor":"#FFF7ED","primaryBorderColor":"#7384BA","lineColor":"#FF6BB8","clusterBkg":"#111F45","clusterBorder":"#26386B","edgeLabelBackground":"#0A1633","fontFamily":"system-ui, sans-serif","fontSize":"14px","titleColor":"#FFF7ED"}}}%%
+flowchart LR
+  subgraph C["Apps nativas"]
+    ios["iOS · SwiftUI · SwiftData"]
+    and["Android · Compose · Room"]
+  end
+  subgraph S["Supabase"]
+    auth["Auth: Apple, Google, email"]
+    api["Edge Functions: API, gateway de IA, cuotas"]
+    db[("Postgres + pgvector + RLS")]
+    q["pg_cron + pgmq: batch nocturno"]
+    st["Storage: tarjetas"]
+  end
+  subgraph X["Servicios"]
+    cl["Claude API: Haiku 4.5, Sonnet 5, Batches"]
+    vo["Embeddings multilingües"]
+    rc["RevenueCat"]
+    obs["PostHog · Sentry"]
+    pn["APNs · FCM"]
+  end
+  ios --> auth
+  and --> auth
+  ios --> api
+  and --> api
+  api --> db
+  q --> api
+  api --> cl
+  api --> vo
+  api --> st
+  api --> pn
+  rc -->|webhook| api
+  ios --> rc
+  and --> rc
+  ios -.-> obs
+  and -.-> obs
+  api -.-> obs
+</pre>
+</div>
+<div class="two">
+<div class="note"><h3>iOS</h3><ul>
+<li>Swift 6, SwiftUI, Observation (@Observable), async/await. Sin frameworks de arquitectura pesados.</li>
+<li>Paquetes SPM: LumbreDesign (tokens y componentes), LumbreCore (modelos y cliente de API generado), un paquete por feature.</li>
+<li>Targets extra: Share Extension, Widget, App Intents. App Group para compartir sesión.</li>
+<li>Mínimo: versión actual de iOS y las dos anteriores. En versiones sin Liquid Glass, la barra y el botón usan .ultraThinMaterial con la misma forma flotante.</li>
+<li>Tests: Swift Testing, snapshots de componentes, XCUITest del loop principal.</li>
+</ul></div>
+<div class="note"><h3>Android</h3><ul>
+<li>Kotlin, Compose, Material 3, MVVM con flujo unidireccional, Coroutines y Flow, Hilt.</li>
+<li>Módulos Gradle: :core:designsystem, :core:data, :core:network, :feature:*, :app, :widget.</li>
+<li>Ktor o Retrofit + kotlinx.serialization con cliente generado desde el mismo OpenAPI.</li>
+<li>minSdk 28, targetSdk el que exija Play en la fecha de subida. Baseline Profiles para arranque rápido.</li>
+<li>Tests: JUnit + Turbine, tests de UI de Compose, screenshots con Roborazzi, Macrobenchmark.</li>
+</ul></div>
+</div>
+<h3>Modelo de datos (Postgres)</h3>
+<div class="tbl"><table>
+<tr><th>Tabla</th><th>Contenido</th><th>Notas</th></tr>
+<tr><td class="k">profiles</td><td>usuario, perfiles creativos, hora de chispa, zona horaria, idioma, plan</td><td>plan se actualiza solo desde el webhook de RevenueCat</td></tr>
+<tr><td class="k">captures</td><td>trabajo temporal de procesamiento: tipo, estado, archivo temporal</td><td>audios, PDFs, imágenes y páginas se borran apenas se extrae el concepto</td></tr>
+<tr><td class="k">concepts</td><td>dominio (lista cerrada), título, tesis, principio, embedding, modelo de embedding, tipo y URL de fuente, fragmento subrayado (≤ 500 caracteres), texto crudo (30 días), referencia a la foto local</td><td>no guarda archivos; un solo modelo de embeddings para todo</td></tr>
+<tr><td class="k">sparks</td><td>concepto A, concepto B, título, cuerpo, modo, fecha, estado, feedback</td><td>una chispa nunca repite el mismo par</td></tr>
+<tr><td class="k">projects / project_items</td><td>proyectos, ideas y tareas</td><td></td></tr>
+<tr><td class="k">threads / messages</td><td>conversaciones del planificador por idea</td><td>resumen incremental para no reenviar todo el historial</td></tr>
+<tr><td class="k">usage_ledger</td><td>consumos por usuario, tipo y día</td><td>función SQL atómica consume_credit() con lock de fila</td></tr>
+<tr><td class="k">plan_limits</td><td>límites por plan y tipo</td><td>configurables sin publicar versión nueva</td></tr>
+<tr><td class="k">llm_calls</td><td>modelo, tokens, costo, latencia, feature</td><td>la base de tu tablero de costos y alertas</td></tr>
+</table></div>
+<p>Row Level Security en todas las tablas con datos de usuario. Tres proyectos de Supabase (dev, staging, prod), migraciones versionadas en git y el contrato de API en OpenAPI, del que se generan los clientes Swift y Kotlin.</p>
+</section>
+
+<section id="ia">
+<h2>Motor de IA</h2>
+<h3>Pipeline</h3>
+<ol>
+<li><strong>Captura.</strong> Texto, voz dictada (transcrita en el teléfono), texto seleccionado, capturas y páginas escaneadas (OCR local) entran como texto. Links, imágenes, PDFs y audios largos entran como fuente. Offline queda en cola.</li>
+<li><strong>Lectura</strong> (solo para destilación automática). El servidor descarga el link y extrae el contenido; siempre se usa primero lo que llegó en la captura. El contenido externo se trata como datos, nunca como instrucciones.</li>
+<li><strong>Destilación</strong> (Haiku 4.5, JSON estructurado): dominio de una lista cerrada de 20–25, título, tesis, principio subyacente y confianza. Confianza alta se guarda; media queda como borrador; baja o contenido inaccesible cae al flujo de "¿Qué idea te deja esto?".</li>
+<li><strong>Embedding</strong> en el servidor, siempre con el mismo modelo: del principio + tesis si hubo destilación, del texto limpio si no. Sin destilación, el dominio se asigna por cercanía a los vectores de cada categoría.</li>
+<li><strong>Emparejamiento</strong> (SQL, sin LLM): dominios distintos, distancia en una banda media relativa a cada usuario (por ejemplo, percentiles 40–80), par nunca usado (restricción única sobre el par ordenado), conceptos con 3 días de descanso. Si quedan menos de 7 días de candidatos buenos, se pide capturar más; si no hay, se combina con un "concepto invitado" de una biblioteca curada.</li>
+<li><strong>Generación</strong>: la chispa diaria se arma en un batch nocturno por zona horaria (Batches API, 50% menos) y se notifica a la hora elegida. Las extra y las de Pro van en tiempo real con Haiku.</li>
+<li><strong>Planificador</strong>: Haiku 4.5 para respuestas rápidas; Sonnet 5 para "plan profundo". Prompt caching del contexto fijo y resumen incremental del hilo.</li>
+</ol>
+<h3>Qué se guarda</h3>
+<p>El concepto, su embedding y datos livianos de la fuente (tipo, URL, título, fragmento subrayado). Nunca audios, PDFs, videos ni páginas completas: se procesan en un almacenamiento temporal y se borran. El texto crudo se conserva 30 días por si hay que re-procesar. Las imágenes quedan en el teléfono del usuario y la app guarda solo la referencia. Resultado: almacenamiento casi nulo, menos riesgo legal y una política de privacidad simple ("no guardamos tus archivos").</p>
+<h3>Cuotas y abuso</h3>
+<ul>
+<li>Cada llamada de IA pasa por consume_credit(): chequea plan, límite diario y mensual, y descuenta de forma atómica. Si no hay crédito, la API responde un error tipado que la app convierte en la pantalla correcta (ganar extra o paywall).</li>
+<li>Tope de gasto diario por usuario en dólares, además de los límites por cantidad. Si alguien lo toca, se loguea y se revisa.</li>
+<li>App Attest (iOS) y Play Integrity (Android) en los endpoints de IA para frenar bots que usen tu API.</li>
+<li>Moderación de entrada y salida; en Android además es requisito de Play poder reportar contenido generado por IA desde la app.</li>
+<li>Gateway con reintentos, backoff y un modelo de respaldo si el primario falla.</li>
+</ul>
+<h3>Calidad de las chispas</h3>
+<p>Armá un set de evaluación de 100 pares de conceptos por perfil, puntuados a mano en "sorprende" y "sirve" (1 a 5). Cada cambio de prompt o de modelo corre contra ese set antes de salir. En producción, el feedback de "No me sirve" alimenta el mismo tablero. Es lo que separa una chispa memorable de un párrafo genérico, y es la razón número uno por la que la gente va a quedarse o irse.</p>
+</section>
+
+<section id="precios">
+<h2>Costos y precios</h2>
+<p class="lede">Precios de referencia de la API: Haiku 4.5 a US$ 1 / 5 y Sonnet 5 a US$ 2 / 10 por millón de tokens de entrada y salida; Batches API con 50% menos; lecturas de caché al 10% del precio de entrada. Verificá la página oficial antes de cerrar números.</p>
+<h3>Costo por operación (estimado)</h3>
+<div class="tbl"><table>
+<tr><th>Operación</th><th>Modelo</th><th>Tokens aprox.</th><th>Costo aprox.</th></tr>
+<tr><td class="k">Chispa diaria (batch)</td><td>Haiku 4.5</td><td>1.800 in / 400 out</td><td>US$ 0,002</td></tr>
+<tr><td class="k">Chispa extra (tiempo real)</td><td>Haiku 4.5</td><td>1.800 in / 400 out</td><td>US$ 0,004</td></tr>
+<tr><td class="k">Destilar texto</td><td>Haiku 4.5</td><td>800 in / 250 out</td><td>US$ 0,002</td></tr>
+<tr><td class="k">Destilar link</td><td>Haiku 4.5</td><td>5.000 in / 250 out</td><td>US$ 0,006</td></tr>
+<tr><td class="k">Mensaje rápido del planificador</td><td>Haiku 4.5</td><td>6.000 in (4.000 en caché) / 500 out</td><td>US$ 0,005</td></tr>
+<tr><td class="k">Plan profundo</td><td>Sonnet 5</td><td>6.000 in (4.000 en caché) / 800 out</td><td>US$ 0,013</td></tr>
+<tr><td class="k">Voz, OCR, etiquetado básico</td><td>En el dispositivo</td><td>—</td><td>US$ 0</td></tr>
+</table></div>
+<h3>Planes</h3>
+<div class="tbl"><table>
+<tr><th></th><th>Gratis</th><th>Pro</th></tr>
+<tr><td class="k">Precio</td><td>US$ 0</td><td>US$ 6,99/mes o US$ 49,99/año (7 días de prueba en el anual)</td></tr>
+<tr><td class="k">Chispas</td><td>1 por día + hasta 2 ganadas</td><td>Hasta 10 por día, con modos elegir y problema</td></tr>
+<tr><td class="k">Captura</td><td>Texto y voz ilimitados (30 por día); adjuntos con tu frase</td><td>Igual, más destilación automática de todo</td></tr>
+<tr><td class="k">Destilación automática</td><td>3–5 de prueba por mes</td><td>Links, imágenes, PDFs, audios y videos (uso justo: 300/mes)</td></tr>
+<tr><td class="k">Planificador</td><td>—</td><td>300 mensajes/mes, de los cuales 60 pueden ser plan profundo</td></tr>
+<tr><td class="k">Proyectos</td><td>1</td><td>Ilimitados</td></tr>
+<tr><td class="k">Export</td><td>Markdown</td><td>Markdown, Notion, Linear, GitHub</td></tr>
+<tr><td class="k">Precio regional</td><td colspan="2">Usá los precios por país de App Store Connect y las plantillas de precios de Play. En Argentina y LATAM, un nivel bastante más bajo que el de EE. UU.; la tienda se encarga de impuestos y conversión.</td></tr>
+</table></div>
+<h3>Economía por usuario</h3>
+<div class="tbl"><table>
+<tr><th>Perfil de uso</th><th>Costo IA/mes</th><th>Ingreso neto/mes</th></tr>
+<tr><td class="k">Gratuito típico</td><td>≈ US$ 0,06 a 0,08 (la chispa diaria y embeddings)</td><td>—</td></tr>
+<tr><td class="k">Pro típico</td><td>≈ US$ 1,20</td><td>US$ 5,94 (mensual) · US$ 3,54 (anual)</td></tr>
+<tr><td class="k">Pro al tope de uso justo</td><td>≈ US$ 3,50</td><td>US$ 5,94 (mensual) · US$ 3,54 (anual)</td></tr>
+</table></div>
+<p>Ingreso neto con la comisión del 15% del Small Business Program de Apple y de suscripciones en Google Play. Con 1.000 gratuitos (≈ US$ 70/mes) alcanza con unos 20 Pro para cubrir su IA. El tamaño de la bóveda no genera costo recurrente: se paga al entrar cada concepto y buscar pares es SQL. El usuario anual al tope queda en equilibrio: por eso los límites viven en plan_limits y se ajustan sin publicar. Sumá costos fijos: Apple Developer US$ 99/año, Google Play US$ 25 una vez, Supabase Pro, dominio, email.</p>
+<p class="small">No soy asesor financiero ni contable. Para cómo cobrar desde Argentina, la entidad que publica y los impuestos, confirmá con un contador.</p>
+</section>
+
+<section id="plan">
+<h2>Plan de trabajo</h2>
+<p class="lede">Diez fases solapadas, con un criterio de salida cada una. Si una fase no cumple su criterio, no se avanza: se arregla.</p>
+<ol class="phases">
+<li class="phase"><div class="w"><span>0</span>Semanas 1–2</div><div><h4>Validar y resolver el nombre</h4><ul>
+<li>12 entrevistas de 30 minutos: 4 devs, 4 creadores, 4 emprendedores. Preguntá cómo tienen ideas hoy y dónde las pierden.</li>
+<li>Búsqueda de marca de Lumbre con abogado; alternativas listas por si no pasa.</li>
+<li>Landing con waitlist y una demo web: pegás dos ideas y ves una chispa (una por día por email).</li>
+<li>Cuentas: Apple Developer (como organización necesitás D-U-N-S), Google Play, dominio, email, GitHub, Supabase, Anthropic, RevenueCat, PostHog, Sentry.</li>
+<li>Métrica norte definida: ideas guardadas por usuario activo semanal.</li></ul>
+<p class="exit"><b>Salida:</b> Lumbre confirmado, 150+ personas en la waitlist, 3 dolores repetidos en entrevistas.</p></div></li>
+<li class="phase"><div class="w"><span>1</span>Semanas 2–4</div><div><h4>Diseño</h4><ul>
+<li>Llevar el design system a Figma con variables en dos modos (oscuro y claro).</li>
+<li>Terminar el logo: wordmark en Fraunces pasado a curvas; exportar ícono iOS (1024, dark, tinted) y adaptive + monochrome de Android desde el SVG.</li>
+<li>Prototipo navegable del loop completo en ambas plataformas; test con 5 personas de la waitlist.</li>
+<li>Coreografía del reveal (900 ms) y su versión con Reducir movimiento.</li>
+<li>Copy de todas las pantallas y estados, en español e inglés.</li></ul>
+<p class="exit"><b>Salida:</b> 4 de 5 testers completan onboarding y guardan una idea sin ayuda.</p></div></li>
+<li class="phase"><div class="w"><span>2</span>Semanas 3–6</div><div><h4>Backend e IA</h4><ul>
+<li>Esquema, RLS, migraciones y tres entornos.</li>
+<li>Auth con Apple, Google y email.</li>
+<li>Edge Functions: captures, distill, sparks/today, sparks/extra, planner, export, webhook de RevenueCat.</li>
+<li>consume_credit(), plan_limits, llm_calls y tablero de costos con alertas.</li>
+<li>Prompts versionados en el repo + set de evaluación de 100 pares.</li>
+<li>Batch nocturno por zona horaria y envío de push.</li>
+<li>Contrato OpenAPI y generación de clientes.</li></ul>
+<p class="exit"><b>Salida:</b> el set de evaluación da 3,5+ de promedio en "sorprende" y "sirve"; una chispa completa cuesta menos de US$ 0,005.</p></div></li>
+<li class="phase"><div class="w"><span>3</span>Semanas 5–11</div><div><h4>App iOS</h4><ul>
+<li>LumbreDesign con los tokens generados y los componentes del sistema.</li>
+<li>Onboarding, Hoy con reveal, Capturar, Bóveda, Detalle, Planificador, Paywall, Perfil.</li>
+<li>Share Extension, Widget, App Intents, push, deep links.</li>
+<li>RevenueCat, PostHog, Sentry. Accesibilidad: VoiceOver, Dynamic Type hasta XXXL, contraste.</li>
+<li>Borrado de cuenta y exportación de datos dentro de la app.</li></ul>
+<p class="exit"><b>Salida:</b> loop completo funcionando en TestFlight interno, sin crashes en 7 días de uso propio.</p></div></li>
+<li class="phase"><div class="w"><span>4</span>Semanas 10–12</div><div><h4>Beta iOS</h4><ul>
+<li>TestFlight externo con 50 a 100 personas de la waitlist.</li>
+<li>Encuesta dentro de la app a los 7 días y 5 llamadas cortas.</li>
+<li>Iterar prompts, onboarding y hora de la chispa con datos reales.</li></ul>
+<p class="exit"><b>Salida:</b> D7 ≥ 15% y 30%+ guarda al menos una idea en su primera semana. Si D7 &lt; 10%, se frena Android y se arregla el loop.</p></div></li>
+<li class="phase"><div class="w"><span>5</span>Semanas 11–17</div><div><h4>App Android</h4><ul>
+<li>Mismas pantallas con componentes Material 3 y el ColorScheme de Lumbre.</li>
+<li>Intent de compartir, Glance widget, App Shortcuts, notificaciones con canal propio.</li>
+<li>Cola offline con WorkManager, Baseline Profiles, pruebas en gama media (es la mayoría del público hispano).</li>
+<li>Prueba cerrada en Play: las cuentas personales nuevas necesitan al menos 12 testers durante 14 días seguidos antes de pedir producción.</li></ul>
+<p class="exit"><b>Salida:</b> paridad funcional con iOS, arranque en frío menor a 1,5 s en un equipo de gama media, prueba cerrada cumplida.</p></div></li>
+<li class="phase"><div class="w"><span>6</span>Semanas 13–15</div><div><h4>Endurecer y preparar tiendas</h4><ul>
+<li>Revisión de seguridad: RLS, claves, App Attest, Play Integrity, rate limits.</li>
+<li>Prueba de carga del batch nocturno con 10 veces el volumen esperado.</li>
+<li>Términos, privacidad, consentimiento explícito para enviar datos a un proveedor de IA externo.</li>
+<li>Fichas de tienda en dos idiomas, capturas por tamaño de dispositivo, video de preview.</li></ul>
+<p class="exit"><b>Salida:</b> checklist de deploy completo (siguiente sección).</p></div></li>
+<li class="phase"><div class="w"><span>7</span>Semana 15–16</div><div><h4>Lanzamiento iOS</h4><ul>
+<li>Revisión de App Store, publicación con lanzamiento por fases de 7 días.</li>
+<li>Product Hunt, anuncio en comunidades, email a la waitlist.</li></ul>
+<p class="exit"><b>Salida:</b> tasa de crash-free por encima de 99,5%, costos dentro de lo previsto.</p></div></li>
+<li class="phase"><div class="w"><span>8</span>Semana 18–19</div><div><h4>Lanzamiento Android</h4><ul>
+<li>Rollout escalonado: 10%, 50%, 100% en una semana, mirando vitals de Play.</li>
+<li>Segundo anuncio enfocado en LATAM.</li></ul>
+<p class="exit"><b>Salida:</b> ANR y crash por debajo de los umbrales de Play Vitals.</p></div></li>
+<li class="phase"><div class="w"><span>9</span>Continuo</div><div><h4>Operar y crecer</h4><ul>
+<li>Versión cada 2 semanas; 1.1 (modo problema, proyectos, exports) a los 45 días del lanzamiento.</li>
+<li>Experimentos de paywall y de hora de la chispa con PostHog.</li>
+<li>Revisión mensual de costos por usuario y ajuste de plan_limits.</li></ul>
+<p class="exit"><b>Salida:</b> conversión a Pro ≥ 3% a los 90 días.</p></div></li>
+</ol>
+</section>
+
+<section id="calidad">
+<h2>Buenas prácticas</h2>
+<div class="two">
+<div class="note"><h3>Código y CI/CD</h3><ul>
+<li>Monorepo con /ios, /android, /backend, /design (tokens.json como fuente única).</li>
+<li>Script que genera tokens para Swift y Kotlin desde tokens.json en cada build.</li>
+<li>GitHub Actions: lint, tests y build en cada PR; fastlane para TestFlight y Play internal track.</li>
+<li>Feature flags en PostHog para todo lo nuevo; nunca un "if" de versión.</li>
+<li>Semantic versioning y changelog; conventional commits.</li>
+</ul></div>
+<div class="note"><h3>Seguridad</h3><ul>
+<li>Sin claves en los binarios; todo por Edge Functions.</li>
+<li>RLS con tests automáticos de "usuario A no ve datos de B".</li>
+<li>Tokens de sesión en Keychain y en almacenamiento cifrado de Android.</li>
+<li>Contenido externo tratado como datos; salida del modelo validada contra el esquema JSON.</li>
+<li>Secrets rotables y separados por entorno.</li>
+</ul></div>
+<div class="note"><h3>Privacidad y legal</h3><ul>
+<li>Las notas del usuario no se usan para entrenar nada; decilo en claro.</li>
+<li>Exportar datos y borrar cuenta desde la app (obligatorio en App Store y Play).</li>
+<li>Privacy manifest en iOS, etiquetas de privacidad, formulario de Data safety en Play.</li>
+<li>Ley 25.326 en Argentina y, si vendés en la UE, GDPR. Revisalo con un abogado.</li>
+<li>Logs sin contenido de notas: solo ids, métricas y errores.</li>
+</ul></div>
+<div class="note"><h3>Accesibilidad e idiomas</h3><ul>
+<li>Contraste 4,5:1 en ambos temas (el design system ya lo cumple).</li>
+<li>VoiceOver y TalkBack con etiquetas pensadas para la chispa.</li>
+<li>Dynamic Type y escala de fuente hasta los tamaños máximos sin cortes.</li>
+<li>String Catalogs en iOS y strings.xml en Android desde el día uno; plurales bien hechos.</li>
+<li>Reducir movimiento respetado en el reveal.</li>
+</ul></div>
+<div class="note"><h3>Observabilidad</h3><ul>
+<li>Sentry en ambas apps y en las Edge Functions, con releases y source maps.</li>
+<li>PostHog: embudo de onboarding, activación, retención por cohorte, conversión.</li>
+<li>Tablero de IA: costo por usuario, por feature y por modelo; alerta si el costo diario supera el presupuesto.</li>
+</ul></div>
+<div class="note"><h3>Escalabilidad</h3><ul>
+<li>Hasta decenas de miles de usuarios activos: Supabase Pro con más compute.</li>
+<li>Batch por zona horaria para repartir la carga en 24 horas.</li>
+<li>Si la búsqueda vectorial crece: índice HNSW, réplicas de lectura, y recién después un vector store dedicado.</li>
+<li>El gateway de IA abstrae al proveedor: cambiar o sumar modelos no toca las apps.</li>
+</ul></div>
+</div>
+</section>
+
+<section id="deploy">
+<h2>Deploy a producción</h2>
+<div class="two">
+<div class="note"><h3>App Store</h3><ul>
+<li>Sign in with Apple disponible si ofrecés Google.</li>
+<li>Suscripciones en un grupo, con descripción clara, precio, período y cómo cancelar en el paywall.</li>
+<li>Restaurar compras visible.</li>
+<li>Consentimiento explícito antes de enviar datos personales a una IA de terceros, y la IA nombrada en la política de privacidad.</li>
+<li>Borrado de cuenta dentro de la app.</li>
+<li>Privacy manifest y etiquetas de privacidad completas.</li>
+<li>Cuenta de prueba con Pro activo para el revisor, y notas de revisión explicando el loop.</li>
+<li>Pedí el Small Business Program antes de facturar.</li>
+<li>Postulá la app en el formulario de nominaciones para featuring.</li>
+</ul></div>
+<div class="note"><h3>Google Play</h3><ul>
+<li>Prueba cerrada de 12+ testers por 14 días (cuentas personales nuevas).</li>
+<li>Target SDK exigido en la fecha de subida.</li>
+<li>Formulario de Data safety completo y coherente con la política de privacidad.</li>
+<li>Reporte de contenido generado por IA desde la app.</li>
+<li>Declaración de permisos (micrófono, cámara, notificaciones) con uso justificado.</li>
+<li>Borrado de cuenta dentro de la app y también por web.</li>
+<li>Android App Bundle firmado con Play App Signing.</li>
+<li>Rollout escalonado y monitoreo de Android Vitals.</li>
+</ul></div>
+</div>
+</section>
+
+<section id="marketing">
+<h2>Marketing</h2>
+<p class="lede">El producto nació de un video corto sobre un método. Ese es el canal: mostrar el método funcionando, todos los días.</p>
+<h3>Posicionamiento</h3>
+<p>"El método para tener ideas, en tu bolsillo." Primero para devs indie y creadores hispanohablantes (LATAM y España), después en inglés. No compitas con Notion u Obsidian en guardar; competí en generar.</p>
+<div class="tbl"><table>
+<tr><th>Etapa</th><th>Qué hacer</th><th>Meta</th></tr>
+<tr><td class="k">Pre-lanzamiento (semanas 1–15)</td><td>Build in public en X, LinkedIn y TikTok/Reels: el proceso de construir Lumbre. Serie diaria "chispa del día" con dos ideas que chocan y el resultado. Demo web como imán de emails. Waitlist con referidos: subís en la fila invitando.</td><td>1.000 personas en la waitlist</td></tr>
+<tr><td class="k">Lanzamiento iOS</td><td>Product Hunt (martes a jueves), Indie Hackers, r/SideProject, comunidades dev de LATAM, newsletters de creadores en español. Códigos de oferta de 1 mes Pro para 20 creadores de contenido.</td><td>2.000 descargas la primera semana</td></tr>
+<tr><td class="k">Lanzamiento Android</td><td>Enfoque LATAM: creadores argentinos, mexicanos y colombianos, prensa tech regional, comunidades universitarias.</td><td>Paridad de descargas con iOS en 30 días</td></tr>
+<tr><td class="k">Crecimiento</td><td>Tarjeta para historias en cada chispa (con marca y link). Referidos: "regalá una semana de Pro" y ganás otra. Pedido de reseña nativo después de la tercera idea guardada. Alianzas con cursos y bootcamps de producto y contenido.</td><td>K-factor 0,2 o más</td></tr>
+<tr><td class="k">ASO</td><td>Palabras clave: ideas, creatividad, lluvia de ideas, brainstorming, segundo cerebro, notas con IA, inspiración. Capturas que muestran el choque, no la lista. Fichas localizadas por país.</td><td>Top 50 en Productividad en AR y MX</td></tr>
+<tr><td class="k">Pago</td><td>Apple Search Ads y Meta solo cuando la conversión a Pro sea ≥ 3% y conozcas el LTV. Arrancá con US$ 5–10 diarios en keywords propias.</td><td>Costo por Pro menor al 30% del LTV</td></tr>
+</table></div>
+</section>
+
+<section id="metricas">
+<h2>Métricas</h2>
+<div class="tbl"><table>
+<tr><th>Métrica</th><th>Definición</th><th>Objetivo inicial</th></tr>
+<tr><td class="k">Norte</td><td>Ideas guardadas por usuario activo semanal</td><td>≥ 2</td></tr>
+<tr><td class="k">Activación</td><td>Guarda su primera chispa en las primeras 24 h</td><td>≥ 40%</td></tr>
+<tr><td class="k">Onboarding</td><td>Llega a la primera chispa</td><td>≥ 75%</td></tr>
+<tr><td class="k">Permiso de push</td><td>Acepta notificaciones</td><td>≥ 55%</td></tr>
+<tr><td class="k">Retención</td><td>D1 / D7 / D30</td><td>35% / 15% / 8%</td></tr>
+<tr><td class="k">Prueba</td><td>Inicia la prueba de Pro</td><td>≥ 8% de activos</td></tr>
+<tr><td class="k">Conversión</td><td>Prueba a pago</td><td>≥ 40%</td></tr>
+<tr><td class="k">Calidad</td><td>Chispas con "No me sirve"</td><td>≤ 25%</td></tr>
+<tr><td class="k">Costo</td><td>IA por usuario activo mensual</td><td>≤ US$ 0,15 promedio</td></tr>
+</table></div>
+</section>
+
+<section id="riesgos">
+<h2>Riesgos</h2>
+<div class="tbl"><table>
+<tr><th>Riesgo</th><th>Señal</th><th>Qué hacer</th></tr>
+<tr><td class="k">Marca de Lumbre sin verificar</td><td>Reclamo de marca o rechazo en tienda</td><td>Búsqueda con abogado en la fase 0, con Espurna o Hirameki como alternativas.</td></tr>
+<tr><td class="k">Chispas genéricas</td><td>"No me sirve" alto, D7 bajo</td><td>Set de evaluación, principio subyacente en la destilación, banda de distancia, ideas semilla.</td></tr>
+<tr><td class="k">Costos de IA</td><td>Costo por usuario por encima del objetivo</td><td>plan_limits, batch, caché, Haiku por defecto, tope diario en dólares.</td></tr>
+<tr><td class="k">Otra app de notas que muere</td><td>Usuarios que capturan y nunca vuelven</td><td>Push diaria a su hora, widget, resumen semanal, tarjeta para compartir.</td></tr>
+<tr><td class="k">Rechazo en tienda</td><td>Revisiones que vuelven</td><td>Checklist de deploy, cuenta demo, notas de revisión.</td></tr>
+<tr><td class="k">Tu tiempo</td><td>Fases que se estiran</td><td>Lista de recorte de alcance, un solo foco por semana, y apoyarte en Claude Code para el trabajo repetitivo entre las dos apps.</td></tr>
+<tr><td class="k">Dependencia de un proveedor</td><td>Cambios de precio o caída</td><td>Gateway con modelo de respaldo y prompts desacoplados.</td></tr>
+</table></div>
+</section>
+</main>
+</div>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeBtn');
+  function cur(){ return root.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'); }
+  try{ var saved=localStorage.getItem('chispa-theme'); if(saved) root.setAttribute('data-theme',saved);}catch(e){}
+  function label(){ btn.textContent = cur()==='dark' ? 'Modo claro' : 'Modo oscuro'; }
+  label();
+  btn.addEventListener('click',function(){ var n=cur()==='dark'?'light':'dark'; root.setAttribute('data-theme',n); try{localStorage.setItem('chispa-theme',n);}catch(e){} label(); });
+  var phones=document.getElementById('phones');
+  document.querySelectorAll('.switch button[data-p]').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.switch button[data-p]').forEach(function(x){x.setAttribute('aria-pressed', String(x===b));});
+      phones.querySelectorAll('.ph').forEach(function(ph){ ph.classList.toggle('and', b.dataset.p==='and'); });
+    });
+  });
+  var lb=document.querySelector('.switch button[data-l]');
+  lb.addEventListener('click',function(){
+    var on=lb.getAttribute('aria-pressed')!=='true'; lb.setAttribute('aria-pressed',String(on));
+    phones.querySelectorAll('.ph').forEach(function(ph){ ph.classList.toggle('light', on); });
+  });
+})();
+</script>
+</body>
+</html>

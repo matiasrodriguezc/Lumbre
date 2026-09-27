@@ -1,0 +1,75 @@
+/* Lumbre: tokens generados desde tokens.json. No editar a mano. */
+:root, [data-theme="dark"] {
+  --night: #0A1633;
+  --signal-blue: #2D6CDF;
+  --nebula-violet: #7E22CE;
+  --spark: #FF3EA5;
+  --cream: #FFF7ED;
+  --bg: #0A1633;
+  --surface: #111F45;
+  --surface-alt: #1A2B5C;
+  --ink: #FFF7ED;
+  --ink-muted: #A7B1CE;
+  --border: #26386B;
+  --border-strong: #7384BA;
+  --accent: var(--spark);
+  --on-accent: var(--night);
+  --accent-text: #FF6BB8;
+  --accent-soft: #3A1640;
+  --pro: var(--nebula-violet);
+  --on-pro: #FFFFFF;
+  --pro-text: #B98AF0;
+  --info-text: #6E9BF0;
+  --success: #4FD1A5;
+  --warning: #FFC24B;
+  --danger: #FF7A6B;
+  --focus-ring: #FF3EA5;
+  --scrim: rgba(10, 22, 51, 0.64);
+  --glow-spark: 0 0 32px rgba(255, 62, 165, 0.45);
+  --elev-card: none;
+}
+[data-theme="light"] {
+  --night: #0A1633;
+  --signal-blue: #2D6CDF;
+  --nebula-violet: #7E22CE;
+  --spark: #FF3EA5;
+  --cream: #FFF7ED;
+  --bg: #FFF7ED;
+  --surface: #FFFFFF;
+  --surface-alt: #F5ECDD;
+  --ink: #0A1633;
+  --ink-muted: #4E5878;
+  --border: #E6DDCD;
+  --border-strong: #7A829E;
+  --accent: var(--spark);
+  --on-accent: var(--night);
+  --accent-text: #C2106F;
+  --accent-soft: #FFE0F0;
+  --pro: var(--nebula-violet);
+  --on-pro: #FFFFFF;
+  --pro-text: #7E22CE;
+  --info-text: #2458C2;
+  --success: #0F7A57;
+  --warning: #8A5A00;
+  --danger: #B3261E;
+  --focus-ring: #C2106F;
+  --scrim: rgba(10, 22, 51, 0.64);
+  --glow-spark: 0 8px 24px rgba(194, 16, 111, 0.22);
+  --elev-card: 0 1px 2px rgba(10, 22, 51, 0.06), 0 4px 16px rgba(10, 22, 51, 0.06);
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-full: 999px;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-text: -apple-system, "SF Pro Text", "Roboto Flex", Roboto, system-ui, sans-serif;
+}

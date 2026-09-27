@@ -1,0 +1,42 @@
+# macOS
+.DS_Store
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Secretos
+.env
+.env.*
+!.env.example
+*.p8
+*.p12
+*.mobileprovision
+google-services.json
+GoogleService-Info.plist
+
+# Node
+node_modules/
+dist/
+.astro/
+
+# Supabase
+backend/supabase/.branches/
+backend/supabase/.temp/
+
+# iOS
+ios/**/xcuserdata/
+ios/**/DerivedData/
+ios/**/.build/
+ios/**/*.xcuserstate
+ios/fastlane/report.xml
+ios/fastlane/test_output/
+
+# Android
+android/**/build/
+android/.gradle/
+android/local.properties
+android/**/*.keystore
+android/**/*.jks
+android/captures/
