@@ -70,7 +70,7 @@ Todo arranca en local con Supabase CLI y Docker; los entornos remotos se conecta
 
 - [x] **16. Supabase local y migraciones** · MAT-230 (parte 1) · ✅ 2026-09-27: migración base con RLS reforzado (el usuario ya no puede cambiarse el plan, gastar cuota ajena ni insertar conceptos directo), seed con usuarios A y B, puertos 555xx para convivir con Ronda. `backend/db/schema.sql` quedó reemplazado.
   `supabase init` en `/backend`, `schema.sql` pasado a migraciones, seed y scripts de arranque. Renombrar `concepts.is_guest` a `from_library` para no confundirlo con el usuario invitado, y usar en `creative_profiles` los mismos slugs que `docs/analytics.md`.
-- [ ] **17. RLS y tests "usuario A no ve datos de B"** · MAT-232
+- [x] **17. RLS y tests "usuario A no ve datos de B"** · MAT-232 · ✅ 2026-09-27: 35 tests de pgTAP en `backend/supabase/tests/database/01_rls.sql`, más una guarda que falla si una tabla nueva no tiene RLS. Verificado rompiendo permisos a propósito.
   pgTAP sobre cada tabla con datos de usuario.
 - [ ] **18. Cuotas** · MAT-233
   `consume_credit()` atómico, `plan_limits` cargado con los valores de `plan.md` (más límites para invitados), `usage_ledger` y un test de concurrencia.

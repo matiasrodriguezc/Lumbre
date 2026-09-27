@@ -8,6 +8,7 @@ Supabase: Postgres 17 + pgvector, RLS, Auth, Edge Functions, pg_cron y pgmq. Tod
 |---|---|
 | `supabase/config.toml` | Configuración del stack local. Usa los puertos 555xx para convivir con otros proyectos de Supabase. |
 | `supabase/migrations/` | El esquema, en orden. Nunca se edita una migración ya aplicada: se agrega una nueva. |
+| `supabase/tests/database/` | Tests de pgTAP. Cada archivo crea sus datos en una transacción y la revierte: no dependen del seed. |
 | `supabase/seed.sql` | Datos de prueba solo para local: usuarios A y B, dominios provisorios, conceptos y chispas iguales a los de la app de iOS. |
 
 ## Comandos
@@ -28,6 +29,12 @@ Crear una migración nueva:
 
 ```bash
 cd backend && supabase migration new nombre_en_snake_case
+```
+
+Correr los tests de la base (pgTAP, en `supabase/tests/database/`):
+
+```bash
+cd backend && supabase test db
 ```
 
 Revisar el esquema:
@@ -67,3 +74,5 @@ Supabase da permisos completos sobre las tablas a `anon` y `authenticated`. Por 
 | `llm_calls` | Nada | Todo |
 
 `consume_credit()` solo la puede ejecutar el service role: si la app pudiera llamarla, alguien podría gastar la cuota de otro usuario.
+
+`tests/database/01_rls.sql` verifica cada fila de esta tabla. Incluye una guarda que falla si se crea una tabla en `public` sin RLS. **Toda tabla nueva lleva sus tests de acceso en el mismo cambio.**
