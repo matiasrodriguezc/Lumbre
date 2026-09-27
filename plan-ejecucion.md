@@ -68,7 +68,7 @@ Reglas:
 
 Todo arranca en local con Supabase CLI y Docker; los entornos remotos se conectan en el paso 41.
 
-- [ ] **16. Supabase local y migraciones** · MAT-230 (parte 1)
+- [x] **16. Supabase local y migraciones** · MAT-230 (parte 1) · ✅ 2026-09-27: migración base con RLS reforzado (el usuario ya no puede cambiarse el plan, gastar cuota ajena ni insertar conceptos directo), seed con usuarios A y B, puertos 555xx para convivir con Ronda. `backend/db/schema.sql` quedó reemplazado.
   `supabase init` en `/backend`, `schema.sql` pasado a migraciones, seed y scripts de arranque. Renombrar `concepts.is_guest` a `from_library` para no confundirlo con el usuario invitado, y usar en `creative_profiles` los mismos slugs que `docs/analytics.md`.
 - [ ] **17. RLS y tests "usuario A no ve datos de B"** · MAT-232
   pgTAP sobre cada tabla con datos de usuario.

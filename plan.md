@@ -4,7 +4,7 @@ Documento de referencia del proyecto. Consolida todas las decisiones tomadas has
 
 - Plan maestro visual: `docs/plan-maestro.html` (también publicado en https://claude.ai/artifact/5iV97U3ZbfsQG7YLNhQRrv)
 - Design system: carpeta `design/system/` (también publicado en https://claude.ai/artifact/9WfjY7YYfFwNrd92prTw3D)
-- Esquema de base de datos: `backend/db/schema.sql`
+- Esquema de base de datos: migraciones en `backend/supabase/migrations/`
 
 ---
 
@@ -188,7 +188,7 @@ Set de evaluación de 100 pares de conceptos por perfil, puntuados a mano en "so
 
 Ventajas: almacenamiento casi nulo, privacidad ("no guardamos tus archivos") y menos riesgo de derechos de autor.
 
-El esquema completo está en `backend/db/schema.sql`.
+El esquema completo está en las migraciones de `backend/supabase/migrations/`.
 
 ## 7. Arquitectura
 

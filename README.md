@@ -28,7 +28,7 @@ App de creatividad por recombinación para iOS (SwiftUI) y Android (Jetpack Comp
 | `design/system/components/` | Guías y previews HTML de cada componente (abrir junto con `bundle.css` y `tokens.css`). |
 | `design/system/logo/` | Símbolo, ícono de app y logos en SVG, más la hoja de preview. Las versiones descartadas están en `anteriores/`. |
 | `design/system/tipografias.html` | Comparación de las opciones tipográficas evaluadas. |
-| `backend/db/schema.sql` | Esquema base de Postgres + pgvector: conceptos, chispas, cuotas, RLS y la consulta de emparejamiento. |
+| `backend/supabase/migrations/` | Esquema de Postgres + pgvector en migraciones: conceptos, chispas, cuotas y RLS. Ver `backend/README.md`. |
 
 Versiones publicadas:
 - Plan maestro: https://claude.ai/artifact/5iV97U3ZbfsQG7YLNhQRrv
