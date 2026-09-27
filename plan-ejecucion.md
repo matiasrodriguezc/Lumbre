@@ -26,7 +26,7 @@ Reglas:
   Listo cuando: el repo tiene su primer commit, las rutas del README funcionan y los issues nuevos existen.
 - [x] **2. Métrica norte y plan de eventos** · MAT-218 · ✅ 2026-09-27: `docs/analytics.md` con la definición de activo, 10 métricas, ~50 eventos y reglas de privacidad; quedan 3 decisiones abiertas en su §10.
   `docs/analytics.md`: métrica norte, eventos con propiedades y nombres idénticos en iOS y Android, funnels de activación y de Pro.
-- [ ] **3. Kit de entrevistas** · prep MAT-212
+- [x] **3. Kit de entrevistas** · prep MAT-212 · ✅ 2026-09-27: guía, reclutamiento y plantilla en `docs/entrevistas/`. Además, 12 entrevistas simuladas para ensayar la guía (no cuentan para la compuerta); la guía quedó en versión 2 con lo aprendido.
   Guion, filtro de reclutamiento (4 devs, 4 creadores, 4 emprendedores), mensaje de invitación y plantilla de síntesis.
 - [ ] **4. Paquete de trámites** · MAT-214, prep MAT-213, MAT-216, MAT-217
   Chequeo real de dominios, handles y nombre en tiendas (cierra MAT-214); brief para el abogado (INPI, USPTO, EUIPO, clases 9 y 42, alternativas); lista de cuentas en orden, con el D-U-N-S primero porque tarda; preguntas para el contador.
