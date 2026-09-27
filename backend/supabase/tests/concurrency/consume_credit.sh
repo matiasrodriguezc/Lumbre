@@ -6,7 +6,7 @@ set -euo pipefail
 
 DB_URL="${DB_URL:-postgresql://postgres:postgres@127.0.0.1:55522/postgres}"
 CALLS="${CALLS:-50}"
-USER_ID="$(uuidgen | tr '[:upper:]' '[:lower:]')"
+USER_ID="$(psql "$DB_URL" -tAXc "select gen_random_uuid()")"
 
 cleanup() { psql "$DB_URL" -qXc "delete from auth.users where id = '$USER_ID'" >/dev/null; }
 trap cleanup EXIT

@@ -12,6 +12,10 @@ Supabase: Postgres 17 + pgvector, RLS, Auth, Edge Functions, pg_cron y pgmq. Tod
 | `supabase/tests/concurrency/` | Pruebas que necesitan varias conexiones a la vez (no entran en pgTAP). |
 | `supabase/seed.sql` | Datos de prueba solo para local: usuarios A y B, dominios provisorios, conceptos y chispas iguales a los de la app de iOS. |
 
+## CI
+
+`.github/workflows/backend.yml` corre en cada PR y en cada push a `main` que toque `backend/`: levanta Postgres con las migraciones desde cero y el seed, pasa el lint, corre los tests de pgTAP y la prueba de concurrencia. Si falla, no se mergea.
+
 ## Comandos
 
 Levantar el stack (con Docker abierto):

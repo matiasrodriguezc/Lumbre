@@ -1,5 +1,7 @@
 # Lumbre
 
+[![Backend](https://github.com/matiasrodriguezc/Lumbre/actions/workflows/backend.yml/badge.svg)](https://github.com/matiasrodriguezc/Lumbre/actions/workflows/backend.yml)
+
 App de creatividad por recombinación para iOS (SwiftUI) y Android (Jetpack Compose).
 
 ## Estructura

@@ -1,0 +1,48 @@
+name: Backend
+
+on:
+  pull_request:
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend.yml"
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: backend-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  database:
+    name: Migraciones y tests de la base
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.117.0
+
+      # Solo Postgres: aplica las migraciones desde cero y carga el seed.
+      - name: Levantar Postgres
+        run: supabase db start
+
+      - name: Lint del esquema
+        run: supabase db lint --local --fail-on error
+
+      - name: Tests de pgTAP
+        run: supabase test db
+
+      - name: Concurrencia de consume_credit
+        run: supabase/tests/concurrency/consume_credit.sh
