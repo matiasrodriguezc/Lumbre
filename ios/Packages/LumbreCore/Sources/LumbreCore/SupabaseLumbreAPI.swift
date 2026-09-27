@@ -59,10 +59,14 @@ public struct SupabaseLumbreAPI: LumbreAPI {
         return rows.map(\.model)
     }
 
-    public func domains() async throws -> [Domain] {
-        let used = try await concepts().map(\.domain)
-        var seen = Set<String>()
-        return used.filter { seen.insert($0.slug).inserted }.sorted { $0.name < $1.name }
+    public func categories() async throws -> [Category] {
+        try await session.ensure(client)
+        let rows: [CategoryRow] = try await client.from("categories")
+            .select(CategoryRow.columns)
+            .order("name")
+            .execute()
+            .value
+        return rows.map(\.model)
     }
 
     public func sparkQuota() async throws -> SparkQuota {
@@ -107,9 +111,22 @@ public struct SupabaseLumbreAPI: LumbreAPI {
         try await client.auth.signOut(scope: .local)
     }
 
-    /// Los conceptos se crean solo por el endpoint de captura (paso 24), que aplica el límite y el embedding.
-    public func capture(text: String, distill: Bool) async throws -> Concept {
-        throw LumbreAPIError.notAvailableYet
+    /// Guarda con `capture_concept()`: descuenta la cuota, encuentra o crea la categoría e inserta el concepto.
+    /// El embedding y la destilación se suman después, en el servidor (pasos 23 a 27).
+    public func capture(thesis: String, category: String, source: CaptureSource) async throws -> CaptureResult {
+        try await session.ensure(client)
+        let params: CaptureParams
+        switch source {
+        case .text: params = CaptureParams(p_thesis: thesis, p_category: category, p_source_type: "text", p_source_url: nil)
+        case .link(let url): params = CaptureParams(p_thesis: thesis, p_category: category, p_source_type: "link", p_source_url: url.absoluteString)
+        }
+        do {
+            let rows: [CaptureRow] = try await client.rpc("capture_concept", params: params).execute().value
+            guard let row = rows.first else { throw LumbreAPIError.unexpected }
+            return CaptureResult(conceptID: row.conceptID, categoryID: row.categoryID, categoryCreated: row.categoryCreated)
+        } catch let error as PostgrestError {
+            throw LumbreAPIError(serverMessage: error.message) ?? error
+        }
     }
 
     // MARK: - Fechas
@@ -129,13 +146,34 @@ public struct SupabaseLumbreAPI: LumbreAPI {
     }
 }
 
-public enum LumbreAPIError: LocalizedError {
-    case notAvailableYet
+public enum LumbreAPIError: LocalizedError, Equatable {
+    case quotaExceeded
+    case tooManyCategories
+    case invalidThesis
+    case invalidCategory
+    case invalidSource
+    case unexpected
+
+    /// Traduce los errores que devuelve `capture_concept()` en el mensaje.
+    init?(serverMessage: String) {
+        switch serverMessage {
+        case "quota_exceeded": self = .quotaExceeded
+        case "too_many_categories": self = .tooManyCategories
+        case "invalid_thesis": self = .invalidThesis
+        case "invalid_category": self = .invalidCategory
+        case "invalid_source": self = .invalidSource
+        default: return nil
+        }
+    }
 
     public var errorDescription: String? {
         switch self {
-        case .notAvailableYet:
-            return String(localized: "Todavía no se pueden guardar conceptos desde la app.")
+        case .quotaExceeded: return String(localized: "Llegaste al límite de capturas de hoy. Mañana podés seguir guardando.")
+        case .tooManyCategories: return String(localized: "Ya tenés 50 categorías. Usá una de las que tenés.")
+        case .invalidThesis: return String(localized: "La idea tiene que tener entre 1 y 600 caracteres.")
+        case .invalidCategory: return String(localized: "La categoría tiene que tener entre 1 y 40 caracteres.")
+        case .invalidSource: return String(localized: "Revisá el link: no parece válido.")
+        case .unexpected: return String(localized: "Algo salió mal. Probá de nuevo.")
         }
     }
 }
@@ -182,6 +220,35 @@ private actor SessionGate {
 
 // MARK: - Filas de PostgREST
 
+private struct CategoryRow: Decodable {
+    static let columns = "id,name,dom:domain(slug,name_es,name_en,symbol_ios)"
+
+    let id: UUID
+    let name: String
+    let dom: DomainRow?
+
+    var model: Category { Category(id: id, name: name, domain: dom?.model) }
+}
+
+private struct CaptureParams: Encodable, Sendable {
+    let p_thesis: String
+    let p_category: String
+    let p_source_type: String
+    let p_source_url: String?
+}
+
+private struct CaptureRow: Decodable {
+    let conceptID: UUID
+    let categoryID: UUID
+    let categoryCreated: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case conceptID = "concept_id"
+        case categoryID = "category_id"
+        case categoryCreated = "category_created"
+    }
+}
+
 private struct DomainRow: Decodable {
     let slug: String
     let nameEs: String
@@ -202,7 +269,7 @@ private struct DomainRow: Decodable {
 }
 
 private struct ConceptRow: Decodable {
-    static let columns = "id,title,thesis,source_type,source_title,created_at,dom:domain(slug,name_es,name_en,symbol_ios)"
+    static let columns = "id,title,thesis,source_type,source_title,created_at,cat:categories!concepts_category_same_user(\(CategoryRow.columns))"
 
     let id: UUID
     let title: String
@@ -210,10 +277,10 @@ private struct ConceptRow: Decodable {
     let sourceType: String
     let sourceTitle: String?
     let createdAt: Date
-    let dom: DomainRow
+    let cat: CategoryRow?
 
     enum CodingKeys: String, CodingKey {
-        case id, title, thesis, dom
+        case id, title, thesis, cat
         case sourceType = "source_type"
         case sourceTitle = "source_title"
         case createdAt = "created_at"
@@ -222,7 +289,7 @@ private struct ConceptRow: Decodable {
     var model: Concept {
         Concept(
             id: id,
-            domain: dom.model,
+            category: cat?.model,
             title: title,
             thesis: thesis,
             sourceType: SourceType(rawValue: sourceType) ?? .text,

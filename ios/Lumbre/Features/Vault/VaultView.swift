@@ -4,9 +4,10 @@ import SwiftUI
 
 struct VaultView: View {
     @Environment(\.api) private var api
+    @Environment(\.dataVersion) private var dataVersion
     @State private var concepts: [Concept] = []
-    @State private var domains: [Domain] = []
-    @State private var selectedDomain: Domain?
+    @State private var categories: [LumbreCore.Category] = []
+    @State private var selectedCategory: LumbreCore.Category?
     @State private var query = ""
     @State private var isLoading = true
     @State private var loadError: Error?
@@ -24,8 +25,8 @@ struct VaultView: View {
                     }
                     ForEach(isLoading ? MockData.concepts : visibleConcepts) { concept in
                         ConceptCard(
-                            domain: concept.domain.name,
-                            domainSymbol: concept.domain.symbol,
+                            category: concept.categoryName,
+                            categorySymbol: concept.categorySymbol,
                             title: concept.title,
                             thesis: concept.thesis,
                             source: concept.sourceLine
@@ -39,17 +40,17 @@ struct VaultView: View {
             .background(Palette.bg)
             .navigationTitle("Bóveda")
             .searchable(text: $query, prompt: "Buscar ideas, no palabras")
-            .task { await load() }
+            .task(id: dataVersion) { await load() }
         }
     }
 
     private var filters: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: Space.s2) {
-                chip("Todos", systemImage: nil, isOn: selectedDomain == nil) { selectedDomain = nil }
-                ForEach(domains) { domain in
-                    chip(domain.name, systemImage: domain.symbol, isOn: selectedDomain == domain) {
-                        selectedDomain = selectedDomain == domain ? nil : domain
+                chip("Todos", systemImage: nil, isOn: selectedCategory == nil) { selectedCategory = nil }
+                ForEach(categories) { category in
+                    chip(category.name, systemImage: category.symbol, isOn: selectedCategory == category) {
+                        selectedCategory = selectedCategory == category ? nil : category
                     }
                 }
             }
@@ -74,7 +75,7 @@ struct VaultView: View {
             systemImage: "square.stack.3d.up",
             description: Text(query.isEmpty
                 ? "Guardá una frase, un link o una nota de voz para tener material que combinar."
-                : "Probá con otras palabras o sacá el filtro de dominio.")
+                : "Probá con otras palabras o sacá el filtro de categoría.")
         )
         .padding(.top, Space.s8)
     }
@@ -82,7 +83,7 @@ struct VaultView: View {
     /// Filtro local de prueba. La búsqueda semántica llega con el backend.
     private var visibleConcepts: [Concept] {
         concepts.filter { concept in
-            (selectedDomain == nil || concept.domain == selectedDomain)
+            (selectedCategory == nil || concept.category == selectedCategory)
                 && (query.isEmpty
                     || concept.title.localizedStandardContains(query)
                     || concept.thesis.localizedStandardContains(query))
@@ -92,8 +93,8 @@ struct VaultView: View {
     private func load() async {
         do {
             async let concepts = api.concepts()
-            async let domains = api.domains()
-            (self.concepts, self.domains) = try await (concepts, domains)
+            async let categories = api.categories()
+            (self.concepts, self.categories) = try await (concepts, categories)
             loadError = nil
         } catch {
             loadError = error
@@ -107,6 +108,9 @@ extension Concept {
     var sourceLine: Text {
         Text("\(sourceType.label) · \(createdAt, format: .relative(presentation: .named))")
     }
+
+    var categoryName: String { category?.name ?? String(localized: "Sin categoría") }
+    var categorySymbol: String { category?.symbol ?? "tag" }
 }
 
 extension SourceType {

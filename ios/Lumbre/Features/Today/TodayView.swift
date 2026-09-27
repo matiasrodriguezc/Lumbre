@@ -4,6 +4,7 @@ import SwiftUI
 
 struct TodayView: View {
     @Environment(\.api) private var api
+    @Environment(\.dataVersion) private var dataVersion
     @State private var spark: Spark?
     @State private var quota: SparkQuota?
     @State private var recent: [Spark] = []
@@ -32,7 +33,7 @@ struct TodayView: View {
             }
             .background(Palette.bg)
             .navigationTitle("Hoy")
-            .task { await load() }
+            .task(id: dataVersion) { await load() }
             .refreshable { await load() }
             .confirmationDialog("¿Por qué no te sirve?", isPresented: $isAskingFeedback, titleVisibility: .visible) {
                 ForEach(SparkFeedback.allCases, id: \.self) { reason in
@@ -186,7 +187,7 @@ private struct RecentSparkRow: View {
 
 extension SparkSide {
     init(_ concept: Concept) {
-        self.init(domain: concept.domain.name, domainSymbol: concept.domain.symbol, title: concept.title)
+        self.init(category: concept.categoryName, categorySymbol: concept.categorySymbol, title: concept.title)
     }
 }
 

@@ -16,6 +16,23 @@ public struct Domain: Hashable, Sendable, Identifiable {
     }
 }
 
+/// Categoría propia del usuario. Se crea al guardar un concepto; por debajo puede tener un dominio.
+public struct Category: Hashable, Sendable, Identifiable {
+    public let id: UUID
+    public let name: String
+    /// Dominio de la lista cerrada, para el emparejamiento. Null hasta que se clasifica.
+    public let domain: Domain?
+
+    public init(id: UUID = UUID(), name: String, domain: Domain? = nil) {
+        self.id = id
+        self.name = name
+        self.domain = domain
+    }
+
+    /// Ícono: el del dominio si ya tiene uno; si no, una etiqueta.
+    public var symbol: String { domain?.symbol ?? "tag" }
+}
+
 /// Mismos valores que `concepts.source_type` en el esquema.
 public enum SourceType: String, Sendable, CaseIterable {
     case text, voice, selection, screenshot, scan, link, image, pdf, audio
@@ -23,16 +40,16 @@ public enum SourceType: String, Sendable, CaseIterable {
 
 public struct Concept: Identifiable, Hashable, Sendable {
     public let id: UUID
-    public let domain: Domain
+    public let category: Category?
     public let title: String
     public let thesis: String
     public let sourceType: SourceType
     public let sourceTitle: String?
     public let createdAt: Date
 
-    public init(id: UUID = UUID(), domain: Domain, title: String, thesis: String, sourceType: SourceType, sourceTitle: String? = nil, createdAt: Date) {
+    public init(id: UUID = UUID(), category: Category?, title: String, thesis: String, sourceType: SourceType, sourceTitle: String? = nil, createdAt: Date) {
         self.id = id
-        self.domain = domain
+        self.category = category
         self.title = title
         self.thesis = thesis
         self.sourceType = sourceType
@@ -80,6 +97,26 @@ public struct Spark: Identifiable, Hashable, Sendable {
         self.status = status
         self.projectName = projectName
         self.createdAt = createdAt
+    }
+}
+
+/// De dónde sale lo que se guarda.
+public enum CaptureSource: Sendable, Equatable {
+    case text
+    case link(URL)
+}
+
+/// Resultado de guardar un concepto.
+public struct CaptureResult: Sendable, Equatable {
+    public let conceptID: UUID
+    public let categoryID: UUID
+    /// La categoría no existía y se creó con este concepto.
+    public let categoryCreated: Bool
+
+    public init(conceptID: UUID, categoryID: UUID, categoryCreated: Bool) {
+        self.conceptID = conceptID
+        self.categoryID = categoryID
+        self.categoryCreated = categoryCreated
     }
 }
 

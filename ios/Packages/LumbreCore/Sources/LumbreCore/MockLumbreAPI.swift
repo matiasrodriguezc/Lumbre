@@ -29,10 +29,9 @@ public struct MockLumbreAPI: LumbreAPI {
         return MockData.concepts
     }
 
-    public func domains() async throws -> [Domain] {
+    public func categories() async throws -> [Category] {
         try await wait()
-        let used = Set(MockData.concepts.map(\.domain))
-        return MockData.domains.filter(used.contains)
+        return MockData.categories
     }
 
     public func saveSpark(id: Spark.ID) async throws {
@@ -43,15 +42,11 @@ public struct MockLumbreAPI: LumbreAPI {
         try await wait()
     }
 
-    public func capture(text: String, distill: Bool) async throws -> Concept {
+    /// No persiste: los datos de prueba son fijos.
+    public func capture(thesis: String, category: String, source: CaptureSource) async throws -> CaptureResult {
         try await wait()
-        return Concept(
-            domain: MockData.domains[0],
-            title: String(text.prefix(40)),
-            thesis: text,
-            sourceType: .text,
-            createdAt: .now
-        )
+        let existing = MockData.categories.first { $0.name.compare(category, options: [.caseInsensitive, .diacriticInsensitive]) == .orderedSame }
+        return CaptureResult(conceptID: UUID(), categoryID: existing?.id ?? UUID(), categoryCreated: existing == nil)
     }
 
     public func signOut() async throws {}
@@ -73,8 +68,13 @@ public enum MockData {
         Domain(slug: "biologia", name: "Biología", symbol: "leaf"),
     ]
 
-    private static func domain(_ slug: String) -> Domain {
-        domains.first { $0.slug == slug }!
+    /// Una categoría por dominio, con el mismo nombre: como quedan los datos de prueba en la base.
+    public static let categories: [Category] = domains
+        .map { Category(name: $0.name, domain: $0) }
+        .sorted { $0.name < $1.name }
+
+    private static func category(_ slug: String) -> Category {
+        categories.first { $0.domain?.slug == slug }!
     }
 
     private static func daysAgo(_ days: Double) -> Date {
@@ -82,28 +82,28 @@ public enum MockData {
     }
 
     public static let concepts: [Concept] = [
-        Concept(domain: domain("marketing"), title: "Escasez intencional",
+        Concept(category: category("marketing"), title: "Escasez intencional",
                 thesis: "Limitar la oferta sube el valor percibido y la atención.",
                 sourceType: .voice, createdAt: daysAgo(0.1)),
-        Concept(domain: domain("urbanismo"), title: "Onda verde de semáforos",
+        Concept(category: category("urbanismo"), title: "Onda verde de semáforos",
                 thesis: "Sincronizar semáforos crea un flujo continuo a velocidad constante.",
                 sourceType: .text, createdAt: daysAgo(1)),
-        Concept(domain: domain("ingenieria"), title: "Separación ciclónica",
+        Concept(category: category("ingenieria"), title: "Separación ciclónica",
                 thesis: "Un flujo en espiral separa partículas por fuerza centrífuga, sin filtro.",
                 sourceType: .link, sourceTitle: "Cómo funcionan los ciclones industriales", createdAt: daysAgo(2)),
-        Concept(domain: domain("tecnologia"), title: "Code review",
+        Concept(category: category("tecnologia"), title: "Code review",
                 thesis: "Revisar cambios en pares reduce errores y reparte el conocimiento del código.",
                 sourceType: .selection, sourceTitle: "Engineering practices", createdAt: daysAgo(3)),
-        Concept(domain: domain("cocina"), title: "Fermentación lenta",
+        Concept(category: category("cocina"), title: "Fermentación lenta",
                 thesis: "El tiempo transforma ingredientes simples en sabores complejos sin agregar nada.",
                 sourceType: .screenshot, createdAt: daysAgo(5)),
-        Concept(domain: domain("historia"), title: "Ruinas como archivo",
+        Concept(category: category("historia"), title: "Ruinas como archivo",
                 thesis: "Lo que queda de una ciudad cuenta cómo vivía la gente mejor que sus documentos.",
                 sourceType: .link, sourceTitle: "Pompeya, capa por capa", createdAt: daysAgo(8)),
-        Concept(domain: domain("economia"), title: "Interés compuesto",
+        Concept(category: category("economia"), title: "Interés compuesto",
                 thesis: "Pequeñas ganancias que se reinvierten crecen de forma exponencial con el tiempo.",
                 sourceType: .scan, createdAt: daysAgo(12)),
-        Concept(domain: domain("biologia"), title: "Micorrizas",
+        Concept(category: category("biologia"), title: "Micorrizas",
                 thesis: "Los hongos conectan las raíces de un bosque y reparten nutrientes entre árboles.",
                 sourceType: .audio, createdAt: daysAgo(20)),
     ]
@@ -118,7 +118,7 @@ public enum MockData {
 
     public static let recentSparks: [Spark] = [
         Spark(
-            conceptA: Concept(domain: domain("marketing"), title: "Formato podcast",
+            conceptA: Concept(category: category("marketing"), title: "Formato podcast",
                               thesis: "Una conversación larga genera confianza que un anuncio no logra.",
                               sourceType: .audio, createdAt: daysAgo(9)),
             conceptB: concepts[5],

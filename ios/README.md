@@ -42,7 +42,7 @@ La app se conecta a `lumbre-dev` en Supabase (`App/AppEnvironment.swift`) con `S
 - **Lectura:** con la sesión del usuario y RLS. Hoy, Bóveda y el contador de chispas leen del remoto; guardar una chispa y "No me sirve" escriben ahí.
 - **Sesión:** la guarda `supabase-swift` en el Keychain y se renueva sola. Las llamadas simultáneas comparten un solo login.
 - **Login de desarrollo (solo Debug):** si existe `Lumbre/Resources/DevCredentials.plist` (fuera del repo, con `email` y `password`), la app entra como Ana, la usuaria de prueba de dev. Sin el archivo, entra como invitado, lo que requiere los ajustes de H14 en el dashboard.
-- **Capturar** todavía no guarda en el remoto: los conceptos se crean solo por el endpoint de captura (paso 24), y la sheet lo avisa.
+- **Capturar** guarda textos y links con `capture_concept()`. La categoría se elige entre las del usuario o se escribe una nueva, y la sheet avisa cuando se va a crear. Voz y foto llegan con los pasos 48 y 50. Al guardar, Hoy y la Bóveda vuelven a cargar.
 
 Argumentos de arranque (esquema → Run → Arguments, o `xcrun simctl launch … <arg>`):
 

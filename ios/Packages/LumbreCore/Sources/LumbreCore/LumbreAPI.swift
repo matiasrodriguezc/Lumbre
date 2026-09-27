@@ -7,10 +7,12 @@ public protocol LumbreAPI: Sendable {
     func sparkQuota() async throws -> SparkQuota
     func recentSparks() async throws -> [Spark]
     func concepts() async throws -> [Concept]
-    func domains() async throws -> [Domain]
+    /// Categorías del usuario, en orden alfabético. Un usuario nuevo no tiene ninguna.
+    func categories() async throws -> [Category]
     func saveSpark(id: Spark.ID) async throws
     func sendFeedback(sparkID: Spark.ID, feedback: SparkFeedback) async throws
-    func capture(text: String, distill: Bool) async throws -> Concept
+    /// Guarda un concepto en la categoría indicada; si no existe, la crea.
+    func capture(thesis: String, category: String, source: CaptureSource) async throws -> CaptureResult
     /// Cierra la sesión en este dispositivo.
     func signOut() async throws
 }

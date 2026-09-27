@@ -1,16 +1,16 @@
 import SwiftUI
 
-/// El átomo de la bóveda: dominio, título, tesis en una frase y fuente. Nunca muestra el texto crudo.
+/// El átomo de la bóveda: categoría, título, tesis en una frase y fuente. Nunca muestra el texto crudo.
 public struct ConceptCard: View {
-    let domain: String
-    let domainSymbol: String
+    let category: String
+    let categorySymbol: String
     let title: String
     let thesis: String
     let source: Text
 
-    public init(domain: String, domainSymbol: String, title: String, thesis: String, source: Text) {
-        self.domain = domain
-        self.domainSymbol = domainSymbol
+    public init(category: String, categorySymbol: String, title: String, thesis: String, source: Text) {
+        self.category = category
+        self.categorySymbol = categorySymbol
         self.title = title
         self.thesis = thesis
         self.source = source
@@ -18,7 +18,7 @@ public struct ConceptCard: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: Space.s2) {
-            LumbreChip(domain, systemImage: domainSymbol)
+            LumbreChip(category, systemImage: categorySymbol)
             Text(title)
                 .font(.headline)
                 .foregroundStyle(Palette.ink)

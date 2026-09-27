@@ -76,7 +76,7 @@ Reglas clave:
 - **Capturas de pantalla y escaneo de páginas de libro:** OCR en el teléfono (VisionKit / ML Kit Document Scanner), entran como texto, gratis.
 - **Adjuntos en free:** link, imagen, PDF o audio quedan como fuente y el usuario escribe "¿Qué idea te deja esto?" en una línea.
 - **Destilación automática (Pro, con 3 a 5 pruebas por mes en free):** la IA lee links, imágenes, PDFs y audios largos y saca de 1 a 3 conceptos.
-- **Categoría sugerida:** por embedding, se confirma o cambia con un toque. Nunca categorización manual pura.
+- **Categorías propias** (decisión del 27/9/2026): cada usuario arranca sin categorías y las crea al guardar conceptos. La app le sugiere las que ya tiene, y "Economía", "economia" y "ECONOMÍA" cuentan como la misma. Hasta 50 por usuario. Por debajo, cada categoría se asocia a un dominio de la lista cerrada (ver §5), que es lo que usa el emparejamiento.
 - **Chispa diaria:** 1 gratis por día, generada de noche, notificada a la hora elegida. Guardar 3 conceptos nuevos da 1 chispa extra, hasta 2 extra por día.
 - **Feedback "No me sirve":** con motivo (obvia, irrelevante, ya la tuve), ajusta los próximos emparejamientos.
 - **Tarjeta para compartir:** imagen vertical con la chispa y la marca, para historias. Es el loop de crecimiento.
@@ -124,7 +124,7 @@ Archivos de video subidos (caros, y el valor está en el audio) y formatos de of
 }
 ```
 
-- El dominio sale de una **lista cerrada de 20–25 categorías** (Tecnología, Biología, Física, Economía, Psicología, Diseño, Historia, Arte, Música, Urbanismo, Cocina, Deporte, Negocios, etc.). Si fuera libre, "Ingeniería" e "Ingeniería mecánica" quedarían separadas y se rompería el cruce.
+- El dominio sale de una **lista cerrada de 20–25 dominios**, que el usuario no ve (Tecnología, Biología, Física, Economía, Psicología, Diseño, Historia, Arte, Música, Urbanismo, Cocina, Deporte, Negocios, etc.). Si fuera libre, "Ingeniería" e "Ingeniería mecánica" quedarían separadas y se rompería el cruce.
 - **Confianza:** alta, se guarda directo; media, queda como borrador para confirmar; baja o contenido inaccesible, se cae al flujo de "¿Qué idea te deja esto?".
 - **Textos de menos de 30 palabras** se embeben directo, sin destilar.
 - **Qué aporta la destilación:** matches entre mundos distintos (se embebe el mecanismo, no las palabras), conceptos atómicos (un link puede dar 2 o 3), chispas más baratas y mejores (60 tokens en vez de 800 por concepto), categoría más precisa, una bóveda legible, idioma unificado y una diferencia visible para vender Pro.
@@ -150,7 +150,8 @@ Archivos de video subidos (caros, y el valor está en el audio) y formatos de of
 - Siempre en el servidor, con **un único modelo para todo** (usuarios, destilados y crudos). Los vectores de modelos distintos no se pueden comparar.
 - No usar los embeddings nativos del teléfono: iOS y Android darían vectores incompatibles.
 - Con destilación se embebe "principio + tesis"; sin destilación, el texto limpio (sin emojis, URLs sueltas ni espacios de más, cortado a unas 500 palabras).
-- Sin destilación, el dominio se asigna por cercanía a los vectores de cada categoría.
+- Sin destilación, el dominio se asigna por cercanía a los vectores de cada dominio.
+- **Dominios y categorías:** el usuario ve y elige sus categorías; la lista cerrada de dominios queda por debajo y no se muestra. Cada categoría se clasifica en un dominio por el embedding de su nombre (y de sus conceptos), y el concepto hereda ese dominio. Si todavía no tiene dominio, el emparejamiento cruza categorías distintas del usuario.
 - Se guarda el nombre del modelo junto al vector. Si se cambia de modelo, se re-embebe toda la base en un job nocturno.
 - Van en **pgvector**, como columna de `concepts` en el mismo Postgres. No hace falta una base vectorial aparte.
 

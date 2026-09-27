@@ -4,15 +4,25 @@ import Testing
 @Suite struct MockLumbreAPITests {
     let api = MockLumbreAPI(latency: .zero)
 
-    @Test func todaySparkCombinesTwoDifferentDomains() async throws {
+    @Test func todaySparkCombinesTwoDifferentCategories() async throws {
         let spark = try #require(try await api.todaySpark())
-        #expect(spark.conceptA.domain != spark.conceptB.domain)
+        #expect(spark.conceptA.category != spark.conceptB.category)
         #expect(spark.title.contains(" × "))
     }
 
-    @Test func domainsOnlyIncludeTheOnesInUse() async throws {
-        let used = Set(try await api.concepts().map(\.domain))
-        #expect(Set(try await api.domains()) == used)
+    @Test func everyConceptBelongsToAKnownCategory() async throws {
+        let categories = Set(try await api.categories())
+        #expect(try await api.concepts().allSatisfy { $0.category.map(categories.contains) ?? false })
+    }
+
+    @Test func captureReusesAnExistingCategoryIgnoringAccentsAndCase() async throws {
+        #expect(try await api.capture(thesis: "Idea", category: "ECONOMIA", source: .text).categoryCreated == false)
+        #expect(try await api.capture(thesis: "Idea", category: "Astronomía", source: .text).categoryCreated == true)
+    }
+
+    @Test func serverErrorsMapToFriendlyErrors() {
+        #expect(LumbreAPIError(serverMessage: "quota_exceeded") == .quotaExceeded)
+        #expect(LumbreAPIError(serverMessage: "algo_raro") == nil)
     }
 
     @Test func feedbackRawValuesMatchTheSchema() {

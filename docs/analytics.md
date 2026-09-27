@@ -46,7 +46,7 @@ Por qué esta métrica: sube solo si funcionan las tres partes del loop. Hace fa
 | Costo de IA | Suma de `llm_calls.cost_usd` del mes / activos del mes | ≤ US$ 0,15 | Postgres (tablero del paso 38) |
 
 Métricas de diagnóstico, sin objetivo por ahora:
-- **Categoría sugerida aceptada:** conceptos sin `concept_domain_changed` / `concept_saved`. Si baja del 80%, la lista de dominios o la clasificación están mal.
+- **Categorías por usuario:** cuántas crea en su primera semana y cuántas reusa. Si casi todos los conceptos crean una categoría nueva, las sugerencias no están funcionando.
 - **Feedback por percentil de distancia:** `spark_feedback_given` / `spark_revealed` según `distance_percentile`. Con esto se calibra la banda 40–80 del emparejamiento.
 - **Push que se abre:** `notification_opened` / `spark_notification_sent`, según la hora elegida.
 - **Captura desde afuera:** porcentaje de `capture_submitted` con `entry` igual a `share_extension` o `share_intent`. Si es bajo, la captura sigue teniendo fricción.
@@ -126,10 +126,11 @@ Fuente: **A** = app (iOS y Android), **S** = servidor (Edge Functions o webhook)
 | `capture_failed` | A | `reason`: `rate_limited`, `network`, `unsupported_format`, `too_large`, `server_error` | La captura no se pudo guardar |
 | `ocr_completed` | A | `kind`: `screenshot`, `scan`, `success`, `length_bucket` | Termina el OCR local |
 | `offline_queue_flushed` | A | `count` | Se mandan capturas encoladas al volver la red |
-| `concept_saved` | S | `source_type`, `distilled`, `confidence`: `high`, `medium`, `low`, `null`; `domain`, `status`: `draft`, `ready`; `concepts_in_capture` (1–3), `is_seed` | Se escribe un concepto en la base |
+| `concept_saved` | S | `source_type`, `distilled`, `confidence`: `high`, `medium`, `low`, `null`; `domain`, `status`: `draft`, `ready`; `concepts_in_capture` (1–3), `is_seed`, `category_created` | Se escribe un concepto en la base |
 | `distill_fallback_shown` | A | `reason`: `low_confidence`, `inaccessible`, `free_quota` | Aparece "¿Qué idea te deja esto?" |
 | `concept_draft_resolved` | A | `action`: `confirmed`, `edited`, `discarded` | Resuelve un borrador de confianza media |
-| `concept_domain_changed` | A | `from`, `to`, `context`: `review`, `detail` | Cambia la categoría sugerida |
+| `concept_category_changed` | A | `context`: `review`, `detail` | Mueve un concepto a otra de sus categorías |
+| `category_created` | S | `categories_count` | Se crea una categoría nueva al guardar un concepto |
 | `extra_spark_earned` | S | `earned_today` (1 o 2) | Guardar 3 conceptos le dio una chispa extra |
 
 ### Chispa

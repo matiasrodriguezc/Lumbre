@@ -13,11 +13,13 @@ enum AppTab: Hashable {
 struct RootView: View {
     @State private var selection: AppTab = .today
     @State private var isCapturing = false
+    @State private var dataVersion = 0
 
     var body: some View {
         tabs
+            .environment(\.dataVersion, dataVersion)
             .sheet(isPresented: $isCapturing) {
-                CaptureSheet()
+                CaptureSheet { dataVersion += 1 }
             }
     }
 

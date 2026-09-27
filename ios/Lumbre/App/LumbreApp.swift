@@ -24,4 +24,6 @@ struct LumbreApp: App {
 extension EnvironmentValues {
     /// Backend de la app. Lo inyecta `LumbreApp` según `AppEnvironment`; las previews usan los datos de prueba.
     @Entry var api: any LumbreAPI = MockLumbreAPI()
+    /// Cambia cada vez que se guarda algo, para que las pantallas vuelvan a cargar.
+    @Entry var dataVersion: Int = 0
 }

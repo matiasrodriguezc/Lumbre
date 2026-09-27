@@ -82,19 +82,20 @@ Todo arranca en local con Supabase CLI y Docker; los entornos remotos se conecta
   Activar los dos proveedores con las credenciales y probar el flujo nativo (`signInWithIdToken`) y `linkIdentity()` para invitados. Ya están configurados en `config.toml` y apagados.
   Necesita: H1 (credenciales de Apple y Google).
 - [ ] **21. Lista cerrada de dominios** · MAT-234
-  20 a 25 dominios con una descripción cada uno, pensada para embeberla; seed.
+  20 a 25 dominios con una descripción cada uno, pensada para embeberla; seed. Desde el 27/9 los dominios no se muestran: quedan por debajo de las categorías propias del usuario.
 - [ ] **22. Elegir el modelo de embeddings** · MAT-235
   Comparar 2 o 3 candidatos multilingües con un set chico de pares es/en; decisión documentada.
   Necesita: H1 (claves).
 - [ ] **23. Gateway de IA** · MAT-246, MAT-247 (parte 1)
   Módulo compartido de Edge Functions: reintentos, backoff, modelo de respaldo, tope diario en dólares y registro de cada llamada en `llm_calls`.
 - [ ] **24. Endpoint de captura** · MAT-236
-  Texto, voz, selección y OCR; limpieza del texto; límite de 30 por día.
+  Texto, voz, selección y OCR; limpieza del texto; límite de 30 por día. Adelantado el 27/9: `capture_concept()` en la base ya guarda textos y links con la categoría y la cuota. Falta la Edge Function que suma embedding y destilación.
 - [ ] **25. Destilación** · MAT-237
   Haiku 4.5 con JSON estructurado y nivel de confianza (alta se guarda, media queda en borrador, baja cae a "¿Qué idea te deja esto?").
 - [ ] **26. Lectura de links** · MAT-238
   Contenido más Open Graph, priorizando lo que llegó en la captura; el contenido externo se trata como datos.
 - [ ] **27. Clasificación de dominio por embedding** · MAT-240
+  Clasifica cada categoría del usuario en un dominio (por el embedding de su nombre y sus conceptos), y el concepto lo hereda.
 - [ ] **28. Emparejamiento** · MAT-241
   Banda media por usuario, pares únicos, descanso de 3 días y elección entre los 20 mejores; tests con datos sintéticos.
 - [ ] **29. Set de evaluación y harness** · MAT-243 (parte 1)

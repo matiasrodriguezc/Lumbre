@@ -2,13 +2,13 @@ import SwiftUI
 
 /// Uno de los dos conceptos que chocan en una chispa.
 public struct SparkSide: Sendable {
-    public let domain: String
-    public let domainSymbol: String
+    public let category: String
+    public let categorySymbol: String
     public let title: String
 
-    public init(domain: String, domainSymbol: String, title: String) {
-        self.domain = domain
-        self.domainSymbol = domainSymbol
+    public init(category: String, categorySymbol: String, title: String) {
+        self.category = category
+        self.categorySymbol = categorySymbol
         self.title = title
     }
 }
@@ -67,7 +67,7 @@ public struct SparkCard<Actions: View>: View {
 
     private func side(_ side: SparkSide) -> some View {
         VStack(alignment: .leading, spacing: Space.s2) {
-            Label(side.domain, systemImage: side.domainSymbol)
+            Label(side.category, systemImage: side.categorySymbol)
                 .font(.footnote.weight(.medium))
                 .foregroundStyle(Palette.inkMuted)
             Text(side.title)

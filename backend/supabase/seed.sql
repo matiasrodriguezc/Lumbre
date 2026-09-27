@@ -78,3 +78,12 @@ insert into public.sparks (user_id, concept_lo, concept_hi, mode, title, body, s
    'daily', 'Fermentación × interés compuesto',
    'Un newsletter que no se promociona: cada edición recupera y mejora una idea vieja en vez de buscar una nueva.',
    'revealed', current_date - 2, now() - interval '2 days');
+
+-- Categorías de Ana y Beto: una por dominio usado, como hace la migración con datos existentes.
+insert into public.categories (user_id, name, domain)
+select distinct c.user_id, d.name_es, d.slug
+from public.concepts c join public.domains d on d.slug = c.domain;
+
+update public.concepts c set category_id = cat.id
+  from public.categories cat
+ where cat.user_id = c.user_id and cat.domain = c.domain;

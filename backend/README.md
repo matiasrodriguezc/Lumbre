@@ -102,7 +102,8 @@ Supabase da permisos completos sobre las tablas a `anon` y `authenticated`. Por 
 | Tabla | El usuario puede | Solo el servidor (service role) |
 |---|---|---|
 | `profiles` | Leer el suyo; editar perfiles creativos, hora, zona horaria e idioma | Crear, cambiar `plan` y `target_distance` |
-| `concepts` | Leer, corregir título, tesis, dominio y estado, y borrar los suyos | Crear (pasa por el endpoint de captura, con límite y embedding) |
+| `categories` | Leer, renombrar y borrar las suyas | Crear (pasa por `capture_concept()`), asignar el dominio |
+| `concepts` | Leer, corregir título, tesis, dominio y estado, y borrar los suyos; crear con `capture_concept()` | Escribir el embedding y la destilación |
 | `sparks` | Leer las suyas; cambiar `status` y `feedback` | Crear y escribir el contenido |
 | `usage_ledger` | Leer el suyo | Descontar, con `consume_credit()` |
 | `domains`, `plan_limits` | Leer (también sin sesión) | Escribir |
@@ -157,3 +158,12 @@ No viven en la base, así que las migraciones no los tocan. En dev se configuran
 3. **Rate Limits:** *Anonymous sign-ins* en 10 por hora.
 4. **Providers → Email:** dejar *Confirm email* activado; contraseña mínima de 10 con letras y números.
 5. **Emails:** sin SMTP propio, Supabase manda 2 mails por hora. Para probar con más gente hace falta el proveedor de email de H1.
+
+## Categorías y captura
+
+- Cada usuario arranca **sin categorías**. Se crean al guardar un concepto con `capture_concept(p_thesis, p_category, p_source_type, p_source_url)`, que la app llama como RPC con la sesión del usuario.
+- La función, en una sola transacción: valida (tesis de 1 a 600 caracteres, categoría de 1 a 40, link con URL), descuenta la cuota de capturas, encuentra la categoría o la crea (hasta 50 por usuario) e inserta el concepto. Si algo falla, no se descuenta nada.
+- Las categorías se comparan normalizadas: sin acentos, en minúscula y con los espacios colapsados. "Economía", " economia " y "ECONOMÍA" son la misma.
+- Cada categoría tiene un `domain` opcional de la lista cerrada, que llena el servidor (paso 27). Los conceptos nuevos lo heredan.
+- Un concepto solo puede apuntar a una categoría de su mismo usuario (foreign key compuesta). Borrar una categoría deja sus conceptos sin categoría; no los borra.
+- Errores (en el mensaje): `quota_exceeded`, `too_many_categories`, `invalid_thesis`, `invalid_category`, `invalid_source`, `not_authenticated`.
