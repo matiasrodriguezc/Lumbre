@@ -23,6 +23,7 @@ struct CaptureSheet: View {
     @State private var text = ""
     @State private var distill = true
     @State private var isSaving = false
+    @State private var saveError: String?
     @FocusState private var isEditorFocused: Bool
 
     var body: some View {
@@ -79,6 +80,11 @@ struct CaptureSheet: View {
         }
         .presentationDetents([.medium, .large])
         .presentationCornerRadius(Radius.lg)
+        .alert("No se pudo guardar", isPresented: Binding(get: { saveError != nil }, set: { if !$0 { saveError = nil } })) {
+            Button("Entendido", role: .cancel) {}
+        } message: {
+            Text(saveError ?? "")
+        }
         .onAppear { isEditorFocused = true }
     }
 
@@ -118,8 +124,13 @@ struct CaptureSheet: View {
     private func save() {
         isSaving = true
         Task {
-            _ = try? await api.capture(text: text, distill: distill && kind != .text)
-            dismiss()
+            do {
+                _ = try await api.capture(text: text, distill: distill && kind != .text)
+                dismiss()
+            } catch {
+                saveError = error.localizedDescription
+                isSaving = false
+            }
         }
     }
 }

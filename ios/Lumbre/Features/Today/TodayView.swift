@@ -8,6 +8,7 @@ struct TodayView: View {
     @State private var quota: SparkQuota?
     @State private var recent: [Spark] = []
     @State private var isLoading = true
+    @State private var loadError: Error?
     @State private var isSaved = false
     @State private var isAskingFeedback = false
     @State private var isPlanning = false
@@ -16,10 +17,14 @@ struct TodayView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: Space.s6) {
-                    meter
-                    sparkSection
-                    if !recent.isEmpty {
-                        recentSection
+                    if let loadError {
+                        LoadErrorView(error: loadError) { Task { await load() } }
+                    } else {
+                        meter
+                        sparkSection
+                        if !recent.isEmpty {
+                            recentSection
+                        }
                     }
                 }
                 .padding(.horizontal, Space.s4)
@@ -119,15 +124,24 @@ struct TodayView: View {
             async let quota = api.sparkQuota()
             async let recent = api.recentSparks()
             (self.spark, self.quota, self.recent) = try await (spark, quota, recent)
+            loadError = nil
+            isSaved = self.spark?.status == .saved
         } catch {
-            // Los estados de error llegan con el paso 11.
+            loadError = error
         }
         isLoading = false
     }
 
     private func save(_ spark: Spark) {
         withAnimation(.snappy) { isSaved = true }
-        Task { try? await api.saveSpark(id: spark.id) }
+        Task {
+            do {
+                try await api.saveSpark(id: spark.id)
+                quota = try await api.sparkQuota()
+            } catch {
+                withAnimation(.snappy) { isSaved = false }
+            }
+        }
     }
 
     private func send(_ feedback: SparkFeedback) {

@@ -54,6 +54,8 @@ public struct MockLumbreAPI: LumbreAPI {
         )
     }
 
+    public func signOut() async throws {}
+
     private func wait() async throws {
         try await Task.sleep(for: latency)
     }

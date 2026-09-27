@@ -9,13 +9,17 @@ struct VaultView: View {
     @State private var selectedDomain: Domain?
     @State private var query = ""
     @State private var isLoading = true
+    @State private var loadError: Error?
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: Space.s3) {
+                    if let loadError {
+                        LoadErrorView(error: loadError) { Task { await load() } }
+                    }
                     filters
-                    if visibleConcepts.isEmpty && !isLoading {
+                    if visibleConcepts.isEmpty && !isLoading && loadError == nil {
                         emptyState
                     }
                     ForEach(isLoading ? MockData.concepts : visibleConcepts) { concept in
@@ -90,8 +94,9 @@ struct VaultView: View {
             async let concepts = api.concepts()
             async let domains = api.domains()
             (self.concepts, self.domains) = try await (concepts, domains)
+            loadError = nil
         } catch {
-            // Los estados de error llegan con el paso 11.
+            loadError = error
         }
         isLoading = false
     }

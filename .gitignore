@@ -40,3 +40,8 @@ android/local.properties
 android/**/*.keystore
 android/**/*.jks
 android/captures/
+
+# Credenciales del login de desarrollo de la app (solo Debug)
+ios/Lumbre/Resources/DevCredentials.plist
+# Las versiones de los paquetes las fija el Package.resolved del proyecto de la app
+ios/Packages/*/Package.resolved

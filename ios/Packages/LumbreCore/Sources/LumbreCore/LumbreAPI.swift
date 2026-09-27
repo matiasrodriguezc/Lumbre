@@ -11,4 +11,6 @@ public protocol LumbreAPI: Sendable {
     func saveSpark(id: Spark.ID) async throws
     func sendFeedback(sparkID: Spark.ID, feedback: SparkFeedback) async throws
     func capture(text: String, distill: Bool) async throws -> Concept
+    /// Cierra la sesión en este dispositivo.
+    func signOut() async throws
 }

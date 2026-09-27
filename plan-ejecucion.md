@@ -127,7 +127,7 @@ Adelantado: se hace con datos de prueba. Las pantallas llaman a `LumbreAPI`; hoy
 
 - [x] **42. Setup iOS** · MAT-255, MAT-272 (parte iOS) · ✅ 2026-09-27: proyecto con carpetas sincronizadas, LumbreDesign (tokens generados, tipografía, 5 componentes) y LumbreCore (modelos, `LumbreAPI`, mock, tests). Falta el archivo de Fraunces: usa New York como respaldo.
   Proyecto de Xcode, paquetes LumbreDesign y LumbreCore, generador de tokens a Swift, Fraunces incluida, String Catalog cargado con el copy del paso 10.
-- [ ] **43. LumbreCore** · MAT-322, MAT-253 (parte iOS)
+- [ ] **43. LumbreCore** · MAT-322, MAT-253 (parte iOS) · Adelantado en parte el 2026-09-27: `SupabaseLumbreAPI` sobre supabase-swift, conectado a `lumbre-dev`, con sesión en Keychain, un solo login compartido y login de desarrollo en Debug. Faltan Apple, Google y email en la UI (con el onboarding), la caché en SwiftData, App Attest y el cliente de las Edge Functions.
   Cliente de la API, auth (Apple, Google, email), sesión en Keychain, caché en SwiftData y App Attest.
 - [ ] **44. Analytics y crashes** · MAT-270
   PostHog y Sentry con los eventos del paso 2. Va antes de las pantallas para que cada una se instrumente al construirse.

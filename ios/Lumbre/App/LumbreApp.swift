@@ -5,6 +5,7 @@ import SwiftUI
 @main
 struct LumbreApp: App {
     @AppStorage("theme") private var theme: ThemePreference = .dark
+    private let api = AppEnvironment.makeAPI()
 
     init() {
         LumbreAppearance.configure()
@@ -13,6 +14,7 @@ struct LumbreApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .environment(\.api, api)
                 .preferredColorScheme(theme.colorScheme)
                 .tint(Palette.accentText)
         }
@@ -20,6 +22,6 @@ struct LumbreApp: App {
 }
 
 extension EnvironmentValues {
-    /// Backend de la app. Hasta el paso 43 es el de prueba.
+    /// Backend de la app. Lo inyecta `LumbreApp` según `AppEnvironment`; las previews usan los datos de prueba.
     @Entry var api: any LumbreAPI = MockLumbreAPI()
 }

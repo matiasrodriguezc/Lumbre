@@ -8,8 +8,14 @@ let package = Package(
     products: [
         .library(name: "LumbreCore", targets: ["LumbreCore"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/supabase/supabase-swift", from: "2.0.0"),
+    ],
     targets: [
-        .target(name: "LumbreCore"),
+        .target(
+            name: "LumbreCore",
+            dependencies: [.product(name: "Supabase", package: "supabase-swift")]
+        ),
         .testTarget(name: "LumbreCoreTests", dependencies: ["LumbreCore"]),
     ]
 )

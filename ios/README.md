@@ -35,9 +35,23 @@ cd ios/Packages/LumbreCore && xcodebuild test -scheme LumbreCore -destination 'p
 
 O abrir `ios/Lumbre.xcodeproj` en Xcode y correr el esquema **Lumbre** (arranca en español de Argentina).
 
-## Datos de prueba
+## Backend
 
-Hasta que exista el backend, la app usa `MockLumbreAPI` (se inyecta en `LumbreApp.swift` con `@Environment(\.api)`). El paso 43 suma el cliente real y el cambio es de una línea.
+La app se conecta a `lumbre-dev` en Supabase (`App/AppEnvironment.swift`) con `SupabaseLumbreAPI` (paquete LumbreCore, sobre `supabase-swift`):
+
+- **Lectura:** con la sesión del usuario y RLS. Hoy, Bóveda y el contador de chispas leen del remoto; guardar una chispa y "No me sirve" escriben ahí.
+- **Sesión:** la guarda `supabase-swift` en el Keychain y se renueva sola. Las llamadas simultáneas comparten un solo login.
+- **Login de desarrollo (solo Debug):** si existe `Lumbre/Resources/DevCredentials.plist` (fuera del repo, con `email` y `password`), la app entra como Ana, la usuaria de prueba de dev. Sin el archivo, entra como invitado, lo que requiere los ajustes de H14 en el dashboard.
+- **Capturar** todavía no guarda en el remoto: los conceptos se crean solo por el endpoint de captura (paso 24), y la sheet lo avisa.
+
+Argumentos de arranque (esquema → Run → Arguments, o `xcrun simctl launch … <arg>`):
+
+| Argumento | Qué hace |
+|---|---|
+| `-mock` | Usa `MockLumbreAPI`, con los datos de prueba y sin red |
+| `-resetSession` | Solo Debug: cierra la sesión guardada y prueba el primer login |
+
+Las previews de SwiftUI siempre usan `MockLumbreAPI`.
 
 ## Pendientes conocidos
 
