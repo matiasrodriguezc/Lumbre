@@ -24,7 +24,7 @@ Reglas:
 - [x] **1. Monorepo, git y CLAUDE.md** · MAT-321 · ✅ 2026-09-27: estructura armada, design system en `design/system/`, esquema en `backend/db/`, plan maestro y backlog en `docs/`; issues MAT-321 a MAT-324 creados; push a GitHub.
   Estructura `/ios`, `/android`, `/backend`, `/design`, `/web`, `/docs`; mover `design-system/` y `db/` a su lugar y actualizar las rutas del README; `CLAUDE.md` con las reglas del proyecto y un puntero a este plan; `.gitignore`; primer commit. Crear en Linear los issues que faltan (ver "Issues a crear").
   Listo cuando: el repo tiene su primer commit, las rutas del README funcionan y los issues nuevos existen.
-- [ ] **2. Métrica norte y plan de eventos** · MAT-218
+- [x] **2. Métrica norte y plan de eventos** · MAT-218 · ✅ 2026-09-27: `docs/analytics.md` con la definición de activo, 10 métricas, ~50 eventos y reglas de privacidad; quedan 3 decisiones abiertas en su §10.
   `docs/analytics.md`: métrica norte, eventos con propiedades y nombres idénticos en iOS y Android, funnels de activación y de Pro.
 - [ ] **3. Kit de entrevistas** · prep MAT-212
   Guion, filtro de reclutamiento (4 devs, 4 creadores, 4 emprendedores), mensaje de invitación y plantilla de síntesis.
