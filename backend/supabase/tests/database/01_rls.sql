@@ -11,9 +11,11 @@ insert into auth.users (id, email, aud, role) values
   ('aaaaaaaa-0000-4000-8000-000000000001', 'x@rls.test', 'authenticated', 'authenticated'),
   ('bbbbbbbb-0000-4000-8000-000000000002', 'y@rls.test', 'authenticated', 'authenticated');
 
+-- El trigger ya creó los perfiles; se fija la hora para poder comprobar cambios.
 insert into public.profiles (id, spark_hour) values
   ('aaaaaaaa-0000-4000-8000-000000000001', '08:00'),
-  ('bbbbbbbb-0000-4000-8000-000000000002', '09:00');
+  ('bbbbbbbb-0000-4000-8000-000000000002', '09:00')
+on conflict (id) do update set spark_hour = excluded.spark_hour;
 
 insert into public.domains (slug, name_es, name_en, description)
 values ('rls_test', 'Prueba', 'Test', 'Dominio de los tests de RLS.');

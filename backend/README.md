@@ -14,7 +14,12 @@ Supabase: Postgres 17 + pgvector, RLS, Auth, Edge Functions, pg_cron y pgmq. Tod
 
 ## CI
 
-`.github/workflows/backend.yml` corre en cada PR y en cada push a `main` que toque `backend/`: levanta Postgres con las migraciones desde cero y el seed, pasa el lint, corre los tests de pgTAP y la prueba de concurrencia. Si falla, no se mergea.
+`.github/workflows/backend.yml` corre en cada PR y en cada push a `main` que toque `backend/`, con dos jobs:
+
+- **database:** levanta Postgres con las migraciones desde cero y el seed, pasa el lint, corre los tests de pgTAP y la prueba de concurrencia.
+- **auth:** levanta Auth, REST y Mailpit y corre `tests/auth/e2e.sh`.
+
+Si falla, no se mergea.
 
 ## Comandos
 
@@ -46,6 +51,12 @@ Probar que `consume_credit()` no se pasa del techo con llamadas simultáneas:
 
 ```bash
 backend/supabase/tests/concurrency/consume_credit.sh
+```
+
+Probar Auth de punta a punta (invitado, vinculación de email y email mágico, con los mails de Mailpit):
+
+```bash
+backend/supabase/tests/auth/e2e.sh
 ```
 
 Revisar el esquema:
@@ -120,3 +131,29 @@ Toda operación que gasta IA pasa primero por `consume_credit(user, kind)`, desd
 | pro | 200 por día | 300 por mes | 10 por día | 300 por mes | 60 por mes |
 
 Los de `guest` son provisorios hasta que el prototipo defina qué puede hacer un invitado (paso 14).
+
+## Auth
+
+| Forma de entrar | Estado |
+|---|---|
+| Invitado (sesión anónima) | Listo. Plan `guest`; se vincula a una cuenta sin perder datos |
+| Email mágico (link o código de 6 dígitos) | Listo. El link vuelve a la app por `lumbre://auth-callback` |
+| Sign in with Apple | Configurado en `config.toml`, apagado hasta tener las credenciales (H1) |
+| Google | Configurado en `config.toml`, apagado hasta tener las credenciales (H1) |
+
+- **Perfil automático:** el trigger `on_auth_user_created` crea el perfil de todo usuario nuevo con la zona horaria y el idioma que manda la app en `data: { timezone, locale }`. Si faltan o no son válidos, usa Buenos Aires y español.
+- **Invitado que crea su cuenta:** con `updateUser({ email })` (email) o `linkIdentity()` (Apple o Google) el mismo usuario pasa a `is_anonymous = false`. Conserva sus conceptos y chispas y `effective_plan()` lo pasa a free.
+- **Limpieza:** el job `limpiar-invitados` (pg_cron, 03:17 en Argentina) borra a los invitados sin sesión activa en 30 días, con todo lo suyo. Nunca borra cuentas reales.
+- **Abuso:** 10 sesiones anónimas por hora por IP. Los invitados no tienen cupo de IA. App Attest y Play Integrity llegan en el paso 40.
+- **Contraseñas:** Lumbre no las usa, pero la API de Auth las acepta. Por eso se exigen de 10 caracteres con letras y números, y un alta con contraseña tiene que confirmar el email.
+- **Credenciales:** Apple y Google leen sus IDs y secretos de `supabase/.env` (ver `supabase/.env.example`), que no va al repo.
+
+### Ajustes de Auth en el proyecto remoto
+
+No viven en la base, así que las migraciones no los tocan. En dev se configuran desde el dashboard, en Authentication:
+
+1. **Sign In / Providers:** activar *Allow anonymous sign-ins* y *Allow manual linking*.
+2. **URL Configuration:** sumar `lumbre://auth-callback` a *Redirect URLs*.
+3. **Rate Limits:** *Anonymous sign-ins* en 10 por hora.
+4. **Providers → Email:** dejar *Confirm email* activado; contraseña mínima de 10 con letras y números.
+5. **Emails:** sin SMTP propio, Supabase manda 2 mails por hora. Para probar con más gente hace falta el proveedor de email de H1.

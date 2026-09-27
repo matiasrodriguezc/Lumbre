@@ -77,9 +77,10 @@ Todo arranca en local con Supabase CLI y Docker; los entornos remotos se conecta
 - [x] **19. CI del backend** · MAT-254 (parte 1) · ✅ 2026-09-27: `.github/workflows/backend.yml` (Postgres desde cero, lint, pgTAP y concurrencia). Verificado en local desde una base vacía. En GitHub todavía no corre: la cuenta tiene Actions bloqueado por facturación (H13).
   GitHub Actions corre las migraciones y los tests en cada PR.
   Necesita: H2.
-- [ ] **20. Auth** · MAT-231
-  Sign in with Apple, Google y email mágico; sesión anónima para invitados y vinculación de la cuenta sin perder datos; creación del perfil al registrarse.
-  Necesita: H1 (credenciales de Apple y Google) para probarlo contra los proveedores reales.
+- [x] **20a. Auth: invitado, email mágico y perfil** · MAT-231 · ✅ 2026-09-27: sesión anónima con límites propios, vinculación de email sin perder datos, email mágico con vuelta a `lumbre://auth-callback`, perfil automático con zona e idioma del teléfono y limpieza diaria de invitados abandonados. 15 tests de pgTAP y una prueba de punta a punta con la API de Auth y Mailpit, que también corre en CI. Migración aplicada en `lumbre-dev`; faltan sus ajustes de Auth en el dashboard (H14).
+- [ ] **20b. Auth: Apple y Google** · MAT-231
+  Activar los dos proveedores con las credenciales y probar el flujo nativo (`signInWithIdToken`) y `linkIdentity()` para invitados. Ya están configurados en `config.toml` y apagados.
+  Necesita: H1 (credenciales de Apple y Google).
 - [ ] **21. Lista cerrada de dominios** · MAT-234
   20 a 25 dominios con una descripción cada uno, pensada para embeberla; seed.
 - [ ] **22. Elegir el modelo de embeddings** · MAT-235
@@ -244,6 +245,7 @@ Tareas que no puedo hacer yo. Se pueden hacer en paralelo a los pasos.
 | H10 | Prueba cerrada de Play con 12+ testers por 14 días | MAT-292 | Compuerta F5 |
 | H11 | Pedir el Small Business Program de Apple | MAT-298 | Lanzamiento iOS |
 | H13 | Resolver la facturación de GitHub (Actions está bloqueado: "account is locked due to a billing issue") y volver a correr el workflow Backend | — | 19 (que el CI corra en GitHub) |
+| H14 | Ajustes de Auth de `lumbre-dev` en el dashboard: invitados, vinculación manual, redirect `lumbre://auth-callback` y rate limit (lista en `backend/README.md`, sección Auth) | — | Que el remoto acepte invitados y el link mágico de la app |
 | H12 | Publicar el build in public y ejecutar los lanzamientos | MAT-219, MAT-300, MAT-302, MAT-303, MAT-304 | — |
 
 ## Issues creados en el paso 1

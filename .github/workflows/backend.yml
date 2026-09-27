@@ -46,3 +46,24 @@ jobs:
 
       - name: Concurrencia de consume_credit
         run: supabase/tests/concurrency/consume_credit.sh
+
+  auth:
+    name: Auth de punta a punta
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.117.0
+
+      # Stack completo: hacen falta Auth, REST y el buzón de mails de prueba.
+      - name: Levantar Supabase
+        run: supabase start -x studio,imgproxy,edge-runtime,logflare,vector,supavisor,realtime,storage-api
+
+      - name: Invitado, vinculación de email y email mágico
+        run: supabase/tests/auth/e2e.sh

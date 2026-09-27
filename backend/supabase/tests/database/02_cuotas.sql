@@ -17,11 +17,14 @@ insert into auth.users (id, email, aud, role, is_anonymous) values
   ('f0000000-0000-4000-8000-000000000004', 'n@cuotas.test', 'authenticated', 'authenticated', false),
   ('f0000000-0000-4000-8000-000000000005', 'l@cuotas.test', 'authenticated', 'authenticated', false);
 
+-- El trigger ya creó los perfiles; se fijan plan y zona. N queda sin perfil a propósito.
 insert into public.profiles (id, plan, timezone) values
   ('f0000000-0000-4000-8000-000000000001', 'free', 'America/Argentina/Buenos_Aires'),
   ('f0000000-0000-4000-8000-000000000002', 'pro', 'Pacific/Kiritimati'),
   ('f0000000-0000-4000-8000-000000000003', 'free', 'America/Argentina/Buenos_Aires'),
-  ('f0000000-0000-4000-8000-000000000005', 'free', 'America/Argentina/Buenos_Aires');
+  ('f0000000-0000-4000-8000-000000000005', 'free', 'America/Argentina/Buenos_Aires')
+on conflict (id) do update set plan = excluded.plan, timezone = excluded.timezone;
+delete from public.profiles where id = 'f0000000-0000-4000-8000-000000000004';
 
 insert into public.domains (slug, name_es, name_en, description)
 values ('cuotas_test', 'Prueba', 'Test', 'Dominio de los tests de cuotas.');

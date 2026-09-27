@@ -34,9 +34,11 @@ insert into auth.identities (id, user_id, provider_id, identity_data, provider, 
   (gen_random_uuid(), '22222222-2222-2222-2222-222222222222', '22222222-2222-2222-2222-222222222222',
    '{"sub": "22222222-2222-2222-2222-222222222222", "email": "beto@lumbre.test"}', 'email', now(), now(), now());
 
+-- El perfil lo crea el trigger al insertar el usuario; acá se completa.
 insert into public.profiles (id, creative_profiles, spark_hour) values
   ('11111111-1111-1111-1111-111111111111', array['software', 'curiosity'], '08:00'),
-  ('22222222-2222-2222-2222-222222222222', array['business'], '09:30');
+  ('22222222-2222-2222-2222-222222222222', array['business'], '09:30')
+on conflict (id) do update set creative_profiles = excluded.creative_profiles, spark_hour = excluded.spark_hour;
 
 insert into public.concepts (id, user_id, domain, domain_confirmed, title, thesis, source_type, source_title, created_at) values
   ('a0000000-0000-0000-0000-000000000001', '11111111-1111-1111-1111-111111111111', 'marketing', true,
