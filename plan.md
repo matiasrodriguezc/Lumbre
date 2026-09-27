@@ -171,7 +171,9 @@ Archivos de video subidos (caros, y el valor está en el audio) y formatos de of
 
 ### Cuotas y abuso
 - Toda llamada de IA pasa por `consume_credit()`: chequea plan y límites y descuenta de forma atómica.
-- Límites en la tabla `plan_limits`, ajustables sin publicar versión.
+- Límites en la tabla `plan_limits`, ajustables sin publicar versión. Las chispas extra de free se ganan (3 conceptos guardados dan 1, hasta 2 por día) y la regla vive en la misma tabla.
+- Invitados: plan `guest`, deducido de la sesión anónima, con límites propios y bajos (provisorios: 10 capturas por día y nada de IA) hasta que el prototipo defina qué pueden hacer.
+- Si una operación de IA falla después de descontar, se devuelve el crédito.
 - Tope de gasto diario por usuario en dólares.
 - App Attest (iOS) y Play Integrity (Android) en los endpoints de IA.
 - Moderación de entrada y salida; reporte de contenido generado por IA desde la app (requisito de Play).

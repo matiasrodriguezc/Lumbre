@@ -9,6 +9,7 @@ Supabase: Postgres 17 + pgvector, RLS, Auth, Edge Functions, pg_cron y pgmq. Tod
 | `supabase/config.toml` | Configuración del stack local. Usa los puertos 555xx para convivir con otros proyectos de Supabase. |
 | `supabase/migrations/` | El esquema, en orden. Nunca se edita una migración ya aplicada: se agrega una nueva. |
 | `supabase/tests/database/` | Tests de pgTAP. Cada archivo crea sus datos en una transacción y la revierte: no dependen del seed. |
+| `supabase/tests/concurrency/` | Pruebas que necesitan varias conexiones a la vez (no entran en pgTAP). |
 | `supabase/seed.sql` | Datos de prueba solo para local: usuarios A y B, dominios provisorios, conceptos y chispas iguales a los de la app de iOS. |
 
 ## Comandos
@@ -35,6 +36,12 @@ Correr los tests de la base (pgTAP, en `supabase/tests/database/`):
 
 ```bash
 cd backend && supabase test db
+```
+
+Probar que `consume_credit()` no se pasa del techo con llamadas simultáneas:
+
+```bash
+backend/supabase/tests/concurrency/consume_credit.sh
 ```
 
 Revisar el esquema:
@@ -76,3 +83,23 @@ Supabase da permisos completos sobre las tablas a `anon` y `authenticated`. Por 
 `consume_credit()` solo la puede ejecutar el service role: si la app pudiera llamarla, alguien podría gastar la cuota de otro usuario.
 
 `tests/database/01_rls.sql` verifica cada fila de esta tabla. Incluye una guarda que falla si se crea una tabla en `public` sin RLS. **Toda tabla nueva lleva sus tests de acceso en el mismo cambio.**
+
+## Cuotas
+
+Toda operación que gasta IA pasa primero por `consume_credit(user, kind)`, desde una Edge Function:
+
+- Los límites están en `plan_limits` y se cambian sin publicar versión.
+- El plan efectivo sale de `effective_plan()`: `guest` si la sesión es anónima; si no, el `plan` del perfil.
+- Los períodos (día y mes) se cuentan en la zona horaria del usuario.
+- Si una fila tiene `earned_every`, el cupo se gana: 1 por cada N conceptos guardados en el período, con `max_count` como techo. Es el caso de las chispas extra en free (3 conceptos dan 1, hasta 2 por día).
+- El descuento es atómico: el `update ... where used < techo` bloquea la fila, así que llamadas simultáneas no pasan el límite.
+- Si la operación falla después de descontar, la Edge Function llama a `refund_credit(user, kind)`.
+- La app muestra lo que le queda con `credit_status()`, que devuelve solo los cupos del usuario de la sesión.
+
+| Plan | Captura | Destilación | Chispas extra | Planificador | Plan profundo |
+|---|---|---|---|---|---|
+| guest | 10 por día | — | — | — | — |
+| free | 30 por día | 5 por mes | 2 por día, ganadas | — | — |
+| pro | 200 por día | 300 por mes | 10 por día | 300 por mes | 60 por mes |
+
+Los de `guest` son provisorios hasta que el prototipo defina qué puede hacer un invitado (paso 14).
