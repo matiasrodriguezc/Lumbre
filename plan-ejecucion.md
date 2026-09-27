@@ -12,6 +12,8 @@ Cómo se trabaja el backlog de Linear (proyecto **Lumbre**, issues MAT-199 a MAT
    - Los pasos marcados **prep** preparan material para una tarea tuya: el issue no se cierra, queda con el material en un comentario.
 6. Tildar el paso acá con la fecha y una línea de notas. Fin de la sesión.
 
+**Prioridad actual (27/9/2026):** el bloque D (iOS) se adelantó y se hace ahora con datos de prueba (`MockLumbreAPI`), para validar lo visual antes de tener backend. Se toman primero los pasos sin tildar del bloque D que no dependan del backend; el 43 (cliente real) y el 59 (TestFlight) esperan al bloque C y a H1. Los bloques A, B y C siguen pendientes en su orden.
+
 Reglas:
 - Un paso que resulta más grande de lo previsto se parte acá mismo (16a, 16b) en vez de estirar la sesión.
 - Si un paso obliga a tomar una decisión que no está en `plan.md`, se pregunta antes de seguir.
@@ -120,13 +122,15 @@ Todo arranca en local con Supabase CLI y Docker; los entornos remotos se conecta
 
 ## D. iOS (F3)
 
-- [ ] **42. Setup iOS** · MAT-255, MAT-272 (parte iOS)
+Adelantado: se hace con datos de prueba. Las pantallas llaman a `LumbreAPI`; hoy responde `MockLumbreAPI` y en el paso 43 se cambia por el cliente real.
+
+- [x] **42. Setup iOS** · MAT-255, MAT-272 (parte iOS) · ✅ 2026-09-27: proyecto con carpetas sincronizadas, LumbreDesign (tokens generados, tipografía, 5 componentes) y LumbreCore (modelos, `LumbreAPI`, mock, tests). Falta el archivo de Fraunces: usa New York como respaldo.
   Proyecto de Xcode, paquetes LumbreDesign y LumbreCore, generador de tokens a Swift, Fraunces incluida, String Catalog cargado con el copy del paso 10.
 - [ ] **43. LumbreCore** · MAT-322, MAT-253 (parte iOS)
   Cliente de la API, auth (Apple, Google, email), sesión en Keychain, caché en SwiftData y App Attest.
 - [ ] **44. Analytics y crashes** · MAT-270
   PostHog y Sentry con los eventos del paso 2. Va antes de las pantallas para que cada una se instrumente al construirse.
-- [ ] **45. TabView flotante y botón Capturar** · MAT-258
+- [x] **45. TabView flotante y botón Capturar** · MAT-258 · ✅ 2026-09-27: Liquid Glass con Capturar separado a la derecha (lugar de la pestaña de búsqueda). Además quedaron versiones visuales con datos de prueba de Hoy, Bóveda, Perfil y la sheet de Capturar; sus pasos (47, 48, 51, 57) siguen abiertos para la funcionalidad completa.
 - [ ] **46. Onboarding** · MAT-256
   Perfil, semillas, hora de la chispa, permiso de push y registro del token; crear cuenta o entrar como invitado.
 - [ ] **47. Hoy con reveal y contador** · MAT-257
