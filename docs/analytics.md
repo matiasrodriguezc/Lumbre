@@ -15,17 +15,16 @@ norte (semana) = chispas guardadas en la semana / usuarios activos en la semana
 ```
 
 - **Idea guardada:** una chispa que pasa a `status = 'saved'` (evento `spark_saved`). Cuentan todos los modos: diaria, extra, elegir y problema. El tablero la muestra también separada por modo.
-- **Usuario activo:** alguien que hizo al menos una **acción de valor** en el período. Abrir la app sola no cuenta, porque una push abierta y cerrada no es uso.
+- **Usuario activo:** en el período agregó algo a la bóveda o vio al menos una chispa. Abrir la app sola no cuenta, y tampoco buscar o usar el planificador sin hacer ninguna de esas dos cosas.
 
 Acciones de valor:
 
-| Evento | Por qué cuenta |
+| Evento | Qué significa |
 |---|---|
-| `spark_revealed` | Vio la chispa, que es el corazón del loop |
-| `concept_saved` | Alimentó la bóveda |
-| `spark_saved` | Se quedó con una idea |
-| `planner_message_sent` | Trabajó una idea |
-| `vault_searched` | Volvió a lo guardado |
+| `concept_saved` | Agregó información a la bóveda |
+| `spark_revealed` | Vio una conexión (una chispa) |
+
+Los invitados cuentan como activos igual que los usuarios con cuenta. El tablero los separa con la propiedad `is_guest`.
 
 Esta misma definición de "activo" se usa en la retención, en los activos mensuales y en el porcentaje que inicia la prueba de Pro.
 
@@ -36,7 +35,7 @@ Por qué esta métrica: sube solo si funcionan las tres partes del loop. Hace fa
 | Métrica | Cálculo | Objetivo | Fuente |
 |---|---|---|---|
 | Onboarding | `spark_revealed` con `is_first = true` / `onboarding_started` | ≥ 75% | PostHog, embudo |
-| Activación | Usuarios con `spark_saved` dentro de las 24 h de `signed_up` / `signed_up` | ≥ 40% | PostHog, embudo con ventana de 24 h |
+| Activación | Usuarios con `spark_saved` dentro de las 24 h de `signed_up` / `signed_up` (incluye invitados) | ≥ 40% | PostHog, embudo con ventana de 24 h |
 | Permiso de push | `push_permission_responded` con `granted = true` / los que vieron el pedido del sistema | ≥ 55% | PostHog |
 | Retención D1 / D7 / D30 | % de la cohorte de alta con una acción de valor el día 1, 7 y 30 | 35% / 15% / 8% | PostHog, retención |
 | Beta: primera semana | % de la cohorte con al menos un `spark_saved` en sus primeros 7 días | ≥ 30% | PostHog |
@@ -56,7 +55,7 @@ Métricas de diagnóstico, sin objetivo por ahora:
 
 - **Nombres:** `objeto_accion` en snake_case, verbo en pasado y en inglés (`spark_revealed`, `concept_saved`). Las propiedades también van en snake_case. Los valores de enumeración son slugs en inglés (`obvious`, `share_extension`).
 - **Una sola fuente por evento.** Lo que queda escrito en la base lo emite el **backend**, que tiene la verdad. Lo que pasa solo en la pantalla lo emite la **app**. Así nada se cuenta dos veces y los números no dependen de si la app estaba offline.
-- **Identidad:** el `distinct_id` es el `user_id` de Supabase. Antes del alta, el SDK usa un id anónimo y al registrarse se llama a `identify` para unir los dos. En PostHog nunca va el email.
+- **Identidad:** el `distinct_id` es el `user_id` de Supabase. Antes de la primera sesión, el SDK usa un id propio y al crearla se llama a `identify` para unir los dos. Un invitado ya tiene `user_id` (sesión anónima) y lo conserva al crear la cuenta, así que su historia no se corta. En PostHog nunca va el email.
 - **Pantallas:** con `screen()` manual y los nombres de la sección 6. En SwiftUI y Compose la captura automática de pantallas no es confiable.
 - **Eventos de ciclo de vida:** los del SDK (`Application Installed`, `Application Opened`, `Application Backgrounded`) quedan activados.
 
@@ -88,7 +87,8 @@ Métricas de diagnóstico, sin objetivo por ahora:
 | `creative_profiles` | Lista de slugs: `software`, `content`, `business`, `design`, `curiosity` |
 | `spark_hour` | Hora local, `"08:00"` |
 | `timezone` | IANA, `America/Argentina/Buenos_Aires` |
-| `signup_method` | `apple`, `google`, `email` |
+| `signup_method` | `anonymous`, `apple`, `google`, `email` |
+| `is_guest` | booleano: usa una sesión anónima y todavía no creó la cuenta |
 | `concepts_count_bucket` | `0`, `1-9`, `10-49`, `50-199`, `200+` |
 | `push_enabled` | booleano |
 | `has_widget` | booleano (WidgetKit y Glance permiten saber si hay uno instalado) |
@@ -109,7 +109,10 @@ Fuente: **A** = app (iOS y Android), **S** = servidor (Edge Functions o webhook)
 | `spark_hour_set` | A | `hour`, `is_default`, `context`: `onboarding`, `settings` | Se elige o cambia la hora |
 | `push_permission_prompted` | A | `context`: `onboarding`, `settings`, `today` | Se muestra el pedido previo con contexto |
 | `push_permission_responded` | A | `granted`, `system_prompt_shown` | Responde al pedido del sistema |
-| `signed_up` | S | `method`: `apple`, `google`, `email` | Se crea el perfil |
+| `guest_entered` | A | — | Toca "Entrar como invitado" |
+| `signed_up` | S | `method`: `anonymous`, `apple`, `google`, `email` | Se crea el perfil (también para un invitado) |
+| `account_prompt_shown` | A | `trigger` (se define en el paso 14) | Se le pide la cuenta a un invitado |
+| `account_linked` | S | `method`: `apple`, `google`, `email`; `guest_age_days` | Un invitado crea su cuenta y conserva sus datos |
 | `signed_in` | A | `method` | Vuelve a entrar en un dispositivo |
 | `ai_consent_responded` | A | `granted` | Acepta o no que sus datos pasen por una IA de terceros (requisito de App Store) |
 | `onboarding_completed` | A | `duration_s`, `profiles_count`, `seeds_count` | Termina el último paso |
@@ -133,12 +136,12 @@ Fuente: **A** = app (iOS y Android), **S** = servidor (Edge Functions o webhook)
 
 | Evento | Fuente | Propiedades | Cuándo |
 |---|---|---|---|
-| `spark_generated` | S | `mode`: `daily`, `extra`, `pick`, `problem`; `batch`, `distance_percentile` (0–100 respecto del propio usuario), `is_guest_pair`, `candidates_count` | Se genera una chispa |
+| `spark_generated` | S | `mode`: `daily`, `extra`, `pick`, `problem`; `batch`, `distance_percentile` (0–100 respecto del propio usuario), `uses_library_concept`, `candidates_count` | Se genera una chispa |
 | `spark_notification_sent` | S | `scheduled_hour` | Sale la push de la chispa diaria |
 | `notification_opened` | A | `type`: `daily_spark`, `weekly_summary`; `minutes_after_sent` | Abre la app desde una push |
 | `spark_revealed` | A | `mode`, `is_first`, `entry`: `push`, `widget`, `app`; `minutes_since_available`, `reduce_motion` | Termina el reveal |
 | `spark_saved` | S | `mode`, `entry` (lo manda la app en la llamada), `is_first`, `has_project` | La chispa pasa a guardada. **Evento de la métrica norte** |
-| `spark_feedback_given` | S | `mode`, `reason`: `obvious`, `irrelevant`, `already_had`; `distance_percentile`, `is_guest_pair` | "No me sirve" con motivo |
+| `spark_feedback_given` | S | `mode`, `reason`: `obvious`, `irrelevant`, `already_had`; `distance_percentile`, `uses_library_concept` | "No me sirve" con motivo |
 | `spark_extra_requested` | A | `mode`, `source`: `earned`, `pro` | Pide una chispa más |
 | `spark_empty_state_shown` | A | `reason`: `used_today`, `no_candidates`, `few_concepts` | Hoy no tiene chispa para mostrar |
 | `share_card_created` | A | `mode` | Se genera la tarjeta para historias |
@@ -206,12 +209,13 @@ En la web el `distinct_id` es el id de la fila de la waitlist, nunca el email.
 Se arman en PostHog en el paso 44 y se validan con los primeros datos de TestFlight (paso 59).
 
 1. **Norte y salud semanal:** norte, usuarios activos por semana, D1/D7/D30, chispas guardadas por modo.
-2. **Onboarding:** `onboarding_started` → cada `onboarding_step_completed` → `push_permission_responded` → `spark_revealed` (`is_first`). Muestra dónde se cae la gente.
-3. **Activación:** `signed_up` → `spark_saved` dentro de las 24 h.
-4. **Captura:** `capture_opened` → `capture_submitted` → `concept_saved`, separado por `entry` y `source_type`. Incluye aceptación de categoría y borradores resueltos.
-5. **Chispas y calidad:** feedback por motivo, por modo, por `distance_percentile` y por par invitado; apertura de push según la hora.
-6. **Pro:** `paywall_shown` por `trigger` → `purchase_started` → prueba iniciada → pago.
-7. **Beta (F4):** cohorte de TestFlight externo, D7 y porcentaje con al menos una idea guardada en la primera semana. Es la compuerta que decide si se hace Android.
+2. **Onboarding:** `onboarding_started` → cada `onboarding_step_completed` → `push_permission_responded` → `spark_revealed` (`is_first`). Muestra dónde se cae la gente, separado entre cuenta e invitado.
+3. **De invitado a cuenta:** `guest_entered` → `account_prompt_shown` → `account_linked`, y cuántos días tarda.
+4. **Activación:** `signed_up` → `spark_saved` dentro de las 24 h.
+5. **Captura:** `capture_opened` → `capture_submitted` → `concept_saved`, separado por `entry` y `source_type`. Incluye aceptación de categoría y borradores resueltos.
+6. **Chispas y calidad:** feedback por motivo, por modo, por `distance_percentile` y según si usa un concepto de la biblioteca; apertura de push según la hora.
+7. **Pro:** `paywall_shown` por `trigger` → `purchase_started` → prueba iniciada → pago.
+8. **Beta (F4):** cohorte de TestFlight externo, D7 y porcentaje con al menos una idea guardada en la primera semana. Es la compuerta que decide si se hace Android.
 
 El costo de IA no va en PostHog: sale de `llm_calls` en el tablero del paso 38.
 
@@ -228,8 +232,8 @@ Con feature flags de PostHog, recién cuando haya volumen (F9):
 - **Backend:** un módulo compartido de las Edge Functions manda los eventos de servidor a la API de PostHog en lote. No debe frenar la respuesta al usuario: si PostHog falla, se registra en Sentry y se sigue.
 - **Cambios:** un evento nuevo o cambiado se agrega primero a este documento y después al código.
 
-## 10. Decisiones abiertas
+## 10. Decisiones tomadas
 
-1. **Definición de usuario activo** (sección 1). Es una propuesta: confirmala o cambiala antes del paso 44.
-2. **Región de PostHog.** Recomiendo la nube de la UE, que simplifica GDPR y es compatible con la Ley 25.326. Confirmarlo con el abogado (H3).
-3. **Cuándo se crea la cuenta en el onboarding:** antes de las semillas o al final. Cambia el embudo de la sección 7. Se define en el prototipo (paso 14).
+1. **Usuario activo** (27/9/2026): en la semana agregó algo a la bóveda o vio al menos una chispa (sección 1).
+2. **Región de PostHog** (27/9/2026): nube de la UE. Simplifica GDPR y es compatible con la Ley 25.326.
+3. **Cuenta en el onboarding** (27/9/2026): se puede crear en el onboarding o entrar como invitado con una sesión anónima y crearla después, sin perder datos. Qué puede hacer el invitado y cuándo se le pide la cuenta se define en el prototipo (paso 14); de eso sale el `trigger` de `account_prompt_shown`.

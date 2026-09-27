@@ -56,7 +56,7 @@ Reglas:
 - [ ] **13. Tarjeta para compartir y widget** · MAT-228, MAT-229
   Mockups HTML en tamaño real (historia 1080×1920; tamaños de widget de iOS y de Glance).
 - [ ] **14. Prototipo navegable del loop** · MAT-223
-  HTML clickeable: onboarding → Hoy → Capturar → Bóveda → detalle → paywall, con selector iOS/Android. Se publica para el test.
+  HTML clickeable: onboarding → Hoy → Capturar → Bóveda → detalle → paywall, con selector iOS/Android. Incluye los dos caminos de entrada (crear cuenta o entrar como invitado) y define qué puede hacer el invitado y cuándo se le pide la cuenta. Se publica para el test.
 - [ ] **15. Kit de test del prototipo y del ícono** · prep MAT-224, MAT-210
   Guion de tareas, preguntas sobre el ícono solo y planilla de resultados.
 
@@ -67,16 +67,16 @@ Reglas:
 Todo arranca en local con Supabase CLI y Docker; los entornos remotos se conectan en el paso 41.
 
 - [ ] **16. Supabase local y migraciones** · MAT-230 (parte 1)
-  `supabase init` en `/backend`, `schema.sql` pasado a migraciones, seed y scripts de arranque.
+  `supabase init` en `/backend`, `schema.sql` pasado a migraciones, seed y scripts de arranque. Renombrar `concepts.is_guest` a `from_library` para no confundirlo con el usuario invitado, y usar en `creative_profiles` los mismos slugs que `docs/analytics.md`.
 - [ ] **17. RLS y tests "usuario A no ve datos de B"** · MAT-232
   pgTAP sobre cada tabla con datos de usuario.
 - [ ] **18. Cuotas** · MAT-233
-  `consume_credit()` atómico, `plan_limits` cargado con los valores de `plan.md`, `usage_ledger` y un test de concurrencia.
+  `consume_credit()` atómico, `plan_limits` cargado con los valores de `plan.md` (más límites para invitados), `usage_ledger` y un test de concurrencia.
 - [ ] **19. CI del backend** · MAT-254 (parte 1)
   GitHub Actions corre las migraciones y los tests en cada PR.
   Necesita: H2.
 - [ ] **20. Auth** · MAT-231
-  Sign in with Apple, Google y email mágico; creación del perfil al registrarse.
+  Sign in with Apple, Google y email mágico; sesión anónima para invitados y vinculación de la cuenta sin perder datos; creación del perfil al registrarse.
   Necesita: H1 (credenciales de Apple y Google) para probarlo contra los proveedores reales.
 - [ ] **21. Lista cerrada de dominios** · MAT-234
   20 a 25 dominios con una descripción cada uno, pensada para embeberla; seed.
@@ -128,7 +128,7 @@ Todo arranca en local con Supabase CLI y Docker; los entornos remotos se conecta
   PostHog y Sentry con los eventos del paso 2. Va antes de las pantallas para que cada una se instrumente al construirse.
 - [ ] **45. TabView flotante y botón Capturar** · MAT-258
 - [ ] **46. Onboarding** · MAT-256
-  Perfil, semillas, hora de la chispa, permiso de push y registro del token.
+  Perfil, semillas, hora de la chispa, permiso de push y registro del token; crear cuenta o entrar como invitado.
 - [ ] **47. Hoy con reveal y contador** · MAT-257
 - [ ] **48. Sheet de Capturar y cola offline** · MAT-259
 - [ ] **49. Share Extension** · MAT-260

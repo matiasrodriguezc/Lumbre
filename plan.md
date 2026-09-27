@@ -70,7 +70,7 @@ Reglas clave:
 ## 4. Funcionalidades
 
 ### Versión 1.0
-- **Onboarding con perfil creativo:** hasta dos perfiles (Software y apps, Contenido y escritura, Negocios, Diseño, Curiosidad libre), 3 ideas semilla, hora elegida para la chispa diaria y permiso de push con contexto.
+- **Onboarding con perfil creativo:** hasta dos perfiles (Software y apps, Contenido y escritura, Negocios, Diseño, Curiosidad libre), 3 ideas semilla, hora elegida para la chispa diaria y permiso de push con contexto. La cuenta se puede crear en el onboarding o se puede **entrar como invitado** para conocer la interfaz y crearla después; el invitado usa una sesión anónima de Supabase, así que al crear la cuenta no se pierde nada. Qué puede hacer el invitado y en qué momento se le pide la cuenta se define en el prototipo.
 - **Captura de texto y voz ilimitada:** sheet global, Share Extension (iOS), intent de compartir (Android), cola offline. La voz dictada se transcribe en el teléfono y cuenta como texto. Rate limit anti-abuso de 30 capturas por día.
 - **Texto seleccionado desde otra app:** llega el fragmento más la URL de origen.
 - **Capturas de pantalla y escaneo de páginas de libro:** OCR en el teléfono (VisionKit / ML Kit Document Scanner), entran como texto, gratis.
@@ -196,10 +196,10 @@ El esquema completo está en `backend/db/schema.sql`.
 |---|---|
 | iOS | Swift 6, SwiftUI, Observation, SwiftData como caché, paquetes SPM (LumbreDesign, LumbreCore, uno por feature), Share Extension, Widget, App Intents. Mínimo: iOS actual y las dos anteriores |
 | Android | Kotlin, Compose, Material 3, MVVM + flujo unidireccional, Coroutines/Flow, Hilt, Room + WorkManager, módulos Gradle por capa y feature, Baseline Profiles. minSdk 28 |
-| Backend | Supabase: Postgres + pgvector + RLS, Auth (Apple, Google, email), Edge Functions, pg_cron + pgmq, Storage temporal. Tres entornos (dev, staging, prod) |
+| Backend | Supabase: Postgres + pgvector + RLS, Auth (Apple, Google, email e invitado anónimo), Edge Functions, pg_cron + pgmq, Storage temporal. Tres entornos (dev, staging, prod) |
 | IA | Claude Haiku 4.5, Sonnet 5 y Batches API; un modelo de embeddings multilingüe único |
 | Pagos | RevenueCat sobre StoreKit 2 y Play Billing, entitlement "pro" |
-| Observabilidad | Sentry, PostHog (analytics, feature flags, experimentos), tabla `llm_calls` con tablero de costos y alertas |
+| Observabilidad | Sentry, PostHog en la nube de la UE (analytics, feature flags, experimentos), tabla `llm_calls` con tablero de costos y alertas |
 | Contrato | OpenAPI, del que se generan los clientes Swift y Kotlin |
 | Tokens de diseño | `tokens.json` como fuente única, exportado a Swift y Kotlin en cada build |
 
@@ -301,7 +301,7 @@ Supuesto: 1 dev, unas 20 horas por semana. Cada fase tiene un criterio de salida
 ## 13. Métricas
 | Métrica | Objetivo inicial |
 |---|---|
-| Norte: ideas guardadas por usuario activo semanal | ≥ 2 |
+| Norte: ideas guardadas por usuario activo semanal (activo: en la semana agregó algo a la bóveda o vio al menos una chispa; ver `docs/analytics.md`) | ≥ 2 |
 | Activación: guarda su primera chispa en 24 h | ≥ 40% |
 | Llega a la primera chispa en el onboarding | ≥ 75% |
 | Acepta notificaciones | ≥ 55% |
