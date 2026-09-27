@@ -74,7 +74,7 @@ Todo arranca en local con Supabase CLI y Docker; los entornos remotos se conecta
   pgTAP sobre cada tabla con datos de usuario.
 - [x] **18. Cuotas** · MAT-233 · ✅ 2026-09-27: chispas extra ganadas (antes free las pedía sin ganarlas), plan `guest` por sesión anónima, `refund_credit()` y `credit_status()`. 26 tests de pgTAP y una prueba de 50 llamadas simultáneas, que falla con una versión no atómica.
   `consume_credit()` atómico, `plan_limits` cargado con los valores de `plan.md` (más límites para invitados), `usage_ledger` y un test de concurrencia.
-- [ ] **19. CI del backend** · MAT-254 (parte 1)
+- [x] **19. CI del backend** · MAT-254 (parte 1) · ✅ 2026-09-27: `.github/workflows/backend.yml` (Postgres desde cero, lint, pgTAP y concurrencia). Verificado en local desde una base vacía. En GitHub todavía no corre: la cuenta tiene Actions bloqueado por facturación (H13).
   GitHub Actions corre las migraciones y los tests en cada PR.
   Necesita: H2.
 - [ ] **20. Auth** · MAT-231
@@ -243,6 +243,7 @@ Tareas que no puedo hacer yo. Se pueden hacer en paralelo a los pasos.
 | H9 | Instalar Android Studio y el SDK | — | 69 en adelante |
 | H10 | Prueba cerrada de Play con 12+ testers por 14 días | MAT-292 | Compuerta F5 |
 | H11 | Pedir el Small Business Program de Apple | MAT-298 | Lanzamiento iOS |
+| H13 | Resolver la facturación de GitHub (Actions está bloqueado: "account is locked due to a billing issue") y volver a correr el workflow Backend | — | 19 (que el CI corra en GitHub) |
 | H12 | Publicar el build in public y ejecutar los lanzamientos | MAT-219, MAT-300, MAT-302, MAT-303, MAT-304 | — |
 
 ## Issues creados en el paso 1
