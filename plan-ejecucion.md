@@ -81,7 +81,7 @@ Todo arranca en local con Supabase CLI y Docker; los entornos remotos se conecta
 - [ ] **20b. Auth: Apple y Google** · MAT-231
   Activar los dos proveedores con las credenciales y probar el flujo nativo (`signInWithIdToken`) y `linkIdentity()` para invitados. Ya están configurados en `config.toml` y apagados.
   Necesita: H1 (credenciales de Apple y Google).
-- [ ] **21. Lista cerrada de dominios** · MAT-234
+- [x] **21. Lista cerrada de dominios** · MAT-234 · ✅ 2026-09-28: 25 dominios con descripciones para embeber e íconos de iOS y Android (verificados), en `20260927230000_dominios.sql`; `urbanismo` pasó a `arquitectura`. 6 tests de pgTAP. Aplicada en `lumbre-dev`.
   20 a 25 dominios con una descripción cada uno, pensada para embeberla; seed. Desde el 27/9 los dominios no se muestran: quedan por debajo de las categorías propias del usuario.
 - [ ] **22. Elegir el modelo de embeddings** · MAT-235
   Comparar 2 o 3 candidatos multilingües con un set chico de pares es/en; decisión documentada.

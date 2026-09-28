@@ -124,7 +124,7 @@ Archivos de video subidos (caros, y el valor está en el audio) y formatos de of
 }
 ```
 
-- El dominio sale de una **lista cerrada de 20–25 dominios**, que el usuario no ve (Tecnología, Biología, Física, Economía, Psicología, Diseño, Historia, Arte, Música, Urbanismo, Cocina, Deporte, Negocios, etc.). Si fuera libre, "Ingeniería" e "Ingeniería mecánica" quedarían separadas y se rompería el cruce.
+- El dominio sale de una **lista cerrada de 25 dominios**, que el usuario no ve: Tecnología, Ingeniería, Física y astronomía, Química y materiales, Biología y naturaleza, Salud y medicina, Psicología y comportamiento, Economía y finanzas, Negocios y emprendimiento, Marketing y comunicación, Diseño, Arquitectura y urbanismo, Arte, Música y sonido, Cine y narrativa audiovisual, Literatura y escritura, Historia y arqueología, Filosofía y ética, Sociedad y política, Educación y aprendizaje, Deporte y movimiento, Juegos y videojuegos, Cocina y gastronomía, Clima y medio ambiente, Matemáticas y lógica. Cada uno tiene una descripción con los mecanismos y el vocabulario típico, que es lo que se embebe para clasificar. Está en la migración `20260927230000_dominios.sql`. Si fuera libre, "Ingeniería" e "Ingeniería mecánica" quedarían separadas y se rompería el cruce.
 - **Confianza:** alta, se guarda directo; media, queda como borrador para confirmar; baja o contenido inaccesible, se cae al flujo de "¿Qué idea te deja esto?".
 - **Textos de menos de 30 palabras** se embeben directo, sin destilar.
 - **Qué aporta la destilación:** matches entre mundos distintos (se embebe el mecanismo, no las palabras), conceptos atómicos (un link puede dar 2 o 3), chispas más baratas y mejores (60 tokens en vez de 800 por concepto), categoría más precisa, una bóveda legible, idioma unificado y una diferencia visible para vender Pro.
@@ -330,7 +330,7 @@ Supuesto: 1 dev, unas 20 horas por semana. Cada fase tiene un criterio de salida
 - [ ] Búsqueda de marca de Lumbre con abogado.
 - [ ] Wordmark pasado a curvas con Fraunces instalada; exportes de ícono (iOS dark/tinted, Android adaptive/monochrome).
 - [ ] Test del ícono solo (sin wordmark) con 5 personas: qué ven.
-- [ ] Lista cerrada de dominios (20–25) con descripción de cada uno para los embeddings.
+- [x] Lista cerrada de dominios con descripción de cada uno para los embeddings (25, el 28/9/2026).
 - [ ] Elegir el modelo de embeddings multilingüe.
 - [ ] Prompt de destilación y set de evaluación de 100 pares.
 - [ ] Biblioteca de conceptos invitados por perfil.

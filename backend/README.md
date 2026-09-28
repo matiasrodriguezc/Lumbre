@@ -165,5 +165,6 @@ No viven en la base, así que las migraciones no los tocan. En dev se configuran
 - La función, en una sola transacción: valida (tesis de 1 a 600 caracteres, categoría de 1 a 40, link con URL), descuenta la cuota de capturas, encuentra la categoría o la crea (hasta 50 por usuario) e inserta el concepto. Si algo falla, no se descuenta nada.
 - Las categorías se comparan normalizadas: sin acentos, en minúscula y con los espacios colapsados. "Economía", " economia " y "ECONOMÍA" son la misma.
 - Cada categoría tiene un `domain` opcional de la lista cerrada, que llena el servidor (paso 27). Los conceptos nuevos lo heredan.
+- La lista cerrada son 25 dominios (`20260927230000_dominios.sql`). Los slugs no cambian nunca; para renombrar, se cambian `name_es` y `name_en`. La descripción de cada uno nombra mecanismos y vocabulario típico, porque es lo que se embebe para clasificar.
 - Un concepto solo puede apuntar a una categoría de su mismo usuario (foreign key compuesta). Borrar una categoría deja sus conceptos sin categoría; no los borra.
 - Errores (en el mensaje): `quota_exceeded`, `too_many_categories`, `invalid_thesis`, `invalid_category`, `invalid_source`, `not_authenticated`.

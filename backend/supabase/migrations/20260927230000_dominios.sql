@@ -1,0 +1,96 @@
+-- Lista cerrada de dominios (paso 21). Reemplaza a los 8 provisorios.
+--
+-- - El usuario no los ve: quedan por debajo de sus categorías (plan.md §5).
+-- - La descripción es lo que se embebe para clasificar categorías y conceptos (pasos 22 y 27):
+--   nombra mecanismos, fenómenos y vocabulario típico del dominio, no solo el tema.
+-- - Los dominios tienen que ser lo bastante distintos entre sí para que "dos dominios distintos"
+--   signifique "dos mundos distintos" en el emparejamiento.
+-- - Los slugs no cambian nunca: si hace falta renombrar, se cambian name_es y name_en.
+
+insert into public.domains (slug, name_es, name_en, description, symbol_ios, symbol_android) values
+  ('tecnologia', 'Tecnología', 'Technology',
+   'Software, programación, internet, inteligencia artificial, datos, algoritmos, redes, seguridad informática, sistemas distribuidos, apps, automatización y cómo se construyen y escalan los productos digitales.',
+   'cpu', 'memory'),
+  ('ingenieria', 'Ingeniería', 'Engineering',
+   'Máquinas, mecanismos, estructuras, procesos industriales, fabricación, control y retroalimentación, energía, fluidos, rozamiento, tolerancias, mantenimiento y cómo se diseñan sistemas físicos que funcionen de forma confiable.',
+   'gearshape.2', 'precision_manufacturing'),
+  ('fisica', 'Física y astronomía', 'Physics and astronomy',
+   'Fuerzas, movimiento, energía, ondas, luz, electricidad, termodinámica, entropía, relatividad, mecánica cuántica, planetas, estrellas, galaxias, el universo y las leyes que explican la materia y el espacio.',
+   'atom', 'orbit'),
+  ('quimica', 'Química y materiales', 'Chemistry and materials',
+   'Reacciones, moléculas, catalizadores, mezclas, soluciones, cristales, polímeros, metales, cerámicas, propiedades de los materiales y cómo la composición de algo determina su comportamiento.',
+   'testtube.2', 'science'),
+  ('biologia', 'Biología y naturaleza', 'Biology and nature',
+   'Seres vivos, evolución, genética, células, ecosistemas, animales, plantas, hongos, simbiosis, adaptación, selección natural, cadenas alimentarias y cómo la vida se organiza y cambia con el tiempo.',
+   'leaf', 'eco'),
+  ('salud', 'Salud y medicina', 'Health and medicine',
+   'El cuerpo humano, enfermedades, diagnóstico, tratamientos, prevención, nutrición, sueño, ejercicio, hábitos, sistema inmune, epidemiología y cómo se cuida y se recupera la salud.',
+   'stethoscope', 'medical_services'),
+  ('psicologia', 'Psicología y comportamiento', 'Psychology and behavior',
+   'Cómo piensan, sienten y deciden las personas: sesgos cognitivos, motivación, hábitos, emociones, memoria, atención, aprendizaje, recompensas, relaciones, identidad y el cerebro.',
+   'brain.head.profile', 'psychology'),
+  ('economia', 'Economía y finanzas', 'Economics and finance',
+   'Mercados, precios, oferta y demanda, incentivos, dinero, inflación, inversión, interés compuesto, riesgo, deuda, comercio, costos de oportunidad y cómo se asignan recursos escasos.',
+   'chart.line.uptrend.xyaxis', 'trending_up'),
+  ('negocios', 'Negocios y emprendimiento', 'Business and entrepreneurship',
+   'Empresas, startups, estrategia, modelos de negocio, ventas, operaciones, equipos, liderazgo, productividad, negociación, clientes, competencia y cómo se crea y se hace crecer una organización.',
+   'briefcase', 'business_center'),
+  ('marketing', 'Marketing y comunicación', 'Marketing and communication',
+   'Atención, persuasión, marcas, publicidad, redes sociales, contenido, audiencias, escasez, prueba social, mensajes, posicionamiento, viralidad y cómo una idea o un producto llega a la gente.',
+   'megaphone', 'campaign'),
+  ('diseno', 'Diseño', 'Design',
+   'Diseño de interfaces, experiencia de usuario, diseño gráfico, tipografía, color, diseño industrial, producto físico, usabilidad, prototipos, jerarquía visual y cómo la forma sirve a una función.',
+   'paintbrush.pointed', 'design_services'),
+  ('arquitectura', 'Arquitectura y urbanismo', 'Architecture and urban planning',
+   'Edificios, ciudades, espacio público, transporte, tránsito, vivienda, barrios, planificación urbana, infraestructura, cómo se mueve la gente y cómo el espacio construido cambia la vida cotidiana.',
+   'building.2', 'location_city'),
+  ('arte', 'Arte', 'Art',
+   'Pintura, escultura, fotografía, ilustración, instalaciones, movimientos artísticos, museos, estética, composición, estilo, crítica de arte y cómo una obra genera sentido o emoción.',
+   'paintpalette', 'palette'),
+  ('musica', 'Música y sonido', 'Music and sound',
+   'Composición, ritmo, armonía, melodía, instrumentos, géneros, producción musical, acústica, grabación, conciertos, escucha y cómo el sonido organiza el tiempo y la emoción.',
+   'music.note', 'music_note'),
+  ('cine', 'Cine y narrativa audiovisual', 'Film and visual storytelling',
+   'Películas, series, guion, dirección, montaje, estructura narrativa, personajes, suspenso, videos, documentales, animación y cómo se cuenta una historia con imágenes en movimiento.',
+   'film', 'movie'),
+  ('literatura', 'Literatura y escritura', 'Literature and writing',
+   'Novelas, cuentos, poesía, ensayo, periodismo, oficio de escribir, estilo, metáforas, voz narrativa, edición, lectura y cómo las palabras construyen mundos e ideas.',
+   'book', 'menu_book'),
+  ('historia', 'Historia y arqueología', 'History and archaeology',
+   'Civilizaciones, imperios, guerras, revoluciones, ruinas, excavaciones, fuentes, cambios culturales, inventos del pasado y cómo vivía la gente en otras épocas.',
+   'building.columns', 'account_balance'),
+  ('filosofia', 'Filosofía y ética', 'Philosophy and ethics',
+   'Preguntas sobre el conocimiento, la verdad, la mente, la libertad, el bien, la justicia, la lógica, el sentido de la vida, dilemas morales y cómo razonar sobre lo que vale la pena.',
+   'infinity', 'all_inclusive'),
+  ('sociedad', 'Sociedad y política', 'Society and politics',
+   'Comunidades, instituciones, gobierno, leyes, derechos, poder, desigualdad, cultura, normas sociales, cooperación, conflicto, opinión pública y cómo las personas se organizan en grupo.',
+   'person.3', 'groups'),
+  ('educacion', 'Educación y aprendizaje', 'Education and learning',
+   'Escuelas, enseñanza, pedagogía, cursos, aprendizaje autodidacta, práctica deliberada, evaluación, curiosidad, mentoría, memoria de largo plazo y cómo alguien pasa de no saber a dominar algo.',
+   'graduationcap', 'school'),
+  ('deporte', 'Deporte y movimiento', 'Sports and movement',
+   'Deportes, entrenamiento, rendimiento, técnica, tácticas, competencia, equipos, resistencia, fuerza, coordinación, recuperación y cómo el cuerpo mejora con la práctica.',
+   'figure.run', 'directions_run'),
+  ('juegos', 'Juegos y videojuegos', 'Games and video games',
+   'Videojuegos, juegos de mesa, reglas, mecánicas, niveles, progresión, recompensas, dificultad, jugadores, diseño de juegos, azar y estrategia, y cómo una regla simple genera horas de juego.',
+   'gamecontroller', 'sports_esports'),
+  ('cocina', 'Cocina y gastronomía', 'Cooking and gastronomy',
+   'Recetas, ingredientes, técnicas de cocción, fermentación, sabores, texturas, panadería, restaurantes, cultura gastronómica y cómo el tiempo, el calor y la mezcla transforman los alimentos.',
+   'fork.knife', 'restaurant'),
+  ('ambiente', 'Clima y medio ambiente', 'Climate and environment',
+   'Cambio climático, clima, energía renovable, contaminación, reciclaje, recursos naturales, agua, océanos, biodiversidad, sustentabilidad y cómo la actividad humana afecta el planeta.',
+   'globe.americas', 'public'),
+  ('matematicas', 'Matemáticas y lógica', 'Mathematics and logic',
+   'Números, geometría, probabilidad, estadística, patrones, redes, grafos, optimización, crecimiento exponencial, teoría de juegos, demostraciones y cómo modelar un problema con precisión.',
+   'function', 'functions')
+on conflict (slug) do update set
+  name_es = excluded.name_es,
+  name_en = excluded.name_en,
+  description = excluded.description,
+  symbol_ios = excluded.symbol_ios,
+  symbol_android = excluded.symbol_android;
+
+-- De la lista provisoria, "urbanismo" pasa a "arquitectura". El resto de los slugs se mantiene.
+update public.concepts set domain = 'arquitectura' where domain = 'urbanismo';
+update public.categories set domain = 'arquitectura' where domain = 'urbanismo';
+delete from public.domains where slug = 'urbanismo';

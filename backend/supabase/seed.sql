@@ -5,16 +5,7 @@
 --   A · ana@lumbre.test   11111111-1111-1111-1111-111111111111  (tiene bóveda y chispas)
 --   B · beto@lumbre.test  22222222-2222-2222-2222-222222222222  (un solo concepto, para probar RLS)
 
--- Dominios provisorios. La lista cerrada definitiva se carga con una migración en el paso 21.
-insert into public.domains (slug, name_es, name_en, description, symbol_ios, symbol_android) values
-  ('urbanismo', 'Urbanismo', 'Urban planning', 'Ciudades, transporte, espacio público y cómo se mueve la gente.', 'building.2', 'location_city'),
-  ('tecnologia', 'Software', 'Software', 'Programación, producto digital, sistemas e internet.', 'chevron.left.forwardslash.chevron.right', 'code'),
-  ('ingenieria', 'Ingeniería', 'Engineering', 'Máquinas, materiales, procesos industriales y física aplicada.', 'gearshape.2', 'precision_manufacturing'),
-  ('marketing', 'Marketing', 'Marketing', 'Atención, persuasión, marcas, precios y comportamiento de compra.', 'megaphone', 'campaign'),
-  ('historia', 'Historia', 'History', 'Civilizaciones, arqueología y cómo vivía la gente en otras épocas.', 'building.columns', 'account_balance'),
-  ('cocina', 'Cocina', 'Cooking', 'Ingredientes, técnicas, fermentación y gastronomía.', 'fork.knife', 'restaurant'),
-  ('economia', 'Economía', 'Economics', 'Dinero, mercados, incentivos, inversión y crecimiento.', 'chart.line.uptrend.xyaxis', 'trending_up'),
-  ('biologia', 'Biología', 'Biology', 'Seres vivos, ecosistemas, evolución y cuerpo humano.', 'leaf', 'eco');
+-- Los dominios los carga la migración 20260927230000_dominios.sql (la lista cerrada de 25).
 
 insert into auth.users (
   instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -43,7 +34,7 @@ on conflict (id) do update set creative_profiles = excluded.creative_profiles, s
 insert into public.concepts (id, user_id, domain, domain_confirmed, title, thesis, source_type, source_title, created_at) values
   ('a0000000-0000-0000-0000-000000000001', '11111111-1111-1111-1111-111111111111', 'marketing', true,
    'Escasez intencional', 'Limitar la oferta sube el valor percibido y la atención.', 'voice', null, now() - interval '2 hours'),
-  ('a0000000-0000-0000-0000-000000000002', '11111111-1111-1111-1111-111111111111', 'urbanismo', true,
+  ('a0000000-0000-0000-0000-000000000002', '11111111-1111-1111-1111-111111111111', 'arquitectura', true,
    'Onda verde de semáforos', 'Sincronizar semáforos crea un flujo continuo a velocidad constante.', 'text', null, now() - interval '1 day'),
   ('a0000000-0000-0000-0000-000000000003', '11111111-1111-1111-1111-111111111111', 'ingenieria', true,
    'Separación ciclónica', 'Un flujo en espiral separa partículas por fuerza centrífuga, sin filtro.', 'link',
@@ -79,10 +70,14 @@ insert into public.sparks (user_id, concept_lo, concept_hi, mode, title, body, s
    'Un newsletter que no se promociona: cada edición recupera y mejora una idea vieja en vez de buscar una nueva.',
    'revealed', current_date - 2, now() - interval '2 days');
 
--- Categorías de Ana y Beto: una por dominio usado, como hace la migración con datos existentes.
+-- Categorías de Ana y Beto: nombres cortos, como los escribiría un usuario, cada una con su dominio.
 insert into public.categories (user_id, name, domain)
-select distinct c.user_id, d.name_es, d.slug
-from public.concepts c join public.domains d on d.slug = c.domain;
+select distinct c.user_id, n.name, c.domain
+from public.concepts c
+join (values ('marketing', 'Marketing'), ('arquitectura', 'Urbanismo'), ('ingenieria', 'Ingeniería'),
+             ('tecnologia', 'Software'), ('cocina', 'Cocina'), ('historia', 'Historia'),
+             ('economia', 'Economía'), ('biologia', 'Biología')) as n (domain, name)
+  on n.domain = c.domain;
 
 update public.concepts c set category_id = cat.id
   from public.categories cat
