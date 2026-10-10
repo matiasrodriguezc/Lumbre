@@ -1,0 +1,390 @@
+openapi: 3.1.0
+info:
+  title: Lumbre API
+  version: 0.1.0
+  description: |
+    Contrato de las Edge Functions de Lumbre. Lo que la app lee y edita directo (tablas con RLS y RPCs de la base)
+    está en `backend/README.md`, sección "Qué usa la app".
+
+    - Todas las llamadas de la app van con `Authorization: Bearer <access token del usuario>` y `apikey: <clave publicable>`.
+    - Las funciones marcadas como **internas** solo aceptan la clave de servicio (las llama pg_cron).
+    - Los errores siempre son `{ "error": "<código>" }`. La app traduce el código; nunca muestra el texto del servidor.
+    - JSON en snake_case. Fechas en ISO 8601; días (`scheduled_for`) como `YYYY-MM-DD` en la zona del usuario.
+    - Ninguna clave de IA vive en la app: toda llamada a un modelo pasa por acá y por `consume_credit()`.
+
+servers:
+  - url: http://127.0.0.1:55521/functions/v1
+    description: Local (supabase start)
+
+security:
+  - userToken: []
+
+paths:
+  /capture:
+    post:
+      summary: Guarda un concepto y lo procesa (embedding, dominio y, si se pide, destilación)
+      description: |
+        1. Si hay `attachment`, la app ya subió el archivo al bucket `capture-temp` en `<user_id>/<uuid>.<ext>`.
+           La función lo lee, lo procesa y lo borra siempre (también si falla).
+        2. Si `distill` es true y el plan tiene cupo de `distill`, destila con IA:
+           - confianza alta: el concepto queda `ready`.
+           - media: queda `draft` para que el usuario lo confirme.
+           - baja o contenido inaccesible: si el usuario escribió `thesis`, se guarda con ella sin destilar;
+             si no, responde 422 `needs_thesis` y no guarda nada.
+           Un link o un archivo pueden dar hasta 3 conceptos.
+        3. Sin `distill` (o sin cupo), `thesis` es obligatoria. Textos de menos de 30 palabras nunca se destilan.
+        4. Siempre: embedding y dominio por la categoría. Si la IA falla, el concepto se guarda igual y se procesa después.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [category, source_type]
+              properties:
+                thesis: { type: string, maxLength: 600 }
+                category: { type: string, minLength: 1, maxLength: 40 }
+                source_type:
+                  type: string
+                  enum: [text, voice, selection, screenshot, scan, link, image, pdf]
+                source_url: { type: string, format: uri }
+                source_title: { type: string, maxLength: 300 }
+                excerpt: { type: string, maxLength: 500 }
+                local_asset_id: { type: string }
+                attachment:
+                  type: object
+                  required: [path, mime_type]
+                  properties:
+                    path: { type: string, description: "Ruta dentro del bucket capture-temp" }
+                    mime_type: { type: string, enum: [image/jpeg, image/png, application/pdf] }
+                distill: { type: boolean, default: false }
+      responses:
+        '200':
+          description: Guardado
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [concept_id, category_id, category_created, concepts, distillation]
+                properties:
+                  concept_id: { type: string, format: uuid }
+                  category_id: { type: string, format: uuid }
+                  category_created: { type: boolean }
+                  concepts:
+                    type: array
+                    items: { $ref: '#/components/schemas/Concept' }
+                  distillation:
+                    type: string
+                    enum: [none, high, medium, quota_exceeded, unavailable]
+        '400': { $ref: '#/components/responses/Error' }
+        '422':
+          description: No se pudo sacar una idea y no hay `thesis` (`needs_thesis`)
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '429': { $ref: '#/components/responses/Error' }
+
+  /today:
+    post:
+      summary: Todo lo que muestra Hoy
+      description: |
+        Devuelve la chispa diaria de hoy (en la zona del usuario). Si el batch nocturno no la generó,
+        la genera en el momento. Si el usuario no tiene material, `spark` es null.
+      requestBody:
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200':
+          description: Estado de Hoy
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Today' }
+
+  /spark:
+    post:
+      summary: Chispa extra en tiempo real
+      description: |
+        Descuenta `spark_extra`. `pick` (Pro) combina los dos conceptos elegidos por el usuario.
+        Si la IA falla, devuelve el crédito.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [mode]
+              properties:
+                mode: { type: string, enum: [extra, pick] }
+                concept_ids:
+                  type: array
+                  minItems: 2
+                  maxItems: 2
+                  items: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Chispa nueva
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [spark]
+                properties:
+                  spark: { $ref: '#/components/schemas/Spark' }
+        '402': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '429': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
+
+  /search:
+    post:
+      summary: Búsqueda semántica en la bóveda
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [query]
+              properties:
+                query: { type: string, minLength: 1, maxLength: 200 }
+                limit: { type: integer, default: 30, maximum: 50 }
+      responses:
+        '200':
+          description: Conceptos ordenados por cercanía
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [concepts]
+                properties:
+                  concepts:
+                    type: array
+                    items: { $ref: '#/components/schemas/Concept' }
+
+  /planner:
+    post:
+      summary: Mensaje al planificador (Pro), con la respuesta en streaming
+      description: |
+        Descuenta `planner` (rápido, Haiku) o `planner_deep` (plan profundo, Sonnet). Sin cupo en el plan: 402 `pro_required`.
+        El contexto fijo (perfil, los dos conceptos, la chispa y el proyecto) va con prompt caching;
+        el hilo se resume de forma incremental cada 10 mensajes.
+        Respuesta `text/event-stream` con eventos:
+        - `delta`: `{ "text": "..." }`
+        - `done`: `{ "message_id": 123 }`
+        - `error`: `{ "error": "<código>" }`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [spark_id, message, mode]
+              properties:
+                spark_id: { type: string, format: uuid }
+                message: { type: string, minLength: 1, maxLength: 2000 }
+                mode: { type: string, enum: [quick, deep] }
+      responses:
+        '200':
+          description: Stream de eventos
+          content:
+            text/event-stream:
+              schema: { type: string }
+        '402': { $ref: '#/components/responses/Error' }
+        '429': { $ref: '#/components/responses/Error' }
+
+  /dev-plan:
+    post:
+      summary: Solo desarrollo local — cambia el plan del usuario sin pasar por la tienda
+      description: Responde 404 salvo que la función corra con `LUMBRE_DEV_TOOLS=true`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [plan]
+              properties:
+                plan: { type: string, enum: [free, pro] }
+      responses:
+        '200': { description: Plan cambiado }
+
+  /revenuecat-webhook:
+    post:
+      summary: Webhook de RevenueCat (entitlement "pro")
+      security:
+        - webhookSecret: []
+      description: |
+        `app_user_id` es el id del usuario de Supabase. Pasa a `pro` con INITIAL_PURCHASE, RENEWAL, UNCANCELLATION,
+        PRODUCT_CHANGE y TRANSFER; vuelve a `free` con EXPIRATION. CANCELLATION y BILLING_ISSUE no cambian el plan
+        hasta que vence. Cada evento se guarda una sola vez por `id` (idempotente).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  type: object
+                  properties:
+                    id: { type: string }
+                    type: { type: string }
+                    app_user_id: { type: string }
+                    entitlement_ids: { type: array, items: { type: string } }
+                    expiration_at_ms: { type: integer }
+      responses:
+        '200': { description: Procesado (o ignorado) }
+        '401': { description: Secreto inválido }
+
+  /process:
+    post:
+      summary: Interna — procesa conceptos pendientes (embedding y dominio) y embebe dominios y biblioteca
+      security:
+        - serviceKey: []
+      responses:
+        '200': { description: Cantidad procesada }
+
+  /daily-sparks:
+    post:
+      summary: Interna — batch nocturno de chispas diarias por zona horaria
+      description: |
+        Elige el par de cada usuario cuyo día local ya empezó y no tiene chispa diaria, y genera el texto.
+        Con Anthropic usa la Batches API (50% menos) y `collect` levanta los resultados; con el proveedor local, en el momento.
+      security:
+        - serviceKey: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                collect: { type: boolean, description: "true: solo levanta los resultados de batches pendientes" }
+      responses:
+        '200': { description: Resumen del batch }
+
+  /send-pushes:
+    post:
+      summary: Interna — avisa por push a quien le llegó la hora de su chispa
+      security:
+        - serviceKey: []
+      responses:
+        '200': { description: Cantidad enviada }
+
+components:
+  securitySchemes:
+    userToken:
+      type: http
+      scheme: bearer
+      description: Access token de Supabase Auth del usuario (también invitado)
+    serviceKey:
+      type: http
+      scheme: bearer
+      description: Clave de servicio (solo pg_cron)
+    webhookSecret:
+      type: http
+      scheme: bearer
+      description: REVENUECAT_WEBHOOK_SECRET
+
+  responses:
+    Error:
+      description: Error con código
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          description: |
+            not_authenticated (401) · invalid_thesis · invalid_category · invalid_source · invalid_request (400) ·
+            pro_required (402) · account_required (403) · not_found (404) · not_enough_concepts (409) ·
+            needs_thesis (422) · quota_exceeded · too_many_categories · too_many_projects (429) ·
+            ai_unavailable (503) · internal (500)
+
+    Domain:
+      type: object
+      required: [slug, name_es, name_en]
+      properties:
+        slug: { type: string }
+        name_es: { type: string }
+        name_en: { type: string }
+        symbol_ios: { type: [string, 'null'] }
+
+    Category:
+      type: object
+      required: [id, name]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        domain:
+          oneOf:
+            - $ref: '#/components/schemas/Domain'
+            - type: 'null'
+
+    Concept:
+      type: object
+      required: [id, title, thesis, status, distilled, source_type, from_library, created_at]
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string }
+        thesis: { type: string }
+        principle: { type: [string, 'null'] }
+        status: { type: string, enum: [draft, ready] }
+        distilled: { type: boolean }
+        confidence: { type: [string, 'null'], enum: [high, medium, low, null] }
+        source_type: { type: string }
+        source_url: { type: [string, 'null'] }
+        source_title: { type: [string, 'null'] }
+        excerpt: { type: [string, 'null'] }
+        from_library: { type: boolean }
+        created_at: { type: string, format: date-time }
+        category:
+          oneOf:
+            - $ref: '#/components/schemas/Category'
+            - type: 'null'
+
+    Spark:
+      type: object
+      required: [id, title, body, mode, status, created_at, concept_a, concept_b]
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string }
+        body: { type: string }
+        mode: { type: string, enum: [daily, extra, pick, problem] }
+        status: { type: string, enum: [pending, revealed, saved, discarded] }
+        feedback: { type: [string, 'null'], enum: [obvious, irrelevant, already_had, null] }
+        project_id: { type: [string, 'null'], format: uuid }
+        project_name: { type: [string, 'null'] }
+        scheduled_for: { type: [string, 'null'], format: date }
+        created_at: { type: string, format: date-time }
+        concept_a: { $ref: '#/components/schemas/Concept' }
+        concept_b: { $ref: '#/components/schemas/Concept' }
+
+    Quota:
+      type: object
+      required: [available, total, refills_at, concepts_until_extra, extra_remaining]
+      properties:
+        available: { type: integer, description: "Diaria sin abrir/guardar/descartar (0 o 1) + extras que quedan" }
+        total: { type: integer }
+        refills_at: { type: string, format: date-time, description: "Próxima hora de la chispa" }
+        concepts_until_extra: { type: integer, description: "Free: conceptos que faltan hoy para ganar una extra" }
+        extra_remaining: { type: integer }
+
+    Today:
+      type: object
+      required: [spark, quota, extras, runway_days, concept_count]
+      properties:
+        spark:
+          oneOf:
+            - $ref: '#/components/schemas/Spark'
+            - type: 'null'
+        quota: { $ref: '#/components/schemas/Quota' }
+        extras:
+          type: array
+          description: Chispas extra y elegidas de hoy, de la más nueva a la más vieja
+          items: { $ref: '#/components/schemas/Spark' }
+        runway_days: { type: integer, description: "Días de pares buenos que quedan; con menos de 7 la app pide capturar más" }
+        concept_count: { type: integer }

@@ -94,7 +94,7 @@ public struct SupabaseLumbreAPI: LumbreAPI {
 
     // MARK: - Escritura
 
-    public func saveSpark(id: Spark.ID) async throws {
+    public func saveSpark(id: Spark.ID, projectID: Project.ID?) async throws {
         try await session.ensure(client)
         try await client.from("sparks").update(["status": SparkStatus.saved.rawValue]).eq("id", value: id).execute()
     }
@@ -113,12 +113,14 @@ public struct SupabaseLumbreAPI: LumbreAPI {
 
     /// Guarda con `capture_concept()`: descuenta la cuota, encuentra o crea la categoría e inserta el concepto.
     /// El embedding y la destilación se suman después, en el servidor (pasos 23 a 27).
-    public func capture(thesis: String, category: String, source: CaptureSource) async throws -> CaptureResult {
+    public func capture(_ request: CaptureRequest) async throws -> CaptureResult {
         try await session.ensure(client)
+        let thesis = request.thesis ?? ""
+        let category = request.category
         let params: CaptureParams
-        switch source {
-        case .text: params = CaptureParams(p_thesis: thesis, p_category: category, p_source_type: "text", p_source_url: nil)
+        switch request.source {
         case .link(let url): params = CaptureParams(p_thesis: thesis, p_category: category, p_source_type: "link", p_source_url: url.absoluteString)
+        default: params = CaptureParams(p_thesis: thesis, p_category: category, p_source_type: "text", p_source_url: nil)
         }
         do {
             let rows: [CaptureRow] = try await client.rpc("capture_concept", params: params).execute().value
@@ -143,38 +145,6 @@ public struct SupabaseLumbreAPI: LumbreAPI {
         let minute = parts.dropFirst().first ?? 0
         let today = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: now) ?? now
         return today > now ? today : calendar.date(byAdding: .day, value: 1, to: today) ?? today
-    }
-}
-
-public enum LumbreAPIError: LocalizedError, Equatable {
-    case quotaExceeded
-    case tooManyCategories
-    case invalidThesis
-    case invalidCategory
-    case invalidSource
-    case unexpected
-
-    /// Traduce los errores que devuelve `capture_concept()` en el mensaje.
-    init?(serverMessage: String) {
-        switch serverMessage {
-        case "quota_exceeded": self = .quotaExceeded
-        case "too_many_categories": self = .tooManyCategories
-        case "invalid_thesis": self = .invalidThesis
-        case "invalid_category": self = .invalidCategory
-        case "invalid_source": self = .invalidSource
-        default: return nil
-        }
-    }
-
-    public var errorDescription: String? {
-        switch self {
-        case .quotaExceeded: return String(localized: "Llegaste al límite de capturas de hoy. Mañana podés seguir guardando.")
-        case .tooManyCategories: return String(localized: "Ya tenés 50 categorías. Usá una de las que tenés.")
-        case .invalidThesis: return String(localized: "La idea tiene que tener entre 1 y 600 caracteres.")
-        case .invalidCategory: return String(localized: "La categoría tiene que tener entre 1 y 40 caracteres.")
-        case .invalidSource: return String(localized: "Revisá el link: no parece válido.")
-        case .unexpected: return String(localized: "Algo salió mal. Probá de nuevo.")
-        }
     }
 }
 
@@ -342,4 +312,38 @@ private struct ProfileRow: Decodable {
     enum CodingKeys: String, CodingKey {
         case sparkHour = "spark_hour"
     }
+}
+
+// MARK: - Pendiente (se completa con el cliente de las Edge Functions)
+
+extension SupabaseLumbreAPI {
+    public func profile() async throws -> Profile { throw LumbreAPIError.unexpected }
+    public func updateProfile(_ update: ProfileUpdate) async throws -> Profile { throw LumbreAPIError.unexpected }
+    public func credits() async throws -> [Credit] { throw LumbreAPIError.unexpected }
+    public func deleteAccount() async throws { throw LumbreAPIError.unexpected }
+    public func exportData() async throws -> Data { throw LumbreAPIError.unexpected }
+    public func registerPushToken(_ token: String, sandbox: Bool) async throws { throw LumbreAPIError.unexpected }
+    public func today() async throws -> TodayState { throw LumbreAPIError.unexpected }
+    public func revealSpark(id: Spark.ID) async throws { throw LumbreAPIError.unexpected }
+    public func requestSpark(pick: (Concept.ID, Concept.ID)?) async throws -> Spark { throw LumbreAPIError.unexpected }
+    public func spark(id: Spark.ID) async throws -> Spark { throw LumbreAPIError.unexpected }
+    public func reportSpark(id: Spark.ID, reason: ReportReason, note: String?) async throws { throw LumbreAPIError.unexpected }
+    public func searchConcepts(_ query: String) async throws -> [Concept] { throw LumbreAPIError.unexpected }
+    public func concept(id: Concept.ID) async throws -> Concept { throw LumbreAPIError.unexpected }
+    public func sparks(withConcept id: Concept.ID) async throws -> [Spark] { throw LumbreAPIError.unexpected }
+    public func updateConcept(id: Concept.ID, _ update: ConceptUpdate) async throws -> Concept { throw LumbreAPIError.unexpected }
+    public func deleteConcept(id: Concept.ID) async throws { throw LumbreAPIError.unexpected }
+    public func renameCategory(id: Category.ID, to name: String) async throws { throw LumbreAPIError.unexpected }
+    public func deleteCategory(id: Category.ID) async throws { throw LumbreAPIError.unexpected }
+    public func projects() async throws -> [Project] { throw LumbreAPIError.unexpected }
+    public func createProject(name: String) async throws -> Project { throw LumbreAPIError.unexpected }
+    public func renameProject(id: Project.ID, to name: String) async throws { throw LumbreAPIError.unexpected }
+    public func deleteProject(id: Project.ID) async throws { throw LumbreAPIError.unexpected }
+    public func sparks(inProject id: Project.ID) async throws -> [Spark] { throw LumbreAPIError.unexpected }
+    public func exportProjectMarkdown(id: Project.ID) async throws -> String { throw LumbreAPIError.unexpected }
+    public func plannerMessages(sparkID: Spark.ID) async throws -> [PlannerMessage] { throw LumbreAPIError.unexpected }
+    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode) -> AsyncThrowingStream<String, Error> {
+        AsyncThrowingStream { $0.finish(throwing: LumbreAPIError.unexpected) }
+    }
+    public func setPlanForDevelopment(_ plan: Plan) async throws { throw LumbreAPIError.unexpected }
 }

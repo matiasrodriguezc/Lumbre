@@ -121,10 +121,10 @@ struct TodayView: View {
 
     private func load() async {
         do {
-            async let spark = api.todaySpark()
-            async let quota = api.sparkQuota()
+            async let today = api.today()
             async let recent = api.recentSparks()
-            (self.spark, self.quota, self.recent) = try await (spark, quota, recent)
+            let (state, recentSparks) = try await (today, recent)
+            (self.spark, self.quota, self.recent) = (state.spark, state.quota, recentSparks)
             loadError = nil
             isSaved = self.spark?.status == .saved
         } catch {
@@ -137,8 +137,8 @@ struct TodayView: View {
         withAnimation(.snappy) { isSaved = true }
         Task {
             do {
-                try await api.saveSpark(id: spark.id)
-                quota = try await api.sparkQuota()
+                try await api.saveSpark(id: spark.id, projectID: nil)
+                quota = try await api.today().quota
             } catch {
                 withAnimation(.snappy) { isSaved = false }
             }
