@@ -1,36 +1,29 @@
 import LumbreDesign
 import SwiftUI
 
-enum AppTab: Hashable {
-    case today, vault, projects, profile
-    /// No es un destino: abre la sheet de Capturar.
-    case capture
-}
-
 /// Barra flotante con los cuatro destinos y el botón Capturar separado a la derecha.
 /// En iOS 26 el sistema ubica la pestaña con `role: .search` aparte, en su propio círculo de Liquid Glass;
 /// acá se usa ese lugar para Capturar y la selección se intercepta para abrir la sheet.
 struct RootView: View {
-    @State private var selection: AppTab = .today
-    @State private var isCapturing = false
-    @State private var dataVersion = 0
+    @Environment(AppModel.self) private var appModel
 
     var body: some View {
+        @Bindable var appModel = appModel
         tabs
-            .environment(\.dataVersion, dataVersion)
-            .sheet(isPresented: $isCapturing) {
-                CaptureSheet { dataVersion += 1 }
+            .environment(\.dataVersion, appModel.dataVersion)
+            .sheet(item: Binding(get: { appModel.captureEntry.map(CaptureEntry.init) }, set: { appModel.captureEntry = $0?.id })) { _ in
+                CaptureSheet { appModel.dataChanged() }
             }
     }
 
     private var selectionBinding: Binding<AppTab> {
         Binding(
-            get: { selection },
+            get: { appModel.selectedTab },
             set: { newValue in
                 if newValue == .capture {
-                    isCapturing = true
+                    appModel.presentCapture(entry: "fab")
                 } else {
-                    selection = newValue
+                    appModel.selectedTab = newValue
                 }
             }
         )
@@ -69,8 +62,13 @@ private struct MinimizeTabBarOnScroll: ViewModifier {
     }
 }
 
+private struct CaptureEntry: Identifiable {
+    let id: String
+}
+
 #Preview {
     RootView()
+        .environment(AppModel())
         .preferredColorScheme(.dark)
         .tint(Palette.accentText)
 }

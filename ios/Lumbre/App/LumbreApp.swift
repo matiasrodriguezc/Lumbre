@@ -6,6 +6,7 @@ import SwiftUI
 struct LumbreApp: App {
     @AppStorage("theme") private var theme: ThemePreference = .dark
     private let api = AppEnvironment.makeAPI()
+    @State private var appModel = AppModel()
 
     init() {
         LumbreAppearance.configure()
@@ -15,6 +16,7 @@ struct LumbreApp: App {
         WindowGroup {
             RootView()
                 .environment(\.api, api)
+                .environment(appModel)
                 .preferredColorScheme(theme.colorScheme)
                 .tint(Palette.accentText)
         }
