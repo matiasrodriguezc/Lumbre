@@ -30,12 +30,12 @@ struct ProjectsView: View {
                     list
                 }
             }
-            .background(Palette.bg)
-            .navigationTitle("Proyectos")
+            .neuralBackground()
+            .navigationTitle("Circuitos")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: startCreating) {
-                        Label("Nuevo proyecto", systemImage: "folder.badge.plus")
+                        Label("Nuevo circuito", systemImage: "folder.badge.plus")
                     }
                 }
             }
@@ -50,14 +50,14 @@ struct ProjectsView: View {
             .onAppear { Analytics.screen("projects") }
             .projectEditor($editor) { await load() }
             .confirmationDialog(
-                "¿Borrar este proyecto?",
+                "¿Borrar este circuito?",
                 isPresented: Binding(get: { deleting != nil }, set: { if !$0 { deleting = nil } }),
                 titleVisibility: .visible,
                 presenting: deleting
             ) { project in
-                Button("Borrar proyecto", role: .destructive) { delete(project) }
+                Button("Borrar circuito", role: .destructive) { delete(project) }
             } message: { _ in
-                Text("Sus ideas quedan guardadas, sin proyecto.")
+                Text("Sus ideas quedan guardadas, sin circuito.")
             }
         }
     }
@@ -89,7 +89,7 @@ struct ProjectsView: View {
                 }
             } footer: {
                 if !appModel.isPro && !projects.isEmpty {
-                    Text("Con el plan gratis tenés un proyecto. Con Pro, todos los que quieras.")
+                    Text("Con el plan gratis tenés un circuito. Con Pro, todos los que quieras.")
                 }
             }
             if let actionError {
@@ -106,11 +106,11 @@ struct ProjectsView: View {
 
     private var emptyState: some View {
         ContentUnavailableView {
-            Label("Todavía no hay proyectos", systemImage: "square.grid.2x2")
+            EmptyStateLabel("Todavía no hay circuitos", systemImage: "square.grid.2x2", illustration: .emptyCircuits)
         } description: {
-            Text("Un proyecto junta las ideas que querés llevar adelante. Creá uno o guardá una chispa desde Hoy y elegí dónde sumarla.")
+            Text("Un circuito junta las ideas que querés llevar adelante. Creá uno o guardá una chispa desde Hoy y elegí dónde sumarla.")
         } actions: {
-            Button("Crear proyecto", action: startCreating)
+            Button("Crear circuito", action: startCreating)
                 .buttonStyle(.lumbre(.secondary))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -153,7 +153,7 @@ private struct ProjectRow: View {
 
     var body: some View {
         HStack(spacing: Space.s3) {
-            Image(systemName: "square.grid.2x2")
+            SectionIcon(.circuit)
                 .foregroundStyle(Palette.inkMuted)
                 .frame(width: 28)
                 .accessibilityHidden(true)
@@ -208,14 +208,14 @@ private struct ProjectEditorModifier: ViewModifier {
                 isPresented: Binding(get: { editor != nil }, set: { if !$0 { editor = nil } }),
                 presenting: editor
             ) { current in
-                TextField("Nombre del proyecto", text: $name)
+                TextField("Nombre del circuito", text: $name)
                 Button("Cancelar", role: .cancel) {}
                 Button(current.isCreate ? "Crear" : "Guardar") { save(current) }
             }
             .onChange(of: editor?.id) {
                 if case .rename(let project) = editor { name = project.name } else { name = "" }
             }
-            .alert("No pudimos guardar el proyecto", isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
+            .alert("No pudimos guardar el circuito", isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
                 Button("Aceptar", role: .cancel) {}
             } message: {
                 Text(errorMessage ?? "")
@@ -223,8 +223,8 @@ private struct ProjectEditorModifier: ViewModifier {
     }
 
     private var title: LocalizedStringKey {
-        if case .rename = editor { return "Renombrar proyecto" }
-        return "Nuevo proyecto"
+        if case .rename = editor { return "Renombrar circuito" }
+        return "Nuevo circuito"
     }
 
     private func save(_ current: ProjectEditor) {

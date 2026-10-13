@@ -1,7 +1,8 @@
 # NeuralIllustration
 Ilustraciones de estados vacíos: cada una dice en qué punto de la red está el usuario.
 
-- `emptyVault`: una neurona sola. Bóveda vacía o pocas ideas para combinar.
+- `emptyVault`: una neurona sola. Red vacía o pocas neuronas para conectar.
+- `emptyCircuits`: tres neuronas con una conexión abierta. Todavía no hay circuitos.
 - `beforeSpark`: dos neuronas que se buscan, sin tocarse. Hoy no hubo un buen par.
 - `offline`: un axón cortado. Sin conexión.
 - Van arriba del título del estado vacío, en lugar del símbolo del sistema, a unos 180pt de ancho. El consumidor provee título, mensaje (con dirección, no disculpas) y acción.

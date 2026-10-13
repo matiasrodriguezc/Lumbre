@@ -255,7 +255,7 @@ struct PushStepView: View {
                 }
                 Text("Tu chispa de hoy está lista")
                     .font(.subheadline)
-                Text("Dos ideas de tu bóveda chocaron. Entrá a ver qué salió.")
+                Text("Dos neuronas de tu red se conectaron. Entrá a ver qué chispa salió.")
                     .font(.subheadline)
                     .foregroundStyle(Palette.inkMuted)
             }

@@ -96,7 +96,7 @@ struct SparkActions: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 if FeatureFlag.projects.isEnabled {
                     Button("Mover") { isChoosingProject = true }
-                        .accessibilityLabel("Mover a otro proyecto")
+                        .accessibilityLabel("Mover a otro circuito")
                         .buttonStyle(.lumbre(.secondary))
                 }
             }

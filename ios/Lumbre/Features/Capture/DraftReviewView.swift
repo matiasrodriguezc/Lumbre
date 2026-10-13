@@ -33,7 +33,7 @@ struct DraftReviewView: View {
             .padding(Space.s4)
         }
         .background(Palette.surface)
-        .navigationTitle("Revisá el concepto")
+        .navigationTitle("Revisá la neurona")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
         .onAppear { Analytics.screen("capture_review") }
@@ -113,7 +113,7 @@ private struct DraftCard: View {
         .confirmationDialog("¿Descartar este borrador?", isPresented: $confirmDiscard, titleVisibility: .visible) {
             Button("Descartar", role: .destructive) { discard() }
         } message: {
-            Text("El concepto no se guarda en tu bóveda.")
+            Text("La neurona no se guarda en tu red.")
         }
         .sheet(isPresented: $changeCategory) {
             CategoryChangeSheet(current: current.category?.name) { name in
@@ -226,10 +226,10 @@ struct CaptureResultsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: Space.s3) {
-                Text("Guardamos \(concepts.count) conceptos")
+                Text("Guardamos \(concepts.count) neuronas")
                     .lumbreDisplay(.title2)
                     .accessibilityAddTraits(.isHeader)
-                Text("Salieron de lo que capturaste. Ya están en tu bóveda.")
+                Text("Salieron de lo que capturaste. Ya están en tu red.")
                     .font(.callout)
                     .foregroundStyle(Palette.inkMuted)
                 ForEach(concepts) { concept in
@@ -256,7 +256,7 @@ struct SavedWithoutDistillView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Space.s4) {
-            Label("Concepto guardado", systemImage: "checkmark.circle")
+            Label("Neurona guardada", systemImage: "checkmark.circle")
                 .font(.headline)
                 .foregroundStyle(Palette.success)
             Text("Lo guardamos sin destilar")

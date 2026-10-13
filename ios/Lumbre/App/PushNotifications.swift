@@ -107,7 +107,7 @@ enum SparkReminder {
 
         let content = UNMutableNotificationContent()
         content.title = String(localized: "Tu chispa de hoy está lista")
-        content.body = String(localized: "Dos ideas de tu bóveda chocaron. Entrá a ver qué salió.")
+        content.body = String(localized: "Dos neuronas de tu red se conectaron. Entrá a ver qué chispa salió.")
         content.sound = .default
         content.userInfo = ["type": "daily_spark"]
 

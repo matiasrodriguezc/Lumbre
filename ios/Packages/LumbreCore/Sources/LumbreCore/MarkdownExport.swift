@@ -6,7 +6,7 @@ public enum MarkdownExport {
     public static func project(name: String, sparks: [Spark], plans: [Spark.ID: [PlannerMessage]]) -> String {
         var lines = ["# \(name)", ""]
         if sparks.isEmpty {
-            lines.append(String(localized: "Todavía no hay ideas en este proyecto."))
+            lines.append(String(localized: "Todavía no hay ideas en este circuito."))
         }
         for spark in sparks {
             lines.append(contentsOf: self.spark(spark, level: 2))

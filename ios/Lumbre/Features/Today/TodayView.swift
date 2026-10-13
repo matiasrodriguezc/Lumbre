@@ -32,7 +32,7 @@ struct TodayView: View {
                 .padding(.horizontal, Space.s4)
                 .padding(.bottom, Space.s8)
             }
-            .background(Palette.bg)
+            .neuralBackground()
             .navigationTitle("Hoy")
             .sparkDestinations()
             .task(id: dataVersion) { await load() }
@@ -135,7 +135,7 @@ struct TodayView: View {
     }
 
     private func earnText(_ count: Int) -> Text {
-        Text("Guardá ^[\(count) concepto](inflect: true) para ganar 1 extra")
+        Text("Guardá ^[\(count) neurona](inflect: true) para ganar 1 extra")
     }
 
     // MARK: Extras
@@ -174,7 +174,7 @@ struct TodayView: View {
                     .font(.callout)
                     .foregroundStyle(Palette.inkMuted)
             } else if !appModel.isGuest {
-                Text("Cada 3 conceptos que guardás hoy ganás una chispa extra, hasta 2 por día.")
+                Text("Cada 3 neuronas que guardás hoy ganás una chispa extra, hasta 2 por día.")
                     .font(.callout)
                     .foregroundStyle(Palette.inkMuted)
                     .fixedSize(horizontal: false, vertical: true)
@@ -190,7 +190,7 @@ struct TodayView: View {
                     .frame(minHeight: 44)
                 }
             } else {
-                Text("Creá tu cuenta para ganar chispas extra guardando conceptos.")
+                Text("Creá tu cuenta para ganar chispas extra guardando neuronas.")
                     .font(.callout)
                     .foregroundStyle(Palette.inkMuted)
             }
@@ -234,12 +234,12 @@ struct TodayView: View {
                 Text("Te quedan pocas combinaciones nuevas")
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Palette.ink)
-                Text("Guardá algunos conceptos más para que las chispas sigan sorprendiendo.")
+                Text("Guardá algunas neuronas más para que las chispas sigan sorprendiendo.")
                     .font(.footnote)
                     .foregroundStyle(Palette.inkMuted)
                     .fixedSize(horizontal: false, vertical: true)
                 if showsCapture {
-                    Button("Capturar conceptos") { appModel.presentCapture(entry: "earn_extra") }
+                    Button("Capturar neuronas") { appModel.presentCapture(entry: "earn_extra") }
                         .buttonStyle(.lumbre(.secondary))
                 }
             }
@@ -275,12 +275,12 @@ struct TodayView: View {
                             illustration: fewConcepts ? .emptyVault : .beforeSpark)
         } description: {
             if fewConcepts {
-                Text("Guardá algunos conceptos de temas distintos: una frase, un link o una nota de voz. Con eso Lumbre enciende tu primera chispa.")
+                Text("Guardá algunas neuronas de temas distintos: una frase, un link o una nota de voz. Con eso Lumbre enciende tu primera chispa.")
             } else {
-                Text("Guardá conceptos de otros temas. Los choques entre mundos distintos dan las mejores chispas.")
+                Text("Guardá neuronas de otros temas. Las conexiones entre mundos distintos dan las mejores chispas.")
             }
         } actions: {
-            Button("Capturar conceptos") { appModel.presentCapture(entry: "earn_extra") }
+            Button("Capturar neuronas") { appModel.presentCapture(entry: "earn_extra") }
                 .buttonStyle(.lumbre(.secondary))
         }
         .onAppear { trackEmpty(fewConcepts ? "few_concepts" : "no_candidates") }

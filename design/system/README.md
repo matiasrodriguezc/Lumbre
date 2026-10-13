@@ -1,21 +1,22 @@
-Lumbre es una app de creatividad por recombinación: absorbés ideas, la IA las destila en conceptos atómicos y todos los días hace chocar dos de ellos para que salte una chispa. La app se llama Lumbre; lo que genera cada día es una chispa. El sistema existe para que ese choque sea lo único que brilla. Todo lo demás es noche tranquila.
+Lumbre es una app de creatividad por recombinación: absorbés ideas, la IA las destila en neuronas (ideas atómicas) y todos los días conecta dos de ellas para que salte una chispa. La app se llama Lumbre; lo que genera cada día es una chispa. El sistema existe para que ese choque sea lo único que brilla. Todo lo demás es noche tranquila.
 
 ## Principios
 
 - **Una sola chispa por pantalla.** `spark` (#FF3EA5) aparece en un único elemento protagonista: la chispa del día, el CTA principal o el contador. Si hay dos cosas magenta, una sobra.
 - **Noche primero.** El tema `dark` es el default y el de marca. El tema `light` es la misma interfaz a la luz del día, no otra marca.
 - **Nativo antes que idéntico.** iOS y Android comparten tokens, copy, ilustraciones y la tarjeta de la chispa. La navegación, los controles del sistema, la tipografía de texto, los gestos y los sheets son los de cada plataforma.
-- **El concepto es el átomo.** La unidad visual es la tarjeta de concepto (título, tesis, dominio, fuente). Todo lo que el usuario guarda se muestra así, nunca como texto crudo.
+- **La neurona es el átomo.** La unidad visual es la tarjeta de neurona (componente ConceptCard: título, tesis, dominio, fuente). Todo lo que el usuario guarda se muestra así, nunca como texto crudo.
 
 ## Voz y contenido
 
 - Rioplatense neutro con voseo: "Elegí tu perfil", "Guardá esta idea", "Te queda 1 chispa hoy". En otros idiomas, tono equivalente: directo y cálido.
 - Sentence case siempre. Nada de MAYÚSCULAS en labels ni botones.
-- Los botones dicen exactamente qué pasa y mantienen el nombre en todo el flujo: "Guardar concepto" → toast "Concepto guardado".
-- La chispa se escribe como un choque: "Podcast × ruinas", "Ciclones × aspiradoras". Usá el signo × entre los dos conceptos, con espacios.
-- Vacíos y errores dan dirección, no disculpas: "Todavía no hay conceptos. Guardá una frase, un link o una nota de voz para tener material que combinar."
+- Los botones dicen exactamente qué pasa y mantienen el nombre en todo el flujo: "Guardar neurona" → toast "Neurona guardada".
+- La chispa se escribe como un choque: "Podcast × ruinas", "Ciclones × aspiradoras". Usá el signo × entre las dos neuronas, con espacios.
+- Vacíos y errores dan dirección, no disculpas: "Todavía no hay neuronas. Guardá una frase, un link o una nota de voz para tener material que conectar."
 - Sin emoji decorativos en UI. Los perfiles se identifican con íconos del sistema (SF Symbols / Material Symbols), no con emoji.
-- La palabra "IA" se usa poco: el usuario "destila" un concepto y "enciende" una chispa.
+- La palabra "IA" se usa poco: el usuario "destila" una neurona y "enciende" una chispa.
+- Vocabulario neuronal: **neurona** (la idea guardada, femenino: "la neurona", "Neurona guardada"), **Red** (todas sus neuronas; antes Bóveda), **Circuitos** (antes Proyectos), **chispa** (la sinapsis que se enciende). Dos neuronas "se conectan"; no se usan "axón", "dendrita" ni vocabulario médico en la interfaz.
 
 ## Color
 
@@ -33,7 +34,7 @@ Lumbre es una app de creatividad por recombinación: absorbés ideas, la IA las 
 ## Tipografía
 
 - Dos familias con roles fijos. `display` = Fraunces (serif variable, OFL, se empaqueta en ambas apps) para la marca: el wordmark, `spark-hero`, `counter`, `title-1`, `title-2`. `text` = la fuente del sistema (SF Pro en iOS, Roboto Flex/Roboto en Android) para todo lo demás: `headline`, `body`, `callout`, `caption`.
-- El contraste es intencional: una serif cálida de fuego de hogar y una sans nativa y precisa conviven y dan algo nuevo, igual que los dos conceptos que chocan.
+- El contraste es intencional: una serif cálida de fuego de hogar y una sans nativa y precisa conviven y dan algo nuevo, igual que las dos neuronas que se conectan.
 - Fraunces solo a 20pt o más. Nunca en botones, chips, listas, tabs, campos ni texto corrido.
 - Usá el archivo variable con `opsz` automático, peso 600 y el eje `SOFT` en 100 (curvas blandas). El eje `WONK` en 1 queda reservado al wordmark y al título de la chispa.
 - Números en Fraunces siempre con `lining-nums tabular-nums`.
@@ -49,7 +50,7 @@ Lumbre es una app de creatividad por recombinación: absorbés ideas, la IA las 
 
 ## Movimiento y háptica
 
-- Un solo momento coreografiado: el reveal de la chispa, contado como una sinapsis. Los dos conceptos entran desde los costados (0–250ms), cada uno estira su terminal hacia el centro (150–550ms), un impulso `info-text` cruza cada terminal (450–650ms) y a los 650ms se enciende la estrella con `glow-spark` y un háptico `.success` (iOS) / `CONFIRM` (Android). El título sube hasta los 900ms.
+- Un solo momento coreografiado: el reveal de la chispa, contado como una sinapsis. Las dos neuronas entran desde los costados (0–250ms), cada uno estira su terminal hacia el centro (150–550ms), un impulso `info-text` cruza cada terminal (450–650ms) y a los 650ms se enciende la estrella con `glow-spark` y un háptico `.success` (iOS) / `CONFIRM` (Android). El título sube hasta los 900ms.
 - El pulso: indicador de carga propio solo para destilar y encender. Un impulso recorre un axón en 1,2s. Para cualquier otra carga, el spinner del sistema.
 - Resto de transiciones: las del sistema (push, sheet, predictive back). No inventes transiciones propias para navegación. La red de fondo nunca se anima.
 - Con Reducir movimiento activado, el reveal es un fundido de 200ms sin escala ni rebote, y el pulso queda quieto.
@@ -57,12 +58,12 @@ Lumbre es una app de creatividad por recombinación: absorbés ideas, la IA las 
 ## Iconografía
 
 - iOS: SF Symbols. Android: Material Symbols Rounded (peso 400, relleno 0; relleno 1 en el tab activo).
-- Equivalencias base: Hoy `sparkles` / `auto_awesome`; Bóveda `square.stack.3d.up` / `stacks`; Capturar `plus` / `add`; Proyectos `square.grid.2x2` / `dashboard`; Perfil `person.crop.circle` / `account_circle`.
+- Pestañas con íconos propios en el facetado de la marca (generados en `identidad/generar.py`, imagesets de plantilla en la app): Hoy `tab-hoy` (una neurona), Red `tab-red` (neuronas conectadas), Circuitos `tab-circuitos` (un circuito cerrado). Perfil `brain.head.profile` / `psychology`; Capturar `plus` / `add`. En Android, los tres primeros como vector drawables desde los mismos SVG.
 - La estrella de cuatro puntas representa la chispa del día y solo se usa para eso. La neurona es de marca y no aparece como ícono de interfaz.
 
 ## Logo
 
-- El símbolo es una neurona plana: soma, cinco dendritas y un axón largo que termina en tres botones. Cada concepto es una neurona; la chispa es lo que pasa cuando dos se conectan.
+- El símbolo es una neurona plana: soma, cinco dendritas y un axón largo que termina en tres botones. Cada idea guardada es una neurona; la chispa es lo que pasa cuando dos se conectan.
 - Dos versiones. **Largo** (`lumbre-mark.svg`): horizontal, con el axón hacia el wordmark; para wordmark, splash y web; mínimo 64px de ancho. **Compacto** (`lumbre-mark-compacto.svg`): el axón se curva hacia abajo para llenar un cuadrado; para ícono, avatares, favicon y notificaciones; mínimo 24px.
 - Ícono de app: el compacto en `cream` sobre `night`, en cuadrado a sangre (cada sistema aplica su máscara), con el núcleo en `spark`. `lumbre-app-icon-mono.svg` es la base para tinted (iOS) y monochrome (Android).
 - Wordmark: "Lumbre" en Fraunces 600 con SOFT 100, en `ink`, seguido de un punto `spark`. El punto es parte de la marca. La neurona va en `ink`, sin núcleo magenta, para que el punto sea el único.
@@ -71,14 +72,14 @@ Lumbre es una app de creatividad por recombinación: absorbés ideas, la IA las 
 
 ## Mundo neuronal
 
-La identidad sale de una sola metáfora: concepto = neurona, bóveda = red, chispa = sinapsis que se enciende, destilar = un impulso que recorre un axón, proyecto = circuito. La guía visual completa, con ejemplos en los dos temas, está en `identidad.html`.
+La identidad sale de una sola metáfora: idea guardada = neurona, Red = todas tus neuronas, chispa = sinapsis que se enciende, destilar = un impulso que recorre un axón, Circuito = proyecto. La guía visual completa, con ejemplos en los dos temas, está en `identidad.html`.
 
-- **La metáfora se ve, no se dice.** En la interfaz no aparecen "neurona", "sinapsis", "axón" ni vocabulario médico. Se sigue destilando y encendiendo.
+- **La metáfora se ve y se dice.** Neurona, Red y Circuitos son los nombres de la interfaz (ver Voz y contenido). "Chispa" se mantiene; "sinapsis", "axón" y "dendrita" quedan para el sistema gráfico, no para el copy.
 - **Facetado orgánico.** Todo lo gráfico se dibuja como el símbolo: ramas que nacen gruesas y se afinan o terminan en un botón redondo, uniones blandas y un contorno hecho de tramos rectos cortos. Solo rellenos planos: sin degradés, brillos ni contornos.
 - **Color por rol, sin colores nuevos.** Neurona dormida `surface-alt`; conexión `border`; neurona encendida `ink`; impulso `info-text`; sinapsis encendida `spark` (una por pantalla). Así la ilustración funciona igual en los dos temas.
-- **La sinapsis** (`identidad/sinapsis.svg`): dos terminales enfrentadas con la estrella en el hueco. Es la ilustración del momento chispa: va entre los dos conceptos de la SparkCard (56–64pt de ancho), en el reveal y en la tarjeta para compartir. Sin estrella, es el estado de espera hasta la próxima chispa.
-- **La red** (`identidad/red-*.svg`): neuronas dormidas unidas a sus vecinas. Va en splash, onboarding, encabezado de Hoy, tarjeta para compartir, widget grande y estados vacíos. Nunca detrás de listas, formularios o texto corrido, nunca animada y con un solo par encendido por pantalla como máximo.
-- **Estados vacíos** (`identidad/estado-*.svg`): bóveda vacía (una neurona sola), antes de la chispa (dos que se buscan) y sin conexión (un axón cortado).
+- **La sinapsis** (`identidad/sinapsis.svg`): dos terminales enfrentadas con la estrella en el hueco. Es la ilustración del momento chispa: va entre las dos neuronas de la SparkCard (56–64pt de ancho), en el reveal y en la tarjeta para compartir. Sin estrella, es el estado de espera hasta la próxima chispa.
+- **La red** (`identidad/red-*.svg`): neuronas dormidas unidas a sus vecinas. Es el fondo de todas las pantallas: una franja arriba, detrás del título grande, que se desvanece hacia el contenido (iOS: `.neuralBackground()` en lugar de `.background(Palette.bg)`). A pantalla completa solo en el splash y la tarjeta para compartir. Nunca animada, nunca a pleno detrás de listas o texto corrido, y con un solo par encendido por pantalla como máximo.
+- **Estados vacíos** (`identidad/estado-*.svg`): red vacía (una neurona sola), antes de la chispa (dos que se buscan), sin circuitos (una conexión abierta) y sin conexión (un axón cortado).
 - Todo se genera con `identidad/generar.py` (requiere shapely). Para cambiar una forma, editá el script y regenerá; no edites los SVG a mano.
 - Los SVG de `identidad/` no tienen fondo y pintan cada parte por su clase de rol (`n-dormant`, `n-link`, `n-active`, `n-impulse`, `n-spark`), que toma los tokens del tema. Sueltos usan los valores del tema oscuro, así que sobre blanco la neurona crema casi no se ve.
 

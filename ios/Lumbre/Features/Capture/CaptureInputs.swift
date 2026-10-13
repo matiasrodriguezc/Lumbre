@@ -343,7 +343,7 @@ struct DistillToggle: View {
                 .font(.footnote)
                 .foregroundStyle(Palette.inkMuted)
         case .pro:
-            Text("Lumbre lee el contenido y saca de 1 a 3 conceptos.")
+            Text("Lumbre lee el contenido y saca de 1 a 3 neuronas.")
                 .font(.footnote)
                 .foregroundStyle(Palette.inkMuted)
         case .trials(let remaining, _) where remaining > 0:

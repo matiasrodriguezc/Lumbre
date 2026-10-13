@@ -1,5 +1,5 @@
 # Chip
-Pill para dominios de un concepto, filtros de la bóveda y selección múltiple.
+Pill para dominios de una neurona, filtros de la Red y selección múltiple.
 
 - Variantes: `static` (dominio, fondo `surface-alt`), `select` (filtro sin elegir, borde `border-strong`) y `on` (elegido: `accent-soft` + `accent-text` + borde `accent`).
 - El consumidor provee: label corto (1–2 palabras), ícono opcional, estado.

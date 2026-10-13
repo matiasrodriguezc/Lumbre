@@ -41,7 +41,7 @@ struct ConceptEditSheet: View {
             }
             .foregroundStyle(Palette.ink)
             .background(Palette.surface)
-            .navigationTitle("Editar concepto")
+            .navigationTitle("Editar neurona")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -146,7 +146,7 @@ struct CombinePickerSheet: View {
                 }
             }
             .background(Palette.surface)
-            .searchable(text: $filter, placement: .navigationBarDrawer(displayMode: .always), prompt: "Filtrar conceptos")
+            .searchable(text: $filter, placement: .navigationBarDrawer(displayMode: .always), prompt: "Filtrar neuronas")
             .navigationTitle("Combinar con…")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

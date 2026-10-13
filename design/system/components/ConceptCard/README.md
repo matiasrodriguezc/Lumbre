@@ -1,5 +1,5 @@
 # ConceptCard
-El átomo de la bóveda: un concepto destilado con título, tesis en una frase, dominio y fuente.
+El átomo de la red: una neurona destilada con título, tesis en una frase, dominio y fuente.
 
 - El consumidor provee: dominio (chip), título (`headline`), tesis (`callout`, una frase), fuente y fecha (`caption` en `ink-muted`).
 - Estado "destilando": título y tesis como placeholders con shimmer del sistema (`redacted(reason: .placeholder)` en iOS, placeholder de Compose en Android).

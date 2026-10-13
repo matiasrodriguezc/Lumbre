@@ -23,7 +23,7 @@ struct WelcomeStepView: View {
                         .foregroundStyle(Palette.ink)
                         .accessibilityAddTraits(.isHeader)
                         .fixedSize(horizontal: false, vertical: true)
-                    Text("Guardá lo que te inspira. Cada mañana, dos de tus ideas chocan y aparece una nueva.")
+                    Text("Guardá lo que te inspira. Cada mañana, dos de tus neuronas se conectan y salta una chispa.")
                         .font(.title3)
                         .foregroundStyle(Palette.ink)
                         .fixedSize(horizontal: false, vertical: true)
@@ -49,7 +49,7 @@ struct WelcomeStepView: View {
             .padding(.bottom, Space.s2)
             .background(Palette.bg)
         }
-        .background(Palette.bg)
+        .neuralBackground()
         .toolbar(.hidden, for: .navigationBar)
         .onAppear {
             Analytics.screen(OnboardingStep.welcome.screenName)

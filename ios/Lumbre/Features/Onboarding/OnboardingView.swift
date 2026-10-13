@@ -67,7 +67,7 @@ struct OnboardingScaffold<Content: View, Footer: View>: View {
             .padding(.bottom, Space.s2)
             .background(Palette.bg)
         }
-        .background(Palette.bg)
+        .neuralBackground()
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { Analytics.screen(step.screenName) }
     }

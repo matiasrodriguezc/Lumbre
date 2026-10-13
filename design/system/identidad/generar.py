@@ -393,6 +393,50 @@ def write_swift(art, extras):
     print("escrito", SWIFT_OUT.relative_to(REPO), f"({SWIFT_OUT.stat().st_size // 1024} KB)")
 
 
+# ---------- íconos de pestañas ----------
+
+def tab_icons():
+    """Íconos de pestaña en el mismo facetado, más gruesos para leerse a 25pt. Lienzo de 100."""
+    hoy = organic([
+        soma((40, 40), [13, 11.5, 13.5, 11.5, 12.5, 12, 11, 12.5], rot=0.3),
+        taper([(35, 31), (18, 10)], 12, 8), taper([(29, 42), (4, 38)], 12, 8),
+        taper([(34, 51), (18, 74)], 12, 8), taper([(46, 29), (52, 4)], 11, 8),
+        taper([(48, 48), (64, 62), (74, 82)], 11, 9),
+        taper([(74, 82), (70, 97)], 9, 8), taper([(74, 82), (94, 92)], 9, 8),
+    ], 3.5, 0.8)
+    nodes = [(20, 30, 11), (72, 18, 10), (84, 64, 12), (38, 82, 11), (52, 48, 9)]
+    edges = [(0, 4), (4, 1), (4, 2), (4, 3), (0, 3), (1, 2)]
+    red = organic([Point(x, y).buffer(r, 10) for x, y, r in nodes]
+                  + [taper([nodes[a][:2], nodes[b][:2]], 8, 6) for a, b in edges], 2.5, 0.8)
+    ring = [(28, 26, 12), (76, 30, 10), (72, 76, 12), (24, 72, 10)]
+    circuito = organic([Point(x, y).buffer(r, 10) for x, y, r in ring]
+                       + [taper([ring[i][:2], ring[(i + 1) % 4][:2]], 8, 7) for i in range(4)]
+                       + [taper([(72, 76), (92, 94)], 7, 6), Point(94, 96).buffer(5, 8)], 2.5, 0.8)
+    return {"tab-hoy": hoy, "tab-red": red, "tab-circuitos": circuito}
+
+
+def export_tab_icons():
+    """Imagesets vectoriales y de plantilla en el catálogo de la app (25×25 pt, como un SF Symbol en la barra)."""
+    import json
+    assets = REPO / "ios/Lumbre/Resources/Assets.xcassets"
+    previews = {}
+    for name, g in tab_icons().items():
+        tx, ty, s = fit(g, (25, 25), 0.5)
+        d = path_d(g, tx, ty, s)
+        folder = assets / f"{name}.imageset"
+        folder.mkdir(parents=True, exist_ok=True)
+        (folder / f"{name}.svg").write_text(svg(25, 25, f'<path d="{d}" fill="#000"/>'))
+        (folder / "Contents.json").write_text(json.dumps({
+            "images": [{"filename": f"{name}.svg", "idiom": "universal"}],
+            "info": {"author": "xcode", "version": 1},
+            "properties": {"preserves-vector-representation": True, "template-rendering-intent": "template"},
+        }, indent=2) + "\n")
+        print("escrito", (folder / f"{name}.svg").relative_to(REPO))
+        tx, ty, s = fit(g, (100, 100), 4)
+        previews[name] = svg(100, 100, f'<path class="n-active" d="{path_d(g, tx, ty, s)}"/>')
+    return previews
+
+
 # ---------- previews del sistema ----------
 
 def write_previews(frag):
@@ -421,11 +465,13 @@ def write_previews(frag):
             f'<div class="ch-pad"><div class="ch-pulse" role="status">{frag["axon"]}<span>Destilando…</span></div></div>')),
         "NeuralIllustration": ('<!-- @dsCard group="Identidad" height=260 -->', (
             '<div class="ch-pad">'
-            f'<div class="ch-empty">{frag["empty-vault"]}<b>Todavía no hay conceptos</b>'
+            f'<div class="ch-empty">{frag["empty-vault"]}<b>Todavía no hay neuronas</b>'
             '<span>Guardá una frase, un link o una nota de voz para tener material que combinar.</span></div>'
             f'<div class="ch-empty">{frag["empty-spark"]}<b>Hoy no encontramos un buen par</b>'
-            '<span>Guardá conceptos de otros temas. Los choques entre mundos distintos dan las mejores chispas.</span></div>'
+            '<span>Guardá neuronas de otros temas. Las conexiones entre mundos distintos dan las mejores chispas.</span></div>'
             f'<div class="ch-empty">{frag["empty-offline"]}<b>Sin conexión</b><span>Revisá tu conexión y probá de nuevo.</span></div>'
+            f'<div class="ch-empty">{frag["empty-circuits"]}<b>Todavía no hay circuitos</b>'
+            '<span>Un circuito junta las ideas que querés llevar adelante.</span></div>'
             '</div>')),
         "LumbreMark": ('<!-- @dsCard group="Identidad" height=180 -->', (
             '<div class="ch-pad" style="align-items:center;gap:var(--space-8)">'
@@ -433,6 +479,19 @@ def write_previews(frag):
             f'<div class="ch-mark" style="width:110px">{frag["mark-compact"]}</div>'
             '</div>')),
     }
+    icon = lambda k: frag[k].replace('class="n-active"', 'fill="currentColor"')
+    perfil = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">'
+              '<path d="M15.5 21v-3c2.4-.5 3.8-2.4 3.8-5 0-4.2-3.2-7.5-7.4-7.5C7.7 5.5 4.6 8.6 4.6 12.5c0 1.9.8 3.6 2 4.8V21"/>'
+              '<circle cx="11.8" cy="11.6" r="1.6" fill="currentColor" stroke="none"/><path d="M11.8 11.6 9 9.2M11.8 11.6l3-2M11.8 11.6l.4 3.2"/></svg>')
+    plus = '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>'
+    items = (f'<span class="ch-nav__i is-on">{icon("tab-hoy")}Hoy</span><span class="ch-nav__i">{icon("tab-red")}Red</span>'
+             f'<span class="ch-nav__i">{icon("tab-circuitos")}Circuitos</span><span class="ch-nav__i">{perfil}Perfil</span>')
+    stage = '<div class="ch-stage"><div class="ch-stage__bg"><div></div><div></div><div></div></div><div class="ch-float">'
+    pages["NavBar"] = ('<!-- @dsCard group="Navegación" height=400 -->', (
+        '<div class="ch-pad ch-col">\n<p class="ch-lbl">iOS: tab bar flotante de Liquid Glass + botón Capturar separado</p>\n'
+        f'{stage}<nav class="ch-nav">{items}</nav><span class="ch-add">{plus}</span></div></div>\n'
+        '<p class="ch-lbl" style="margin-top:8px">Android: barra flotante (M3 Expressive) + FAB separado</p>\n'
+        f'{stage}<nav class="ch-nav ch-nav--md">{items}</nav><span class="ch-add ch-add--md">{plus}</span></div></div>\n</div>'))
     for name, (card, body) in pages.items():
         (comp / name).mkdir(exist_ok=True)
         write(comp / name / "preview.html", card + "\n" + head.format(t=name) + body + "</body></html>\n")
@@ -570,11 +629,24 @@ def main():
                                           '<path class="n-cut" d="M114 65 L126 77 M114 77 L126 65"/>')
     cross = unary_union([LineString([(114, 65), (126, 77)]).buffer(1.25), LineString([(114, 77), (126, 65)]).buffer(1.25)])
     art["offline"] = (240, 150, [("active", cut_l), ("dormant", cut_r), ("trace", cross)])
-    for key, name in [("empty-vault", "estado-boveda-vacia"), ("empty-spark", "estado-sin-chispa"),
+    # Sin circuitos: tres neuronas; dos conexiones hechas y la tercera todavía punteada.
+    na, nb, nc = (58, 48), (182, 52), (120, 116)
+    tri = organic([small_neuron(rng, na, 11), small_neuron(rng, nb, 11), small_neuron(rng, nc, 11),
+                   taper([na, (120, 44), nb], 4.4, 3.2), taper([nb, (156, 90), nc], 4.4, 3.2)], 1.4, 0.5)
+    gap = unary_union([Point(na[0] + (nc[0] - na[0]) * t, na[1] + (nc[1] - na[1]) * t).buffer(1.2, 8)
+                       for t in (0.3, 0.4, 0.5, 0.6, 0.7)])
+    frag["empty-circuits"] = svg(240, 150, f'<path class="n-active" d="{path_d(tri)}"/><path class="n-trace" '
+                                           f'd="M{na[0] + (nc[0] - na[0]) * 0.25:.1f} {na[1] + (nc[1] - na[1]) * 0.25:.1f} '
+                                           f'L{na[0] + (nc[0] - na[0]) * 0.75:.1f} {na[1] + (nc[1] - na[1]) * 0.75:.1f}"/>')
+    art["emptyCircuits"] = (240, 150, [("active", tri), ("trace", gap)])
+
+    for key, name in [("empty-circuits", "estado-sin-circuitos"), ("empty-vault", "estado-boveda-vacia"), ("empty-spark", "estado-sin-chispa"),
                       ("empty-offline", "estado-sin-conexion")]:
         write(OUT / f"{name}.svg", frag[key].replace(">", ">" + ILLU_STYLE, 1))
 
     write_swift(art, extras)
+    for name, preview in export_tab_icons().items():
+        frag[name] = preview
     write_previews(frag)
 
     # Página de identidad.

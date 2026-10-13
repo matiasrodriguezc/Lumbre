@@ -49,7 +49,7 @@ struct PaywallView: View {
                     purchaseBar
                 }
             }
-            .background(Palette.bg)
+            .neuralBackground()
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cerrar", systemImage: "xmark") { dismiss() }
@@ -91,10 +91,10 @@ struct PaywallView: View {
 
     private var benefits: some View {
         VStack(alignment: .leading, spacing: Space.s3) {
-            benefit("Hasta 10 chispas por día, y elegís qué conceptos chocan")
+            benefit("Hasta 10 chispas por día, y elegís qué neuronas se conectan")
             benefit("Destilación automática de links, fotos y PDFs")
             benefit("Planificador para bajar cada idea a tareas")
-            benefit("Proyectos ilimitados")
+            benefit("Circuitos ilimitados")
         }
     }
 

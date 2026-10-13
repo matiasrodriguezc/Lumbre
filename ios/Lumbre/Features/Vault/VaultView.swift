@@ -29,8 +29,8 @@ struct VaultView: View {
     var body: some View {
         NavigationStack(path: $path) {
             content
-                .background(Palette.bg)
-                .navigationTitle("Bóveda")
+                .neuralBackground()
+                .navigationTitle("Red")
                 .searchable(text: $query, prompt: "Buscar ideas, no palabras")
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -113,7 +113,7 @@ struct VaultView: View {
                     conceptLink(concept, entry: "vault")
                 }
                 if !ready.isEmpty {
-                    sectionHeader("Conceptos", detail: nil)
+                    sectionHeader("Neuronas", detail: nil)
                 }
             }
             ForEach(ready) { concept in
@@ -123,7 +123,7 @@ struct VaultView: View {
                 ContentUnavailableView(
                     "Nada en esta categoría",
                     systemImage: "tag",
-                    description: Text("Elegí otra o mirá todos los conceptos.")
+                    description: Text("Elegí otra o mirá todas las neuronas.")
                 )
                 .padding(.top, Space.s8)
             }
@@ -166,7 +166,7 @@ struct VaultView: View {
             ConceptCard(concept)
         }
         .buttonStyle(.plain)
-        .accessibilityHint(Text("Abre el concepto"))
+        .accessibilityHint(Text("Abre la neurona"))
     }
 
     private func sectionHeader(_ title: LocalizedStringKey, detail: LocalizedStringKey?) -> some View {
@@ -219,7 +219,7 @@ struct VaultView: View {
 
     private var emptyVault: some View {
         ContentUnavailableView {
-            EmptyStateLabel("Todavía no hay conceptos", systemImage: "square.stack.3d.up", illustration: .emptyVault)
+            EmptyStateLabel("Todavía no hay neuronas", systemImage: "square.stack.3d.up", illustration: .emptyVault)
         } description: {
             Text("Guardá una frase, un link o una nota de voz para tener material que combinar.")
         } actions: {
@@ -291,14 +291,14 @@ struct VaultView: View {
     }
 }
 
-#Preview("Bóveda") {
+#Preview("Red") {
     VaultView()
         .environment(AppModel())
         .preferredColorScheme(.dark)
         .tint(Palette.accentText)
 }
 
-#Preview("Bóveda vacía") {
+#Preview("Red vacía") {
     VaultView()
         .environment(\.api, MockLumbreAPI(onboarded: false))
         .environment(AppModel())

@@ -48,7 +48,7 @@ struct ProfileView: View {
                 }
             }
             .scrollContentBackground(.hidden)
-            .background(Palette.bg)
+            .neuralBackground()
             .navigationTitle("Perfil")
             .navigationDestination(for: ProfileDestination.self) { destination in
                 switch destination {
@@ -75,7 +75,7 @@ struct ProfileView: View {
                 Button("Cerrar sesión", role: .destructive) { Task { await signOut() } }
             } message: {
                 if appModel.isGuest {
-                    Text("Usás Lumbre como invitado: si cerrás sesión, perdés tus ideas, chispas y proyectos.")
+                    Text("Usás Lumbre como invitado: si cerrás sesión, perdés tus neuronas, chispas y circuitos.")
                 } else {
                     Text("Tus ideas quedan guardadas en tu cuenta. Vas a poder volver a entrar cuando quieras.")
                 }
@@ -432,7 +432,7 @@ private struct CreditRow: View {
         case .sparkExtra: "Chispas extra de hoy"
         case .planner: "Planificador este mes"
         case .plannerDeep: "Planes profundos este mes"
-        case .projects: "Proyectos"
+        case .projects: "Circuitos"
         }
     }
 }

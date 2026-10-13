@@ -32,7 +32,7 @@ struct ProjectDetailView: View {
                     ContentUnavailableView {
                         Label("Todavía no hay ideas acá", systemImage: "bookmark")
                     } description: {
-                        Text("Cuando guardes una chispa, elegí este proyecto para sumarla.")
+                        Text("Cuando guardes una chispa, elegí este circuito para sumarla.")
                     } actions: {
                         Button("Ir a Hoy") { appModel.open(.today) }
                             .buttonStyle(.lumbre(.secondary))
@@ -61,7 +61,7 @@ struct ProjectDetailView: View {
             .padding(.horizontal, Space.s4)
             .padding(.bottom, Space.s8)
         }
-        .background(Palette.bg)
+        .neuralBackground()
         .navigationTitle(name)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -79,7 +79,7 @@ struct ProjectDetailView: View {
                     Button(role: .destructive) {
                         isDeleting = true
                     } label: {
-                        Label("Borrar proyecto", systemImage: "trash")
+                        Label("Borrar circuito", systemImage: "trash")
                     }
                 } label: {
                     Label("Más acciones", systemImage: "ellipsis")
@@ -90,10 +90,10 @@ struct ProjectDetailView: View {
         .refreshable { await load() }
         .onAppear { Analytics.screen("project_detail") }
         .projectEditor($editor) { await load() }
-        .confirmationDialog("¿Borrar este proyecto?", isPresented: $isDeleting, titleVisibility: .visible) {
-            Button("Borrar proyecto", role: .destructive, action: delete)
+        .confirmationDialog("¿Borrar este circuito?", isPresented: $isDeleting, titleVisibility: .visible) {
+            Button("Borrar circuito", role: .destructive, action: delete)
         } message: {
-            Text("Sus ideas quedan guardadas, sin proyecto.")
+            Text("Sus ideas quedan guardadas, sin circuito.")
         }
     }
 

@@ -29,7 +29,7 @@ struct SparkDetailView: View {
             .padding(.top, Space.s2)
             .padding(.bottom, Space.s8)
         }
-        .background(Palette.bg)
+        .neuralBackground()
         .navigationTitle("Chispa")
         .navigationBarTitleDisplayMode(.inline)
         .task(id: dataVersion) { await load() }
@@ -54,7 +54,7 @@ struct SparkDetailView: View {
         }
 
         VStack(alignment: .leading, spacing: Space.s3) {
-            Text("Los dos conceptos")
+            Text("Las dos neuronas")
                 .font(.headline)
                 .foregroundStyle(Palette.ink)
                 .accessibilityAddTraits(.isHeader)
@@ -95,7 +95,7 @@ struct SparkConceptCard: View {
             }
             .buttonStyle(.plain)
             .accessibilityElement(children: .combine)
-            .accessibilityHint("Abre el concepto en la bóveda")
+            .accessibilityHint("Abre la neurona en tu red")
 
             source
         }

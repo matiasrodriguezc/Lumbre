@@ -95,6 +95,7 @@ private struct SplashView: View {
 /// acá se usa ese lugar para Capturar y la selección se intercepta para abrir la sheet.
 private struct MainTabsView: View {
     @Environment(AppModel.self) private var appModel
+    @Environment(\.neuralIdentity) private var neuralIdentity
 
     var body: some View {
         tabs
@@ -121,21 +122,36 @@ private struct MainTabsView: View {
     private var tabs: some View {
         if #available(iOS 18, *) {
             TabView(selection: selectionBinding) {
-                Tab("Hoy", systemImage: "sparkles", value: .today) { TodayView() }
-                Tab("Bóveda", systemImage: "square.stack.3d.up", value: .vault) { VaultView() }
-                Tab("Proyectos", systemImage: "square.grid.2x2", value: .projects) { ProjectsView() }
-                Tab("Perfil", systemImage: "person.crop.circle", value: .profile) { ProfileView() }
+                Tab(value: .today) { TodayView() } label: { tabLabel(.today) }
+                Tab(value: .vault) { VaultView() } label: { tabLabel(.vault) }
+                Tab(value: .projects) { ProjectsView() } label: { tabLabel(.projects) }
+                Tab(value: .profile) { ProfileView() } label: { tabLabel(.profile) }
                 Tab("Capturar", systemImage: "plus", value: .capture, role: .search) { Color.clear }
             }
             .modifier(MinimizeTabBarOnScroll())
         } else {
             TabView(selection: selectionBinding) {
-                TodayView().tabItem { Label("Hoy", systemImage: "sparkles") }.tag(AppTab.today)
-                VaultView().tabItem { Label("Bóveda", systemImage: "square.stack.3d.up") }.tag(AppTab.vault)
-                ProjectsView().tabItem { Label("Proyectos", systemImage: "square.grid.2x2") }.tag(AppTab.projects)
-                ProfileView().tabItem { Label("Perfil", systemImage: "person.crop.circle") }.tag(AppTab.profile)
+                TodayView().tabItem { tabLabel(.today) }.tag(AppTab.today)
+                VaultView().tabItem { tabLabel(.vault) }.tag(AppTab.vault)
+                ProjectsView().tabItem { tabLabel(.projects) }.tag(AppTab.projects)
+                ProfileView().tabItem { tabLabel(.profile) }.tag(AppTab.profile)
                 Color.clear.tabItem { Label("Capturar", systemImage: "plus") }.tag(AppTab.capture)
             }
+        }
+    }
+}
+
+extension MainTabsView {
+    /// Pestañas de la identidad neuronal: Hoy es una neurona, Red tus neuronas conectadas, Circuitos los proyectos
+    /// y Perfil una cabeza con cerebro. Sin el flag, los símbolos del sistema de antes.
+    @ViewBuilder
+    func tabLabel(_ tab: AppTab) -> some View {
+        switch tab {
+        case .today: Label { Text("Hoy") } icon: { SectionIcon(.today) }
+        case .vault: Label { Text("Red") } icon: { SectionIcon(.network) }
+        case .projects: Label { Text("Circuitos") } icon: { SectionIcon(.circuit) }
+        case .profile: Label("Perfil", systemImage: neuralIdentity ? "brain.head.profile" : "person.crop.circle")
+        case .capture: Label("Capturar", systemImage: "plus")
         }
     }
 }

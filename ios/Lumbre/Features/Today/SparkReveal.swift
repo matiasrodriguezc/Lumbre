@@ -52,7 +52,7 @@ struct SparkHero: View {
                 Text(spark.mode == .daily ? "Tu chispa de hoy está lista" : "Tu chispa extra está lista")
                     .font(.headline)
                     .foregroundStyle(Palette.ink)
-                Text("Dos ideas tuyas de mundos distintos están por chocar.")
+                Text("Dos neuronas tuyas de mundos distintos están por conectarse.")
                     .font(.callout)
                     .foregroundStyle(Palette.inkMuted)
                     .multilineTextAlignment(.center)

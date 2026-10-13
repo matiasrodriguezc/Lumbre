@@ -33,7 +33,7 @@ La app se llama **Lumbre**. Lo que genera cada día se llama **chispa**. De la c
 
 ### Logo
 - Una neurona plana en "facetado orgánico": soma, cinco dendritas y un axón largo que termina en tres botones. Ramas que se afinan, uniones blandas y contorno en tramos rectos.
-- La historia: cada concepto es una neurona y la bóveda es una red; la chispa es la sinapsis que se enciende entre dos que nunca se habían tocado.
+- La historia: cada idea que guardás es una neurona y todas juntas son tu red; la chispa es la sinapsis que se enciende entre dos que nunca se habían tocado.
 - Dos versiones: larga (wordmark, splash, web) y compacta, con el axón curvado para llenar un cuadrado (ícono, avatares, favicon).
 - Wordmark: "Lumbre" en Fraunces 600 con curvas blandas, seguido de un punto magenta.
 - Archivos en `design/system/logo/`, generados con `design/system/identidad/generar.py`. El wordmark de los SVG depende de la fuente instalada: para el archivo final hay que pasarlo a curvas en Figma.
@@ -42,7 +42,7 @@ La app se llama **Lumbre**. Lo que genera cada día se llama **chispa**. De la c
 - Versiones anteriores descartadas: estrella de cuatro puntas (época Chispa), dos llamas cruzadas, filamento con red de nodos y filamento con espiral. Quedan en `design/system/logo/anteriores/`.
 
 ### Mundo neuronal
-- Toda la identidad gráfica sale de la misma metáfora: concepto = neurona, bóveda = red, chispa = sinapsis, destilar = impulso, proyecto = circuito. La metáfora se ve, no se dice: la interfaz no usa vocabulario de neurociencia.
+- Toda la identidad sale de la misma metáfora, y se ve y se dice. Vocabulario de la interfaz (decidido el 2026-10-13): la unidad que se guarda es una **neurona** (antes concepto), la sección donde viven es la **Red** (antes Bóveda), los proyectos son **Circuitos** y la **chispa** se mantiene: es la sinapsis que se enciende entre dos neuronas. Destilar sigue siendo destilar (visualmente, un impulso). En el código, las APIs y la base los nombres técnicos no cambian (`concepts`, `projects`, `vault`).
 - Piezas: la sinapsis (dos terminales con la estrella en el hueco) entre los conceptos de la chispa; la red de neuronas dormidas como fondo de splash, onboarding, Hoy, tarjeta para compartir y estados vacíos; el pulso como indicador de carga al destilar; y el reveal contado como sinapsis.
 - Sin colores nuevos: dormida `surface-alt`, conexión `border`, encendida `ink`, impulso `info-text`, sinapsis `spark`.
 - Guía completa en `design/system/identidad.html` y reglas en `design/system/README.md`.
@@ -68,7 +68,7 @@ Reglas clave:
 - El contraste serif cálida + sans nativa es intencional: dos mundos que conviven y dan algo nuevo.
 
 ### Navegación
-- Barra flotante con cuatro destinos (Hoy, Bóveda, Proyectos, Perfil) y, separado a su derecha, un botón + flotante para Capturar.
+- Barra flotante con cuatro destinos (Hoy, Red, Circuitos, Perfil) y, separado a su derecha, un botón + flotante para Capturar. Íconos propios: Hoy una neurona, Red neuronas conectadas, Circuitos un circuito cerrado; Perfil, una cabeza con cerebro.
 - **iOS:** `TabView` nativa, que en iOS 26 ya es flotante y de Liquid Glass, con `.tabBarMinimizeBehavior(.onScrollDown)`. El + es un botón circular con `.glassEffect` tintado en magenta dentro de un `GlassEffectContainer`. En versiones sin Liquid Glass, `.ultraThinMaterial` con la misma forma.
 - **Android:** floating toolbar de Material 3 Expressive, destino activo expandido en pill con etiqueta, inactivos solo ícono, y FAB magenta separado. La API está en evolución: verificar la versión de material3.
 
@@ -86,7 +86,7 @@ Reglas clave:
 - **Feedback "No me sirve":** con motivo (obvia, irrelevante, ya la tuve), ajusta los próximos emparejamientos.
 - **Tarjeta para compartir:** imagen vertical con la chispa y la marca, para historias. Es el loop de crecimiento.
 - **Widget:** chispa del día y captura rápida (WidgetKit y Glance).
-- **Bóveda ilimitada con búsqueda semántica.**
+- **Red ilimitada con búsqueda semántica** (antes Bóveda).
 - **Más chispas a pedido (Pro):** hasta 10 por día.
 - **Planificador (Pro):** chat anclado a cada idea con el contexto del perfil, los dos conceptos y el proyecto. Backlog, abogado del diablo, stack.
 - **Export a Markdown.**
@@ -94,7 +94,7 @@ Reglas clave:
 
 ### Versión 1.1
 - **Modo problema (Pro):** el usuario escribe un problema y Lumbre elige conceptos de su bóveda para aplicarle.
-- **Proyectos con tablero:** 1 en free, ilimitados en Pro.
+- **Circuitos con tablero** (antes Proyectos): 1 en free, ilimitados en Pro.
 - **Export a Notion, Linear y GitHub (Pro).**
 - **Videos y podcasts por link (Pro):** transcripción cuando está disponible por vías permitidas.
 - **Importar subrayados y notas:** Kindle, Apple Books, Readwise, Markdown, Notion, Apple Notes, Keep. Hasta 50 en free, ilimitado en Pro.
@@ -221,9 +221,9 @@ Las apps son clientes finos: ninguna clave de IA vive en el binario. Kotlin Mult
 | Captura | Texto y voz ilimitados; adjuntos con tu frase | Todo, con destilación automática |
 | Destilación automática | 3–5 pruebas por mes | Uso justo: 300/mes |
 | Chispas | 1 por día + hasta 2 ganadas | Hasta 10 por día, con modos elegir y problema |
-| Bóveda | Ilimitada | Ilimitada |
+| Red (neuronas guardadas) | Ilimitada | Ilimitada |
 | Planificador | — | 300 mensajes/mes (60 de plan profundo) |
-| Proyectos | 1 | Ilimitados |
+| Circuitos | 1 | Ilimitados |
 | Export | Markdown | Markdown, Notion, Linear, GitHub |
 
 - Precios regionales por país en App Store Connect y Google Play: en Argentina y LATAM, un nivel bastante más bajo que en EE. UU.

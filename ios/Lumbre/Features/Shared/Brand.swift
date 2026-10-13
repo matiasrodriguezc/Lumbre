@@ -23,6 +23,45 @@ struct Wordmark: View {
     @ScaledMetric(relativeTo: .largeTitle) private var dotSize: CGFloat = 8
 }
 
+/// Ícono de sección de la identidad neuronal: Hoy es una neurona, Red tus neuronas conectadas y Circuitos
+/// los proyectos. Sin el flag `neural_identity`, el símbolo del sistema de antes.
+struct SectionIcon: View {
+    enum Kind {
+        case today, network, circuit
+
+        var asset: String {
+            switch self {
+            case .today: "tab-hoy"
+            case .network: "tab-red"
+            case .circuit: "tab-circuitos"
+            }
+        }
+
+        var symbol: String {
+            switch self {
+            case .today: "sparkles"
+            case .network: "square.stack.3d.up"
+            case .circuit: "square.grid.2x2"
+            }
+        }
+    }
+
+    let kind: Kind
+    @Environment(\.neuralIdentity) private var neuralIdentity
+
+    init(_ kind: Kind) {
+        self.kind = kind
+    }
+
+    var body: some View {
+        if neuralIdentity {
+            Image(kind.asset)
+        } else {
+            Image(systemName: kind.symbol)
+        }
+    }
+}
+
 /// Links legales. URLs provisorias hasta que estén publicadas.
 enum LegalLinks {
     static let privacy = URL(string: "https://lumbre.app/privacidad")!

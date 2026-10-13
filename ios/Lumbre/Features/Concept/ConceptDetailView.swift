@@ -40,7 +40,7 @@ struct ConceptDetailView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .background(Palette.bg)
+        .neuralBackground()
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbar }
         .task { await load() }
@@ -72,10 +72,10 @@ struct ConceptDetailView: View {
                 appModel.open(.spark(spark.id))
             }
         }
-        .confirmationDialog("¿Borrar este concepto?", isPresented: $confirmDelete, titleVisibility: .visible) {
-            Button("Borrar concepto", role: .destructive) { delete() }
+        .confirmationDialog("¿Borrar esta neurona?", isPresented: $confirmDelete, titleVisibility: .visible) {
+            Button("Borrar neurona", role: .destructive) { delete() }
         } message: {
-            Text("Sale de tu bóveda y de las próximas chispas. No se puede deshacer.")
+            Text("Sale de tu red y de las próximas chispas. No se puede deshacer.")
         }
         .alert("No se pudo guardar", isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
             Button("Entendido", role: .cancel) {}
@@ -101,7 +101,7 @@ struct ConceptDetailView: View {
                     Button(role: .destructive) {
                         confirmDelete = true
                     } label: {
-                        Label("Borrar concepto", systemImage: "trash")
+                        Label("Borrar neurona", systemImage: "trash")
                     }
                 } label: {
                     Label("Más", systemImage: "ellipsis")
@@ -264,7 +264,7 @@ struct ConceptDetailView: View {
         section("Chispas donde aparece") {
             if let sparks {
                 if sparks.isEmpty {
-                    Text("Todavía no chocó con otro concepto. Cuando aparezca en una chispa, la vas a ver acá.")
+                    Text("Todavía no se conectó con otra neurona. Cuando aparezca en una chispa, la vas a ver acá.")
                         .font(.callout)
                         .foregroundStyle(Palette.inkMuted)
                         .fixedSize(horizontal: false, vertical: true)
@@ -324,8 +324,8 @@ struct ConceptDetailView: View {
             }
             .buttonStyle(.lumbre(.pro, fullWidth: true))
             Text(appModel.isPro
-                 ? "Elegí otro concepto y Lumbre enciende una chispa con los dos."
-                 : "Con Lumbre Pro elegís qué conceptos chocan.")
+                 ? "Elegí otra neurona y Lumbre enciende una chispa con las dos."
+                 : "Con Lumbre Pro elegís qué neuronas se conectan.")
                 .font(.footnote)
                 .foregroundStyle(Palette.inkMuted)
         }

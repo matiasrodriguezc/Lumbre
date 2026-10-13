@@ -24,7 +24,7 @@ struct CreativeProfilesEditor: View {
             }
             .padding(Space.s4)
         }
-        .background(Palette.bg)
+        .neuralBackground()
         .navigationTitle("Perfil creativo")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -102,7 +102,7 @@ struct PrivacyView: View {
                 .foregroundStyle(Palette.ink)
                 .disabled(isExporting)
             } footer: {
-                Text("Un archivo JSON con tu perfil, categorías, conceptos, chispas, proyectos y conversaciones del planificador.")
+                Text("Un archivo JSON con tu perfil, categorías, neuronas, chispas, circuitos y conversaciones del planificador.")
             }
             .listRowBackground(Palette.surface)
 
@@ -119,7 +119,7 @@ struct PrivacyView: View {
             .listRowBackground(Palette.surface)
         }
         .scrollContentBackground(.hidden)
-        .background(Palette.bg)
+        .neuralBackground()
         .navigationTitle("Privacidad y datos")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { Analytics.screen("privacy") }
@@ -204,7 +204,7 @@ struct DeleteAccountSheet: View {
                     }
                     .foregroundStyle(Palette.ink)
 
-                    Text("Se borran tu cuenta, tus conceptos, chispas, proyectos y conversaciones del planificador, en todos tus dispositivos.")
+                    Text("Se borran tu cuenta, tus neuronas, chispas, circuitos y conversaciones del planificador, en todos tus dispositivos.")
                         .font(.body)
                         .foregroundStyle(Palette.ink)
                         .fixedSize(horizontal: false, vertical: true)

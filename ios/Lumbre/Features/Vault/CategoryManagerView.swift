@@ -24,7 +24,7 @@ struct CategoryManagerView: View {
                     ContentUnavailableView(
                         "Todavía no tenés categorías",
                         systemImage: "tag",
-                        description: Text("Se crean a medida que guardás conceptos.")
+                        description: Text("Se crean a medida que guardás neuronas.")
                     )
                     .listRowBackground(Color.clear)
                 }
@@ -51,7 +51,7 @@ struct CategoryManagerView: View {
                 }
                 .disabled(CategoryName.clean(newName).isEmpty)
             } message: {
-                Text("El cambio se ve en todos sus conceptos.")
+                Text("El cambio se ve en todas sus neuronas.")
             }
             .confirmationDialog(
                 deleting.map { String(localized: "¿Borrar “\($0.name)”?") } ?? "",
@@ -63,8 +63,8 @@ struct CategoryManagerView: View {
             } message: { category in
                 let count = count(of: category)
                 Text(count == 0
-                     ? "No tiene conceptos."
-                     : count == 1 ? "Su concepto queda sin categoría. No se borra." : "Sus \(count) conceptos quedan sin categoría. No se borran.")
+                     ? "No tiene neuronas."
+                     : count == 1 ? "Su neurona queda sin categoría. No se borra." : "Sus \(count) neuronas quedan sin categoría. No se borran.")
             }
             .alert("No se pudo cambiar", isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
                 Button("Entendido", role: .cancel) {}
@@ -85,7 +85,7 @@ struct CategoryManagerView: View {
                 Text(category.name)
                     .font(.body)
                     .foregroundStyle(Palette.ink)
-                Text(count(of: category) == 1 ? "1 concepto" : "\(count(of: category)) conceptos")
+                Text(count(of: category) == 1 ? "1 neurona" : "\(count(of: category)) neuronas")
                     .font(.footnote)
                     .foregroundStyle(Palette.inkMuted)
             }

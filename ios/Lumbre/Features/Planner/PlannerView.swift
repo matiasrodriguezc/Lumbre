@@ -38,7 +38,7 @@ struct PlannerView: View {
                 chat
             }
         }
-        .background(Palette.bg)
+        .neuralBackground()
         .navigationTitle("Planificar")
         .navigationBarTitleDisplayMode(.inline)
         .task { await load() }
@@ -110,7 +110,7 @@ struct PlannerView: View {
                 .foregroundStyle(Palette.ink)
             Group {
                 if let projectName = spark?.projectName {
-                    Text("Proyecto: \(projectName)")
+                    Text("Circuito: \(projectName)")
                 } else {
                     Text("\(spark?.conceptA.title ?? "") × \(spark?.conceptB.title ?? "")")
                 }

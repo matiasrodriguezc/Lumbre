@@ -21,12 +21,12 @@ struct SaveSparkSheet: View {
         NavigationStack {
             List {
                 Section {
-                    destinationRow(name: Text("Sin proyecto"), detail: Text("Queda en tus ideas guardadas"), symbol: "bookmark", projectID: nil, projectName: nil)
+                    destinationRow(name: Text("Sin circuito"), detail: Text("Queda en tus ideas guardadas"), systemImage: "bookmark", projectID: nil, projectName: nil)
                     ForEach(projects) { project in
                         destinationRow(
                             name: Text(project.name),
                             detail: Text("^[\(project.sparkCount) idea](inflect: true)"),
-                            symbol: "square.grid.2x2",
+                            systemImage: nil,
                             projectID: project.id,
                             projectName: project.name
                         )
@@ -41,7 +41,7 @@ struct SaveSparkSheet: View {
                 Section {
                     if canCreateProject {
                         HStack(spacing: Space.s2) {
-                            TextField("Nombre del proyecto", text: $newName)
+                            TextField("Nombre del circuito", text: $newName)
                                 .focused($isNaming)
                                 .submitLabel(.done)
                                 .onSubmit(createAndSave)
@@ -53,7 +53,7 @@ struct SaveSparkSheet: View {
                             dismissThenPaywall()
                         } label: {
                             HStack {
-                                Text("Crear otro proyecto")
+                                Text("Crear otro circuito")
                                     .foregroundStyle(Palette.ink)
                                 Spacer()
                                 Text("Pro")
@@ -63,10 +63,10 @@ struct SaveSparkSheet: View {
                         }
                     }
                 } header: {
-                    Text("Nuevo proyecto")
+                    Text("Nuevo circuito")
                 } footer: {
                     if !canCreateProject {
-                        Text("Con el plan gratis tenés un proyecto. Con Pro, todos los que quieras.")
+                        Text("Con el plan gratis tenés un circuito. Con Pro, todos los que quieras.")
                     }
                 }
 
@@ -100,15 +100,18 @@ struct SaveSparkSheet: View {
         appModel.isPro || projects.isEmpty
     }
 
-    private func destinationRow(name: Text, detail: Text, symbol: String, projectID: Project.ID?, projectName: String?) -> some View {
+    /// `systemImage` nil: el ícono de circuito.
+    private func destinationRow(name: Text, detail: Text, systemImage: String?, projectID: Project.ID?, projectName: String?) -> some View {
         let isCurrent = spark.status == .saved && spark.projectID == projectID
         return Button {
             save(projectID: projectID, projectName: projectName)
         } label: {
             HStack(spacing: Space.s3) {
-                Image(systemName: symbol)
-                    .foregroundStyle(Palette.inkMuted)
-                    .frame(width: 24)
+                Group {
+                    if let systemImage { Image(systemName: systemImage) } else { SectionIcon(.circuit) }
+                }
+                .foregroundStyle(Palette.inkMuted)
+                .frame(width: 24)
                 VStack(alignment: .leading, spacing: 2) {
                     name.foregroundStyle(Palette.ink)
                     detail.font(.footnote).foregroundStyle(Palette.inkMuted)

@@ -1,6 +1,6 @@
 # Lumbre
 
-App de creatividad por recombinación (idea stacking) para iOS y Android. Cada mañana, dos conceptos de dominios distintos de la bóveda del usuario chocan y aparece una chispa.
+App de creatividad por recombinación (idea stacking) para iOS y Android. Cada mañana, dos neuronas (ideas guardadas) de dominios distintos de la red del usuario se conectan y salta una chispa. Vocabulario de la interfaz: neurona, Red, Circuitos y chispa (ver `plan.md` §3).
 
 ## Fuentes de verdad
 

@@ -44,7 +44,7 @@ struct CategoryPicker<Focus: Hashable>: View {
                     .font(.footnote.weight(.medium))
                     .foregroundStyle(Palette.inkMuted)
             } else if categories.isEmpty {
-                Text("Todavía no tenés categorías: se crean a medida que guardás conceptos.")
+                Text("Todavía no tenés categorías: se crean a medida que guardás neuronas.")
                     .font(.footnote)
                     .foregroundStyle(Palette.inkMuted)
             }

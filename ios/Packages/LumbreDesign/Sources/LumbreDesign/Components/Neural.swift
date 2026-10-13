@@ -240,6 +240,8 @@ public struct NeuralIllustration: View {
         case beforeSpark
         /// Sin conexión: un axón cortado.
         case offline
+        /// Sin circuitos: tres neuronas con una conexión todavía abierta.
+        case emptyCircuits
     }
 
     let kind: Kind
@@ -253,6 +255,7 @@ public struct NeuralIllustration: View {
         case .emptyVault: .emptyVault
         case .beforeSpark: .beforeSpark
         case .offline: .offline
+        case .emptyCircuits: .emptyCircuits
         }
         NeuralLayers(art: art)
             .aspectRatio(art.size, contentMode: .fit)
@@ -281,6 +284,36 @@ public struct NeuralNetworkBackground: View {
         NeuralLayers(art: density == .tall ? .networkTall : .networkQuiet, mode: .fill)
             .clipped()
             .accessibilityHidden(true)
+    }
+}
+
+/// Fondo de pantalla de marca: `bg` con la red dormida arriba, que se desvanece hacia el contenido.
+/// Con la identidad neuronal apagada queda solo `bg`.
+struct NeuralScreenBackground: ViewModifier {
+    var height: CGFloat
+    @Environment(\.neuralIdentity) private var neuralIdentity
+
+    func body(content: Content) -> some View {
+        content.background {
+            ZStack(alignment: .top) {
+                Palette.bg
+                if neuralIdentity {
+                    NeuralNetworkBackground(.quiet)
+                        .frame(height: height)
+                        .mask(LinearGradient(stops: [.init(color: .black, location: 0), .init(color: .black, location: 0.45),
+                                                     .init(color: .clear, location: 1)],
+                                             startPoint: .top, endPoint: .bottom))
+                }
+            }
+            .ignoresSafeArea()
+        }
+    }
+}
+
+extension View {
+    /// Fondo de las pantallas principales: la noche con la red de neuronas dormidas en la franja de arriba.
+    public func neuralBackground(height: CGFloat = 320) -> some View {
+        modifier(NeuralScreenBackground(height: height))
     }
 }
 

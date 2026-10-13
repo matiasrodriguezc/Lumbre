@@ -49,7 +49,7 @@ struct CaptureSheet: View {
                 .navigationDestination(for: Step.self) { step in
                     switch step {
                     case .review(let drafts):
-                        DraftReviewView(drafts: drafts) { finish(String(localized: "Concepto guardado")) }
+                        DraftReviewView(drafts: drafts) { finish(String(localized: "Neurona guardada")) }
                     case .results(let concepts):
                         CaptureResultsView(concepts: concepts) { close() }
                     case .savedWithoutDistill:
@@ -108,7 +108,7 @@ struct CaptureSheet: View {
         .foregroundStyle(Palette.ink)
         .background(Palette.surface)
         .overlay { if isSaving && form.willDistill(canDistill: access.canDistill) { distillingOverlay } }
-        .navigationTitle("Nuevo concepto")
+        .navigationTitle("Nueva neurona")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
@@ -242,12 +242,12 @@ struct CaptureSheet: View {
             if isSaving {
                 ProgressView().tint(Palette.onAccent)
             } else {
-                Text("Guardar concepto")
+                Text("Guardar neurona")
             }
         }
         .buttonStyle(.lumbre(.primary, fullWidth: true))
         .disabled(!form.canSave(canDistill: access.canDistill) || isSaving || dictation.isListening)
-        .accessibilityLabel(isSaving ? Text("Guardando") : Text("Guardar concepto"))
+        .accessibilityLabel(isSaving ? Text("Guardando") : Text("Guardar neurona"))
     }
 
     private var distillingOverlay: some View {
@@ -260,7 +260,7 @@ struct CaptureSheet: View {
             }
             Text("Destilando…")
                 .font(.headline)
-            Text("Lumbre lee el contenido y saca los conceptos. Puede tardar unos segundos.")
+            Text("Lumbre lee el contenido y saca las neuronas. Puede tardar unos segundos.")
                 .font(.callout)
                 .foregroundStyle(Palette.inkMuted)
                 .multilineTextAlignment(.center)
@@ -352,7 +352,7 @@ struct CaptureSheet: View {
         case .medium:
             let drafts = result.concepts.filter(\.isDraft)
             if drafts.isEmpty {
-                finish(String(localized: "Concepto guardado"))
+                finish(String(localized: "Neurona guardada"))
             } else {
                 path.append(.review(drafts))
             }
@@ -363,7 +363,7 @@ struct CaptureSheet: View {
             if result.concepts.count > 1 {
                 path.append(.results(result.concepts))
             } else {
-                finish(String(localized: "Concepto guardado"))
+                finish(String(localized: "Neurona guardada"))
             }
         }
     }
