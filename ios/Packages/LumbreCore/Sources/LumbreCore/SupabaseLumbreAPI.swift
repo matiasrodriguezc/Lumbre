@@ -1,7 +1,9 @@
 import Foundation
+import OSLog
 import Supabase
 
-/// Backend real: lee con la sesión del usuario y RLS; lo que crea contenido o gasta IA va por Edge Functions.
+/// Backend real (Supabase local o remoto): lee y edita directo con la sesión del usuario y RLS;
+/// lo que crea contenido o gasta IA va por las Edge Functions (`backend/openapi.yaml`).
 public struct SupabaseLumbreAPI: LumbreAPI {
     /// Credenciales del login de desarrollo. Solo se usan en Debug y nunca van al repo.
     public struct DevCredentials: Sendable {
@@ -16,126 +18,476 @@ public struct SupabaseLumbreAPI: LumbreAPI {
 
     private let client: SupabaseClient
     private let session: SessionGate
+    private let functions: EdgeFunctions
 
     /// - Parameter resetSession: cierra la sesión guardada antes del primer pedido (para probar el primer login).
     public init(url: URL, publishableKey: String, devCredentials: DevCredentials? = nil, resetSession: Bool = false) {
-        client = SupabaseClient(supabaseURL: url, supabaseKey: publishableKey)
+        self.init(url: url, publishableKey: publishableKey, devCredentials: devCredentials, resetSession: resetSession, authStorage: nil)
+    }
+
+    /// - Parameter authStorage: dónde guarda Auth la sesión. nil = el Keychain (lo normal); los tests usan memoria.
+    init(url: URL, publishableKey: String, devCredentials: DevCredentials?, resetSession: Bool, authStorage: (any AuthLocalStorage)?) {
+        let auth: SupabaseClientOptions.AuthOptions = if let authStorage {
+            .init(storage: authStorage, emitLocalSessionAsInitialSession: true)
+        } else {
+            .init(emitLocalSessionAsInitialSession: true)
+        }
+        let client = SupabaseClient(supabaseURL: url, supabaseKey: publishableKey, options: SupabaseClientOptions(auth: auth))
+        self.client = client
         session = SessionGate(devCredentials: devCredentials, resetFirst: resetSession)
+        functions = EdgeFunctions(supabaseURL: url, publishableKey: publishableKey) {
+            try await client.auth.session.accessToken
+        }
     }
 
-    // MARK: - Lectura
+    // MARK: - Sesión y perfil
 
-    public func todaySpark() async throws -> Spark? {
-        try await session.ensure(client)
-        let rows: [SparkRow] = try await client.from("sparks")
-            .select(SparkRow.columns)
-            .eq("mode", value: SparkMode.daily.rawValue)
-            .eq("scheduled_for", value: Self.localDay(.now))
-            .limit(1)
+    public func profile() async throws -> Profile {
+        try await perform {
+            do {
+                return try await loadProfile()
+            } catch let error as PostgrestError where error.code == "PGRST116" {
+                // La sesión guardada es de un usuario que ya no existe (por ejemplo, después de `supabase db reset`):
+                // se descarta y se entra de nuevo.
+                try await session.restart(client)
+                return try await loadProfile()
+            }
+        }
+    }
+
+    private func loadProfile() async throws -> Profile {
+        let user = try await client.auth.session.user
+        let data = try await client.from("profiles")
+            .select(QueryColumns.profile)
+            .eq("id", value: user.id)
+            .single()
             .execute()
-            .value
-        return rows.first?.model
+            .data
+        return try decode(ProfileRowDTO.self, data).model(email: user.email, isAnonymous: user.isAnonymous)
     }
 
-    public func recentSparks() async throws -> [Spark] {
-        try await session.ensure(client)
-        let rows: [SparkRow] = try await client.from("sparks")
-            .select(SparkRow.columns)
-            .lt("scheduled_for", value: Self.localDay(.now))
-            .order("scheduled_for", ascending: false)
-            .limit(10)
-            .execute()
-            .value
-        return rows.map(\.model)
+    public func updateProfile(_ update: ProfileUpdate) async throws -> Profile {
+        try await perform {
+            var values: [String: AnyJSON] = [:]
+            if let value = update.creativeProfiles { values["creative_profiles"] = .array(value.prefix(2).map { .string($0.rawValue) }) }
+            if let value = update.sparkTime { values["spark_hour"] = .string(value.postgres) }
+            if let value = update.timezone { values["timezone"] = .string(value) }
+            if let value = update.locale { values["locale"] = .string(value) }
+            if update.completeOnboarding { values["onboarded_at"] = .string(LumbreJSON.timestamp(.now)) }
+            if !values.isEmpty {
+                let userID = try await client.auth.session.user.id
+                try await client.from("profiles").update(values).eq("id", value: userID).execute()
+            }
+            return try await loadProfile()
+        }
     }
 
-    public func concepts() async throws -> [Concept] {
-        try await session.ensure(client)
-        let rows: [ConceptRow] = try await client.from("concepts")
-            .select(ConceptRow.columns)
-            .order("created_at", ascending: false)
-            .execute()
-            .value
-        return rows.map(\.model)
-    }
-
-    public func categories() async throws -> [Category] {
-        try await session.ensure(client)
-        let rows: [CategoryRow] = try await client.from("categories")
-            .select(CategoryRow.columns)
-            .order("name")
-            .execute()
-            .value
-        return rows.map(\.model)
-    }
-
-    public func sparkQuota() async throws -> SparkQuota {
-        try await session.ensure(client)
-        async let credits: [CreditRow] = client.rpc("credit_status").execute().value
-        async let profile: ProfileRow = client.from("profiles").select("spark_hour").single().execute().value
-        async let today = todaySpark()
-        async let savedToday = client.from("concepts")
-            .select("id", head: true, count: .exact)
-            .gte("created_at", value: ISO8601DateFormatter().string(from: Calendar.current.startOfDay(for: .now)))
-            .execute()
-            .count ?? 0
-
-        let (creditRows, profileRow, todaysSpark, saved) = try await (credits, profile, today, savedToday)
-        let extra = creditRows.first { $0.kind == "spark_extra" }
-        // La chispa diaria cuenta como disponible mientras no se guardó ni se descartó.
-        let daily = todaysSpark.map { $0.status == .pending || $0.status == .revealed ? 1 : 0 } ?? 0
-        return SparkQuota(
-            available: daily + (extra?.remaining ?? 0),
-            total: 1 + (extra?.available ?? 0),
-            refillsAt: Self.nextOccurrence(of: profileRow.sparkHour),
-            conceptsUntilExtra: 3 - saved % 3
-        )
-    }
-
-    // MARK: - Escritura
-
-    public func saveSpark(id: Spark.ID, projectID: Project.ID?) async throws {
-        try await session.ensure(client)
-        try await client.from("sparks").update(["status": SparkStatus.saved.rawValue]).eq("id", value: id).execute()
-    }
-
-    public func sendFeedback(sparkID: Spark.ID, feedback: SparkFeedback) async throws {
-        try await session.ensure(client)
-        try await client.from("sparks")
-            .update(["status": SparkStatus.discarded.rawValue, "feedback": feedback.rawValue])
-            .eq("id", value: sparkID)
-            .execute()
+    public func credits() async throws -> [Credit] {
+        try await perform {
+            let data = try await client.rpc("credit_status").execute().data
+            return try decode([CreditDTO].self, data).compactMap(\.model)
+        }
     }
 
     public func signOut() async throws {
-        try await client.auth.signOut(scope: .local)
+        await session.signOut(client)
     }
 
-    /// Guarda con `capture_concept()`: descuenta la cuota, encuentra o crea la categoría e inserta el concepto.
-    /// El embedding y la destilación se suman después, en el servidor (pasos 23 a 27).
-    public func capture(_ request: CaptureRequest) async throws -> CaptureResult {
-        try await session.ensure(client)
-        let thesis = request.thesis ?? ""
-        let category = request.category
-        let params: CaptureParams
-        switch request.source {
-        case .link(let url): params = CaptureParams(p_thesis: thesis, p_category: category, p_source_type: "link", p_source_url: url.absoluteString)
-        default: params = CaptureParams(p_thesis: thesis, p_category: category, p_source_type: "text", p_source_url: nil)
+    public func deleteAccount() async throws {
+        try await perform {
+            try await client.rpc("delete_my_account").execute()
         }
-        do {
-            let rows: [CaptureRow] = try await client.rpc("capture_concept", params: params).execute().value
-            guard let row = rows.first else { throw LumbreAPIError.unexpected }
-            return CaptureResult(conceptID: row.conceptID, categoryID: row.categoryID, categoryCreated: row.categoryCreated)
-        } catch let error as PostgrestError {
-            throw LumbreAPIError(serverMessage: error.message) ?? error
+        await session.signOut(client)
+    }
+
+    public func exportData() async throws -> Data {
+        try await perform {
+            try await client.rpc("export_my_data").execute().data
         }
     }
+
+    public func registerPushToken(_ token: String, sandbox: Bool) async throws {
+        try await perform {
+            try await client.rpc("register_push_token", params: PushTokenParams(p_token: token, p_platform: "ios", p_sandbox: sandbox)).execute()
+        }
+    }
+
+    // MARK: - Hoy y chispas
+
+    public func today() async throws -> TodayState {
+        try await perform {
+            let today: TodayDTO = try await functions.call("today", body: EmptyBody(), timeout: 90)
+            return today.model
+        }
+    }
+
+    public func revealSpark(id: Spark.ID) async throws {
+        try await perform {
+            // Solo una pendiente pasa a vista: si ya se guardó o descartó, no se toca.
+            try await client.from("sparks")
+                .update(["status": AnyJSON.string(SparkStatus.revealed.rawValue)])
+                .eq("id", value: id)
+                .eq("status", value: SparkStatus.pending.rawValue)
+                .execute()
+        }
+    }
+
+    public func saveSpark(id: Spark.ID, projectID: Project.ID?) async throws {
+        try await perform {
+            try await client.from("sparks")
+                .update([
+                    "status": AnyJSON.string(SparkStatus.saved.rawValue),
+                    "project_id": projectID.map { AnyJSON.string($0.uuidString) } ?? .null,
+                ])
+                .eq("id", value: id)
+                .execute()
+        }
+    }
+
+    public func sendFeedback(sparkID: Spark.ID, feedback: SparkFeedback) async throws {
+        try await perform {
+            try await client.from("sparks")
+                .update(["status": AnyJSON.string(SparkStatus.discarded.rawValue), "feedback": .string(feedback.rawValue)])
+                .eq("id", value: sparkID)
+                .execute()
+        }
+    }
+
+    public func requestSpark(pick: (Concept.ID, Concept.ID)?) async throws -> Spark {
+        let body = SparkRequestBody(mode: pick == nil ? "extra" : "pick", conceptIds: pick.map { [$0.0, $0.1] })
+        return try await perform {
+            let response: SparkEnvelopeDTO = try await functions.call("spark", body: body, timeout: 90)
+            return response.spark.model
+        }
+    }
+
+    public func recentSparks() async throws -> [Spark] {
+        try await perform {
+            let data = try await client.from("sparks")
+                .select(QueryColumns.spark)
+                .order("created_at", ascending: false)
+                .limit(60)
+                .execute()
+                .data
+            // La diaria de hoy la muestra Hoy.
+            let today = Calendar.current
+            return try decode([SparkDTO].self, data).map(\.model).filter { spark in
+                !(spark.mode == .daily && spark.scheduledFor.map(today.isDateInToday) == true)
+            }
+        }
+    }
+
+    public func spark(id: Spark.ID) async throws -> Spark {
+        try await perform {
+            let data = try await client.from("sparks").select(QueryColumns.spark).eq("id", value: id).single().execute().data
+            return try decode(SparkDTO.self, data).model
+        }
+    }
+
+    public func reportSpark(id: Spark.ID, reason: ReportReason, note: String?) async throws {
+        try await perform {
+            try await client.from("content_reports")
+                .insert(ReportRow(spark_id: id, reason: reason.rawValue, note: note.map { String($0.trimmingCharacters(in: .whitespacesAndNewlines).prefix(500)) }?.nilIfEmpty))
+                .execute()
+        }
+    }
+
+    // MARK: - Bóveda
+
+    public func concepts() async throws -> [Concept] {
+        try await perform {
+            let data = try await client.from("concepts")
+                .select(QueryColumns.concept)
+                .order("created_at", ascending: false)
+                .execute()
+                .data
+            return try decode([ConceptDTO].self, data).map(\.model)
+        }
+    }
+
+    public func searchConcepts(_ query: String) async throws -> [Concept] {
+        let query = String(query.trimmingCharacters(in: .whitespacesAndNewlines).prefix(200))
+        guard !query.isEmpty else { return [] }
+        return try await perform {
+            let response: ConceptListDTO = try await functions.call("search", body: SearchBody(query: query, limit: 30))
+            return response.concepts.map(\.model)
+        }
+    }
+
+    public func concept(id: Concept.ID) async throws -> Concept {
+        try await perform {
+            try await loadConcept(id)
+        }
+    }
+
+    private func loadConcept(_ id: Concept.ID) async throws -> Concept {
+        let data = try await client.from("concepts").select(QueryColumns.concept).eq("id", value: id).single().execute().data
+        return try decode(ConceptDTO.self, data).model
+    }
+
+    public func sparks(withConcept id: Concept.ID) async throws -> [Spark] {
+        try await perform {
+            let data = try await client.from("sparks")
+                .select(QueryColumns.spark)
+                .or("concept_lo.eq.\(id.uuidString),concept_hi.eq.\(id.uuidString)")
+                .order("created_at", ascending: false)
+                .execute()
+                .data
+            return try decode([SparkDTO].self, data).map(\.model)
+        }
+    }
+
+    public func updateConcept(id: Concept.ID, _ update: ConceptUpdate) async throws -> Concept {
+        try await perform {
+            var values: [String: AnyJSON] = [:]
+            if let title = update.title { values["title"] = .string(title) }
+            if let thesis = update.thesis { values["thesis"] = .string(thesis) }
+            if update.confirm { values["status"] = .string(ConceptStatus.ready.rawValue) }
+            if !values.isEmpty {
+                try await client.from("concepts").update(values).eq("id", value: id).execute()
+            }
+            if let name = update.categoryName {
+                try await client.rpc("move_concept", params: MoveConceptParams(p_concept: id, p_category: name)).execute()
+            }
+            return try await loadConcept(id)
+        }
+    }
+
+    public func deleteConcept(id: Concept.ID) async throws {
+        try await perform {
+            try await client.from("concepts").delete().eq("id", value: id).execute()
+        }
+    }
+
+    public func categories() async throws -> [Category] {
+        try await perform {
+            let data = try await client.from("categories").select(QueryColumns.category).execute().data
+            return try decode([CategoryDTO].self, data).map(\.model)
+                .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+        }
+    }
+
+    public func renameCategory(id: Category.ID, to name: String) async throws {
+        try await perform {
+            try await client.from("categories").update(["name": AnyJSON.string(name)]).eq("id", value: id).execute()
+        }
+    }
+
+    public func deleteCategory(id: Category.ID) async throws {
+        try await perform {
+            try await client.from("categories").delete().eq("id", value: id).execute()
+        }
+    }
+
+    /// Con un adjunto, primero lo sube a `capture-temp/<user_id>/<uuid>.<ext>`; la función lo procesa y lo borra.
+    public func capture(_ request: CaptureRequest) async throws -> CaptureResult {
+        try await perform {
+            var attachment: CaptureBody.Attachment?
+            switch request.source {
+            case .image(let data), .pdf(let data):
+                let kind = Attachment(source: request.source, data: data)
+                let userID = try await client.auth.session.user.id
+                let path = "\(userID.uuidString.lowercased())/\(UUID().uuidString.lowercased()).\(kind.fileExtension)"
+                try await client.storage.from("capture-temp").upload(path, data: data, options: FileOptions(contentType: kind.mimeType))
+                attachment = .init(path: path, mimeType: kind.mimeType)
+            default:
+                break
+            }
+            let body = CaptureBody(request, attachment: attachment)
+            let result: CaptureResultDTO = try await functions.call("capture", body: body, timeout: request.distill ? 120 : 60)
+            return result.model
+        }
+    }
+
+    // MARK: - Proyectos y planificador
+
+    public func projects() async throws -> [Project] {
+        try await perform {
+            let data = try await client.from("projects")
+                .select(QueryColumns.project)
+                .order("created_at")
+                .execute()
+                .data
+            return try decode([ProjectDTO].self, data).map(\.model)
+        }
+    }
+
+    public func createProject(name: String) async throws -> Project {
+        try await perform {
+            let data = try await client.rpc("create_project", params: CreateProjectParams(p_name: name)).execute().data
+            // La RPC puede devolver la fila o solo el id.
+            if let row = try? decode(ProjectDTO.self, data) { return row.model }
+            if let rows = try? decode([ProjectDTO].self, data), let row = rows.first { return row.model }
+            let id = try decode(UUID.self, data)
+            let row = try await client.from("projects").select(QueryColumns.project).eq("id", value: id).single().execute().data
+            return try decode(ProjectDTO.self, row).model
+        }
+    }
+
+    public func renameProject(id: Project.ID, to name: String) async throws {
+        try await perform {
+            try await client.from("projects").update(["name": AnyJSON.string(name)]).eq("id", value: id).execute()
+        }
+    }
+
+    public func deleteProject(id: Project.ID) async throws {
+        try await perform {
+            try await client.from("projects").delete().eq("id", value: id).execute()
+        }
+    }
+
+    public func sparks(inProject id: Project.ID) async throws -> [Spark] {
+        try await perform {
+            try await loadSparks(inProject: id)
+        }
+    }
+
+    private func loadSparks(inProject id: Project.ID) async throws -> [Spark] {
+        let data = try await client.from("sparks")
+            .select(QueryColumns.spark)
+            .eq("project_id", value: id)
+            .order("created_at", ascending: false)
+            .execute()
+            .data
+        return try decode([SparkDTO].self, data).map(\.model)
+    }
+
+    /// Se arma en el teléfono: el proyecto, sus chispas y el hilo del planificador de cada una.
+    public func exportProjectMarkdown(id: Project.ID) async throws -> String {
+        try await perform {
+            async let nameData = client.from("projects").select("name").eq("id", value: id).single().execute().data
+            let sparks = try await loadSparks(inProject: id)
+            let name = try decode(SparkDTO.ProjectName.self, try await nameData).name
+            let plans = try await withThrowingTaskGroup(of: (Spark.ID, [PlannerMessage]).self) { group in
+                for spark in sparks {
+                    group.addTask { (spark.id, try await loadPlannerMessages(sparkID: spark.id)) }
+                }
+                return try await group.reduce(into: [Spark.ID: [PlannerMessage]]()) { $0[$1.0] = $1.1 }
+            }
+            return MarkdownExport.project(name: name, sparks: sparks, plans: plans)
+        }
+    }
+
+    public func plannerMessages(sparkID: Spark.ID) async throws -> [PlannerMessage] {
+        try await perform {
+            try await loadPlannerMessages(sparkID: sparkID)
+        }
+    }
+
+    private func loadPlannerMessages(sparkID: Spark.ID) async throws -> [PlannerMessage] {
+        let data = try await client.from("planner_messages")
+            .select(QueryColumns.plannerMessage)
+            .eq("thread.spark_id", value: sparkID)
+            .order("id")
+            .execute()
+            .data
+        return try decode([PlannerMessageDTO].self, data).map(\.model)
+    }
+
+    /// Streaming por SSE: emite cada `delta` y termina con `done`. Cancelar el stream corta la conexión.
+    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode) -> AsyncThrowingStream<String, Error> {
+        let body = PlannerBody(sparkId: sparkID, message: text, mode: mode.rawValue)
+        return AsyncThrowingStream { continuation in
+            let task = Task {
+                do {
+                    try await perform {
+                        try await functions.events("planner", body: body) { event in
+                            switch try PlannerEvent(event) {
+                            case .text(let text):
+                                continuation.yield(text)
+                                return true
+                            case .done:
+                                return false
+                            case .ignored:
+                                return true
+                            }
+                        }
+                    }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+            continuation.onTermination = { _ in task.cancel() }
+        }
+    }
+
+    // MARK: - Desarrollo
+
+    public func setPlanForDevelopment(_ plan: Plan) async throws {
+        guard plan != .guest else { throw LumbreAPIError.unexpected }
+        try await perform {
+            try await functions.send("dev-plan", body: ["plan": plan.rawValue])
+        }
+    }
+
+    // MARK: - Soporte
+
+    /// Asegura la sesión, corre el pedido y traduce los errores a `LumbreAPIError`.
+    private func perform<T>(_ operation: () async throws -> T) async throws -> T {
+        do {
+            try await session.ensure(client)
+            return try await operation()
+        } catch {
+            throw Self.map(error)
+        }
+    }
+
+    private func decode<T: Decodable>(_ type: T.Type, _ data: Data) throws -> T {
+        try LumbreJSON.decoder().decode(type, from: data)
+    }
+
+    /// Sin red → `.offline`. Los códigos del servidor (Edge Functions y mensajes de PostgREST) → su caso.
+    /// Lo demás → `.unexpected`, y se anota el tipo en el log (nunca el contenido).
+    static func map(_ error: any Error) -> any Error {
+        switch error {
+        case is LumbreAPIError, is CancellationError:
+            return error
+        case _ where isOffline(error):
+            return LumbreAPIError.offline
+        case let error as URLError where error.code == .cancelled:
+            return CancellationError()
+        case let error as PostgrestError:
+            if let mapped = LumbreAPIError(serverMessage: error.message) { return mapped }
+            logger.error("PostgREST: \(error.code ?? "sin código", privacy: .public)")
+            return LumbreAPIError.unexpected
+        case let error as AuthError:
+            logger.error("Auth: \(error.errorCode.rawValue, privacy: .public)")
+            return LumbreAPIError.unexpected
+        case let error as StorageError:
+            logger.error("Storage: \(error.statusCode ?? "sin estado", privacy: .public)")
+            return LumbreAPIError.unexpected
+        default:
+            logger.error("Error inesperado: \(String(describing: type(of: error)), privacy: .public)")
+            return LumbreAPIError.unexpected
+        }
+    }
+
+    /// Errores de conectividad, también cuando vienen envueltos (Auth y Storage a veces envuelven el URLError).
+    static func isOffline(_ error: any Error) -> Bool {
+        let offlineCodes: Set<URLError.Code> = [
+            .notConnectedToInternet, .networkConnectionLost, .cannotFindHost, .cannotConnectToHost,
+            .timedOut, .dnsLookupFailed, .dataNotAllowed, .internationalRoamingOff, .callIsActive,
+        ]
+        var current: (any Error)? = error
+        var depth = 0
+        while let candidate = current, depth < 5 {
+            if let urlError = candidate as? URLError, offlineCodes.contains(urlError.code) { return true }
+            let nsError = candidate as NSError
+            if nsError.domain == NSURLErrorDomain, offlineCodes.contains(URLError.Code(rawValue: nsError.code)) { return true }
+            current = nsError.userInfo[NSUnderlyingErrorKey] as? any Error
+            depth += 1
+        }
+        return false
+    }
+
+    static let logger = Logger(subsystem: "com.matiasrodriguezc.lumbre", category: "api")
 
     // MARK: - Fechas
 
     /// Día local como lo guarda `sparks.scheduled_for`.
     static func localDay(_ date: Date) -> String {
-        date.formatted(.iso8601.year().month().day())
+        LumbreJSON.day(date)
     }
 
     /// Próxima vez que llega la hora de la chispa ("08:00:00"), hoy o mañana.
@@ -148,12 +500,16 @@ public struct SupabaseLumbreAPI: LumbreAPI {
     }
 }
 
+// MARK: - Sesión
+
 /// Un solo inicio de sesión a la vez: varias pantallas cargan en paralelo y comparten el que está en curso.
 /// (El actor solo no alcanza: mientras un llamado espera el login, otros entran y abrirían más sesiones.)
 private actor SessionGate {
-    let devCredentials: SupabaseLumbreAPI.DevCredentials?
+    private let devCredentials: SupabaseLumbreAPI.DevCredentials?
     private var inFlight: Task<Void, Error>?
     private var resetFirst: Bool
+    /// Después de cerrar sesión o borrar la cuenta, el próximo pedido entra como invitado nuevo, no con el login de desarrollo.
+    private var useDevCredentials = true
 
     init(devCredentials: SupabaseLumbreAPI.DevCredentials?, resetFirst: Bool) {
         self.devCredentials = devCredentials
@@ -167,183 +523,157 @@ private actor SessionGate {
         }
         let reset = resetFirst
         resetFirst = false
-        let task = Task { [devCredentials] in
+        let credentials = useDevCredentials ? devCredentials : nil
+        let task = Task {
             if reset {
                 try? await client.auth.signOut(scope: .local)
-            } else if (try? await client.auth.session) != nil {
-                return
-            }
-            if let devCredentials {
-                try await client.auth.signIn(email: devCredentials.email, password: devCredentials.password)
             } else {
-                try await client.auth.signInAnonymously(data: [
-                    "timezone": .string(TimeZone.current.identifier),
-                    "locale": .string(Locale.current.language.languageCode?.identifier ?? "es"),
-                ])
+                do {
+                    _ = try await client.auth.session
+                    return
+                } catch AuthError.sessionMissing {
+                    // Primera vez, o después de cerrar sesión.
+                } catch let AuthError.api(_, _, _, response) where (400..<500).contains(response.statusCode) {
+                    // El servidor ya no acepta la sesión guardada (usuario borrado, refresh token vencido).
+                }
+                // Cualquier otro error (sin red, servidor caído) se propaga: entrar de nuevo
+                // crearía otro invitado y se perdería la bóveda del actual.
             }
+            try await Self.signIn(client, credentials: credentials)
         }
         inFlight = task
         defer { inFlight = nil }
         try await task.value
     }
+
+    /// Descarta la sesión guardada y entra de nuevo.
+    func restart(_ client: SupabaseClient) async throws {
+        try? await client.auth.signOut(scope: .local)
+        try await ensure(client)
+    }
+
+    /// Cierra la sesión en este dispositivo. No falla: si el servidor no responde, igual se borra la local.
+    func signOut(_ client: SupabaseClient) async {
+        useDevCredentials = false
+        try? await client.auth.signOut(scope: .local)
+    }
+
+    private static func signIn(_ client: SupabaseClient, credentials: SupabaseLumbreAPI.DevCredentials?) async throws {
+        if let credentials {
+            try await client.auth.signIn(email: credentials.email, password: credentials.password)
+        } else {
+            try await client.auth.signInAnonymously(data: [
+                "timezone": .string(TimeZone.current.identifier),
+                "locale": .string(Locale.current.language.languageCode?.identifier == "en" ? "en" : "es"),
+            ])
+        }
+    }
 }
 
-// MARK: - Filas de PostgREST
+// MARK: - Consultas de PostgREST
 
-private struct CategoryRow: Decodable {
-    static let columns = "id,name,dom:domain(slug,name_es,name_en,symbol_ios)"
-
-    let id: UUID
-    let name: String
-    let dom: DomainRow?
-
-    var model: Category { Category(id: id, name: name, domain: dom?.model) }
+/// Los `select` usan alias para devolver la misma forma que las Edge Functions (los DTOs).
+enum QueryColumns {
+    static let domain = "slug,name_es,name_en,symbol_ios"
+    static let category = "id,name,domain:domains(\(domain))"
+    static let concept = "id,title,thesis,principle,status,distilled,confidence,source_type,source_url,source_title,excerpt,from_library,created_at,"
+        + "category:categories!concepts_category_same_user(\(category))"
+    static let spark = "id,title,body,mode,status,feedback,project_id,scheduled_for,created_at,project:projects(name),"
+        + "concept_a:concepts!sparks_concept_lo_fkey(\(concept)),concept_b:concepts!sparks_concept_hi_fkey(\(concept))"
+    static let project = "id,name,created_at,sparks(count)"
+    static let plannerMessage = "id,role,content,mode,created_at,thread:planner_threads!inner(spark_id)"
+    static let profile = "creative_profiles,spark_hour,timezone,locale,plan,onboarded_at"
 }
 
-private struct CaptureParams: Encodable, Sendable {
-    let p_thesis: String
+// MARK: - Cuerpos y parámetros
+
+private struct PushTokenParams: Encodable, Sendable {
+    let p_token: String
+    let p_platform: String
+    let p_sandbox: Bool
+}
+
+private struct CreateProjectParams: Encodable, Sendable {
+    let p_name: String
+}
+
+private struct MoveConceptParams: Encodable, Sendable {
+    let p_concept: UUID
     let p_category: String
-    let p_source_type: String
-    let p_source_url: String?
 }
 
-private struct CaptureRow: Decodable {
-    let conceptID: UUID
-    let categoryID: UUID
-    let categoryCreated: Bool
-
-    enum CodingKeys: String, CodingKey {
-        case conceptID = "concept_id"
-        case categoryID = "category_id"
-        case categoryCreated = "category_created"
-    }
+private struct ReportRow: Encodable, Sendable {
+    let spark_id: UUID
+    let reason: String
+    let note: String?
 }
 
-private struct DomainRow: Decodable {
-    let slug: String
-    let nameEs: String
-    let nameEn: String
-    let symbolIOS: String?
-
-    enum CodingKeys: String, CodingKey {
-        case slug
-        case nameEs = "name_es"
-        case nameEn = "name_en"
-        case symbolIOS = "symbol_ios"
-    }
-
-    var model: Domain {
-        let english = Locale.current.language.languageCode?.identifier == "en"
-        return Domain(slug: slug, name: english ? nameEn : nameEs, symbol: symbolIOS ?? "circle.hexagongrid")
-    }
-}
-
-private struct ConceptRow: Decodable {
-    static let columns = "id,title,thesis,source_type,source_title,created_at,cat:categories!concepts_category_same_user(\(CategoryRow.columns))"
-
-    let id: UUID
-    let title: String
-    let thesis: String
-    let sourceType: String
-    let sourceTitle: String?
-    let createdAt: Date
-    let cat: CategoryRow?
-
-    enum CodingKeys: String, CodingKey {
-        case id, title, thesis, cat
-        case sourceType = "source_type"
-        case sourceTitle = "source_title"
-        case createdAt = "created_at"
-    }
-
-    var model: Concept {
-        Concept(
-            id: id,
-            category: cat?.model,
-            title: title,
-            thesis: thesis,
-            sourceType: SourceType(rawValue: sourceType) ?? .text,
-            sourceTitle: sourceTitle,
-            createdAt: createdAt
-        )
-    }
-}
-
-private struct SparkRow: Decodable {
-    static let columns = "id,title,body,mode,status,created_at,a:concept_lo(\(ConceptRow.columns)),b:concept_hi(\(ConceptRow.columns))"
-
-    let id: UUID
-    let title: String?
-    let body: String?
+private struct SparkRequestBody: Encodable, Sendable {
     let mode: String
-    let status: String
-    let createdAt: Date
-    let a: ConceptRow
-    let b: ConceptRow
+    let conceptIds: [UUID]?
+}
 
-    enum CodingKeys: String, CodingKey {
-        case id, title, body, mode, status, a, b
-        case createdAt = "created_at"
+private struct SearchBody: Encodable, Sendable {
+    let query: String
+    let limit: Int
+}
+
+private struct PlannerBody: Encodable, Sendable {
+    let sparkId: UUID
+    let message: String
+    let mode: String
+}
+
+/// Cuerpo de `POST /capture`.
+struct CaptureBody: Encodable, Sendable {
+    struct Attachment: Encodable, Sendable {
+        let path: String
+        let mimeType: String
     }
 
-    var model: Spark {
-        Spark(
-            id: id,
-            conceptA: a.model,
-            conceptB: b.model,
-            title: title ?? "\(a.title) × \(b.title)",
-            body: body ?? "",
-            mode: SparkMode(rawValue: mode) ?? .daily,
-            status: SparkStatus(rawValue: status) ?? .revealed,
-            createdAt: createdAt
-        )
+    let thesis: String?
+    let category: String
+    let sourceType: String
+    let sourceUrl: String?
+    let sourceTitle: String?
+    let excerpt: String?
+    let localAssetId: String?
+    let attachment: Attachment?
+    let distill: Bool
+
+    init(_ request: CaptureRequest, attachment: Attachment?) {
+        thesis = request.thesis?.trimmingCharacters(in: .whitespacesAndNewlines).nilIfEmpty
+        category = request.category.trimmingCharacters(in: .whitespacesAndNewlines)
+        sourceType = request.source.sourceType.rawValue
+        sourceUrl = switch request.source {
+        case .link(let url): url.absoluteString
+        case .selection(let url): url?.absoluteString
+        default: nil
+        }
+        sourceTitle = request.sourceTitle
+        excerpt = request.excerpt.map { String($0.prefix(500)) }
+        localAssetId = request.localAssetID
+        self.attachment = attachment
+        distill = request.distill
     }
 }
 
-private struct CreditRow: Decodable {
-    let kind: String
-    let available: Int
-    let remaining: Int
-}
+/// Tipo del archivo que se sube a `capture-temp`.
+private struct Attachment {
+    let mimeType: String
+    let fileExtension: String
 
-private struct ProfileRow: Decodable {
-    let sparkHour: String
-
-    enum CodingKeys: String, CodingKey {
-        case sparkHour = "spark_hour"
+    init(source: CaptureSource, data: Data) {
+        if case .pdf = source {
+            (mimeType, fileExtension) = ("application/pdf", "pdf")
+        } else if data.starts(with: [0x89, 0x50, 0x4E, 0x47]) {
+            (mimeType, fileExtension) = ("image/png", "png")
+        } else {
+            (mimeType, fileExtension) = ("image/jpeg", "jpg")
+        }
     }
 }
 
-// MARK: - Pendiente (se completa con el cliente de las Edge Functions)
-
-extension SupabaseLumbreAPI {
-    public func profile() async throws -> Profile { throw LumbreAPIError.unexpected }
-    public func updateProfile(_ update: ProfileUpdate) async throws -> Profile { throw LumbreAPIError.unexpected }
-    public func credits() async throws -> [Credit] { throw LumbreAPIError.unexpected }
-    public func deleteAccount() async throws { throw LumbreAPIError.unexpected }
-    public func exportData() async throws -> Data { throw LumbreAPIError.unexpected }
-    public func registerPushToken(_ token: String, sandbox: Bool) async throws { throw LumbreAPIError.unexpected }
-    public func today() async throws -> TodayState { throw LumbreAPIError.unexpected }
-    public func revealSpark(id: Spark.ID) async throws { throw LumbreAPIError.unexpected }
-    public func requestSpark(pick: (Concept.ID, Concept.ID)?) async throws -> Spark { throw LumbreAPIError.unexpected }
-    public func spark(id: Spark.ID) async throws -> Spark { throw LumbreAPIError.unexpected }
-    public func reportSpark(id: Spark.ID, reason: ReportReason, note: String?) async throws { throw LumbreAPIError.unexpected }
-    public func searchConcepts(_ query: String) async throws -> [Concept] { throw LumbreAPIError.unexpected }
-    public func concept(id: Concept.ID) async throws -> Concept { throw LumbreAPIError.unexpected }
-    public func sparks(withConcept id: Concept.ID) async throws -> [Spark] { throw LumbreAPIError.unexpected }
-    public func updateConcept(id: Concept.ID, _ update: ConceptUpdate) async throws -> Concept { throw LumbreAPIError.unexpected }
-    public func deleteConcept(id: Concept.ID) async throws { throw LumbreAPIError.unexpected }
-    public func renameCategory(id: Category.ID, to name: String) async throws { throw LumbreAPIError.unexpected }
-    public func deleteCategory(id: Category.ID) async throws { throw LumbreAPIError.unexpected }
-    public func projects() async throws -> [Project] { throw LumbreAPIError.unexpected }
-    public func createProject(name: String) async throws -> Project { throw LumbreAPIError.unexpected }
-    public func renameProject(id: Project.ID, to name: String) async throws { throw LumbreAPIError.unexpected }
-    public func deleteProject(id: Project.ID) async throws { throw LumbreAPIError.unexpected }
-    public func sparks(inProject id: Project.ID) async throws -> [Spark] { throw LumbreAPIError.unexpected }
-    public func exportProjectMarkdown(id: Project.ID) async throws -> String { throw LumbreAPIError.unexpected }
-    public func plannerMessages(sparkID: Spark.ID) async throws -> [PlannerMessage] { throw LumbreAPIError.unexpected }
-    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode) -> AsyncThrowingStream<String, Error> {
-        AsyncThrowingStream { $0.finish(throwing: LumbreAPIError.unexpected) }
-    }
-    public func setPlanForDevelopment(_ plan: Plan) async throws { throw LumbreAPIError.unexpected }
+private extension String {
+    var nilIfEmpty: String? { isEmpty ? nil : self }
 }

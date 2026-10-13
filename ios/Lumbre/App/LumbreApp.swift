@@ -4,9 +4,8 @@ import SwiftUI
 
 @main
 struct LumbreApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @AppStorage("theme") private var theme: ThemePreference = .dark
-    private let api = AppEnvironment.makeAPI()
-    @State private var appModel = AppModel()
 
     init() {
         LumbreAppearance.configure()
@@ -15,11 +14,29 @@ struct LumbreApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .environment(\.api, api)
-                .environment(appModel)
+                .environment(\.api, appDelegate.api)
+                .environment(\.purchases, appDelegate.purchases)
+                .environment(appDelegate.appModel)
+                .environment(\.neuralIdentity, FeatureFlag.neuralIdentity.isEnabled)
                 .preferredColorScheme(theme.colorScheme)
                 .tint(Palette.accentText)
         }
+    }
+
+    /// Backend según `AppEnvironment` (`-mock`, `-mockGuest`, Supabase).
+    static func makeAPI() -> any LumbreAPI {
+        AppEnvironment.makeAPI()
+    }
+
+    /// StoreKit 2. En Debug, con `-mock` o `-mockGuest`, compras simuladas con los precios de plan.md §8
+    /// (correr desde `simctl` no carga `Lumbre.storekit`; desde Xcode, el esquema sí).
+    static func makePurchaseService(arguments: [String] = ProcessInfo.processInfo.arguments) -> any PurchaseService {
+        #if DEBUG
+        if arguments.contains("-mock") || arguments.contains("-mockGuest") {
+            return PreviewPurchaseService()
+        }
+        #endif
+        return StoreKitPurchaseService()
     }
 }
 

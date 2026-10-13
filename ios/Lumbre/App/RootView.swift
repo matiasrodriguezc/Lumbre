@@ -1,14 +1,102 @@
+import LumbreCore
 import LumbreDesign
 import SwiftUI
+
+/// Arranque de la app: carga el perfil y decide entre el onboarding y las pestañas.
+/// También presenta el paywall global y la sheet de Capturar.
+struct RootView: View {
+    @Environment(AppModel.self) private var appModel
+    @Environment(\.api) private var api
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var hasLoadedOnce = false
+
+    var body: some View {
+        @Bindable var appModel = appModel
+        content
+            .animation(.default, value: phase)
+            .task(id: appModel.sessionVersion) { await load() }
+            .onChange(of: scenePhase) { _, newPhase in
+                // Al volver a primer plano el plan o la hora pueden haber cambiado (compra, otro dispositivo).
+                guard newPhase == .active, hasLoadedOnce else { return }
+                Task { await appModel.loadProfile(api: api) }
+            }
+            .sheet(isPresented: Binding(
+                get: { appModel.paywallTrigger != nil && FeatureFlag.paywall.isEnabled },
+                set: { if !$0 { appModel.paywallTrigger = nil } }
+            )) {
+                PaywallView(trigger: appModel.paywallTrigger ?? "settings")
+            }
+    }
+
+    private enum Phase: Hashable {
+        case loading, failed, onboarding, main
+    }
+
+    private var phase: Phase {
+        if appModel.profile == nil {
+            return appModel.profileError == nil ? .loading : .failed
+        }
+        return appModel.needsOnboarding ? .onboarding : .main
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        switch phase {
+        case .loading:
+            SplashView()
+        case .failed:
+            LoadErrorView(error: appModel.profileError ?? LumbreAPIError.unexpected, screen: "launch") {
+                Task { await load() }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Palette.bg)
+        case .onboarding:
+            OnboardingView(profile: appModel.profile)
+                .transition(.opacity)
+        case .main:
+            MainTabsView()
+                .transition(.opacity)
+        }
+    }
+
+    private func load() async {
+        await appModel.loadProfile(api: api)
+        hasLoadedOnce = true
+        if let profile = appModel.profile, profile.isOnboarded {
+            // El aviso local depende de la hora guardada en el servidor: se reprograma en cada arranque.
+            await SparkReminder.schedule(at: profile.sparkTime)
+        }
+    }
+}
+
+/// Splash mientras carga el perfil: el símbolo y el wordmark sobre la red dormida.
+private struct SplashView: View {
+    @Environment(\.neuralIdentity) private var neuralIdentity
+
+    var body: some View {
+        VStack(spacing: Space.s4) {
+            if neuralIdentity {
+                LumbreMark(.long).frame(width: 150)
+            }
+            Wordmark()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background {
+            if neuralIdentity { NeuralNetworkBackground(.tall).ignoresSafeArea() }
+        }
+        .background(Palette.bg)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("Lumbre, cargando"))
+    }
+}
 
 /// Barra flotante con los cuatro destinos y el botón Capturar separado a la derecha.
 /// En iOS 26 el sistema ubica la pestaña con `role: .search` aparte, en su propio círculo de Liquid Glass;
 /// acá se usa ese lugar para Capturar y la selección se intercepta para abrir la sheet.
-struct RootView: View {
+private struct MainTabsView: View {
     @Environment(AppModel.self) private var appModel
 
     var body: some View {
-        @Bindable var appModel = appModel
         tabs
             .environment(\.dataVersion, appModel.dataVersion)
             .sheet(item: Binding(get: { appModel.captureEntry.map(CaptureEntry.init) }, set: { appModel.captureEntry = $0?.id })) { _ in
@@ -66,8 +154,16 @@ private struct CaptureEntry: Identifiable {
     let id: String
 }
 
-#Preview {
+#Preview("App") {
     RootView()
+        .environment(AppModel())
+        .preferredColorScheme(.dark)
+        .tint(Palette.accentText)
+}
+
+#Preview("Onboarding desde cero") {
+    RootView()
+        .environment(\.api, MockLumbreAPI(onboarded: false))
         .environment(AppModel())
         .preferredColorScheme(.dark)
         .tint(Palette.accentText)

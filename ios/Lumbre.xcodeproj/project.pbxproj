@@ -196,7 +196,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Config/Debug-Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Lumbre;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Lumbre usa la cámara para escanear páginas y sacar el texto en el teléfono.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Lumbre usa el micrófono para que dictes tus ideas. El audio se transcribe y no se guarda.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Lumbre lee la foto que elegís para sacar el texto en el teléfono. La foto queda en tu fototeca.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Lumbre transcribe lo que dictás para guardarlo como texto. Siempre que se puede, en el teléfono.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -226,6 +231,10 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Lumbre;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Lumbre usa la cámara para escanear páginas y sacar el texto en el teléfono.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Lumbre usa el micrófono para que dictes tus ideas. El audio se transcribe y no se guarda.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Lumbre lee la foto que elegís para sacar el texto en el teléfono. La foto queda en tu fototeca.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Lumbre transcribe lo que dictás para guardarlo como texto. Siempre que se puede, en el teléfono.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

@@ -108,7 +108,8 @@ select is(public.consume_credit('f0000000-0000-4000-8000-000000000001', 'tipo_in
   'un tipo sin fila en plan_limits no tiene cupo');
 
 insert into public.usage_ledger (user_id, kind, period, period_start, used)
-values ('f0000000-0000-4000-8000-000000000005', 'capture', 'day', current_date - 1, 30);
+values ('f0000000-0000-4000-8000-000000000005', 'capture', 'day',
+        (now() at time zone 'America/Argentina/Buenos_Aires')::date - 1, 30);
 select is(public.consume_credit('f0000000-0000-4000-8000-000000000005', 'capture'), true,
   'el uso de ayer no cuenta para hoy');
 
@@ -130,8 +131,8 @@ select set_config('request.jwt.claims', '{"sub": "f0000000-0000-4000-8000-000000
 
 select results_eq(
   $$ select kind, available, used, remaining from public.credit_status() order by kind $$,
-  $$ values ('capture', 30, 30, 0), ('distill', 5, 5, 0), ('spark_extra', 2, 2, 0) $$,
-  'credit_status: free ve sus tres cupos con lo ganado y lo usado'
+  $$ values ('capture', 30, 30, 0), ('distill', 5, 5, 0), ('projects', 1, 0, 1), ('spark_extra', 2, 2, 0) $$,
+  'credit_status: free ve sus cupos con lo ganado y lo usado (y el de proyectos)'
 );
 select throws_ok($$ select public.refund_credit(auth.uid(), 'capture') $$, '42501', null,
   'refund_credit: la app no puede llamarla');

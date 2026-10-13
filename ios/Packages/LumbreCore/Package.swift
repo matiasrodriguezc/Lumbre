@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "LumbreCore",
     defaultLocalization: "es",
-    platforms: [.iOS(.v17)],
+    platforms: [.iOS(.v17), .macOS(.v14)],
     products: [
         .library(name: "LumbreCore", targets: ["LumbreCore"]),
     ],
@@ -16,6 +16,9 @@ let package = Package(
             name: "LumbreCore",
             dependencies: [.product(name: "Supabase", package: "supabase-swift")]
         ),
-        .testTarget(name: "LumbreCoreTests", dependencies: ["LumbreCore"]),
+        .testTarget(
+            name: "LumbreCoreTests",
+            dependencies: ["LumbreCore", .product(name: "Supabase", package: "supabase-swift")]
+        ),
     ]
 )

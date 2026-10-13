@@ -396,8 +396,43 @@ inspector_port = 55583
 # The Deno major version to use.
 deno_version = 2
 
+# Secretos de las Edge Functions en local: van en supabase/functions/.env (no va al repo; ver .env.example).
+# `supabase functions serve` y `supabase start` lo leen solos. En remoto: `supabase secrets set --env-file`.
 # [edge_runtime.secrets]
 # secret_key = "env(SECRET_VALUE)"
+
+# Edge Functions (contrato en backend/openapi.yaml).
+# Las de la app validan el JWT del usuario (también invitados). Las internas (las llama pg_cron) y el webhook
+# de RevenueCat no llevan JWT de usuario: validan su propio secreto adentro.
+[functions.capture]
+verify_jwt = true
+
+[functions.today]
+verify_jwt = true
+
+[functions.spark]
+verify_jwt = true
+
+[functions.search]
+verify_jwt = true
+
+[functions.planner]
+verify_jwt = true
+
+[functions.dev-plan]
+verify_jwt = true
+
+[functions.revenuecat-webhook]
+verify_jwt = false
+
+[functions.process]
+verify_jwt = false
+
+[functions.daily-sparks]
+verify_jwt = false
+
+[functions.send-pushes]
+verify_jwt = false
 
 [analytics]
 enabled = true

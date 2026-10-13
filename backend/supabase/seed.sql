@@ -6,6 +6,11 @@
 --   B · beto@lumbre.test  22222222-2222-2222-2222-222222222222  (un solo concepto, para probar RLS)
 
 -- Los dominios los carga la migración 20260927230000_dominios.sql (la lista cerrada de 25).
+--
+-- Los conceptos quedan sin embedding: después de `supabase db reset`, una llamada a /process los completa
+-- (y también los de los dominios y la biblioteca). El cron 'procesar-pendientes' lo hace solo cada 5 minutos
+-- si las Edge Functions están corriendo; para no esperar:
+--   curl -X POST http://127.0.0.1:55521/functions/v1/process -H "Authorization: Bearer <SERVICE_ROLE_KEY>"
 
 insert into auth.users (
   instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -60,15 +65,15 @@ insert into public.sparks (user_id, concept_lo, concept_hi, mode, title, body, s
   ('11111111-1111-1111-1111-111111111111', 'a0000000-0000-0000-0000-000000000002', 'a0000000-0000-0000-0000-000000000004',
    'daily', 'Semáforos × code review',
    'Si un PR se aprueba rápido, los siguientes del mismo autor entran en una “onda verde” con revisión prioritaria. Premia los PR chicos sin reglas nuevas.',
-   'revealed', current_date, now()),
+   'revealed', (now() at time zone 'America/Argentina/Buenos_Aires')::date, now()),
   ('11111111-1111-1111-1111-111111111111', 'a0000000-0000-0000-0000-000000000006', 'a0000000-0000-0000-0000-000000000009',
    'daily', 'Podcast × ruinas',
    'Un episodio por capa de excavación: cada uno cuenta una época de la misma ciudad con lo que quedó enterrado.',
-   'saved', current_date - 1, now() - interval '1 day'),
+   'saved', (now() at time zone 'America/Argentina/Buenos_Aires')::date - 1, now() - interval '1 day'),
   ('11111111-1111-1111-1111-111111111111', 'a0000000-0000-0000-0000-000000000005', 'a0000000-0000-0000-0000-000000000007',
    'daily', 'Fermentación × interés compuesto',
    'Un newsletter que no se promociona: cada edición recupera y mejora una idea vieja en vez de buscar una nueva.',
-   'revealed', current_date - 2, now() - interval '2 days');
+   'revealed', (now() at time zone 'America/Argentina/Buenos_Aires')::date - 2, now() - interval '2 days');
 
 -- Categorías de Ana y Beto: nombres cortos, como los escribiría un usuario, cada una con su dominio.
 insert into public.categories (user_id, name, domain)
@@ -82,3 +87,17 @@ join (values ('marketing', 'Marketing'), ('arquitectura', 'Urbanismo'), ('ingeni
 update public.concepts c set category_id = cat.id
   from public.categories cat
  where cat.user_id = c.user_id and cat.domain = c.domain;
+
+-- Las chispas del seed usan sus conceptos: el descanso de 3 días cuenta desde su fecha.
+update public.concepts c set last_used_at = s.created_at
+  from public.sparks s
+ where c.id in (s.concept_lo, s.concept_hi)
+   and (c.last_used_at is null or c.last_used_at < s.created_at);
+
+-- Secretos para que pg_cron llame a las Edge Functions locales (ver 20261009170000_jobs.sql).
+-- La URL es la de Kong dentro de la red de Docker de Supabase. La clave es la de servicio pública
+-- de desarrollo local de la CLI (la misma en todas las máquinas); en remoto se cargan las reales a mano.
+select vault.create_secret('http://kong:8000/functions/v1', 'lumbre_functions_url', 'URL de las Edge Functions (local)');
+select vault.create_secret(
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU',
+  'lumbre_service_key', 'Clave de servicio de desarrollo local');

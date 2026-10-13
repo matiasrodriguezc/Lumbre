@@ -37,10 +37,17 @@ final class AppModel {
 
     /// Cambia cada vez que se guarda algo, para que las pantallas vuelvan a cargar.
     private(set) var dataVersion = 0
+    /// Cambia al cerrar sesión o borrar la cuenta: `RootView` vuelve a cargar el perfil desde cero.
+    private(set) var sessionVersion = 0
+    /// Solo Debug ("Volver a ver el onboarding"): muestra el onboarding aunque el perfil ya lo haya terminado.
+    private(set) var isReplayingOnboarding = false
 
     var isPro: Bool { profile?.isPro ?? false }
     var isGuest: Bool { profile?.isGuest ?? true }
-    var needsOnboarding: Bool { profile.map { !$0.isOnboarded } ?? false }
+    var needsOnboarding: Bool {
+        guard let profile else { return false }
+        return !profile.isOnboarded || isReplayingOnboarding
+    }
 
     func loadProfile(api: any LumbreAPI) async {
         do {
@@ -55,12 +62,27 @@ final class AppModel {
         self.profile = profile
     }
 
+    /// Último paso del onboarding: guarda el perfil y cae en Hoy.
+    func completeOnboarding(with profile: Profile) {
+        self.profile = profile
+        isReplayingOnboarding = false
+        selectedTab = .today
+        dataVersion += 1
+    }
+
+    /// Solo Debug: vuelve a mostrar el onboarding sin borrar nada.
+    func replayOnboarding() {
+        isReplayingOnboarding = true
+    }
+
     /// Avisa a las pantallas que hay datos nuevos.
     func dataChanged() {
         dataVersion += 1
     }
 
+    /// Abre el paywall. Con el flag `paywall` apagado no se muestra.
     func presentPaywall(trigger: String) {
+        guard FeatureFlag.paywall.isEnabled else { return }
         paywallTrigger = trigger
     }
 
@@ -86,8 +108,13 @@ final class AppModel {
     /// Después de cerrar sesión o borrar la cuenta: vuelve al onboarding.
     func reset() {
         profile = nil
+        profileError = nil
         selectedTab = .today
         pendingRoute = nil
+        paywallTrigger = nil
+        captureEntry = nil
+        isReplayingOnboarding = false
         dataVersion += 1
+        sessionVersion += 1
     }
 }
