@@ -12,6 +12,8 @@ struct ShareCardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            // El bloque de la chispa va centrado entre el borde de arriba y la firma.
+            Spacer(minLength: 0)
             HStack(alignment: .top, spacing: 48) {
                 concept(spark.conceptA, alignment: .leading)
                 concept(spark.conceptB, alignment: .trailing)
@@ -19,7 +21,7 @@ struct ShareCardView: View {
             .padding(.bottom, 40)
 
             Synapse(.lit, full: true)
-                .frame(width: 820)
+                .frame(width: 880)
                 .frame(maxWidth: .infinity)
                 .padding(.bottom, 96)
 
@@ -38,7 +40,7 @@ struct ShareCardView: View {
                 .lineLimit(7)
                 .minimumScaleFactor(0.7)
 
-            Spacer(minLength: 64)
+            Spacer(minLength: 96)
 
             HStack(alignment: .center, spacing: 24) {
                 LumbreMark(.long).frame(width: 150)
@@ -58,8 +60,9 @@ struct ShareCardView: View {
             }
         }
         .padding(.horizontal, 96)
-        .padding(.top, 520)
-        .padding(.bottom, 120)
+        // Márgenes seguros de las historias: arriba y abajo la app de Instagram pone su interfaz.
+        .padding(.top, 250)
+        .padding(.bottom, 200)
         .frame(width: Self.size.width, height: Self.size.height, alignment: .topLeading)
         .background(alignment: .top) {
             ZStack(alignment: .top) {
