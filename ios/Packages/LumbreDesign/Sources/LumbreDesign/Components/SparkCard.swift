@@ -21,6 +21,8 @@ public struct SparkCard<Actions: View>: View {
     let explanation: String
     let actions: Actions
 
+    @Environment(\.neuralIdentity) private var neuralIdentity
+
     public init(a: SparkSide, b: SparkSide, title: String, explanation: String, @ViewBuilder actions: () -> Actions) {
         self.a = a
         self.b = b
@@ -33,12 +35,22 @@ public struct SparkCard<Actions: View>: View {
         VStack(alignment: .leading, spacing: Space.s5) {
             HStack(alignment: .top, spacing: Space.s2) {
                 side(a)
-                Text("×")
-                    .font(.title3.weight(.semibold))
-                    .foregroundStyle(Palette.inkMuted)
-                    .padding(.top, Space.s5)
-                    .accessibilityHidden(true)
+                if neuralIdentity {
+                    // Hueco para la sinapsis, que va centrada sobre el par.
+                    Color.clear.frame(width: 56, height: 1)
+                } else {
+                    Text("×")
+                        .font(.title3.weight(.semibold))
+                        .foregroundStyle(Palette.inkMuted)
+                        .padding(.top, Space.s5)
+                        .accessibilityHidden(true)
+                }
                 side(b)
+            }
+            .overlay {
+                if neuralIdentity {
+                    Synapse(.lit).frame(width: 56)
+                }
             }
             .accessibilityElement(children: .combine)
 

@@ -32,22 +32,27 @@ La app se llama **Lumbre**. Lo que genera cada día se llama **chispa**. De la c
 ## 3. Identidad visual
 
 ### Logo
-- Filamento de foco simplificado, inspirado en los filamentos LED en espiral: una varilla vertical `signal-blue` envuelta por una espiral de tres vueltas. Los tramos de atrás son `nebula-violet` y los de adelante `spark` (magenta).
-- La historia: la varilla es un concepto, la espiral es otro; donde se tocan, se enciende la idea.
-- Plano, sin degradés: la profundidad sale solo del cambio de color entre tramos.
-- Se lee bien a 29px.
+- Una neurona plana en "facetado orgánico": soma, cinco dendritas y un axón largo que termina en tres botones. Ramas que se afinan, uniones blandas y contorno en tramos rectos.
+- La historia: cada concepto es una neurona y la bóveda es una red; la chispa es la sinapsis que se enciende entre dos que nunca se habían tocado.
+- Dos versiones: larga (wordmark, splash, web) y compacta, con el axón curvado para llenar un cuadrado (ícono, avatares, favicon).
 - Wordmark: "Lumbre" en Fraunces 600 con curvas blandas, seguido de un punto magenta.
-- Archivos en `design/system/logo/`. El wordmark de los SVG depende de la fuente instalada: para el archivo final hay que pasarlo a curvas en Figma.
-- Ícono de app: símbolo al 66% de alto sobre `night`, en cuadrado a sangre (cada sistema aplica su máscara). Falta exportar variantes dark y tinted de iOS y adaptive + monochrome de Android.
-- Riesgo de lectura: una forma que envuelve una vara puede recordar al símbolo de medicina o a un "$". Validar el ícono solo con personas sin contexto.
-- Versiones anteriores descartadas: estrella de cuatro puntas (época Chispa), dos llamas cruzadas y filamento con red de nodos. Quedan en `design/system/logo/anteriores/`.
+- Archivos en `design/system/logo/`, generados con `design/system/identidad/generar.py`. El wordmark de los SVG depende de la fuente instalada: para el archivo final hay que pasarlo a curvas en Figma.
+- Ícono de app: neurona compacta en `cream` sobre `night`, con el núcleo en `spark`, en cuadrado a sangre (cada sistema aplica su máscara). Hay base monocromo; falta exportar los PNG de iOS (claro, dark, tinted) y Android (adaptive + monochrome).
+- Riesgo de lectura: a tamaño chico puede leerse como estrella de mar o insecto. Validar el ícono solo con personas sin contexto.
+- Versiones anteriores descartadas: estrella de cuatro puntas (época Chispa), dos llamas cruzadas, filamento con red de nodos y filamento con espiral. Quedan en `design/system/logo/anteriores/`.
+
+### Mundo neuronal
+- Toda la identidad gráfica sale de la misma metáfora: concepto = neurona, bóveda = red, chispa = sinapsis, destilar = impulso, proyecto = circuito. La metáfora se ve, no se dice: la interfaz no usa vocabulario de neurociencia.
+- Piezas: la sinapsis (dos terminales con la estrella en el hueco) entre los conceptos de la chispa; la red de neuronas dormidas como fondo de splash, onboarding, Hoy, tarjeta para compartir y estados vacíos; el pulso como indicador de carga al destilar; y el reveal contado como sinapsis.
+- Sin colores nuevos: dormida `surface-alt`, conexión `border`, encendida `ink`, impulso `info-text`, sinapsis `spark`.
+- Guía completa en `design/system/identidad.html` y reglas en `design/system/README.md`.
 
 ### Paleta (Sunset Nebula)
 | Token | Hex | Uso |
 |---|---|---|
 | night | #0A1633 | Fondo del modo oscuro (default), tinta del modo claro |
-| signal-blue | #2D6CDF | Información, llama izquierda del logo |
-| nebula-violet | #7E22CE | Todo lo Pro, llama derecha del logo |
+| signal-blue | #2D6CDF | Información e impulsos en la ilustración |
+| nebula-violet | #7E22CE | Todo lo Pro |
 | spark | #FF3EA5 | Solo el momento chispa: CTA principal, chispa del día, contador |
 | cream | #FFF7ED | Fondo del modo claro, tinta del modo oscuro |
 
@@ -328,7 +333,7 @@ Supuesto: 1 dev, unas 20 horas por semana. Cada fase tiene un criterio de salida
 
 ## 15. Pendientes
 - [ ] Búsqueda de marca de Lumbre con abogado.
-- [ ] Wordmark pasado a curvas con Fraunces instalada; exportes de ícono (iOS dark/tinted, Android adaptive/monochrome).
+- [x] Wordmark pasado a curvas con Fraunces; exportes de ícono (iOS claro/dark/tinted, Android adaptive/monochrome, Google Play). Hecho el 2026-10-13 con la neurona.
 - [ ] Test del ícono solo (sin wordmark) con 5 personas: qué ven.
 - [x] Lista cerrada de dominios con descripción de cada uno para los embeddings (25, el 28/9/2026).
 - [ ] Elegir el modelo de embeddings multilingüe.

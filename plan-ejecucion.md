@@ -45,7 +45,7 @@ Reglas:
 
 ## B. Diseño (F1)
 
-- [ ] **8. Wordmark en curvas y exportes del ícono** · MAT-222
+- [x] **8. Wordmark en curvas y exportes del ícono** · MAT-222 · ✅ 2026-10-13: con la identidad neuronal nueva. Wordmark en curvas desde la Fraunces variable (ahora empaquetada en LumbreDesign); PNG de iOS en el AppIcon del proyecto y en `design/system/logo/exportes/`, Android adaptive + monochrome por densidad y Google Play 512. Todo sale de `design/system/identidad/generar.py`.
   Wordmark pasado a trazos con Fraunces; PNG de iOS 1024 (claro, dark y tinted) y de Android (adaptive foreground/background y monochrome).
 - [ ] **9. Tokens listos para Figma** · prep MAT-221
   `tokens.json` exportado como variables de Figma con modos oscuro y claro, más instrucciones de importación.

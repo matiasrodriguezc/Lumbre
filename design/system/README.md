@@ -49,24 +49,38 @@ Lumbre es una app de creatividad por recombinación: absorbés ideas, la IA las 
 
 ## Movimiento y háptica
 
-- Un solo momento coreografiado: el reveal de la chispa. Las dos tarjetas de concepto se acercan, chocan, aparece la estrella con `glow-spark` y un háptico `.success` (iOS) / `CONFIRM` (Android). Unos 900ms en total.
-- Resto de transiciones: las del sistema (push, sheet, predictive back). No inventes transiciones propias para navegación.
-- Con Reducir movimiento activado, el reveal es un fundido de 200ms sin escala ni rebote.
+- Un solo momento coreografiado: el reveal de la chispa, contado como una sinapsis. Los dos conceptos entran desde los costados (0–250ms), cada uno estira su terminal hacia el centro (150–550ms), un impulso `info-text` cruza cada terminal (450–650ms) y a los 650ms se enciende la estrella con `glow-spark` y un háptico `.success` (iOS) / `CONFIRM` (Android). El título sube hasta los 900ms.
+- El pulso: indicador de carga propio solo para destilar y encender. Un impulso recorre un axón en 1,2s. Para cualquier otra carga, el spinner del sistema.
+- Resto de transiciones: las del sistema (push, sheet, predictive back). No inventes transiciones propias para navegación. La red de fondo nunca se anima.
+- Con Reducir movimiento activado, el reveal es un fundido de 200ms sin escala ni rebote, y el pulso queda quieto.
 
 ## Iconografía
 
 - iOS: SF Symbols. Android: Material Symbols Rounded (peso 400, relleno 0; relleno 1 en el tab activo).
 - Equivalencias base: Hoy `sparkles` / `auto_awesome`; Bóveda `square.stack.3d.up` / `stacks`; Capturar `plus` / `add`; Proyectos `square.grid.2x2` / `dashboard`; Perfil `person.crop.circle` / `account_circle`.
-- La estrella de cuatro puntas representa la chispa del día y solo se usa para eso. El símbolo de las dos llamas es de marca y no aparece como ícono de interfaz.
+- La estrella de cuatro puntas representa la chispa del día y solo se usa para eso. La neurona es de marca y no aparece como ícono de interfaz.
 
 ## Logo
 
-- El símbolo es un filamento de foco simplificado: una varilla vertical `signal-blue` y una espiral de tres vueltas que la envuelve. Los tramos de la espiral que pasan por detrás son `nebula-violet` y los de adelante, `spark`. Dos conceptos que se entrelazan; donde se tocan, se enciende la idea.
-- La profundidad sale solo del cambio de color entre tramos de atrás y de adelante: sin degradés, brillos ni sombras.
-- Ícono de app: el símbolo al 66% de alto sobre `night`, en cuadrado a sangre (cada sistema aplica su máscara).
-- Wordmark: "Lumbre" en Fraunces 600 con SOFT 100, en `ink`, seguido de un punto `spark`. El punto es parte de la marca.
-- El símbolo de marca va en ícono, splash y wordmark. Dentro de la app, la chispa (feature) se representa con la estrella de cuatro puntas.
-- Cuidado con la lectura suelta: una forma que envuelve una vara puede recordar al símbolo de medicina o a un "$". Validar el ícono solo, sin wordmark, con personas sin contexto.
+- El símbolo es una neurona plana: soma, cinco dendritas y un axón largo que termina en tres botones. Cada concepto es una neurona; la chispa es lo que pasa cuando dos se conectan.
+- Dos versiones. **Largo** (`lumbre-mark.svg`): horizontal, con el axón hacia el wordmark; para wordmark, splash y web; mínimo 64px de ancho. **Compacto** (`lumbre-mark-compacto.svg`): el axón se curva hacia abajo para llenar un cuadrado; para ícono, avatares, favicon y notificaciones; mínimo 24px.
+- Ícono de app: el compacto en `cream` sobre `night`, en cuadrado a sangre (cada sistema aplica su máscara), con el núcleo en `spark`. `lumbre-app-icon-mono.svg` es la base para tinted (iOS) y monochrome (Android).
+- Wordmark: "Lumbre" en Fraunces 600 con SOFT 100, en `ink`, seguido de un punto `spark`. El punto es parte de la marca. La neurona va en `ink`, sin núcleo magenta, para que el punto sea el único.
+- El símbolo de marca va en ícono, splash y wordmark. Dentro de la app, la chispa (feature) se representa con la estrella de cuatro puntas y, en el momento chispa, con la sinapsis.
+- Validar el ícono solo, sin wordmark, con personas sin contexto: que se lea como neurona (y no como estrella de mar o insecto) a 29px.
+
+## Mundo neuronal
+
+La identidad sale de una sola metáfora: concepto = neurona, bóveda = red, chispa = sinapsis que se enciende, destilar = un impulso que recorre un axón, proyecto = circuito. La guía visual completa, con ejemplos en los dos temas, está en `identidad.html`.
+
+- **La metáfora se ve, no se dice.** En la interfaz no aparecen "neurona", "sinapsis", "axón" ni vocabulario médico. Se sigue destilando y encendiendo.
+- **Facetado orgánico.** Todo lo gráfico se dibuja como el símbolo: ramas que nacen gruesas y se afinan o terminan en un botón redondo, uniones blandas y un contorno hecho de tramos rectos cortos. Solo rellenos planos: sin degradés, brillos ni contornos.
+- **Color por rol, sin colores nuevos.** Neurona dormida `surface-alt`; conexión `border`; neurona encendida `ink`; impulso `info-text`; sinapsis encendida `spark` (una por pantalla). Así la ilustración funciona igual en los dos temas.
+- **La sinapsis** (`identidad/sinapsis.svg`): dos terminales enfrentadas con la estrella en el hueco. Es la ilustración del momento chispa: va entre los dos conceptos de la SparkCard (56–64pt de ancho), en el reveal y en la tarjeta para compartir. Sin estrella, es el estado de espera hasta la próxima chispa.
+- **La red** (`identidad/red-*.svg`): neuronas dormidas unidas a sus vecinas. Va en splash, onboarding, encabezado de Hoy, tarjeta para compartir, widget grande y estados vacíos. Nunca detrás de listas, formularios o texto corrido, nunca animada y con un solo par encendido por pantalla como máximo.
+- **Estados vacíos** (`identidad/estado-*.svg`): bóveda vacía (una neurona sola), antes de la chispa (dos que se buscan) y sin conexión (un axón cortado).
+- Todo se genera con `identidad/generar.py` (requiere shapely). Para cambiar una forma, editá el script y regenerá; no edites los SVG a mano.
+- Los SVG de `identidad/` no tienen fondo y pintan cada parte por su clase de rol (`n-dormant`, `n-link`, `n-active`, `n-impulse`, `n-spark`), que toma los tokens del tema. Sueltos usan los valores del tema oscuro, así que sobre blanco la neurona crema casi no se ve.
 
 ## Plataformas
 

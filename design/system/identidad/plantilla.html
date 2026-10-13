@@ -1,0 +1,280 @@
+<!doctype html>
+<!-- Plantilla de identidad.html. Los {{...}} los completa identidad/generar.py: editá este archivo y regenerá. -->
+<html lang="es" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumbre · Identidad neuronal</title>
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="components/bundle.css">
+<style>
+.n-dormant{fill:var(--surface-alt)}.n-link{fill:var(--border)}.n-active{fill:var(--ink)}.n-impulse{fill:var(--info-text)}.n-spark{fill:var(--spark)}
+.n-trace{fill:none;stroke:var(--border-strong);stroke-width:1.5;stroke-dasharray:2 5;stroke-linecap:round}
+.n-cut{fill:none;stroke:var(--border-strong);stroke-width:2.5;stroke-linecap:round}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--font-text)}
+svg{display:block;width:100%;height:auto}
+main{max-width:1080px;margin:0 auto;padding:0 16px 96px}
+.hero{position:relative;overflow:hidden;border-radius:0 0 var(--radius-lg) var(--radius-lg);margin:0 -16px 48px;padding:56px 16px 200px;min-height:560px}
+.hero__net{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;pointer-events:none}
+.hero__net svg{min-width:1080px}
+.hero__inner{position:relative;max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.hero__mark{width:150px}
+.hero h1{font:600 clamp(36px,6vw,60px)/1.02 var(--font-display);font-variation-settings:"SOFT" 100,"WONK" 1;letter-spacing:-.02em;margin:8px 0 0;max-width:14ch}
+.hero p{color:var(--ink-muted);max-width:56ch;margin:0;font-size:18px;background:color-mix(in srgb,var(--bg) 70%,transparent);border-radius:8px}
+.theme{position:absolute;top:16px;right:16px;z-index:2}
+h2{font:600 32px/1.1 var(--font-display);font-variation-settings:"SOFT" 100;letter-spacing:-.01em;margin:72px 0 8px}
+h3{font:600 17px/22px var(--font-text);margin:0 0 6px}
+.lead{color:var(--ink-muted);max-width:64ch;margin:0 0 24px;font-size:17px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:20px;box-shadow:var(--elev-card)}
+.card p,.card li{color:var(--ink-muted);font-size:15px;line-height:1.45;margin:0}
+.card ul{margin:8px 0 0;padding-left:18px}
+.fig{background:var(--bg);border-radius:var(--radius-sm);padding:16px;margin-bottom:14px;display:flex;align-items:center;justify-content:center;min-height:150px}
+.map{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;align-items:baseline;margin:0}
+.map dt{font:600 15px/1.3 var(--font-text)}
+.map dd{margin:0;color:var(--ink-muted);font-size:15px}
+.map dd b{color:var(--ink);font-weight:600}
+.lockups{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.lockups svg{border-radius:var(--radius-md)}
+.icons{display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap}
+.icons div{border-radius:22.5%;overflow:hidden;flex:none}
+.icons span{display:block;font-size:12px;color:var(--ink-muted);text-align:center;margin-top:6px}
+.swatches{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.sw{border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;background:var(--surface)}
+.sw i{display:block;height:44px;border-radius:6px;margin-bottom:10px}
+.sw b{display:block;font-size:15px}
+.sw code{font-size:13px;color:var(--accent-text)}
+.sw span{display:block;font-size:13px;color:var(--ink-muted);margin-top:4px}
+code{font:500 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace}
+.dos{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.dos .card h3::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;background:var(--success)}
+.dos .card.no h3::before{background:var(--danger);border-radius:2px}
+/* Teléfonos */
+.phones{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+.phone{width:300px;height:620px;border-radius:44px;background:var(--bg);box-shadow:0 0 0 10px #050B1C,0 0 0 11px var(--border);position:relative;overflow:hidden;flex:none;margin:12px}
+.phone__cap{text-align:center;color:var(--ink-muted);font-size:13px;margin-top:18px}
+.status{height:44px;display:flex;justify-content:space-between;align-items:center;padding:0 26px;font:600 14px var(--font-text)}
+.splash{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.splash .net{position:absolute;inset:0}
+.splash .net svg{height:100%;width:auto}
+.splash .wm{position:relative;width:200px}
+.today{padding:0 16px}
+.today__head{position:relative;margin:0 -16px 8px;padding:6px 16px 14px;overflow:hidden}
+.today__head .net{position:absolute;inset:-10px -20px;opacity:.9}
+.today__head h1{position:relative;font:600 34px/1.1 var(--font-display);font-variation-settings:"SOFT" 100;margin:6px 0 2px}
+.today__head p{position:relative;margin:0;color:var(--ink-muted);font-size:14px}
+.phone .ch-spark{width:100%;padding:18px 16px 16px}
+.phone .ch-spark h3{font-size:28px;line-height:32px}
+.phone .ch-spark p{font-size:15px;line-height:21px;margin-bottom:14px}
+.phone .ch-btn{min-height:42px;font-size:15px;padding:8px 14px}
+.pair{display:flex;align-items:center;gap:6px;margin-bottom:14px}
+.pair .ch-spark__atom{flex:1}
+.pair svg{flex:none;width:58px}
+.share{position:absolute;inset:0;display:flex;flex-direction:column;padding:56px 26px 30px}
+.share .net{position:absolute;left:0;right:0;top:0;height:60%}
+.share .net svg{width:100%;height:auto}
+.share__body{position:relative;margin-top:auto}
+.share__syn{width:160px;margin:0 0 18px}
+.share h3{font:600 34px/1.05 var(--font-display);font-variation-settings:"SOFT" 100,"WONK" 1;margin:0 0 10px;letter-spacing:-.01em}
+.share p{margin:0 0 26px;font-size:15px;line-height:1.45}
+.share__brand{display:flex;align-items:center;gap:8px;font:600 20px var(--font-display);font-variation-settings:"SOFT" 100}
+.share__brand svg{width:44px}
+.share__brand i{font-style:normal;color:var(--spark)}
+.empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:24px 8px}
+.empty svg{width:200px}
+.empty h3{margin:6px 0 0}
+.empty p{max-width:30ch}
+/* Movimiento */
+.stage{background:var(--bg);border-radius:var(--radius-md);padding:28px 16px;display:flex;flex-direction:column;align-items:center;gap:14px;min-height:260px;justify-content:center}
+.reveal{display:flex;align-items:center;gap:8px;width:min(100%,420px)}
+.reveal .ch-spark__atom{flex:1}
+.reveal__syn{width:110px;flex:none;overflow:visible}
+.card .reveal__title{color:var(--ink);font:600 32px/1.1 var(--font-display);font-variation-settings:"SOFT" 100,"WONK" 1;margin:0}
+.syn-l,.syn-r,.syn-star{transform-box:fill-box}
+.syn-l{transform-origin:left center}.syn-r{transform-origin:right center}.syn-star{transform-origin:center}
+.play .reveal .a{animation:inL 250ms cubic-bezier(.2,.8,.2,1) both}
+.play .reveal .b{animation:inR 250ms cubic-bezier(.2,.8,.2,1) both}
+.play .syn-l,.play .syn-r{animation:grow 400ms 150ms cubic-bezier(.3,.7,.2,1) both}
+.play .imp-l{animation:impL 200ms 450ms ease-in both}
+.play .imp-r{animation:impR 200ms 450ms ease-in both}
+.play .syn-star{animation:ignite 300ms 650ms cubic-bezier(.2,1.6,.4,1) both}
+.play .reveal__syn{animation:glow 600ms 650ms ease-out both}
+.play .reveal__title{animation:rise 250ms 650ms ease-out both}
+@keyframes inL{from{transform:translateX(-36px);opacity:0}}
+@keyframes inR{from{transform:translateX(36px);opacity:0}}
+@keyframes grow{from{transform:scaleX(0)}}
+@keyframes impL{from{transform:translateX(0);opacity:1}to{transform:translateX(42px);opacity:1}}
+@keyframes impR{from{transform:translateX(0);opacity:1}to{transform:translateX(-42px);opacity:1}}
+@keyframes ignite{from{transform:scale(0)}}
+@keyframes glow{from{filter:drop-shadow(0 0 0 transparent)}40%{filter:drop-shadow(0 0 10px var(--spark))}to{filter:drop-shadow(0 0 4px color-mix(in srgb,var(--spark) 50%,transparent))}}
+@keyframes rise{from{transform:translateY(8px);opacity:0}}
+.imp-l,.imp-r{opacity:0}
+.reduced.play .reveal *{animation:none!important}
+.reduced.play .reveal,.reduced.play .reveal__title{animation:fade 200ms ease-out both}
+@keyframes fade{from{opacity:0}}
+@media (prefers-reduced-motion:reduce){.play *{animation:none!important}}
+.timeline{width:100%;max-width:640px;font-size:13px;color:var(--ink-muted);display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin-top:6px}
+.timeline b{color:var(--ink);font-variant-numeric:tabular-nums}
+.ctrls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.loader{display:flex;flex-direction:column;align-items:center;gap:10px;width:200px}
+.loader p{margin:0;color:var(--ink-muted);font-size:15px}
+.files{columns:2 280px;padding-left:18px;color:var(--ink-muted);font-size:15px}
+.files code{color:var(--ink)}
+@media (max-width:520px){h2{font-size:26px;margin-top:56px}.phone{transform:scale(.9);margin:-20px}}
+</style></head><body>
+<header class="hero">
+  <div class="hero__net" aria-hidden="true">{{net-wide}}</div>
+  <button class="ch-btn ch-btn--secondary theme" id="theme" type="button">Ver en claro</button>
+  <div class="hero__inner">
+    <div class="hero__mark" aria-hidden="true">{{mark-nucleus}}</div>
+    <h1>Una red que se enciende</h1>
+    <p>La identidad visual de Lumbre sale del mundo neuronal. Cada concepto que guardás es una neurona; tu bóveda, una red; y la chispa del día es la sinapsis que se dispara entre dos que nunca se habían tocado.</p>
+  </div>
+</header>
+<main>
+
+<h2>La idea</h2>
+<p class="lead">La recombinación de ideas es, literalmente, lo que hace un cerebro: conectar cosas que estaban lejos. Lumbre la vuelve visible con una sola metáfora, sostenida en todo el producto. La metáfora se ve, no se dice: en la interfaz no aparecen palabras como "neurona" o "sinapsis".</p>
+<div class="grid">
+  <div class="card"><dl class="map">
+    <dt>Concepto</dt><dd>una <b>neurona</b>: la unidad que guardás.</dd>
+    <dt>Bóveda</dt><dd>la <b>red</b> dormida, de fondo.</dd>
+    <dt>Chispa</dt><dd>la <b>sinapsis</b> que se enciende entre dos.</dd>
+    <dt>Destilar</dt><dd>un <b>impulso</b> que recorre un axón.</dd>
+    <dt>Proyecto</dt><dd>un <b>circuito</b>: neuronas que quedaron conectadas.</dd>
+  </dl></div>
+  <div class="card"><h3>Por qué funciona</h3><p>La identidad anterior hablaba de luz (un filamento de foco). La neurona habla de lo que pasa en la cabeza del usuario cuando una idea vieja choca con otra. La luz no desaparece: sigue estando en la chispa magenta, que ahora tiene un lugar físico donde ocurrir.</p></div>
+</div>
+
+<h2>Símbolo</h2>
+<p class="lead">Una neurona plana en facetado orgánico: soma a la izquierda, cinco dendritas y un axón largo que termina en tres botones. El wordmark no cambia: "Lumbre" en Fraunces seguido del punto <code>spark</code>.</p>
+<div class="lockups">{{lockup-dark}}{{lockup-light}}</div>
+<div class="grid" style="margin-top:16px">
+  <div class="card"><div class="fig" style="padding:24px 40px">{{mark}}</div><h3>Largo</h3><p>Para el wordmark, el splash y la web. Siempre horizontal, con el axón hacia la palabra. Mínimo 64px de ancho.</p></div>
+  <div class="card"><div class="fig"><div style="width:120px">{{mark-compact}}</div></div><h3>Compacto</h3><p>El axón se curva hacia abajo para llenar un cuadrado. Para el ícono de app, avatares, favicon y notificaciones. Mínimo 24px.</p></div>
+  <div class="card"><div class="fig"><div class="icons">
+    <div style="width:96px">{{icon}}<span></span></div><div style="width:60px">{{icon}}</div><div style="width:40px">{{icon}}</div><div style="width:29px">{{icon}}</div></div></div>
+    <h3>Ícono de app</h3><p>Compacto en <code>cream</code> sobre <code>night</code>, con el núcleo en <code>spark</code>: el único magenta del ícono. Hay versión monocromo para tinted (iOS) y monochrome (Android).</p></div>
+</div>
+
+<h2>Lenguaje de forma: facetado orgánico</h2>
+<p class="lead">Todo el sistema gráfico se dibuja igual que el símbolo. Es lo que hace que una ilustración suelta se reconozca como Lumbre.</p>
+<div class="grid">
+  <div class="card"><h3>Ramas que se afinan</h3><p>Cada rama nace gruesa en el cuerpo y termina fina o en un botón redondo. Nunca hay un trazo de grosor constante.</p></div>
+  <div class="card"><h3>Uniones blandas, contorno en tramos rectos</h3><p>Donde una rama se une a otra, la curva es suave. El borde exterior está hecho de segmentos rectos cortos, como un recorte en papel. Es la marca de la casa.</p></div>
+  <div class="card"><h3>Solo rellenos planos</h3><p>Sin degradés, sin brillos, sin contornos. La profundidad sale del cambio de color entre lo dormido y lo encendido. El único resplandor permitido es <code>glow-spark</code>, en la sinapsis.</p></div>
+</div>
+
+<h2>Color en la ilustración</h2>
+<p class="lead">No hay colores nuevos. La ilustración usa roles sobre los tokens existentes, así funciona igual en los dos temas. Probá el botón "Ver en claro" de arriba.</p>
+<div class="swatches">
+  <div class="sw"><i style="background:var(--surface-alt)"></i><b>Dormida</b><code>surface-alt</code><span>Neuronas de fondo, la red en reposo.</span></div>
+  <div class="sw"><i style="background:var(--border)"></i><b>Conexión</b><code>border</code><span>Los axones que unen la red de fondo.</span></div>
+  <div class="sw"><i style="background:var(--ink)"></i><b>Encendida</b><code>ink</code><span>Las neuronas protagonistas y el símbolo.</span></div>
+  <div class="sw"><i style="background:var(--info-text)"></i><b>Impulso</b><code>info-text</code><span>Lo que viaja: carga, destilado, el pulso antes de la chispa.</span></div>
+  <div class="sw"><i style="background:var(--spark)"></i><b>Sinapsis</b><code>spark</code><span>Solo donde salta la chispa. Uno por pantalla.</span></div>
+</div>
+
+<h2>La sinapsis</h2>
+<p class="lead">Dos terminales que se buscan y, en el hueco, la estrella de cuatro puntas. Es la ilustración del momento chispa: reemplaza a la estrella suelta entre los dos conceptos de la tarjeta de la chispa. La estrella sigue siendo el ícono de la chispa en tabs y botones.</p>
+<div class="grid">
+  <div class="card"><div class="fig">{{synapse}}</div><h3>Encendida</h3><p>Terminales en <code>ink</code>, estrella en <code>spark</code>. Solo en la chispa del día, el reveal y la tarjeta para compartir.</p></div>
+  <div class="card"><div class="fig">{{synapse-off}}</div><h3>En espera</h3><p>Sin estrella: dos ideas que todavía no se tocaron. Para la cuenta regresiva hasta la próxima chispa.</p></div>
+  <div class="card"><div class="fig" style="padding:20px 12px"><div class="ch-spark" style="width:100%;box-shadow:none;border:1px solid var(--border)">
+    <div class="pair"><div class="ch-spark__atom">Medios<b>Formato podcast</b></div>{{synapse}}<div class="ch-spark__atom">Historia<b>Ruinas romanas</b></div></div>
+    <h3 style="font-size:26px;line-height:30px;margin:0">Podcast × ruinas</h3></div></div><h3>En la tarjeta de la chispa</h3><p>La sinapsis va entre los dos conceptos, a 56–64pt de ancho.</p></div>
+</div>
+
+<h2>La red</h2>
+<p class="lead">Un campo de neuronas dormidas unidas a sus vecinas. Es el fondo de marca: da textura sin competir con el contenido, porque <code>surface-alt</code> sobre <code>bg</code> queda muy por debajo del contraste del texto.</p>
+<div class="dos">
+  <div class="card"><h3>Dónde va</h3><ul><li>Splash y onboarding.</li><li>Encabezado de Hoy, arriba de la chispa.</li><li>Tarjeta para compartir y widget grande.</li><li>Estados vacíos, como ilustración.</li></ul></div>
+  <div class="card no"><h3>Dónde no</h3><ul><li>Detrás de listas, formularios o texto corrido.</li><li>En la Bóveda con contenido: ahí mandan las tarjetas de concepto.</li><li>Con más de un par encendido por pantalla.</li><li>Animada en loop de fondo: la red solo se mueve en el reveal.</li></ul></div>
+</div>
+
+<h2>Movimiento</h2>
+<p class="lead">El reveal de 900ms se vuelve una sinapsis: los dos conceptos se acercan, cada uno estira su terminal, un impulso cruza y la chispa salta. El háptico <code>.success</code> (iOS) / <code>CONFIRM</code> (Android) cae justo cuando se enciende la estrella.</p>
+<div class="grid">
+  <div class="card" style="grid-column:1/-1">
+    <div class="stage" id="stage">
+      <div class="reveal">
+        <div class="ch-spark__atom a">Medios<b>Formato podcast</b></div>
+        <svg class="reveal__syn" viewBox="0 0 120 40" aria-hidden="true"><g>{{synapse}}</g>
+          <circle class="n-impulse imp-l" cx="8" cy="20" r="3"/><circle class="n-impulse imp-r" cx="112" cy="20" r="3"/></svg>
+        <div class="ch-spark__atom b">Historia<b>Ruinas romanas</b></div>
+      </div>
+      <p class="reveal__title">Podcast × ruinas</p>
+      <div class="ctrls"><button class="ch-btn ch-btn--primary" id="play" type="button">Encender</button><button class="ch-btn ch-btn--secondary" id="reduce" type="button" aria-pressed="false">Reducir movimiento: no</button></div>
+      <div class="timeline">
+        <b>0–250ms</b><span>Los dos conceptos entran desde los costados.</span>
+        <b>150–550ms</b><span>Cada uno estira su terminal hacia el centro.</span>
+        <b>450–650ms</b><span>Un impulso <code>info-text</code> recorre cada terminal.</span>
+        <b>650ms</b><span>La estrella se enciende con <code>glow-spark</code> y el háptico.</span>
+        <b>650–900ms</b><span>Sube el título de la chispa.</span>
+        <b>Reducido</b><span>Todo aparece con un fundido de 200ms, sin escala ni desplazamiento.</span>
+      </div>
+    </div>
+  </div>
+  <div class="card"><div class="fig"><div class="loader">{{axon}}<p>Destilando concepto…</p></div></div><h3>El pulso</h3><p>Indicador de carga propio para destilar y encender: un impulso que recorre un axón en 1,2s. Para el resto de las cargas, el spinner del sistema. Con Reducir movimiento, el impulso queda quieto y el texto alcanza.</p></div>
+  <div class="card"><h3>Lo que no se mueve</h3><p>La navegación, los sheets y las transiciones siguen siendo las del sistema. La red de fondo es estática. El único momento coreografiado sigue siendo uno: la chispa.</p></div>
+</div>
+
+<h2>Estados vacíos</h2>
+<p class="lead">Cada estado vacío cuenta en qué punto de la red está el usuario. El copy final sale del paso 10; estos son de referencia.</p>
+<div class="grid">
+  <div class="card empty"><div>{{empty-vault}}</div><h3>Bóveda vacía</h3><p>Todavía no hay conceptos. Guardá una frase, un link o una nota de voz para tener material que combinar.</p></div>
+  <div class="card empty"><div>{{empty-spark}}</div><h3>Antes de la chispa</h3><p>Tu próxima chispa se enciende mañana a las 8:00.</p></div>
+  <div class="card empty"><div>{{empty-offline}}</div><h3>Sin conexión</h3><p>Lo que guardes ahora se sube cuando vuelva la conexión.</p></div>
+</div>
+
+<h2>En pantalla</h2>
+<p class="lead">Splash, Hoy y la tarjeta para compartir con la identidad aplicada. Todo lo demás (navegación, listas, formularios) queda nativo.</p>
+<div class="phones">
+  <div><div class="phone"><div class="splash"><div class="net" aria-hidden="true">{{net-tall}}</div><div class="wm">{{mark-nucleus}}</div></div></div><p class="phone__cap">Splash</p></div>
+  <div><div class="phone"><div class="status"><span>9:41</span><span>●●●</span></div><div class="today">
+    <div class="today__head"><div class="net" aria-hidden="true">{{net-quiet}}</div><h1>Hoy</h1><p>Martes 13 de octubre</p></div>
+    <article class="ch-spark"><div class="pair"><div class="ch-spark__atom">Medios<b>Formato podcast</b></div>{{synapse}}<div class="ch-spark__atom">Historia<b>Ruinas romanas</b></div></div>
+      <h3>Podcast × ruinas</h3><p>Grabá cada episodio en un sitio histórico distinto y dejá que el lugar marque el tema.</p>
+      <div class="ch-spark__actions"><button class="ch-btn ch-btn--primary" type="button">Guardar idea</button><button class="ch-btn ch-btn--secondary" type="button">Planificar</button></div></article>
+  </div></div><p class="phone__cap">Hoy</p></div>
+  <div><div class="phone" data-share><div class="share"><div class="net" aria-hidden="true">{{net-share}}</div><div class="share__body">
+    <div class="share__syn">{{synapse}}</div><h3>Podcast × ruinas</h3><p>Grabá cada episodio en un sitio histórico distinto y dejá que el lugar marque el tema.</p>
+    <div class="share__brand"><span>{{mark}}</span><span>Lumbre<i>.</i></span></div></div></div></div><p class="phone__cap">Tarjeta para compartir (historia 1080×1920)</p></div>
+</div>
+
+<h2>Qué cambia y qué no</h2>
+<div class="dos">
+  <div class="card"><h3>Cambia</h3><ul><li>Símbolo: de filamento a neurona.</li><li>Ícono de app: neurona compacta con núcleo magenta.</li><li>La estrella entre conceptos pasa a ser la sinapsis.</li><li>Fondos de marca con la red.</li><li>Reveal y pulso de carga con impulsos.</li><li>Estados vacíos ilustrados.</li></ul></div>
+  <div class="card"><h3>No cambia</h3><ul><li>La paleta Sunset Nebula y todos los tokens.</li><li>Fraunces + fuente del sistema.</li><li>Una sola chispa magenta por pantalla.</li><li>Navegación, controles e íconos del sistema.</li><li>La estrella de cuatro puntas como ícono de la chispa.</li><li>La voz: se "destila" y se "enciende".</li></ul></div>
+</div>
+
+<h2>Archivos</h2>
+<ul class="files">
+  <li><code>logo/lumbre-mark.svg</code>: símbolo largo</li>
+  <li><code>logo/lumbre-mark-compacto.svg</code>: símbolo compacto</li>
+  <li><code>logo/lumbre-logo-dark.svg</code>, <code>-light.svg</code>: wordmark</li>
+  <li><code>logo/lumbre-app-icon.svg</code>, <code>-mono.svg</code>: ícono</li>
+  <li><code>identidad/sinapsis.svg</code></li>
+  <li><code>identidad/red-horizontal.svg</code>, <code>red-vertical.svg</code></li>
+  <li><code>identidad/estado-*.svg</code>: estados vacíos</li>
+  <li><code>identidad/generar.py</code>: genera todo lo anterior</li>
+</ul>
+</main>
+<script>
+const root = document.documentElement, themeBtn = document.getElementById('theme');
+themeBtn.onclick = () => {
+  const light = root.dataset.theme !== 'light';
+  root.dataset.theme = light ? 'light' : 'dark';
+  themeBtn.textContent = light ? 'Ver en oscuro' : 'Ver en claro';
+};
+const stage = document.getElementById('stage'), reduceBtn = document.getElementById('reduce');
+const play = () => { stage.classList.remove('play'); void stage.offsetWidth; stage.classList.add('play'); };
+document.getElementById('play').onclick = play;
+reduceBtn.onclick = () => {
+  const on = stage.classList.toggle('reduced');
+  reduceBtn.setAttribute('aria-pressed', on);
+  reduceBtn.textContent = 'Reducir movimiento: ' + (on ? 'sí' : 'no');
+  play();
+};
+if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.querySelectorAll('svg').forEach(s => s.pauseAnimations && s.pauseAnimations());
+}
+</script>
+</body></html>

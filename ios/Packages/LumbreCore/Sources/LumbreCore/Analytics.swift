@@ -268,6 +268,8 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     case voiceCapture = "voice_capture"
     case projects = "projects"
     case paywall = "paywall"
+    /// Identidad neuronal en la app: sinapsis, pulso de carga, ilustraciones y red de fondo.
+    case neuralIdentity = "neural_identity"
 
     public var defaultValue: Bool { true }
 
