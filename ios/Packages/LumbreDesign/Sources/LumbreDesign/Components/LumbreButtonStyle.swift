@@ -21,6 +21,7 @@ public struct LumbreButtonStyle: ButtonStyle {
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.body.weight(.semibold))
+            .underline(variant == .ghost)
             .foregroundStyle(foreground)
             .padding(.horizontal, variant == .ghost ? Space.s2 : Space.s5)
             .padding(.vertical, Space.s3)
@@ -45,7 +46,8 @@ public struct LumbreButtonStyle: ButtonStyle {
         case .primary: return Palette.onAccent
         case .pro: return Palette.onPro
         case .secondary: return Palette.ink
-        case .ghost: return Palette.accentText
+        // El rosa va solo sobre negro: el botón sin fondo es gris y subrayado.
+        case .ghost: return Palette.inkMuted
         }
     }
 }

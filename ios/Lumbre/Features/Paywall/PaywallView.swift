@@ -386,13 +386,13 @@ private enum PaywallAlert: Identifiable {
         PaywallView(trigger: "settings")
     }
     .environment(AppModel())
-    .preferredColorScheme(.dark)
-    .tint(Palette.accentText)
+    .preferredColorScheme(.light)
+    .tint(Palette.ink)
 }
 
 #Preview("Error de tienda") {
     PaywallView(trigger: "planner")
         .environment(\.purchases, PreviewPurchaseService(failsLoading: true))
         .environment(AppModel())
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }

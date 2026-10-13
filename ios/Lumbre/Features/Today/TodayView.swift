@@ -7,6 +7,7 @@ struct TodayView: View {
     @Environment(\.api) private var api
     @Environment(AppModel.self) private var appModel
     @Environment(\.dataVersion) private var dataVersion
+    @Environment(\.neuralIdentity) private var neuralIdentity
     @State private var path: [SparkRoute] = []
     @State private var today: TodayState?
     @State private var recent: [Spark] = []
@@ -80,7 +81,7 @@ struct TodayView: View {
 
     private var placeholder: some View {
         VStack(alignment: .leading, spacing: Space.s6) {
-            SparkMeter(available: 1, total: 1, status: Text("Chispa disponible"), detail: Text("Se recarga mañana a las 8:00"))
+            SparkMeter(available: 1, total: 1, status: Text("1 chispa para encender"), detail: Text("Se recarga mañana a las 8:00"))
             SparkCard(a: SparkSide(MockData.todaySpark.conceptA), b: SparkSide(MockData.todaySpark.conceptB), title: MockData.todaySpark.title, explanation: MockData.todaySpark.body) {
                 EmptyView()
             }
@@ -99,11 +100,13 @@ struct TodayView: View {
                 available: quota.available,
                 total: quota.total,
                 status: quota.available > 1
-                    ? Text("Te quedan \(quota.available) chispas hoy")
-                    : quota.available == 1 ? Text("Chispa disponible") : Text("Usaste las chispas de hoy"),
+                    ? Text("\(quota.available) chispas para encender")
+                    : quota.available == 1 ? Text("1 chispa para encender") : Text("Usaste las chispas de hoy"),
                 detail: quota.available == 0 && showsEarn
                     ? earnText(quota.conceptsUntilExtra)
-                    : refillText(quota.refillsAt)
+                    : refillText(quota.refillsAt),
+                earned: showsEarn ? max(0, Self.neuronsPerExtra - quota.conceptsUntilExtra) : nil,
+                goal: Self.neuronsPerExtra
             )
             if showsEarn {
                 HStack(spacing: Space.s3) {
@@ -128,6 +131,9 @@ struct TodayView: View {
             }
         }
     }
+
+    /// Neuronas que hay que guardar en el día para ganar una chispa extra (free).
+    static let neuronsPerExtra = 3
 
     /// Free: guardar conceptos hoy da chispas extra.
     private func earnsExtras(_ quota: SparkQuota) -> Bool {
@@ -295,11 +301,12 @@ struct TodayView: View {
     // MARK: Listas
 
     private func sparkList(title: LocalizedStringKey, sparks: [Spark]) -> some View {
-        VStack(alignment: .leading, spacing: Space.s3) {
+        VStack(alignment: .leading, spacing: neuralIdentity ? 0 : Space.s3) {
             Text(title)
                 .font(.headline)
                 .foregroundStyle(Palette.ink)
                 .accessibilityAddTraits(.isHeader)
+                .padding(.bottom, neuralIdentity ? Space.s2 : 0)
             ForEach(sparks) { spark in
                 NavigationLink(value: SparkRoute.detail(spark.id)) {
                     SparkRow(spark: spark)
@@ -380,7 +387,48 @@ struct SparkRow: View {
     /// Dentro de un proyecto no repite dónde está guardada: muestra la fecha.
     var showsProject = true
 
+    @Environment(\.neuralIdentity) private var neuralIdentity
+
     var body: some View {
+        if neuralIdentity { node } else { card }
+    }
+
+    /// Un nodo del axón: la chispa por encender es una neurona con el núcleo rosa; las que no sirvieron quedan grises.
+    private var node: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(spark.isPending ? String(localized: "Chispa por encender") : spark.title)
+                .font(.headline)
+                .foregroundStyle(spark.status == .discarded ? Palette.inkMuted : Palette.ink)
+                .multilineTextAlignment(.leading)
+            subtitle
+                .font(.footnote)
+                .foregroundStyle(Palette.inkMuted)
+        }
+        .padding(.vertical, Space.s2)
+        .axonRow(spacing: 0) {
+            if spark.isPending {
+                MiniNeuron(isLit: true)
+            } else {
+                Circle()
+                    .fill(spark.status == .discarded ? Palette.border : Palette.ink)
+                    .frame(width: 12, height: 12)
+            }
+        }
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
+    }
+
+    private var subtitle: some View {
+        Group {
+            if showsProject || spark.status != .saved {
+                spark.statusLine
+            } else {
+                Text(spark.scheduledFor ?? spark.createdAt, format: .relative(presentation: .named))
+            }
+        }
+    }
+
+    private var card: some View {
         HStack(spacing: Space.s3) {
             Image(systemName: spark.statusSymbol)
                 .foregroundStyle(Palette.inkMuted)
@@ -418,5 +466,5 @@ struct SparkRow: View {
 #Preview {
     TodayView()
         .environment(AppModel())
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }

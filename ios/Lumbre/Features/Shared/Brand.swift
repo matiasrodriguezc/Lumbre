@@ -124,10 +124,10 @@ struct AccountComingSoonSheet: View {
     Wordmark()
         .padding()
         .background(Palette.bg)
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }
 
 #Preview("Cuenta") {
     Color.clear.sheet(isPresented: .constant(true)) { AccountComingSoonSheet() }
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }

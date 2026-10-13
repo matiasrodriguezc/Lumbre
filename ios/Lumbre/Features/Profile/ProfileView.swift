@@ -10,7 +10,7 @@ struct ProfileView: View {
     @Environment(\.api) private var api
     @Environment(\.openURL) private var openURL
     @Environment(\.scenePhase) private var scenePhase
-    @AppStorage("theme") private var theme: ThemePreference = .dark
+    @AppStorage("theme") private var theme: ThemePreference = .light
 
     @State private var credits: [Credit] = []
     @State private var creditsError: Error?
@@ -440,8 +440,8 @@ private struct CreditRow: View {
 extension ThemePreference {
     var label: LocalizedStringKey {
         switch self {
-        case .dark: return "Oscuro"
-        case .light: return "Claro"
+        case .dark: return "Grafito"
+        case .light: return "Gris"
         case .system: return "Como el sistema"
         }
     }
@@ -450,8 +450,8 @@ extension ThemePreference {
 #Preview("Free") {
     ProfileView()
         .environment(AppModel.preview())
-        .preferredColorScheme(.dark)
-        .tint(Palette.accentText)
+        .preferredColorScheme(.light)
+        .tint(Palette.ink)
 }
 
 #Preview("Invitado") {
@@ -459,7 +459,7 @@ extension ThemePreference {
         .environment(\.api, MockLumbreAPI(onboarded: false))
         .environment(AppModel.preview(api: MockLumbreAPI(onboarded: false)))
         .preferredColorScheme(.light)
-        .tint(Palette.accentText)
+        .tint(Palette.ink)
 }
 
 extension AppModel {

@@ -173,14 +173,14 @@ private struct CaptureEntry: Identifiable {
 #Preview("App") {
     RootView()
         .environment(AppModel())
-        .preferredColorScheme(.dark)
-        .tint(Palette.accentText)
+        .preferredColorScheme(.light)
+        .tint(Palette.ink)
 }
 
 #Preview("Onboarding desde cero") {
     RootView()
         .environment(\.api, MockLumbreAPI(onboarded: false))
         .environment(AppModel())
-        .preferredColorScheme(.dark)
-        .tint(Palette.accentText)
+        .preferredColorScheme(.light)
+        .tint(Palette.ink)
 }

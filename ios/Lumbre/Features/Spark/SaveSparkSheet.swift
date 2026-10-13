@@ -120,7 +120,7 @@ struct SaveSparkSheet: View {
                 if isCurrent {
                     Image(systemName: "checkmark")
                         .font(.body.weight(.semibold))
-                        .foregroundStyle(Palette.accentText)
+                        .foregroundStyle(Palette.ink)
                 }
             }
             .contentShape(Rectangle())
@@ -189,5 +189,5 @@ struct SaveSparkSheet: View {
             SaveSparkSheet(spark: MockData.recentSparks[1]) { _, _ in }
         }
         .environment(AppModel())
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }

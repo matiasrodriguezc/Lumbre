@@ -361,17 +361,17 @@ struct DevelopmentSection: View {
 #Preview("Privacidad") {
     NavigationStack { PrivacyView() }
         .environment(AppModel.preview())
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }
 
 #Preview("Borrar cuenta") {
     DeleteAccountSheet()
         .environment(AppModel.preview())
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }
 
 #Preview("Perfil creativo") {
     NavigationStack { CreativeProfilesEditor() }
         .environment(AppModel.preview())
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }

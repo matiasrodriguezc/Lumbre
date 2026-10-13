@@ -3,8 +3,8 @@ import LumbreDesign
 import SwiftUI
 import UniformTypeIdentifiers
 
-/// Tarjeta vertical para historias (1080 × 1920): la chispa y la marca sobre `night`.
-/// Usa solo colores fijos de marca, así sale igual con el tema claro o el oscuro.
+/// Tarjeta vertical para historias (1080 × 1920): la red dormida arriba, las dos neuronas con la sinapsis encendida,
+/// la idea y la firma, sobre el gris de marca. Fija en el tema gris, así sale igual con cualquier tema.
 struct ShareCardView: View {
     let spark: Spark
 
@@ -12,15 +12,20 @@ struct ShareCardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            SparkStar()
-                .fill(Palette.spark)
-                .frame(width: 88, height: 88)
-                .shadow(color: Palette.spark.opacity(0.55), radius: 36)
-                .padding(.bottom, 72)
+            HStack(alignment: .top, spacing: 48) {
+                concept(spark.conceptA, alignment: .leading)
+                concept(spark.conceptB, alignment: .trailing)
+            }
+            .padding(.bottom, 40)
+
+            Synapse(.lit, full: true)
+                .frame(width: 820)
+                .frame(maxWidth: .infinity)
+                .padding(.bottom, 96)
 
             Text(spark.title)
                 .font(Font(LumbreFont.uiDisplay(.sparkHero, size: 104) as CTFont))
-                .foregroundStyle(Palette.cream)
+                .foregroundStyle(Palette.neuron)
                 .lineSpacing(6)
                 .lineLimit(4)
                 .minimumScaleFactor(0.6)
@@ -28,63 +33,57 @@ struct ShareCardView: View {
 
             Text(spark.body)
                 .font(.system(size: 46, weight: .regular))
-                .foregroundStyle(Palette.cream.opacity(0.88))
+                .foregroundStyle(Palette.neuron.opacity(0.85))
                 .lineSpacing(12)
                 .lineLimit(7)
                 .minimumScaleFactor(0.7)
 
             Spacer(minLength: 64)
 
-            VStack(spacing: 28) {
-                concept(spark.conceptA)
-                Text("×")
-                    .font(.system(size: 56, weight: .semibold))
-                    .foregroundStyle(Palette.cream.opacity(0.6))
-                concept(spark.conceptB)
-            }
-
-            Spacer(minLength: 64)
-
-            HStack(alignment: .lastTextBaseline, spacing: 20) {
+            HStack(alignment: .center, spacing: 24) {
+                LumbreMark(.long).frame(width: 150)
                 HStack(alignment: .lastTextBaseline, spacing: 6) {
                     Text(verbatim: "Lumbre")
                         .font(Font(LumbreFont.uiDisplay(.title1, size: 72) as CTFont))
-                        .foregroundStyle(Palette.cream)
+                        .foregroundStyle(Palette.neuron)
                     Circle()
                         .fill(Palette.spark)
                         .frame(width: 18, height: 18)
                 }
                 Spacer(minLength: 0)
                 Text("Donde se encienden las ideas")
-                    .font(.system(size: 34, weight: .medium))
-                    .foregroundStyle(Palette.cream.opacity(0.7))
+                    .font(.system(size: 32, weight: .medium))
+                    .foregroundStyle(Palette.neuron.opacity(0.65))
                     .multilineTextAlignment(.trailing)
             }
         }
         .padding(.horizontal, 96)
-        .padding(.top, 160)
+        .padding(.top, 520)
         .padding(.bottom, 120)
         .frame(width: Self.size.width, height: Self.size.height, alignment: .topLeading)
-        .background(Palette.night)
-        .environment(\.colorScheme, .dark)
+        .background(alignment: .top) {
+            ZStack(alignment: .top) {
+                Palette.gray
+                NeuralNetworkBackground(.tall)
+                    .frame(height: 1000)
+                    .mask(LinearGradient(colors: [.black, .black, .clear], startPoint: .top, endPoint: .bottom))
+            }
+        }
+        .environment(\.colorScheme, .light)
     }
 
-    private func concept(_ concept: Concept) -> some View {
-        VStack(alignment: .leading, spacing: 14) {
-            Label(concept.categoryName, systemImage: concept.categorySymbol)
+    private func concept(_ concept: Concept, alignment: HorizontalAlignment) -> some View {
+        VStack(alignment: alignment, spacing: 12) {
+            Text(concept.categoryName)
                 .font(.system(size: 34, weight: .medium))
-                .foregroundStyle(Palette.cream.opacity(0.7))
+                .foregroundStyle(Palette.neuron.opacity(0.65))
             Text(concept.title)
                 .font(.system(size: 48, weight: .semibold))
-                .foregroundStyle(Palette.cream)
-                .lineLimit(2)
+                .foregroundStyle(Palette.neuron)
+                .multilineTextAlignment(alignment == .leading ? .leading : .trailing)
+                .lineLimit(3)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(40)
-        .background {
-            RoundedRectangle(cornerRadius: 40, style: .continuous).fill(Palette.cream.opacity(0.08))
-        }
-        .overlay(RoundedRectangle(cornerRadius: 40, style: .continuous).strokeBorder(Palette.cream.opacity(0.14), lineWidth: 2))
+        .frame(maxWidth: .infinity, alignment: alignment == .leading ? .leading : .trailing)
     }
 
     /// PNG de 1080 × 1920.

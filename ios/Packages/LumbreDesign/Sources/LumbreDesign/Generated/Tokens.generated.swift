@@ -4,65 +4,65 @@ import SwiftUI
 
 /// Colores de marca y semánticos. Cambian solos entre el tema claro y el oscuro.
 public enum Palette {
-    /// Marca: azul noche de Sunset Nebula. Fondo del modo oscuro, tinta del modo claro y fondo del ícono de app. Fijo en ambos temas.
-    public static let night = Color("night", bundle: .module)
-    /// Marca: azul señal. Relleno de estados informativos y del dominio 'Tecnología'; texto blanco encima (4.86:1). Como texto usá info-text.
-    public static let signalBlue = Color("signal-blue", bundle: .module)
-    /// Marca: violeta nebulosa. Reservado a Pro: badge, plan anual destacado, burbuja del planificador. Texto blanco encima (6.98:1). Como texto usá pro-text.
-    public static let nebulaViolet = Color("nebula-violet", bundle: .module)
-    /// Marca: magenta chispa. SOLO para el momento chispa: CTA principal, la chispa del día, el contador y el foco. Nunca como fondo de pantalla. Texto encima siempre on-accent.
+    /// Marca: negro neurona. El símbolo, la tinta del tema gris y el relleno del botón principal. Fijo en ambos temas.
+    public static let neuron = Color("neuron", bundle: .module)
+    /// Marca: gris. Fondo del tema de marca (default) y del ícono de app. Fijo en ambos temas.
+    public static let gray = Color("gray", bundle: .module)
+    /// Marca: grafito. Fondo del modo oscuro. Fijo en ambos temas.
+    public static let graphite = Color("graphite", bundle: .module)
+    /// Marca: hueso. La neurona y la tinta en el modo oscuro. Fijo en ambos temas.
+    public static let bone = Color("bone", bundle: .module)
+    /// Marca: rosa chispa. El único color. Siempre apoyado en negro (o en la neurona): el núcleo, el punto del botón principal, la chispa en la sinapsis. Sobre gris no alcanza contraste (2,5:1): nunca como texto ni relleno grande sobre bg.
     public static let spark = Color("spark", bundle: .module)
-    /// Marca: crema. Fondo del modo claro y tinta del modo oscuro. Fijo en ambos temas.
-    public static let cream = Color("cream", bundle: .module)
     /// Fondo de pantalla (window/scaffold).
     public static let bg = Color("bg", bundle: .module)
-    /// Tarjetas, listas agrupadas, sheets y barras sobre bg.
+    /// Superficies apenas elevadas: sheets, barras y la tarjeta de neurona.
     public static let surface = Color("surface", bundle: .module)
-    /// Inputs, segmented controls, chips inactivos y tarjetas anidadas dentro de surface.
+    /// Inputs, campos de búsqueda, chips inactivos y neuronas dormidas de las ilustraciones.
     public static let surfaceAlt = Color("surface-alt", bundle: .module)
-    /// Texto principal e íconos sobre bg, surface y surface-alt (≥12.8:1 en ambos temas).
+    /// Texto principal, íconos y neuronas encendidas (≥9:1 en ambos temas).
     public static let ink = Color("ink", bundle: .module)
-    /// Texto secundario, metadatos, placeholders y fuentes de un concepto sobre bg, surface y surface-alt (≥6:1).
+    /// Texto secundario y metadatos (≥4.4:1 en todas las superficies).
     public static let inkMuted = Color("ink-muted", bundle: .module)
-    /// Divisores y contornos decorativos de tarjetas. No lleva significado: para controles usá border-strong.
+    /// Separadores, el eje de las listas y las conexiones de la red de fondo. Decorativo.
     public static let border = Color("border", bundle: .module)
-    /// Borde de inputs, botón secundario, checkbox y chips seleccionables (≥3:1 sobre bg, surface y surface-alt).
+    /// Borde de controles (≥3:1).
     public static let borderStrong = Color("border-strong", bundle: .module)
-    /// Relleno del CTA principal, la chispa revelada y el indicador de selección. Mismo magenta en ambos temas (3:1 contra bg claro como forma).
+    /// Relleno de la acción principal: negro en el tema gris, hueso en el grafito. Lleva el punto spark adentro.
     public static let accent = Color("accent", bundle: .module)
-    /// Texto e íconos sobre accent (5.52:1). Nunca blanco sobre magenta: da 3.24:1.
+    /// Texto e íconos sobre accent.
     public static let onAccent = Color("on-accent", bundle: .module)
-    /// Magenta como TEXTO o ícono chico: links de acción, 'Chispa disponible', estado activo del tab. ≥4.7:1 sobre bg, surface y accent-soft.
+    /// Rosa como texto chico cuando hace falta (links de la chispa). 5.3:1 sobre bg.
     public static let accentText = Color("accent-text", bundle: .module)
-    /// Fondo de selección: perfil elegido en onboarding, chip activo, concepto marcado. Texto ink o accent-text encima.
+    /// Fondo de selección. El elegido de verdad va en accent (negro) con on-accent.
     public static let accentSoft = Color("accent-soft", bundle: .module)
-    /// Relleno de elementos Pro (badge, borde del plan destacado, burbuja del planificador).
+    /// Pro: negro con la palabra Pro. Ya no hay un color propio.
     public static let pro = Color("pro", bundle: .module)
-    /// Texto sobre pro (6.98:1).
+    /// Texto sobre pro.
     public static let onPro = Color("on-pro", bundle: .module)
-    /// Violeta como texto: 'Pro', límites de plan, etiquetas del planificador. ≥5.1:1 sobre bg y surface.
+    /// Texto de cosas Pro: siempre junto a la palabra Pro o un ícono.
     public static let proText = Color("pro-text", bundle: .module)
-    /// Links neutros y estados informativos como texto (≥4.9:1 sobre bg y surface).
+    /// Información neutra y links secundarios (subrayados).
     public static let infoText = Color("info-text", bundle: .module)
-    /// Texto/ícono de éxito ('Concepto guardado'). Siempre con ícono y palabra: no se distingue de danger solo por tono.
+    /// Éxito, siempre con ícono y palabra.
     public static let success = Color("success", bundle: .module)
-    /// Texto/ícono de aviso ('Te queda 1 chispa extra hoy').
+    /// Advertencia, siempre con ícono y palabra.
     public static let warning = Color("warning", bundle: .module)
-    /// Texto/ícono de error y acciones destructivas ('Borrar cuenta'). Siempre con ícono y palabra.
+    /// Error y acciones destructivas, siempre con ícono y palabra.
     public static let danger = Color("danger", bundle: .module)
-    /// Anillo de foco de 2px para teclado/Switch Control/TalkBack (≥4.2:1 sobre todas las superficies).
+    /// Anillo de foco de 2px, separado 2px del control.
     public static let focusRing = Color("focus-ring", bundle: .module)
-    /// Velo detrás de sheets, paywall y el reveal de la chispa.
+    /// Velo detrás de sheets y diálogos.
     public static let scrim = Color("scrim", bundle: .module)
 }
 
 /// Nombres de los colores en el catálogo, para UIKit.
 public enum PaletteName {
-    public static let night = "night"
-    public static let signalBlue = "signal-blue"
-    public static let nebulaViolet = "nebula-violet"
+    public static let neuron = "neuron"
+    public static let gray = "gray"
+    public static let graphite = "graphite"
+    public static let bone = "bone"
     public static let spark = "spark"
-    public static let cream = "cream"
     public static let bg = "bg"
     public static let surface = "surface"
     public static let surfaceAlt = "surface-alt"
@@ -110,10 +110,10 @@ public enum ShadowToken: Sendable {
 
     public func layers(for scheme: ColorScheme) -> [ShadowLayer] {
         switch (self, scheme) {
-        case (.glowSpark, .dark): return [ShadowLayer(color: Color(.sRGB, red: 1.000, green: 0.243, blue: 0.647, opacity: 0.45), radius: 16, x: 0, y: 0)]
-        case (.glowSpark, .light): return [ShadowLayer(color: Color(.sRGB, red: 0.761, green: 0.063, blue: 0.435, opacity: 0.22), radius: 12, x: 0, y: 8)]
+        case (.glowSpark, .dark): return [ShadowLayer(color: Color(.sRGB, red: 1.000, green: 0.243, blue: 0.647, opacity: 0.30), radius: 14, x: 0, y: 0)]
+        case (.glowSpark, .light): return [ShadowLayer(color: Color(.sRGB, red: 0.055, green: 0.055, blue: 0.063, opacity: 0.16), radius: 12, x: 0, y: 8)]
         case (.elevCard, .dark): return []
-        case (.elevCard, .light): return [ShadowLayer(color: Color(.sRGB, red: 0.039, green: 0.086, blue: 0.200, opacity: 0.06), radius: 1, x: 0, y: 1), ShadowLayer(color: Color(.sRGB, red: 0.039, green: 0.086, blue: 0.200, opacity: 0.06), radius: 8, x: 0, y: 4)]
+        case (.elevCard, .light): return [ShadowLayer(color: Color(.sRGB, red: 0.055, green: 0.055, blue: 0.063, opacity: 0.06), radius: 1, x: 0, y: 1), ShadowLayer(color: Color(.sRGB, red: 0.055, green: 0.055, blue: 0.063, opacity: 0.06), radius: 8, x: 0, y: 4)]
         default: return []
         }
     }

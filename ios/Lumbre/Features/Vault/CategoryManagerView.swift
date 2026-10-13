@@ -103,7 +103,7 @@ struct CategoryManagerView: View {
         .accessibilityElement(children: .combine)
         .swipeActions {
             deleteButton(category)
-            renameButton(category).tint(Palette.signalBlue)
+            renameButton(category).tint(Palette.inkMuted)
         }
         .accessibilityActions {
             renameButton(category)
@@ -169,5 +169,5 @@ struct CategoryManagerView: View {
         CategoryManagerView(concepts: MockData.concepts)
     }
     .environment(AppModel())
-    .preferredColorScheme(.dark)
+    .preferredColorScheme(.light)
 }

@@ -451,6 +451,6 @@ struct CaptureSheet: View {
         CaptureSheet()
     }
     .environment(AppModel())
-    .preferredColorScheme(.dark)
-    .tint(Palette.accentText)
+    .preferredColorScheme(.light)
+    .tint(Palette.ink)
 }

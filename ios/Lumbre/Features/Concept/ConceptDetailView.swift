@@ -393,8 +393,8 @@ struct ConceptDetailView: View {
         ConceptDetailView(conceptID: MockData.concepts[2].id, preview: MockData.concepts[2], entry: "vault")
     }
     .environment(AppModel())
-    .preferredColorScheme(.dark)
-    .tint(Palette.accentText)
+    .preferredColorScheme(.light)
+    .tint(Palette.ink)
 }
 
 #Preview("Borrador") {
@@ -403,5 +403,5 @@ struct ConceptDetailView: View {
     }
     .environment(AppModel())
     .preferredColorScheme(.light)
-    .tint(Palette.accentText)
+    .tint(Palette.ink)
 }

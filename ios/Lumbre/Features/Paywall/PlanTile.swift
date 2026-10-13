@@ -91,5 +91,5 @@ struct PlanTilePlaceholder: View {
     }
     .padding()
     .background(Palette.bg)
-    .preferredColorScheme(.dark)
+    .preferredColorScheme(.light)
 }

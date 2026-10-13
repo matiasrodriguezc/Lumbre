@@ -47,19 +47,19 @@ La app se llama **Lumbre**. Lo que genera cada día se llama **chispa**. De la c
 - Sin colores nuevos: dormida `surface-alt`, conexión `border`, encendida `ink`, impulso `info-text`, sinapsis `spark`.
 - Guía completa en `design/system/identidad.html` y reglas en `design/system/README.md`.
 
-### Paleta (Sunset Nebula)
+### Paleta (Gris neurona)
 | Token | Hex | Uso |
 |---|---|---|
-| night | #0A1633 | Fondo del modo oscuro (default), tinta del modo claro |
-| signal-blue | #2D6CDF | Información e impulsos en la ilustración |
-| nebula-violet | #7E22CE | Todo lo Pro |
-| spark | #FF3EA5 | Solo el momento chispa: CTA principal, chispa del día, contador |
-| cream | #FFF7ED | Fondo del modo claro, tinta del modo oscuro |
+| gray | #E3E3DF | Fondo del tema de marca (default) y del ícono |
+| neuron | #0E0E10 | La neurona, la tinta y el botón principal |
+| spark | #FF3EA5 | El único color: núcleo, punto del botón que enciende, chispa en la sinapsis |
+| graphite | #2A2A2C | Fondo del modo oscuro |
+| bone | #EDEDE8 | Neurona y tinta del modo oscuro |
 
-Reglas clave:
-- Texto sobre magenta siempre en azul noche (5,52:1). Blanco sobre magenta no pasa accesibilidad (3,24:1).
-- Magenta como texto: #FF6BB8 en oscuro, #C2106F en claro.
-- Un solo elemento magenta protagonista por pantalla.
+Reglas clave (decidido el 2026-10-13, reemplaza a Sunset Nebula):
+- El rosa va siempre apoyado en negro (6:1); sobre gris no llega (2,5:1). Nunca texto rosa ni rellenos rosas grandes sobre gris; el botón principal es negro con un punto rosa.
+- Violeta y azul salen de la marca: Pro se distingue con negro y la palabra Pro.
+- El tema gris es el default; el grafito es el modo oscuro opcional.
 - Todo el texto cumple 4,5:1 en ambos temas.
 
 ### Tipografía

@@ -134,5 +134,5 @@ struct ProjectDetailView: View {
             .sparkDestinations()
     }
     .environment(AppModel())
-    .preferredColorScheme(.dark)
+    .preferredColorScheme(.light)
 }

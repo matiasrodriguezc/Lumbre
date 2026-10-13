@@ -13,10 +13,10 @@ public enum LumbreAppearance {
     }
 }
 
-/// Tema elegido en Perfil. El oscuro es el de marca y el default.
+/// Tema elegido en Perfil. El gris es el de marca y el default; el grafito es el oscuro.
 public enum ThemePreference: String, CaseIterable, Identifiable, Sendable {
-    case dark
     case light
+    case dark
     case system
 
     public var id: String { rawValue }

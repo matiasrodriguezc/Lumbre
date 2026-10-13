@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// El átomo de la bóveda: categoría, título, tesis en una frase y fuente. Nunca muestra el texto crudo.
+/// El átomo de la red: una neurona con categoría, título, tesis en una frase y fuente. Nunca muestra el texto crudo.
 public struct ConceptCard: View {
     let category: String
     let categorySymbol: String
@@ -16,7 +16,37 @@ public struct ConceptCard: View {
         self.source = source
     }
 
+    @Environment(\.neuralIdentity) private var neuralIdentity
+
     public var body: some View {
+        if neuralIdentity { node } else { card }
+    }
+
+    /// Una neurona colgada del axón de la lista: el nodo es la neurona chica; sin tarjeta.
+    private var node: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Label(category, systemImage: categorySymbol)
+                .font(.footnote)
+                .foregroundStyle(Palette.inkMuted)
+            Text(title)
+                .font(.headline)
+                .foregroundStyle(Palette.ink)
+            Text(thesis)
+                .font(.callout)
+                .foregroundStyle(Palette.inkMuted)
+                .fixedSize(horizontal: false, vertical: true)
+            source
+                .font(.footnote)
+                .foregroundStyle(Palette.inkMuted)
+                .padding(.top, 2)
+        }
+        .padding(.vertical, Space.s1)
+        .axonRow { MiniNeuron() }
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
+    }
+
+    private var card: some View {
         VStack(alignment: .leading, spacing: Space.s2) {
             LumbreChip(category, systemImage: categorySymbol)
             Text(title)

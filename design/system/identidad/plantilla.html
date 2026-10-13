@@ -1,6 +1,6 @@
 <!doctype html>
 <!-- Plantilla de identidad.html. Los {{...}} los completa identidad/generar.py: editá este archivo y regenerá. -->
-<html lang="es" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="es" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lumbre · Identidad neuronal</title>
 <link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="components/bundle.css">
 <style>
@@ -48,7 +48,7 @@ code{font:500 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace}
 .dos .card.no h3::before{background:var(--danger);border-radius:2px}
 /* Teléfonos */
 .phones{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
-.phone{width:300px;height:620px;border-radius:44px;background:var(--bg);box-shadow:0 0 0 10px #050B1C,0 0 0 11px var(--border);position:relative;overflow:hidden;flex:none;margin:12px}
+.phone{width:300px;height:620px;border-radius:44px;background:var(--bg);box-shadow:0 0 0 10px #0E0E10,0 0 0 11px var(--border);position:relative;overflow:hidden;flex:none;margin:12px}
 .phone__cap{text-align:center;color:var(--ink-muted);font-size:13px;margin-top:18px}
 .status{height:44px;display:flex;justify-content:space-between;align-items:center;padding:0 26px;font:600 14px var(--font-text)}
 .splash{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
@@ -121,7 +121,7 @@ code{font:500 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace}
 </style></head><body>
 <header class="hero">
   <div class="hero__net" aria-hidden="true">{{net-wide}}</div>
-  <button class="ch-btn ch-btn--secondary theme" id="theme" type="button">Ver en claro</button>
+  <button class="ch-btn ch-btn--secondary theme" id="theme" type="button">Ver en grafito</button>
   <div class="hero__inner">
     <div class="hero__mark" aria-hidden="true">{{mark-nucleus}}</div>
     <h1>Una red que se enciende</h1>
@@ -159,7 +159,7 @@ code{font:500 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace}
   <div class="card"><div class="fig"><div style="width:120px">{{mark-compact}}</div></div><h3>Compacto</h3><p>El axón se curva hacia abajo para llenar un cuadrado. Para el ícono de app, avatares, favicon y notificaciones. Mínimo 24px.</p></div>
   <div class="card"><div class="fig"><div class="icons">
     <div style="width:96px">{{icon}}<span></span></div><div style="width:60px">{{icon}}</div><div style="width:40px">{{icon}}</div><div style="width:29px">{{icon}}</div></div></div>
-    <h3>Ícono de app</h3><p>Compacto en <code>cream</code> sobre <code>night</code>, con el núcleo en <code>spark</code>: el único magenta del ícono. Hay versión monocromo para tinted (iOS) y monochrome (Android).</p></div>
+    <h3>Ícono de app</h3><p>Compacto en <code>neuron</code> (negro) sobre <code>gray</code>, con el núcleo en <code>spark</code>: el rosa apoyado en la neurona. Hay versión monocromo para tinted (iOS) y monochrome (Android).</p></div>
 </div>
 
 <h2>Lenguaje de forma: facetado orgánico</h2>
@@ -171,7 +171,7 @@ code{font:500 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace}
 </div>
 
 <h2>Color en la ilustración</h2>
-<p class="lead">No hay colores nuevos. La ilustración usa roles sobre los tokens existentes, así funciona igual en los dos temas. Probá el botón "Ver en claro" de arriba.</p>
+<p class="lead">No hay colores nuevos. La ilustración usa roles sobre los tokens existentes, así funciona igual en los dos temas. Probá el botón "Ver en grafito" de arriba.</p>
 <div class="swatches">
   <div class="sw"><i style="background:var(--surface-alt)"></i><b>Dormida</b><code>surface-alt</code><span>Neuronas de fondo, la red en reposo.</span></div>
   <div class="sw"><i style="background:var(--border)"></i><b>Conexión</b><code>border</code><span>Los axones que unen la red de fondo.</span></div>
@@ -250,8 +250,8 @@ code{font:500 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace}
 
 <h2>Qué cambia y qué no</h2>
 <div class="dos">
-  <div class="card"><h3>Cambia</h3><ul><li>Símbolo: de filamento a neurona.</li><li>Ícono de app: neurona compacta con núcleo magenta.</li><li>Vocabulario: neurona, Red y Circuitos.</li><li>Pestañas con íconos propios.</li><li>La estrella entre neuronas pasa a ser la sinapsis.</li><li>Todas las pantallas con la red de fondo.</li><li>Reveal y pulso de carga con impulsos.</li><li>Estados vacíos ilustrados.</li></ul></div>
-  <div class="card"><h3>No cambia</h3><ul><li>La paleta Sunset Nebula y todos los tokens.</li><li>Fraunces + fuente del sistema.</li><li>Una sola chispa magenta por pantalla.</li><li>Navegación y controles del sistema.</li><li>La estrella de cuatro puntas como ícono de la chispa.</li><li>La chispa, y la voz: se "destila" y se "enciende".</li></ul></div>
+  <div class="card"><h3>Cambia</h3><ul><li>Símbolo: de filamento a neurona.</li><li>Paleta: gris, negro neurona y un solo color, el rosa chispa, siempre apoyado en negro.</li><li>Ícono de app: neurona negra con el núcleo rosa sobre gris.</li><li>Hoy sin tarjetas: contador en una línea, la chispa dibujada con las dos neuronas, Anteriores colgadas de un axón.</li><li>Vocabulario: neurona, Red y Circuitos.</li><li>Pestañas con íconos propios.</li><li>La estrella entre neuronas pasa a ser la sinapsis.</li><li>Todas las pantallas con la red de fondo.</li><li>Reveal y pulso de carga con impulsos.</li><li>Estados vacíos ilustrados.</li></ul></div>
+  <div class="card"><h3>No cambia</h3><ul><li>Los nombres de los tokens semánticos (bg, surface, ink, accent…).</li><li>Fraunces + fuente del sistema.</li><li>Una sola chispa por pantalla.</li><li>Navegación y controles del sistema.</li><li>La estrella de cuatro puntas como ícono de la chispa.</li><li>La chispa, y la voz: se "destila" y se "enciende".</li></ul></div>
 </div>
 
 <h2>Archivos</h2>
@@ -269,9 +269,9 @@ code{font:500 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace}
 <script>
 const root = document.documentElement, themeBtn = document.getElementById('theme');
 themeBtn.onclick = () => {
-  const light = root.dataset.theme !== 'light';
-  root.dataset.theme = light ? 'light' : 'dark';
-  themeBtn.textContent = light ? 'Ver en oscuro' : 'Ver en claro';
+  const dark = root.dataset.theme !== 'dark';
+  root.dataset.theme = dark ? 'dark' : 'light';
+  themeBtn.textContent = dark ? 'Ver en gris' : 'Ver en grafito';
 };
 const stage = document.getElementById('stage'), reduceBtn = document.getElementById('reduce');
 const play = () => { stage.classList.remove('play'); void stage.offsetWidth; stage.classList.add('play'); };

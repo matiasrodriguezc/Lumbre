@@ -290,7 +290,7 @@ struct PushStepView: View {
 #Preview("Perfil") {
     NavigationStack { ProfileStepView() }
         .environment(OnboardingModel(profile: nil))
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }
 
 #Preview("Semillas") {
@@ -298,18 +298,18 @@ struct PushStepView: View {
     model.profiles = [.software, .business]
     return NavigationStack { SeedsStepView() }
         .environment(model)
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }
 
 #Preview("Hora") {
     NavigationStack { SparkHourStepView() }
         .environment(OnboardingModel(profile: nil))
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }
 
 #Preview("Push") {
     NavigationStack { PushStepView() }
         .environment(OnboardingModel(profile: nil))
         .environment(AppModel())
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }

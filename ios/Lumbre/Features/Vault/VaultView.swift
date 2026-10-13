@@ -294,14 +294,14 @@ struct VaultView: View {
 #Preview("Red") {
     VaultView()
         .environment(AppModel())
-        .preferredColorScheme(.dark)
-        .tint(Palette.accentText)
+        .preferredColorScheme(.light)
+        .tint(Palette.ink)
 }
 
 #Preview("Red vacía") {
     VaultView()
         .environment(\.api, MockLumbreAPI(onboarded: false))
         .environment(AppModel())
-        .preferredColorScheme(.dark)
-        .tint(Palette.accentText)
+        .preferredColorScheme(.light)
+        .tint(Palette.ink)
 }

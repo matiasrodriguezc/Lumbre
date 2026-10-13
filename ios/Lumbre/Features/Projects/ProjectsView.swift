@@ -259,5 +259,5 @@ private extension ProjectEditor {
 #Preview {
     ProjectsView()
         .environment(AppModel())
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }

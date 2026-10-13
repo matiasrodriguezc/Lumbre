@@ -30,13 +30,13 @@ FONT = REPO / "ios/Packages/LumbreDesign/Sources/LumbreDesign/Resources/Fraunces
 IOS_ICON = REPO / "ios/Lumbre/Resources/Assets.xcassets/AppIcon.appiconset"
 SWIFT_OUT = REPO / "ios/Packages/LumbreDesign/Sources/LumbreDesign/Generated/NeuralArt.generated.swift"
 
-NIGHT, CREAM, SPARK = "#0A1633", "#FFF7ED", "#FF3EA5"
+NEURON, GRAY, GRAPHITE, BONE, SPARK = "#0E0E10", "#E3E3DF", "#2A2A2C", "#EDEDE8", "#FF3EA5"
 # Roles de ilustración sobre tokens existentes; el fallback es el tema oscuro.
-ILLU_STYLE = ("<style>.n-dormant{fill:var(--surface-alt,#1A2B5C)}.n-link{fill:var(--border,#26386B)}"
-              ".n-active{fill:var(--ink,#FFF7ED)}.n-impulse{fill:var(--info-text,#6E9BF0)}"
-              ".n-spark{fill:var(--spark,#FF3EA5)}.n-trace{fill:none;stroke:var(--border-strong,#7384BA);"
+ILLU_STYLE = ("<style>.n-dormant{fill:var(--surface-alt,#D5D5D0)}.n-link{fill:var(--border,#C6C6C0)}"
+              ".n-active{fill:var(--ink,#0E0E10)}.n-impulse{fill:var(--info-text,#3A3A3E)}"
+              ".n-spark{fill:var(--spark,#FF3EA5)}.n-trace{fill:none;stroke:var(--border-strong,#76767A);"
               "stroke-width:1.5;stroke-dasharray:2 5;stroke-linecap:round}"
-              ".n-cut{fill:none;stroke:var(--border-strong,#7384BA);stroke-width:2.5;stroke-linecap:round}</style>")
+              ".n-cut{fill:none;stroke:var(--border-strong,#76767A);stroke-width:2.5;stroke-linecap:round}</style>")
 STAR = "M12 1 Q12 12 23 12 Q12 12 12 23 Q12 12 1 12 Q12 12 12 1Z"  # la chispa, 24×24
 
 
@@ -304,7 +304,7 @@ def save_png(img, path, opaque=False):
 
 
 def export_icons(comp_g, comp_c):
-    """iOS 1024 (claro, dark, tinted) y Android adaptive (foreground y monochrome por densidad)."""
+    """iOS 1024 (gris, dark, tinted) y Android adaptive (foreground y monochrome por densidad)."""
     import json
 
     from shapely.affinity import affine_transform
@@ -321,8 +321,8 @@ def export_icons(comp_g, comp_c):
     neuron, nucleus = placed(k, 512 - (minx + maxx) / 2 * k, 512 - (miny + maxy) / 2 * k)
     ios = EXPORTS / "ios"
     icons = {
-        "AppIcon-light.png": (raster(1024, [(neuron, rgba(CREAM)), (nucleus, rgba(SPARK))], rgba(NIGHT)), True),
-        "AppIcon-dark.png": (raster(1024, [(neuron, rgba(CREAM)), (nucleus, rgba(SPARK))]), False),
+        "AppIcon-light.png": (raster(1024, [(neuron, rgba(NEURON)), (nucleus, rgba(SPARK))], rgba(GRAY)), True),
+        "AppIcon-dark.png": (raster(1024, [(neuron, rgba(BONE)), (nucleus, rgba(SPARK))]), False),
         "AppIcon-tinted.png": (raster(1024, [(neuron.difference(nucleus), rgba("#FFFFFF"))], rgba("#000000")), True),
     }
     for name, (img, opaque) in icons.items():
@@ -342,7 +342,7 @@ def export_icons(comp_g, comp_c):
     for density, px in {"mdpi": 108, "hdpi": 162, "xhdpi": 216, "xxhdpi": 324, "xxxhdpi": 432}.items():
         k = px / 108 * 32 / reach
         neuron, nucleus = placed(k, px / 2 - cx * k, px / 2 - cy * k)
-        save_png(raster(px, [(neuron, rgba(CREAM)), (nucleus, rgba(SPARK))]), res / f"mipmap-{density}/ic_launcher_foreground.png")
+        save_png(raster(px, [(neuron, rgba(NEURON)), (nucleus, rgba(SPARK))]), res / f"mipmap-{density}/ic_launcher_foreground.png")
         save_png(raster(px, [(neuron.difference(nucleus), rgba("#FFFFFF"))]), res / f"mipmap-{density}/ic_launcher_monochrome.png")
     (res / "mipmap-anydpi-v26").mkdir(parents=True, exist_ok=True)
     (res / "mipmap-anydpi-v26/ic_launcher.xml").write_text(
@@ -354,11 +354,11 @@ def export_icons(comp_g, comp_c):
         '</adaptive-icon>\n')
     (res / "values").mkdir(parents=True, exist_ok=True)
     (res / "values/ic_launcher_background.xml").write_text(
-        f'<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="ic_launcher_background">{NIGHT}</color>\n</resources>\n')
+        f'<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="ic_launcher_background">{GRAY}</color>\n</resources>\n')
     # Ícono de Google Play: 512 a sangre, con la misma proporción que iOS.
     k = 512 * 0.78 / max(maxx - minx, maxy - miny)
     neuron, nucleus = placed(k, 256 - cx * k, 256 - cy * k)
-    save_png(raster(512, [(neuron, rgba(CREAM)), (nucleus, rgba(SPARK))], rgba(NIGHT)), EXPORTS / "android/playstore-512.png", True)
+    save_png(raster(512, [(neuron, rgba(NEURON)), (nucleus, rgba(SPARK))], rgba(GRAY)), EXPORTS / "android/playstore-512.png", True)
 
 
 # ---------- Swift ----------
@@ -442,20 +442,32 @@ def export_tab_icons():
 def write_previews(frag):
     """Previews de componentes en design/system/components/ (mismo formato que los existentes)."""
     comp = ROOT / "components"
-    head = ('<!doctype html><html data-theme="dark"><head><link rel="stylesheet" href="../../tokens.css">'
+    head = ('<!doctype html><html data-theme="light"><head><link rel="stylesheet" href="../../tokens.css">'
             '<link rel="stylesheet" href="../bundle.css"><meta charset="utf-8"><title>{t}</title></head><body>\n')
     syn = frag["synapse"].replace("<svg ", '<svg class="ch-syn" aria-hidden="true" ', 1)
+    syn_full = frag["synapse-full"].replace("<svg ", '<svg class="ch-syn-full" aria-hidden="true" ', 1)
     syn_off = frag["synapse-off"].replace("<svg ", '<svg class="ch-syn" aria-hidden="true" ', 1)
     pages = {
-        "SparkCard": ('<!-- @dsCard group="Contenido" height=400 -->', (
+        "SparkCard": ('<!-- @dsCard group="Contenido" height=440 -->', (
             '<div class="ch-pad"><article class="ch-spark">\n'
-            f'<div class="ch-spark__pair"><div class="ch-spark__atom">Medios<b>Formato podcast</b></div>{syn}'
-            '<div class="ch-spark__atom">Historia<b>Ruinas romanas</b></div></div>\n'
+            '<div class="ch-pair"><div><span>Medios</span><b>Formato podcast</b></div><div class="r"><span>Historia</span><b>Ruinas romanas</b></div></div>\n'
+            f'{syn_full}\n'
             '<h3>Podcast × ruinas</h3>\n'
             '<p>Grabá cada episodio en un sitio histórico distinto y dejá que el lugar marque el tema. El sonido ambiente es parte del guion.</p>\n'
             '<div class="ch-spark__actions"><button class="ch-btn ch-btn--primary">Guardar idea</button>'
             '<button class="ch-btn ch-btn--secondary">Planificar</button><button class="ch-btn ch-btn--ghost">No me sirve</button></div>\n'
             '</article></div>')),
+        "SparkMeter": ('<!-- @dsCard group="Contenido" height=180 -->', (
+            '<div class="ch-pad ch-col">'
+            f'<div class="ch-mline">{frag["mini-lit"]}<div><b>1 chispa para encender</b><span>Se recarga mañana a las 08:00</span></div>'
+            f'<div class="x" aria-label="1 de 3 neuronas para la próxima extra">{frag["mini"]}{frag["mini-dim"]}{frag["mini-dim"]}</div></div>'
+            f'<div class="ch-mline">{frag["mini-dim"]}<div><b>Usaste las chispas de hoy</b><span>Guardá 2 neuronas para ganar 1 extra</span></div></div>'
+            '</div>')),
+        "ConceptCard": ('<!-- @dsCard group="Contenido" height=260 -->', (
+            '<div class="ch-pad"><ol class="ch-axon">'
+            f'<li>{frag["mini"]}<div><span>Ingeniería</span><b>Separación ciclónica</b><p>Un flujo en espiral separa partículas por fuerza centrífuga, sin filtro.</p><span>De un artículo · hace 2 días</span></div></li>'
+            f'<li>{frag["mini"]}<div><span>Marketing</span><b>Escasez intencional</b><p>Limitar la oferta sube el valor percibido y la atención de quien la recibe.</p><span>Nota de voz · hoy</span></div></li>'
+            '</ol></div>')),
         "Synapse": ('<!-- @dsCard group="Identidad" height=120 -->', (
             '<div class="ch-pad" style="align-items:center;gap:var(--space-8)">'
             f'<div class="ch-col"><span class="ch-lbl">Encendida</span>{syn.replace("ch-syn", "ch-syn ch-syn--lg")}</div>'
@@ -526,18 +538,18 @@ def main():
     long_nucleus = ((long_c[0] + tx) * s, (long_c[1] + ty) * s)
     art["markLong"] = (242, 131, [("active", moved(long_g, tx, ty, s))])
     extras["markLongNucleus"] = f"CGPoint(x: {long_nucleus[0]:.1f}, y: {long_nucleus[1]:.1f})"
-    write(LOGO / "lumbre-mark.svg", svg(242, 131, f'<path d="{long_d}" fill="{NIGHT}"/>'))
+    write(LOGO / "lumbre-mark.svg", svg(242, 131, f'<path d="{long_d}" fill="{NEURON}"/>'))
     tx, ty, s = fit(comp_g, (100, 100), 4)
     comp_d = path_d(comp_g, tx, ty, s)
     comp_nucleus = ((comp_c[0] + tx) * s, (comp_c[1] + ty) * s)
     art["markCompact"] = (100, 100, [("active", moved(comp_g, tx, ty, s))])
     extras["markCompactNucleus"] = f"CGPoint(x: {comp_nucleus[0]:.1f}, y: {comp_nucleus[1]:.1f})"
-    write(LOGO / "lumbre-mark-compacto.svg", svg(100, 100, f'<path d="{comp_d}" fill="{NIGHT}"/>'))
+    write(LOGO / "lumbre-mark-compacto.svg", svg(100, 100, f'<path d="{comp_d}" fill="{NEURON}"/>'))
 
-    # Ícono de app: compacto al 78% sobre night, núcleo spark. Monocromo para tinted y Android.
+    # Ícono de app: compacto negro al 78% sobre gris, núcleo spark. Monocromo para tinted y Android.
     k, off = 7.98, 113
-    icon_body = (f'<rect width="1024" height="1024" fill="{NIGHT}"/><g transform="translate({off},{off}) scale({k})">'
-                 f'<path d="{comp_d}" fill="{CREAM}"/>'
+    icon_body = (f'<rect width="1024" height="1024" fill="{GRAY}"/><g transform="translate({off},{off}) scale({k})">'
+                 f'<path d="{comp_d}" fill="{NEURON}"/>'
                  f'<circle cx="{comp_nucleus[0]:.1f}" cy="{comp_nucleus[1]:.1f}" r="5.2" fill="{SPARK}"/></g>')
     write(LOGO / "lumbre-app-icon.svg", svg(1024, 1024, icon_body))
     write(LOGO / "lumbre-app-icon-mono.svg", svg(1024, 1024,
@@ -554,13 +566,17 @@ def main():
                    + wordmark_svg(wm_glyphs, ink))
 
     solo, width = wordmark("Lumbre.", 100, 8, 100)
-    write(LOGO / "lumbre-wordmark.svg", svg(round(width + 16), 128, wordmark_svg(solo, NIGHT)))
+    write(LOGO / "lumbre-wordmark.svg", svg(round(width + 16), 128, wordmark_svg(solo, NEURON)))
     export_icons(comp_g, comp_c)
-    write(LOGO / "lumbre-logo-dark.svg", lockup(NIGHT, CREAM))
-    write(LOGO / "lumbre-logo-light.svg", lockup(CREAM, NIGHT))
-    frag["lockup-dark"], frag["lockup-light"] = lockup(NIGHT, CREAM), lockup(CREAM, NIGHT)
+    write(LOGO / "lumbre-logo-dark.svg", lockup(GRAPHITE, BONE))
+    write(LOGO / "lumbre-logo-light.svg", lockup(GRAY, NEURON))
+    frag["lockup-dark"], frag["lockup-light"] = lockup(GRAPHITE, BONE), lockup(GRAY, NEURON)
     frag["mark"] = svg(242, 131, f'<path class="n-active" d="{long_d}"/>')
     frag["mark-compact"] = svg(100, 100, f'<path class="n-active" d="{comp_d}"/>')
+    nuc = f'<circle class="n-spark" cx="{comp_nucleus[0]:.1f}" cy="{comp_nucleus[1]:.1f}" r="7"/>'
+    frag["mini"] = svg(100, 100, f'<path class="n-active" d="{comp_d}"/>').replace("<svg ", '<svg class="mini" ', 1)
+    frag["mini-lit"] = svg(100, 100, f'<path class="n-active" d="{comp_d}"/>{nuc}').replace("<svg ", '<svg class="mini" ', 1)
+    frag["mini-dim"] = frag["mini"].replace('class="mini"', 'class="mini mini-dim"', 1)
     frag["mark-nucleus"] = svg(242, 131, f'<path class="n-active" d="{long_d}"/>'
                                f'<circle class="n-spark" cx="{long_nucleus[0]:.1f}" cy="{long_nucleus[1]:.1f}" r="8"/>')
 
@@ -571,6 +587,15 @@ def main():
     write(OUT / "sinapsis.svg", svg(120, 40, syn, ILLU_STYLE))
     frag["synapse"] = svg(120, 40, syn)
     art["synapseLeft"], art["synapseRight"] = (120, 40, [("active", sl)]), (120, 40, [("active", sr)])
+    # Sinapsis completa: dos neuronas enteras, simétricas, para los lugares grandes (la chispa, el reveal, compartir).
+    # Las dos son el símbolo de la marca, enfrentadas: el axón de cada una apunta al hueco del medio.
+    lx0, ly0, lx1, ly1 = long_g.bounds
+    k_full = min(112 / (lx1 - lx0), 76 / (ly1 - ly0))
+    full_l = affine_transform(long_g, [k_full, 0, 0, k_full, 2 - lx0 * k_full, 40 - (ly0 + ly1) / 2 * k_full])
+    full_r = affine_transform(full_l, [-1, 0, 0, 1, 240, 0])
+    art["synapseFullLeft"], art["synapseFullRight"] = (240, 80, [("active", full_l)]), (240, 80, [("active", full_r)])
+    frag["synapse-full"] = svg(240, 80, f'<path class="n-active" d="{path_d(full_l)}"/><path class="n-active" d="{path_d(full_r)}"/>'
+                                        + star(120, 40, 22))
     # Axón para el pulso de carga ("Destilando…"): el impulso viaja por la línea central.
     axon_line = [(6, 12), (40, 9), (80, 14), (114, 11)]
     axon = organic([taper(axon_line, 5, 4), Point(6, 12).buffer(4.5, 8), Point(114, 11).buffer(4.5, 8)], 1, 0.3)

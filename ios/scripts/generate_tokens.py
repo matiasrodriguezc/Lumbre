@@ -4,6 +4,7 @@
 Salida:
 - Colors.xcassets con una variante clara y una oscura por token.
 - Tokens.generated.swift con colores, espaciado, radios, sombras y estilos display.
+- design/system/tokens.css con las mismas variables para la web y los previews.
 
 Uso: python3 ios/scripts/generate_tokens.py
 """
@@ -17,6 +18,7 @@ TOKENS = ROOT / "design/system/tokens.json"
 PACKAGE = ROOT / "ios/Packages/LumbreDesign/Sources/LumbreDesign"
 ASSETS = PACKAGE / "Resources/Colors.xcassets"
 SWIFT = PACKAGE / "Generated/Tokens.generated.swift"
+CSS = ROOT / "design/system/tokens.css"
 
 HEADER = "// Generado por ios/scripts/generate_tokens.py desde design/system/tokens.json. No editar a mano.\n"
 
@@ -104,6 +106,33 @@ def swift_layers(layers):
     return "[" + ", ".join(items) + "]"
 
 
+def write_css(data):
+    """tokens.css: el primer tema de tokens.json es el de :root (el default)."""
+    tokens = data["color"]["tokens"]
+    themes = [t["id"] for t in data["color"]["themes"]]
+    raw = {t["name"]: t["value"] for t in tokens}
+
+    def value(v, theme):
+        if isinstance(v, dict):
+            v = v[theme]
+        ref = re.fullmatch(r"\{(.+)\}", v)
+        return "var(--%s)" % ref.group(1) if ref else v
+
+    out = ["/* Lumbre: tokens generados desde tokens.json por ios/scripts/generate_tokens.py. No editar a mano. */"]
+    for i, theme in enumerate(themes):
+        selector = (':root, [data-theme="%s"]' % theme) if i == 0 else '[data-theme="%s"]' % theme
+        out.append(selector + " {")
+        out += ["  --%s: %s;" % (n, value(v, theme)) for n, v in raw.items()]
+        out += ["  --%s: %s;" % (t["name"], value(t["value"], theme)) for t in data["shadow"]["tokens"]]
+        out.append("}")
+    out.append(":root {")
+    out += ["  --%s: %s;" % (t["name"], t["value"]) for t in data["spacing"]["tokens"] + data["radius"]["tokens"]]
+    out += ["  --font-%s: %s;" % (k, v) for k, v in data["type"]["families"].items()]
+    out.append("}")
+    CSS.write_text("\n".join(out) + "\n", encoding="utf-8")
+    print("Generado %s" % CSS.relative_to(ROOT))
+
+
 def main():
     data = json.loads(TOKENS.read_text(encoding="utf-8"))
     colors = resolve_colors(data["color"]["tokens"])
@@ -170,6 +199,7 @@ def main():
     SWIFT.write_text("\n".join(lines), encoding="utf-8")
     print("Generados %d colores en %s" % (len(colors), ASSETS.relative_to(ROOT)))
     print("Generado %s" % SWIFT.relative_to(ROOT))
+    write_css(data)
 
 
 if __name__ == "__main__":

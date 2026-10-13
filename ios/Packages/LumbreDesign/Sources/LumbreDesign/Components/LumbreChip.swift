@@ -3,7 +3,7 @@ import SwiftUI
 /// Pill para dominios y filtros. Los dominios no llevan un color cada uno: se distinguen por texto e ícono.
 public struct LumbreChip: View {
     public enum Variant: Sendable {
-        /// Dominio de un concepto.
+        /// Dominio de una neurona.
         case plain
         /// Filtro sin elegir.
         case select
@@ -29,7 +29,7 @@ public struct LumbreChip: View {
             Text(title)
         }
         .font(.footnote.weight(.medium))
-        .foregroundStyle(variant == .on ? Palette.accentText : Palette.ink)
+        .foregroundStyle(variant == .on ? Palette.onAccent : Palette.ink)
         .padding(.horizontal, Space.s3)
         .padding(.vertical, 6)
         .background {
@@ -37,7 +37,7 @@ public struct LumbreChip: View {
             switch variant {
             case .plain: shape.fill(Palette.surfaceAlt)
             case .select: shape.strokeBorder(Palette.borderStrong, lineWidth: 1)
-            case .on: shape.fill(Palette.accentSoft).overlay(shape.strokeBorder(Palette.accent, lineWidth: 1))
+            case .on: shape.fill(Palette.accent)
             }
         }
         .accessibilityElement(children: .combine)

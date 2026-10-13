@@ -93,3 +93,25 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-text)
 .ch-empty b{font:600 17px/22px var(--font-text);color:var(--ink)}
 .ch-empty span{font:400 15px/20px var(--font-text);color:var(--ink-muted)}
 .ch-mark svg{display:block;width:100%;height:auto}
+/* Tema gris: chispa sin tarjeta, contador en línea, neuronas colgadas del axón */
+.ch-spark{background:transparent;box-shadow:none;padding:var(--space-2) 0}
+.ch-pair{display:flex;justify-content:space-between;gap:var(--space-4);margin-bottom:var(--space-2)}
+.ch-pair span{display:block;font:400 13px/18px var(--font-text);color:var(--ink-muted)}
+.ch-pair b{display:block;font:600 17px/22px var(--font-text);color:var(--ink)}
+.ch-pair .r{text-align:right}
+.ch-syn-full{display:block;width:280px;height:auto;margin:var(--space-2) auto var(--space-4)}
+.ch-chip--on{background:var(--accent);color:var(--on-accent);box-shadow:none}
+.ch-btn--ghost{color:var(--ink-muted);text-decoration:underline;text-underline-offset:3px}
+.ch-btn--primary .ch-dot{width:10px;height:10px;border-radius:50%;background:var(--spark)}
+.mini{display:block;width:32px;height:32px;flex:none}.mini-dim .n-active{fill:var(--border)}
+.ch-mline{display:flex;align-items:center;gap:var(--space-3);width:340px;padding:var(--space-3) 0;border-bottom:1px solid var(--border)}
+.ch-mline b{display:block;font:600 17px/22px var(--font-text);color:var(--ink)}
+.ch-mline span{display:block;font:400 13px/18px var(--font-text);color:var(--ink-muted)}
+.ch-mline .x{margin-left:auto;display:flex;gap:2px}.ch-mline .x .mini{width:18px;height:18px}
+.ch-axon{list-style:none;margin:0;padding:0;width:340px}
+.ch-axon li{display:flex;gap:var(--space-3);padding:var(--space-2) 0;position:relative}
+.ch-axon li:before{content:"";position:absolute;left:13px;top:0;bottom:0;width:2px;background:var(--border)}
+.ch-axon .mini{width:28px;height:28px;position:relative}
+.ch-axon span{display:block;font:400 13px/18px var(--font-text);color:var(--ink-muted)}
+.ch-axon b{display:block;font:600 17px/22px var(--font-text);color:var(--ink)}
+.ch-axon p{margin:2px 0;font:400 15px/20px var(--font-text);color:var(--ink-muted)}

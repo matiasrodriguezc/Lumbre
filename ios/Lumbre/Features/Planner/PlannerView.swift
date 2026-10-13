@@ -429,5 +429,5 @@ extension PlannerPreset {
         PlannerView(sparkID: MockData.recentSparks[0].id, entry: "spark_detail")
     }
     .environment(AppModel())
-    .preferredColorScheme(.dark)
+    .preferredColorScheme(.light)
 }

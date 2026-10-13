@@ -118,7 +118,7 @@ struct EmptyStateLabel: View {
 #Preview("Error") {
     LoadErrorView(error: URLError(.notConnectedToInternet)) {}
         .background(Palette.bg)
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }
 
 #Preview("Vacío") {
@@ -127,5 +127,5 @@ struct EmptyStateLabel: View {
             .buttonStyle(.lumbre(.primary))
     }
     .background(Palette.bg)
-    .preferredColorScheme(.dark)
+    .preferredColorScheme(.light)
 }

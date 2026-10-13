@@ -32,25 +32,41 @@ public struct SparkCard<Actions: View>: View {
     }
 
     public var body: some View {
+        if neuralIdentity { open } else { card }
+    }
+
+    /// Sin tarjeta: los nombres de las dos neuronas arriba, la sinapsis encendida, y la idea con sus acciones.
+    private var open: some View {
+        VStack(alignment: .leading, spacing: Space.s4) {
+            SparkPairHeader(a: a, b: b)
+            Synapse(.lit, full: true)
+                .frame(maxWidth: 320)
+                .frame(maxWidth: .infinity)
+            VStack(alignment: .leading, spacing: Space.s3) {
+                Text(title)
+                    .lumbreDisplay(.sparkHero)
+                    .foregroundStyle(Palette.ink)
+                    .accessibilityAddTraits(.isHeader)
+                Text(explanation)
+                    .font(.body)
+                    .foregroundStyle(Palette.ink)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            actions
+        }
+        .padding(.vertical, Space.s2)
+    }
+
+    private var card: some View {
         VStack(alignment: .leading, spacing: Space.s5) {
             HStack(alignment: .top, spacing: Space.s2) {
                 side(a)
-                if neuralIdentity {
-                    // Hueco para la sinapsis, que va centrada sobre el par.
-                    Color.clear.frame(width: 56, height: 1)
-                } else {
-                    Text("×")
-                        .font(.title3.weight(.semibold))
-                        .foregroundStyle(Palette.inkMuted)
-                        .padding(.top, Space.s5)
-                        .accessibilityHidden(true)
-                }
+                Text("×")
+                    .font(.title3.weight(.semibold))
+                    .foregroundStyle(Palette.inkMuted)
+                    .padding(.top, Space.s5)
+                    .accessibilityHidden(true)
                 side(b)
-            }
-            .overlay {
-                if neuralIdentity {
-                    Synapse(.lit).frame(width: 56)
-                }
             }
             .accessibilityElement(children: .combine)
 
@@ -90,5 +106,39 @@ public struct SparkCard<Actions: View>: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Space.s3)
         .background(Palette.surfaceAlt, in: RoundedRectangle(cornerRadius: Radius.sm, style: .continuous))
+    }
+}
+
+/// Los nombres de las dos neuronas de una chispa, a los costados: dominio arriba, título abajo.
+public struct SparkPairHeader: View {
+    let a: SparkSide
+    let b: SparkSide
+
+    public init(a: SparkSide, b: SparkSide) {
+        self.a = a
+        self.b = b
+    }
+
+    public var body: some View {
+        HStack(alignment: .top, spacing: Space.s4) {
+            label(a, alignment: .leading)
+            label(b, alignment: .trailing)
+        }
+        .accessibilityElement(children: .combine)
+    }
+
+    private func label(_ side: SparkSide, alignment: HorizontalAlignment) -> some View {
+        VStack(alignment: alignment, spacing: 2) {
+            Label(side.category, systemImage: side.categorySymbol)
+                .font(.footnote)
+                .foregroundStyle(Palette.inkMuted)
+                .labelStyle(.titleOnly)
+            Text(side.title)
+                .font(.headline)
+                .foregroundStyle(Palette.ink)
+                .multilineTextAlignment(alignment == .leading ? .leading : .trailing)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: alignment == .leading ? .leading : .trailing)
     }
 }

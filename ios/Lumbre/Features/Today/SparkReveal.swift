@@ -32,8 +32,10 @@ struct SparkHero: View {
     var body: some View {
         ZStack(alignment: .top) {
             if phase < .revealed {
-                stage
-                    .transition(.opacity)
+                Group {
+                    if neuralIdentity { neuralStage } else { stage }
+                }
+                .transition(.opacity)
             } else {
                 SparkCard(a: SparkSide(spark.conceptA), b: SparkSide(spark.conceptB), title: spark.title, explanation: spark.body) {
                     SparkActions(spark: spark, onChange: onChange)
@@ -45,6 +47,41 @@ struct SparkHero: View {
     }
 
     // MARK: Estado previo y choque
+
+    /// Identidad neuronal: sin tarjeta. Las dos neuronas con sus nombres, la sinapsis que se conecta al encender
+    /// y el botón negro con el punto rosa (el rosa siempre sobre negro).
+    private var neuralStage: some View {
+        VStack(spacing: Space.s4) {
+            SparkPairHeader(a: SparkSide(spark.conceptA), b: SparkSide(spark.conceptB))
+            Synapse(phase >= .collided ? .lit : phase >= .approaching ? .reaching : .apart, full: true)
+                .frame(maxWidth: 320)
+                .frame(maxWidth: .infinity)
+                .scaleEffect(phase >= .collided ? 1.08 : 1)
+                .padding(.vertical, Space.s2)
+            VStack(spacing: Space.s1) {
+                Text(spark.mode == .daily ? "Tu chispa de hoy está lista" : "Tu chispa extra está lista")
+                    .font(.headline)
+                    .foregroundStyle(Palette.ink)
+                Text("Dos neuronas tuyas de mundos distintos están por conectarse.")
+                    .font(.callout)
+                    .foregroundStyle(Palette.inkMuted)
+                    .multilineTextAlignment(.center)
+            }
+            .opacity(phase >= .collided ? 0 : 1)
+            Button(action: ignite) {
+                Label {
+                    Text("Encender la chispa")
+                } icon: {
+                    Circle().fill(Palette.spark).frame(width: 10, height: 10)
+                }
+            }
+            .buttonStyle(.lumbre(.primary, fullWidth: true))
+            .disabled(phase > .idle)
+            .opacity(phase > .idle ? 0 : 1)
+            .accessibilityHint("Revela la chispa")
+        }
+        .padding(.vertical, Space.s2)
+    }
 
     private var stage: some View {
         VStack(spacing: Space.s6) {
@@ -81,10 +118,9 @@ struct SparkHero: View {
     }
 
     /// Las dos tarjetas separadas; al encender se acercan, chocan y aparece la estrella.
-    /// Con la identidad neuronal no se tocan: cada una estira su terminal, cruza el impulso y salta la chispa en la sinapsis.
     private var collision: some View {
-        let gap: CGFloat = neuralIdentity ? 76 : 36
-        let travel = neuralIdentity ? 0 : gap / 2 + 6
+        let gap: CGFloat = 36
+        let travel = gap / 2 + 6
         return ZStack {
             HStack(spacing: gap) {
                 tile(spark.conceptA)
@@ -97,16 +133,11 @@ struct SparkHero: View {
             .scaleEffect(phase >= .collided ? 0.9 : 1)
             .opacity(phase >= .collided ? 0 : 1)
 
-            if neuralIdentity {
-                Synapse(phase >= .collided ? .lit : phase >= .approaching ? .reaching : .apart)
-                    .frame(width: 72)
-            } else {
-                Text("×")
-                    .font(.title3.weight(.semibold))
-                    .foregroundStyle(Palette.inkMuted)
-                    .opacity(phase >= .approaching ? 0 : 1)
-                    .accessibilityHidden(true)
-            }
+            Text("×")
+                .font(.title3.weight(.semibold))
+                .foregroundStyle(Palette.inkMuted)
+                .opacity(phase >= .approaching ? 0 : 1)
+                .accessibilityHidden(true)
 
             SparkStar()
                 .fill(Palette.spark)
@@ -174,5 +205,5 @@ struct SparkHero: View {
     }
     .background(Palette.bg)
     .environment(AppModel())
-    .preferredColorScheme(.dark)
+    .preferredColorScheme(.light)
 }

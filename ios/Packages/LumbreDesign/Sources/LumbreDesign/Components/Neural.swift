@@ -143,42 +143,109 @@ public struct LumbreMark: View {
     }
 }
 
+/// Neurona chica: el estado de la chispa en el contador y el nodo de una neurona en las listas.
+/// `isLit` le pone el núcleo `spark` (el rosa siempre va sobre la neurona negra); `isDim` la deja dormida.
+public struct MiniNeuron: View {
+    let isLit: Bool
+    let isDim: Bool
+
+    public init(isLit: Bool = false, isDim: Bool = false) {
+        self.isLit = isLit
+        self.isDim = isDim
+    }
+
+    public var body: some View {
+        let art = NeuralArt.markCompact
+        ZStack {
+            NeuralShape(rings: art.layers[0].rings, canvas: art.size)
+                .fill(isDim ? Palette.border : Palette.ink)
+            if isLit && !isDim {
+                NeuralDot(center: NeuralAnchors.markCompactNucleus, radius: 7, canvas: art.size)
+                    .fill(Palette.spark)
+            }
+        }
+        .aspectRatio(1, contentMode: .fit)
+        .accessibilityHidden(true)
+    }
+}
+
+/// Fila colgada de un axón: una línea vertical `border` une los nodos de una lista (Anteriores, la Red).
+struct AxonRow<Node: View>: ViewModifier {
+    let spacing: CGFloat
+    let node: Node
+
+    func body(content: Content) -> some View {
+        HStack(alignment: .top, spacing: Space.s3) {
+            node.frame(width: 28, height: 28)
+            content.frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .background(alignment: .topLeading) {
+            Rectangle()
+                .fill(Palette.border)
+                .frame(width: 2)
+                .frame(maxHeight: .infinity)
+                .padding(.leading, 13)
+                .padding(.vertical, -spacing / 2)
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+extension View {
+    /// Cuelga la fila de un axón con `node` como nodo. `spacing` es el espacio entre filas, para que la línea no se corte.
+    public func axonRow<Node: View>(spacing: CGFloat = Space.s3, @ViewBuilder node: () -> Node) -> some View {
+        modifier(AxonRow(spacing: spacing, node: node()))
+    }
+}
+
 // MARK: Sinapsis
 
-/// Dos terminales enfrentadas y, en el hueco, la chispa. Va entre los dos conceptos de una chispa.
+/// Dos terminales enfrentadas y, en el hueco, la chispa. Va entre las dos neuronas de una chispa.
 /// `apart`: todavía no se tocaron; `reaching`: las terminales salen y viaja el impulso; `lit`: salta la chispa.
+/// `full` dibuja las dos neuronas enteras (la chispa, el reveal, compartir); sin él, solo las terminales (conectores chicos).
 public struct Synapse: View {
     public enum Stage: Sendable { case apart, reaching, lit }
 
     let stage: Stage
+    let full: Bool
 
-    public init(_ stage: Stage = .lit) {
+    public init(_ stage: Stage = .lit, full: Bool = false) {
         self.stage = stage
+        self.full = full
     }
 
     public var body: some View {
-        let canvas = NeuralArt.synapseLeft.size
+        let left = full ? NeuralArt.synapseFullLeft : NeuralArt.synapseLeft
+        let right = full ? NeuralArt.synapseFullRight : NeuralArt.synapseRight
+        let canvas = left.size
+        let mid = canvas.width / 2
+        // Dónde arranca el impulso y dónde llega, en coordenadas del lienzo.
+        let (from, to): (Double, Double) = full ? (40, mid - 12) : (10, mid - 10)
+        let starSize: Double = full ? 22 : 17
         GeometryReader { proxy in
             let frame = NeuralFrame(canvas: canvas, in: CGRect(origin: .zero, size: proxy.size))
-            let impulseX = stage == .lit ? 50.0 : 10.0
+            let apartShift = full && stage == .apart ? 10 * frame.scale : 0
             ZStack {
-                NeuralShape(rings: NeuralArt.synapseLeft.layers[0].rings, canvas: canvas)
+                NeuralShape(rings: left.layers[0].rings, canvas: canvas)
                     .fill(Palette.ink)
-                    .scaleEffect(x: stage == .apart ? 0.7 : 1, anchor: .leading)
-                NeuralShape(rings: NeuralArt.synapseRight.layers[0].rings, canvas: canvas)
+                    .scaleEffect(x: !full && stage == .apart ? 0.7 : 1, anchor: .leading)
+                    .offset(x: -apartShift)
+                NeuralShape(rings: right.layers[0].rings, canvas: canvas)
                     .fill(Palette.ink)
-                    .scaleEffect(x: stage == .apart ? 0.7 : 1, anchor: .trailing)
+                    .scaleEffect(x: !full && stage == .apart ? 0.7 : 1, anchor: .trailing)
+                    .offset(x: apartShift)
                 ForEach(0..<2, id: \.self) { side in
+                    let x = stage == .lit ? to : from
                     Circle()
                         .fill(Palette.infoText)
                         .frame(width: 5 * frame.scale, height: 5 * frame.scale)
-                        .position(frame.point(side == 0 ? impulseX : 120 - impulseX, 20))
+                        .position(frame.point(side == 0 ? x : canvas.width - x, canvas.height / 2))
                         .opacity(stage == .reaching ? 1 : 0)
                 }
                 SparkStar()
                     .fill(Palette.spark)
-                    .frame(width: 17 * frame.scale, height: 17 * frame.scale)
-                    .position(frame.point(60, 20))
+                    .frame(width: starSize * frame.scale, height: starSize * frame.scale)
+                    .position(frame.point(mid, canvas.height / 2))
                     .scaleEffect(stage == .lit ? 1 : 0.1)
                     .opacity(stage == .lit ? 1 : 0)
             }
@@ -337,5 +404,5 @@ extension View {
         .padding()
     }
     .background(Palette.bg)
-    .preferredColorScheme(.dark)
+    .preferredColorScheme(.light)
 }

@@ -5,7 +5,7 @@ import SwiftUI
 @main
 struct LumbreApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    @AppStorage("theme") private var theme: ThemePreference = .dark
+    @AppStorage("theme") private var theme: ThemePreference = .light
 
     init() {
         LumbreAppearance.configure()
@@ -19,7 +19,7 @@ struct LumbreApp: App {
                 .environment(appDelegate.appModel)
                 .environment(\.neuralIdentity, FeatureFlag.neuralIdentity.isEnabled)
                 .preferredColorScheme(theme.colorScheme)
-                .tint(Palette.accentText)
+                .tint(Palette.ink)
         }
     }
 

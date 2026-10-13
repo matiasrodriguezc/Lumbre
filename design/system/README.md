@@ -2,8 +2,8 @@ Lumbre es una app de creatividad por recombinación: absorbés ideas, la IA las 
 
 ## Principios
 
-- **Una sola chispa por pantalla.** `spark` (#FF3EA5) aparece en un único elemento protagonista: la chispa del día, el CTA principal o el contador. Si hay dos cosas magenta, una sobra.
-- **Noche primero.** El tema `dark` es el default y el de marca. El tema `light` es la misma interfaz a la luz del día, no otra marca.
+- **Una sola chispa por pantalla.** `spark` (#FF3EA5) es el único color de la marca y aparece apoyado en negro: el núcleo de la neurona, el punto del botón que enciende, la chispa en la sinapsis. Si el rosa compite consigo mismo, algo sobra.
+- **Gris primero.** El tema gris (`light`) es el default y el de marca. El grafito (`dark`) es la misma interfaz invertida: neurona hueso sobre fondo grafito.
 - **Nativo antes que idéntico.** iOS y Android comparten tokens, copy, ilustraciones y la tarjeta de la chispa. La navegación, los controles del sistema, la tipografía de texto, los gestos y los sheets son los de cada plataforma.
 - **La neurona es el átomo.** La unidad visual es la tarjeta de neurona (componente ConceptCard: título, tesis, dominio, fuente). Todo lo que el usuario guarda se muestra así, nunca como texto crudo.
 
@@ -20,16 +20,19 @@ Lumbre es una app de creatividad por recombinación: absorbés ideas, la IA las 
 
 ## Color
 
-- Fondo: `bg`. Tarjetas y barras: `surface`. Inputs y elementos anidados: `surface-alt`.
-- Texto: `ink` para todo lo principal, `ink-muted` para metadatos. Ambos pasan 6:1 o más en los dos temas.
-- Acción principal: relleno `accent` con texto `on-accent` (azul noche sobre magenta, 5.52:1). Nunca texto blanco sobre magenta.
-- Magenta como texto o ícono chico: `accent-text` (más claro en oscuro, más profundo en claro).
-- Selección: `accent-soft` de fondo + `accent-text` o `ink` encima.
-- Pro: `pro` (violeta) con `on-pro`. El violeta significa "esto es Pro" y nada más.
-- `signal-blue` e `info-text` para información neutra y links que no son la acción principal.
+Paleta "Gris neurona": casi monocroma, con un solo color. Sale del logo: una neurona negra sobre gris con un punto rosa encima.
+
+- **Marca:** `gray` #E3E3DF (fondo), `neuron` #0E0E10 (la neurona y la tinta), `spark` #FF3EA5 (el único color). Para el modo oscuro, `graphite` #2A2A2C de fondo y `bone` #EDEDE8 de tinta.
+- **El rosa va siempre apoyado en negro** (o en la neurona): el núcleo, el punto del botón principal, la chispa de la sinapsis. Sobre gris solo llega a 2,5:1 y se pierde; sobre negro, 6:1. La única excepción es el punto del wordmark.
+- Fondo: `bg`. Superficies apenas elevadas (sheets, barras): `surface`. Inputs, búsqueda y neuronas dormidas: `surface-alt`.
+- Texto: `ink` para todo lo principal, `ink-muted` para metadatos (≥4.4:1 en todas las superficies).
+- Acción principal: relleno `accent` (negro en gris, hueso en grafito) con `on-accent`, y un punto `spark` adentro cuando la acción enciende algo ("Encender la chispa"). Una por pantalla.
+- Secundaria: contorno `border-strong`. Terciaria (`ghost`): `ink-muted` subrayado. Nada de texto rosa sobre gris; `accent-text` queda solo para casos puntuales.
+- Selección: el elegido va en `accent` (negro) con `on-accent`; `accent-soft` es un gris para fondos de selección suaves.
+- Pro: `pro` es negro con la palabra Pro. Información: `info-text` (gris oscuro) y links subrayados. Ya no hay violeta ni azul.
 - Estados `success`, `warning`, `danger`: siempre con ícono y palabra; no se distinguen solo por color.
-- Bordes: `border` es decorativo; `border-strong` para cualquier control (≥3:1).
-- Foco: anillo de 2px en `focus-ring`, separado 2px del control.
+- Bordes: `border` es decorativo (separadores, el eje de las listas, la red de fondo); `border-strong` para cualquier control (≥3:1).
+- Foco: anillo de 2px en `focus-ring` (negro / hueso), separado 2px del control.
 
 ## Tipografía
 
@@ -44,8 +47,9 @@ Lumbre es una app de creatividad por recombinación: absorbés ideas, la IA las 
 ## Espaciado, forma y elevación
 
 - Grilla de 4pt: `space-1` a `space-10`. Margen lateral de pantalla `space-4` (iOS usa los márgenes de layout del sistema cuando existen).
-- Radios con jerarquía: `radius-sm` inputs, `radius-md` tarjetas y botones, `radius-lg` la chispa del día y sheets, `radius-full` pills. La chispa del día es lo más redondo de la pantalla.
-- En oscuro la elevación se da con superficies más claras (`surface` → `surface-alt`), no con sombras. En claro, `elev-card` suave.
+- Radios con jerarquía: `radius-sm` inputs, `radius-md` tarjetas y botones, `radius-lg` sheets, `radius-full` pills y el botón principal.
+- **Menos tarjetas.** Lo neuronal se dibuja directo sobre el fondo: la chispa del día no va en una tarjeta, el contador es una línea y las listas de neuronas y chispas cuelgan de un axón (una línea `border` con un nodo por fila).
+- En grafito la elevación se da con superficies más claras (`surface` → `surface-alt`), no con sombras. En gris, `elev-card` suave.
 - `glow-spark` es exclusivo del momento chispa y del CTA principal. Nunca en tarjetas comunes.
 
 ## Movimiento y háptica
@@ -65,8 +69,8 @@ Lumbre es una app de creatividad por recombinación: absorbés ideas, la IA las 
 
 - El símbolo es una neurona plana: soma, cinco dendritas y un axón largo que termina en tres botones. Cada idea guardada es una neurona; la chispa es lo que pasa cuando dos se conectan.
 - Dos versiones. **Largo** (`lumbre-mark.svg`): horizontal, con el axón hacia el wordmark; para wordmark, splash y web; mínimo 64px de ancho. **Compacto** (`lumbre-mark-compacto.svg`): el axón se curva hacia abajo para llenar un cuadrado; para ícono, avatares, favicon y notificaciones; mínimo 24px.
-- Ícono de app: el compacto en `cream` sobre `night`, en cuadrado a sangre (cada sistema aplica su máscara), con el núcleo en `spark`. `lumbre-app-icon-mono.svg` es la base para tinted (iOS) y monochrome (Android).
-- Wordmark: "Lumbre" en Fraunces 600 con SOFT 100, en `ink`, seguido de un punto `spark`. El punto es parte de la marca. La neurona va en `ink`, sin núcleo magenta, para que el punto sea el único.
+- Ícono de app: el compacto en `neuron` (negro) sobre `gray`, en cuadrado a sangre (cada sistema aplica su máscara), con el núcleo en `spark`. `lumbre-app-icon-mono.svg` es la base para tinted (iOS) y monochrome (Android).
+- Wordmark: "Lumbre" en Fraunces 600 con SOFT 100, en `ink`, seguido de un punto `spark`. El punto es parte de la marca. La neurona va en `ink`, sin núcleo rosa, para que el punto sea el único.
 - El símbolo de marca va en ícono, splash y wordmark. Dentro de la app, la chispa (feature) se representa con la estrella de cuatro puntas y, en el momento chispa, con la sinapsis.
 - Validar el ícono solo, sin wordmark, con personas sin contexto: que se lea como neurona (y no como estrella de mar o insecto) a 29px.
 

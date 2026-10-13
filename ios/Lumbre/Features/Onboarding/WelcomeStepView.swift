@@ -205,10 +205,10 @@ struct AIConsentSheet: View {
         WelcomeStepView()
     }
     .environment(OnboardingModel(profile: nil))
-    .preferredColorScheme(.dark)
+    .preferredColorScheme(.light)
 }
 
 #Preview("Consentimiento") {
     AIConsentSheet { _ in }
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
 }

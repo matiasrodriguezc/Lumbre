@@ -33,7 +33,7 @@ struct ProfileOption: View {
                 .multilineTextAlignment(.leading)
             }
             .padding(Space.s4)
-            .background(isSelected ? Palette.accentSoft : Palette.surface, in: RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
+            .background(isSelected ? Palette.surfaceAlt : Palette.surface, in: RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: Radius.md, style: .continuous)
                     .strokeBorder(isSelected ? Palette.accent : Palette.border, lineWidth: isSelected ? 2 : 1.5)
@@ -147,5 +147,5 @@ extension [CreativeProfile] {
             .padding()
     }
     .background(Palette.bg)
-    .preferredColorScheme(.dark)
+    .preferredColorScheme(.light)
 }
