@@ -16,6 +16,8 @@ struct SparkHero: View {
     @AppStorage("hasSeenSpark") private var hasSeenSpark = false
     @State private var phase: Phase
     @State private var collisions = 0
+    /// Identidad neuronal: el reveal pasa en un modal sobre el fondo desenfocado.
+    @State private var isShowingReveal = false
 
     enum Phase: Int, Comparable {
         case idle, approaching, collided, revealed
@@ -44,6 +46,10 @@ struct SparkHero: View {
             }
         }
         .sensoryFeedback(.success, trigger: collisions)
+        .fullScreenCover(isPresented: $isShowingReveal) {
+            SparkRevealModal(spark: spark, phase: phase, onChange: onChange) { isShowingReveal = false }
+                .presentationBackground(.ultraThinMaterial)
+        }
     }
 
     // MARK: Estado previo y choque
@@ -173,7 +179,17 @@ struct SparkHero: View {
     private func ignite() {
         guard phase == .idle else { return }
         let motionReduced = reduceMotion
+        let inModal = neuralIdentity
+        if inModal {
+            // Sin el deslizamiento de la hoja: el fondo se desenfoca y el panel aparece en el lugar.
+            var transaction = Transaction()
+            transaction.disablesAnimations = true
+            withTransaction(transaction) { isShowingReveal = true }
+        }
         Task { @MainActor in
+            if inModal {
+                try? await Task.sleep(for: .milliseconds(motionReduced ? 50 : 300))
+            }
             if motionReduced {
                 collisions += 1
                 withAnimation(.easeInOut(duration: 0.2)) { phase = .revealed }
@@ -206,4 +222,91 @@ struct SparkHero: View {
     .background(Palette.bg)
     .environment(AppModel())
     .preferredColorScheme(.light)
+}
+
+/// El reveal como lo único visible: un panel centrado sobre el fondo desenfocado. Las dos neuronas se conectan,
+/// salta la chispa y aparecen la idea y sus acciones. Se cierra con la cruz o tocando afuera, ya revelada.
+private struct SparkRevealModal: View {
+    let spark: Spark
+    let phase: SparkHero.Phase
+    var onChange: (Spark) -> Void
+    var onClose: () -> Void
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isVisible = false
+
+    var body: some View {
+        GeometryReader { proxy in
+            ScrollView {
+                panel
+                    .frame(maxWidth: 440)
+                    .padding(.horizontal, Space.s4)
+                    .frame(maxWidth: .infinity, minHeight: proxy.size.height)
+            }
+            .scrollBounceBehavior(.basedOnSize)
+        }
+        .background {
+            // Tocar afuera cierra, pero solo cuando la chispa ya está a la vista.
+            Palette.neuron.opacity(0.22)
+                .ignoresSafeArea()
+                .onTapGesture { if phase == .revealed { onClose() } }
+                .accessibilityHidden(true)
+        }
+        .opacity(isVisible ? 1 : 0)
+        .onAppear {
+            withAnimation(.easeOut(duration: reduceMotion ? 0.2 : 0.25)) { isVisible = true }
+        }
+    }
+
+    private var panel: some View {
+        VStack(alignment: .leading, spacing: Space.s4) {
+            HStack(alignment: .top) {
+                Text(spark.mode == .daily ? "Tu chispa de hoy" : "Tu chispa extra")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(Palette.inkMuted)
+                Spacer()
+                Button(action: onClose) {
+                    Image(systemName: "xmark")
+                        .font(.footnote.weight(.bold))
+                        .foregroundStyle(Palette.ink)
+                        .frame(width: 32, height: 32)
+                        .background(Palette.surfaceAlt, in: Circle())
+                }
+                .accessibilityLabel(Text("Cerrar"))
+                .opacity(phase == .revealed ? 1 : 0)
+                .disabled(phase != .revealed)
+            }
+            SparkPairHeader(a: SparkSide(spark.conceptA), b: SparkSide(spark.conceptB))
+            Synapse(phase >= .collided ? .lit : phase >= .approaching ? .reaching : .apart, full: true)
+                .frame(maxWidth: 320)
+                .frame(maxWidth: .infinity)
+                .scaleEffect(phase == .collided ? 1.1 : 1)
+                .padding(.vertical, Space.s2)
+            if phase == .revealed {
+                VStack(alignment: .leading, spacing: Space.s3) {
+                    Text(spark.title)
+                        .lumbreDisplay(.sparkHero)
+                        .foregroundStyle(Palette.ink)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityAddTraits(.isHeader)
+                    Text(spark.body)
+                        .font(.body)
+                        .foregroundStyle(Palette.ink)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
+                SparkActions(spark: spark, onChange: onChange)
+                    .transition(.opacity)
+            }
+        }
+        .padding(Space.s5)
+        .background {
+            RoundedRectangle(cornerRadius: Radius.lg, style: .continuous)
+                .fill(Palette.surface)
+                .lumbreShadow(.glowSpark)
+        }
+        .overlay(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous).strokeBorder(Palette.border, lineWidth: 1))
+        .accessibilityElement(children: .contain)
+        .accessibilityAddTraits(.isModal)
+    }
 }

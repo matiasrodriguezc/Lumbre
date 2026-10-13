@@ -54,7 +54,7 @@ Paleta "Gris neurona": casi monocroma, con un solo color. Sale del logo: una neu
 
 ## Movimiento y háptica
 
-- Un solo momento coreografiado: el reveal de la chispa, contado como una sinapsis. Las dos neuronas entran desde los costados (0–250ms), cada uno estira su terminal hacia el centro (150–550ms), un impulso `info-text` cruza cada terminal (450–650ms) y a los 650ms se enciende la estrella con `glow-spark` y un háptico `.success` (iOS) / `CONFIRM` (Android). El título sube hasta los 900ms.
+- Un solo momento coreografiado: el reveal de la chispa, contado como una sinapsis. Pasa en un modal a pantalla completa: el resto de la app (incluida la barra) queda desenfocado detrás de un velo `neuron` al 22%, y la chispa es lo único visible, en un panel `surface` con `radius-lg` y `glow-spark`. Se abre sin deslizar (el panel aparece en su lugar con un fundido) y se cierra con la cruz o tocando afuera, solo una vez revelada; al cerrarlo, la chispa queda en Hoy. Las dos neuronas entran desde los costados (0–250ms), cada uno estira su terminal hacia el centro (150–550ms), un impulso `info-text` cruza cada terminal (450–650ms) y a los 650ms se enciende la estrella con `glow-spark` y un háptico `.success` (iOS) / `CONFIRM` (Android). El título sube hasta los 900ms.
 - El pulso: indicador de carga propio solo para destilar y encender. Un impulso recorre un axón en 1,2s. Para cualquier otra carga, el spinner del sistema.
 - Resto de transiciones: las del sistema (push, sheet, predictive back). No inventes transiciones propias para navegación. La red de fondo nunca se anima.
 - Con Reducir movimiento activado, el reveal es un fundido de 200ms sin escala ni rebote, y el pulso queda quieto.
