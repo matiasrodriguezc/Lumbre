@@ -53,7 +53,8 @@ struct TodayView: View {
             if hero.status == .discarded {
                 usedState(hero, quota: today.quota)
             } else {
-                SparkHero(spark: hero) { updated in replace(updated) }
+                SparkHero(spark: hero, onPlan: { id in path.append(.planner(id, entry: "spark_detail")) },
+                          onChange: { updated in replace(updated) })
                     .id(hero.id)
             }
             if !hero.isPending {

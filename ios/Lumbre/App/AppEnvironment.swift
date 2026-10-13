@@ -30,10 +30,13 @@ enum AppEnvironment {
     }
 
     /// Argumentos de arranque (esquema → Run → Arguments, o `xcrun simctl launch … <arg>`):
-    /// `-mock`, `-mockGuest`, `-remote`, `-resetSession` y `-seedUser` (ver `ios/README.md`).
+    /// `-mock`, `-mockPro`, `-mockGuest`, `-remote`, `-resetSession` y `-seedUser` (ver `ios/README.md`).
     static func makeAPI(arguments: [String] = ProcessInfo.processInfo.arguments) -> any LumbreAPI {
         if arguments.contains("-mockGuest") {
             return MockLumbreAPI(onboarded: false)
+        }
+        if arguments.contains("-mockPro") {
+            return MockLumbreAPI(plan: .pro)
         }
         if arguments.contains("-mock") {
             return MockLumbreAPI()

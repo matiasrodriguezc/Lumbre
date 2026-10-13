@@ -270,6 +270,8 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     case paywall = "paywall"
     /// Identidad neuronal en la app: sinapsis, pulso de carga, ilustraciones y red de fondo.
     case neuralIdentity = "neural_identity"
+    /// Planificador con el método de los tres cuartos de Walt Disney (planner.v2).
+    case disneyPlanner = "planner_disney"
 
     public var defaultValue: Bool { true }
 

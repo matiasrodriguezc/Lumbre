@@ -65,7 +65,8 @@ public protocol LumbreAPI: Sendable {
     func exportProjectMarkdown(id: Project.ID) async throws -> String
     func plannerMessages(sparkID: Spark.ID) async throws -> [PlannerMessage]
     /// Manda un mensaje al planificador y devuelve la respuesta a medida que llega.
-    func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode) -> AsyncThrowingStream<String, Error>
+    /// Con `.disney`, las respuestas empiezan con la marca del cuarto (`PlannerRoom.split`).
+    func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod) -> AsyncThrowingStream<String, Error>
 
     // MARK: Desarrollo
 
@@ -126,5 +127,12 @@ public enum LumbreAPIError: LocalizedError, Equatable {
         case .offline: String(localized: "Sin conexión. Lo guardamos y lo mandamos cuando vuelva.")
         case .unexpected: String(localized: "Algo salió mal. Probá de nuevo.")
         }
+    }
+}
+
+extension LumbreAPI {
+    /// Chat libre del planificador (planner.v1).
+    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode) -> AsyncThrowingStream<String, Error> {
+        sendPlannerMessage(sparkID: sparkID, text: text, mode: mode, method: .free)
     }
 }

@@ -2,7 +2,8 @@ import LumbreCore
 import LumbreDesign
 import SwiftUI
 
-/// Planificador Pro: chat anclado a una chispa. Conoce el perfil, los dos conceptos y el proyecto.
+/// Planificador Pro: chat anclado a una chispa. Conoce el perfil, las dos neuronas y el circuito.
+/// Con el flag `planner_disney`, guía con el método de los tres cuartos de Walt Disney: Soñador, Realista, Crítico y síntesis.
 struct PlannerView: View {
     let sparkID: Spark.ID
     /// `planner_opened.entry`: `spark_detail` o `project`.
@@ -71,18 +72,23 @@ struct PlannerView: View {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: Space.s3) {
                     header
+                    if usesDisney && (!messages.isEmpty || pending != nil) {
+                        RoomStepper(current: currentRoom)
+                            .padding(.bottom, Space.s2)
+                    }
                     if isLoading {
                         ProgressView().frame(maxWidth: .infinity).padding(.top, Space.s8)
                     } else if messages.isEmpty && pending == nil {
-                        emptyHint
+                        if usesDisney { disneyIntro } else { emptyHint }
                     }
                     ForEach(messages) { message in
                         bubble(for: message)
                     }
                     if let pending {
                         ChatBubble(role: .user, text: pending.question)
-                        ChatBubble(role: .planner, text: pending.answer.isEmpty ? "…" : pending.answer, isStreaming: true)
-                            .accessibilityLabel(pending.answer.isEmpty ? Text("El planificador está escribiendo") : Text(pending.answer))
+                        let visible = PlannerRoom.split(pending.answer).text
+                        ChatBubble(role: .planner, text: visible.isEmpty ? "…" : visible, isStreaming: true)
+                            .accessibilityLabel(visible.isEmpty ? Text("El planificador está escribiendo") : Text(visible))
                     }
                     if let inlineError {
                         ActionNotice(text: "\(inlineError)", symbol: "exclamationmark.triangle.fill", color: Palette.danger)
@@ -138,9 +144,9 @@ struct PlannerView: View {
     private func bubble(for message: PlannerMessage) -> some View {
         switch message.role {
         case .user:
-            ChatBubble(role: .user, text: message.content)
+            ChatBubble(role: .user, text: message.displayText)
         case .assistant:
-            ChatBubble(role: .planner, text: message.content)
+            ChatBubble(role: .planner, text: message.displayText)
                 .contextMenu {
                     Button {
                         UIPasteboard.general.string = message.content
@@ -163,11 +169,11 @@ struct PlannerView: View {
         VStack(alignment: .leading, spacing: Space.s2) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: Space.s2) {
-                    ForEach(PlannerPreset.allCases, id: \.self) { preset in
+                    ForEach(quickReplies, id: \.label) { reply in
                         Button {
-                            send(preset.prompt)
+                            send(reply.prompt)
                         } label: {
-                            LumbreChip(preset.label, variant: .select)
+                            LumbreChip(reply.label, variant: .select)
                         }
                         .buttonStyle(.plain)
                         .disabled(isStreaming || isLoading)
@@ -291,13 +297,90 @@ struct PlannerView: View {
 
     private var isStreaming: Bool { pending != nil }
 
+    // MARK: Método de los tres cuartos
+
+    private var usesDisney: Bool { FeatureFlag.disneyPlanner.isEnabled }
+
+    /// Cuarto de la última respuesta con marca (o de la que está llegando).
+    private var currentRoom: PlannerRoom? {
+        if let pending, let room = PlannerRoom.split(pending.answer).room { return room }
+        return messages.last { $0.role == .assistant && $0.room != nil }?.room
+    }
+
+    /// Atajos del composer: en los cuartos, los del método; antes de empezar, ninguno (arranca con el botón del Soñador);
+    /// después de la síntesis o sin el método, los de siempre.
+    private var quickReplies: [(label: String, prompt: String)] {
+        let presets = PlannerPreset.allCases.map { (label: $0.label, prompt: $0.prompt) }
+        guard usesDisney else { return presets }
+        switch currentRoom {
+        case nil: return messages.isEmpty ? [] : presets
+        case .dreamer: return [
+            (String(localized: "Más grande todavía"), String(localized: "Llevalo más grande todavía.")),
+            (String(localized: "Pasemos al Realista"), String(localized: "Pasemos al siguiente cuarto: el Realista.")),
+        ]
+        case .realist: return [
+            (String(localized: "No sé cuánta plata"), String(localized: "Todavía no sé cuánta plata haría falta.")),
+            (String(localized: "Pasemos al Crítico"), String(localized: "Pasemos al siguiente cuarto: el Crítico.")),
+        ]
+        case .critic: return [
+            (String(localized: "Pasemos a la síntesis"), String(localized: "Pasemos al siguiente cuarto: la síntesis.")),
+        ]
+        case .plan: return presets
+        }
+    }
+
+    private var disneyIntro: some View {
+        VStack(alignment: .leading, spacing: Space.s3) {
+            Text("Tres cuartos, de a uno")
+                .lumbreDisplay(.title2)
+                .foregroundStyle(Palette.ink)
+            Text("Vamos a pasar esta chispa por el método de Walt Disney. No se entra al cuarto siguiente hasta terminar el actual.")
+                .font(.callout)
+                .foregroundStyle(Palette.inkMuted)
+            VStack(alignment: .leading, spacing: 0) {
+                roomLine("Soñador", "Cómo se ve si funciona por completo, sin presupuesto ni reglas. Y después, más grande.")
+                roomLine("Realista", "Los pasos, la gente, la plata y lo primero que tiene que pasar.")
+                roomLine("Crítico", "Qué falta, qué puede salir mal y quién lo odiaría.")
+                roomLine("Síntesis", "El sueño en una frase, el plan en cinco pasos, los tres agujeros y el cuarto que salteás.")
+            }
+            Button {
+                send(String(localized: "Empecemos por el Soñador."))
+            } label: {
+                Label {
+                    Text("Entrar al cuarto del Soñador")
+                } icon: {
+                    Circle().fill(Palette.spark).frame(width: 10, height: 10)
+                }
+            }
+            .buttonStyle(.lumbre(.primary, fullWidth: true))
+            .disabled(isLoading)
+            Text("Cada respuesta usa una consulta del planificador.")
+                .font(.footnote)
+                .foregroundStyle(Palette.inkMuted)
+        }
+        .padding(.vertical, Space.s2)
+    }
+
+    private func roomLine(_ title: LocalizedStringKey, _ detail: LocalizedStringKey) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title).font(.headline).foregroundStyle(Palette.ink)
+            Text(detail).font(.callout).foregroundStyle(Palette.inkMuted).fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(.vertical, Space.s2)
+        .axonRow(spacing: 0) {
+            Circle().fill(Palette.ink).frame(width: 12, height: 12)
+        }
+    }
+
     // MARK: Lógica
 
     private var lockedState: some View {
         ContentUnavailableView {
             Label("El planificador es parte de Lumbre Pro", systemImage: "text.bubble")
         } description: {
-            Text("Bajá cada idea a un plan: un backlog para arrancar, un abogado del diablo y el stack que usarías.")
+            Text(usesDisney
+                 ? "Bajá cada idea a un plan con el método de los tres cuartos de Walt Disney: soñarla en grande, hacerla real y buscarle los agujeros."
+                 : "Bajá cada idea a un plan: un backlog para arrancar, un abogado del diablo y el stack que usarías.")
         } actions: {
             Button("Ver Lumbre Pro") { appModel.presentPaywall(trigger: "planner") }
                 .buttonStyle(.lumbre(.pro))
@@ -333,7 +416,7 @@ struct PlannerView: View {
         let mode = mode
         streamTask = Task {
             do {
-                for try await chunk in api.sendPlannerMessage(sparkID: sparkID, text: question, mode: mode) {
+                for try await chunk in api.sendPlannerMessage(sparkID: sparkID, text: question, mode: mode, method: usesDisney ? .disney : .free) {
                     pending?.answer += chunk
                 }
                 await finish()
@@ -430,4 +513,54 @@ extension PlannerPreset {
     }
     .environment(AppModel())
     .preferredColorScheme(.light)
+}
+
+/// Los cuatro pasos del método colgados de un axón: los hechos en negro, el actual es una neurona con el núcleo rosa.
+private struct RoomStepper: View {
+    let current: PlannerRoom?
+
+    var body: some View {
+        let rooms = PlannerRoom.allCases
+        let index = current.flatMap { rooms.firstIndex(of: $0) }
+        HStack(alignment: .top, spacing: 0) {
+            ForEach(Array(rooms.enumerated()), id: \.offset) { i, room in
+                VStack(spacing: Space.s1) {
+                    ZStack {
+                        if i == index {
+                            MiniNeuron(isLit: true).frame(width: 30, height: 30)
+                        } else {
+                            Circle()
+                                .fill((index ?? -1) > i ? Palette.ink : Palette.border)
+                                .frame(width: 12, height: 12)
+                        }
+                    }
+                    .frame(height: 30)
+                    Text(room.title)
+                        .font(.caption.weight(i == index ? .semibold : .regular))
+                        .foregroundStyle(i == index ? Palette.ink : Palette.inkMuted)
+                }
+                .frame(maxWidth: .infinity)
+            }
+        }
+        .background(alignment: .top) {
+            Rectangle()
+                .fill(Palette.border)
+                .frame(height: 2)
+                .padding(.horizontal, Space.s10)
+                .padding(.top, 14)
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(current.map { Text("Cuarto actual: \($0.title)") } ?? Text("El método todavía no arrancó"))
+    }
+}
+
+extension PlannerRoom {
+    var title: String {
+        switch self {
+        case .dreamer: String(localized: "Soñador")
+        case .realist: String(localized: "Realista")
+        case .critic: String(localized: "Crítico")
+        case .plan: String(localized: "Plan")
+        }
+    }
 }

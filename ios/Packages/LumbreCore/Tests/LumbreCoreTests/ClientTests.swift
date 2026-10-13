@@ -438,7 +438,7 @@ private final class FlakyAPI: LumbreAPI {
     func sparks(inProject id: Project.ID) async throws -> [Spark] { [] }
     func exportProjectMarkdown(id: Project.ID) async throws -> String { "" }
     func plannerMessages(sparkID: Spark.ID) async throws -> [PlannerMessage] { [] }
-    func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode) -> AsyncThrowingStream<String, Error> {
+    func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod) -> AsyncThrowingStream<String, Error> {
         AsyncThrowingStream { $0.finish() }
     }
     func setPlanForDevelopment(_ plan: Plan) async throws {}

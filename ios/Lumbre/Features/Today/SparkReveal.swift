@@ -9,6 +9,8 @@ struct SparkHero: View {
     /// `spark_revealed.entry`: `app`, `push` o `widget`.
     var entry = "app"
     var onChange: (Spark) -> Void = { _ in }
+    /// Abre el planificador en la navegación de Hoy (el modal del reveal no tiene una propia).
+    var onPlan: (Spark.ID) -> Void = { _ in }
 
     @Environment(\.api) private var api
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -24,9 +26,10 @@ struct SparkHero: View {
         static func < (lhs: Phase, rhs: Phase) -> Bool { lhs.rawValue < rhs.rawValue }
     }
 
-    init(spark: Spark, entry: String = "app", onChange: @escaping (Spark) -> Void = { _ in }) {
+    init(spark: Spark, entry: String = "app", onPlan: @escaping (Spark.ID) -> Void = { _ in }, onChange: @escaping (Spark) -> Void = { _ in }) {
         self.spark = spark
         self.entry = entry
+        self.onPlan = onPlan
         self.onChange = onChange
         _phase = State(initialValue: spark.isPending ? .idle : .revealed)
     }
@@ -47,7 +50,14 @@ struct SparkHero: View {
         }
         .sensoryFeedback(.success, trigger: collisions)
         .fullScreenCover(isPresented: $isShowingReveal) {
-            SparkRevealModal(spark: spark, phase: phase, onChange: onChange) { isShowingReveal = false }
+            SparkRevealModal(spark: spark, phase: phase, onChange: onChange, onPlan: {
+                isShowingReveal = false
+                // Deja que se cierre el modal antes de empujar el planificador.
+                Task {
+                    try? await Task.sleep(for: .milliseconds(350))
+                    onPlan(spark.id)
+                }
+            }) { isShowingReveal = false }
                 .presentationBackground(.ultraThinMaterial)
         }
     }
@@ -230,6 +240,7 @@ private struct SparkRevealModal: View {
     let spark: Spark
     let phase: SparkHero.Phase
     var onChange: (Spark) -> Void
+    var onPlan: () -> Void
     var onClose: () -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -295,7 +306,7 @@ private struct SparkRevealModal: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .bottom)))
-                SparkActions(spark: spark, onChange: onChange)
+                SparkActions(spark: spark, onChange: onChange, onPlan: onPlan)
                     .transition(.opacity)
             }
         }

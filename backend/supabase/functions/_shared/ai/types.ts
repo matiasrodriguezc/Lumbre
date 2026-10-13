@@ -45,6 +45,8 @@ export type LocalTask =
     a: ConceptBrief;
     b: ConceptBrief;
     project: string | null;
+    /** Método de los tres cuartos (planner.v2): estado del hilo antes de este mensaje. */
+    disney?: { current: "dreamer" | "realist" | "critic" | "plan" | null; userTurns: Record<"dreamer" | "realist" | "critic" | "plan", number> };
   }
   | { kind: "summary"; previous: string | null; messages: Array<{ role: string; content: string }> };
 

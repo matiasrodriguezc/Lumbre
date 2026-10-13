@@ -88,7 +88,7 @@ Reglas clave (decidido el 2026-10-13, reemplaza a Sunset Nebula):
 - **Widget:** chispa del día y captura rápida (WidgetKit y Glance).
 - **Red ilimitada con búsqueda semántica** (antes Bóveda).
 - **Más chispas a pedido (Pro):** hasta 10 por día.
-- **Planificador (Pro):** chat anclado a cada idea con el contexto del perfil, los dos conceptos y el proyecto. Backlog, abogado del diablo, stack.
+- **Planificador (Pro):** chat anclado a cada idea con el contexto del perfil, las dos neuronas y el circuito. Desde el 2026-10-13 guía con el **método de los tres cuartos de Walt Disney** (prompt `planner.v2`, flag `planner_disney`): Soñador (cómo se ve si funciona por completo, y dos empujones para pensarlo más grande), Realista (pasos, gente, plata y lo primero que tiene que pasar) y Crítico (qué falta, qué puede salir mal y quién lo odiaría), de a un cuarto por vez. Cierra con una síntesis: el sueño en una frase, el plan en cinco pasos con uno para esta semana, los tres agujeros con su arreglo y el cuarto en el que pasó menos tiempo. Reglas: no se critica en el Soñador, no se sueña en el Crítico, y si la persona discute una objeción se anota y se sigue. Después de la síntesis siguen los atajos de backlog, abogado del diablo y stack.
 - **Export a Markdown.**
 - **Exportar datos y borrar cuenta desde la app** (obligatorio en ambas tiendas).
 

@@ -5,6 +5,7 @@
 //   confianza según el largo del texto (baja si no hay texto: no puede leer imágenes ni PDFs).
 // - Chispa: "A × B" y 1–2 oraciones que cruzan los principios con plantillas elegidas por hash del par.
 // - Planificador: plantilla según el atajo (backlog, abogado del diablo, stack) o genérica, en streaming.
+//   Con el método de los tres cuartos, recorre Soñador, Realista y Crítico según el estado del hilo y cierra con la síntesis.
 
 import { clip, firstSentence, fnv1a, wordCount } from "../../text.ts";
 import {
@@ -95,6 +96,7 @@ export function localSpark(a: ConceptBrief, b: ConceptBrief) {
 // Planificador
 // ---------------------------------------------------------------
 export function localPlanner(task: Extract<CompletionRequest["local"], { kind: "planner" }>): string {
+  if (task.disney) return localDisney(task);
   const { spark, a, b, project, deep } = task;
   const where = project ? ` dentro de «${project}»` : "";
   switch (task.preset) {
@@ -132,6 +134,59 @@ export function localPlanner(task: Extract<CompletionRequest["local"], { kind: "
         deep ? `Si funciona, sumá lo de «${b.title}» como segunda capa y revisá qué parte se puede simplificar.` : "",
       ].filter(Boolean).join(" ");
   }
+}
+
+/** Tres cuartos de Disney sin modelo: avanza por cantidad de respuestas en cada cuarto, como pide el prompt. */
+function localDisney(task: Extract<CompletionRequest["local"], { kind: "planner" }>): string {
+  const state = task.disney!;
+  const { spark, a, b } = task;
+  const folded = task.message.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+  const skip = /siguiente cuarto|pasemos|pasamos/.test(folded);
+  // La respuesta de ahora cuenta para el cuarto actual.
+  const answers = (room: "dreamer" | "realist" | "critic") => state.userTurns[room] + (state.current === room ? 1 : 0);
+  const mark = (room: string, text: string) => `[[room:${room}]]\n\n${text}`;
+
+  if (!state.current) {
+    return mark("dreamer", `Entramos al cuarto del Soñador. Imaginá que «${spark.title}» funciona por completo: sin presupuesto, sin reglas y sin nadie que diga que no. ¿Cómo se ve? ¿Quién lo usa y qué cambia en su día?`);
+  }
+  if (state.current === "dreamer") {
+    const n = answers("dreamer");
+    if (!skip && n === 1) return mark("dreamer", `Me encanta. Ahora más grande: ¿qué pasa si en vez de unas pocas personas lo usa todo un país? ¿Qué parte de «${a.title}» se vuelve enorme?`);
+    if (!skip && n === 2) return mark("dreamer", `Una vez más, sin techo: si dentro de diez años esto fuera lo que todos asocian con «${b.title}», ¿cómo sería?`);
+    return mark("realist", "Pasamos al cuarto del Realista. Para volver real ese sueño: ¿cuáles son los pasos, qué gente hace falta, cuánta plata y qué es lo primero que tiene que pasar?");
+  }
+  if (state.current === "realist") {
+    if (!skip && answers("realist") === 1) return mark("realist", "Bajemos lo primero a tierra: ¿qué podés hacer esta semana, con lo que ya tenés, para que eso pase?");
+    return mark("critic", "Pasamos al cuarto del Crítico. Primera pregunta: ¿qué le falta a esto?");
+  }
+  if (state.current === "critic") {
+    const n = answers("critic");
+    if (!skip && n === 1) return mark("critic", "Segunda: ¿qué puede salir mal?");
+    if (!skip && n === 2) return mark("critic", "Última: ¿quién odiaría esto, y por qué?");
+  }
+  if (state.current === "critic" || (state.current !== "plan" && skip)) {
+    const least = (["dreamer", "realist", "critic"] as const)
+      .reduce((min, room) => (state.userTurns[room] < state.userTurns[min] ? room : min), "dreamer" as "dreamer" | "realist" | "critic");
+    const names = { dreamer: "Soñador", realist: "Realista", critic: "Crítico" };
+    return mark("plan", [
+      `**El sueño**: «${spark.title}» como lo que todos usan sin pensarlo.`,
+      "",
+      "**El plan**:",
+      "1. Esta semana: probar la versión más chica con 3 personas.",
+      `2. Armar el mecanismo central con lo de «${a.title}».`,
+      `3. Sumar lo de «${b.title}» como el detalle que lo hace distinto.`,
+      "4. Medir si vuelven solos.",
+      "5. Decidir qué se corta y qué crece.",
+      "",
+      "**Los tres agujeros**:",
+      "- Falta saber quién lo pide hoy. Arreglo: hablar con cinco personas antes de construir.",
+      "- Puede salir caro. Arreglo: hacerlo a mano la primera vez.",
+      "- Lo odiarían quienes viven del sistema actual. Arreglo: sumarlos como aliados desde el paso 1.",
+      "",
+      `**El cuarto que salteás**: el ${names[least]}. Volvé ahí la próxima vez antes de pasar al siguiente.`,
+    ].join("\n"));
+  }
+  return mark("plan", `Sobre «${spark.title}»: elegí una sola cosa del plan para esta semana y medí si cambia algo.`);
 }
 
 function localSummary(task: Extract<CompletionRequest["local"], { kind: "summary" }>): string {

@@ -9,6 +9,9 @@ struct SparkActions: View {
     /// Agrega "Exportar a Markdown" al menú (en el detalle).
     var showsExport = false
     var onChange: (Spark) -> Void = { _ in }
+    /// Si está, "Planificar" llama a esto en vez de empujar la pantalla (por ejemplo, desde el modal del reveal,
+    /// que no tiene navegación propia).
+    var onPlan: (() -> Void)? = nil
 
     @Environment(\.api) private var api
     @Environment(AppModel.self) private var appModel
@@ -117,7 +120,12 @@ struct SparkActions: View {
 
     @ViewBuilder
     private var planButton: some View {
-        if appModel.isPro {
+        if appModel.isPro, let onPlan {
+            Button(action: onPlan) {
+                Label("Planificar", systemImage: "text.bubble")
+            }
+            .buttonStyle(.lumbre(.secondary, fullWidth: true))
+        } else if appModel.isPro {
             NavigationLink(value: SparkRoute.planner(spark.id, entry: "spark_detail")) {
                 Label("Planificar", systemImage: "text.bubble")
             }

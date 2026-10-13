@@ -8,6 +8,7 @@ import { localSpark } from "./providers/local.ts";
 import { DISTILL_SCHEMA, DISTILL_SYSTEM, DISTILL_VERSION, DOMAIN_SLUGS, type DistillInput, distillUserText } from "./prompts/distill.v1.ts";
 import { SPARK_SCHEMA, SPARK_SYSTEM, SPARK_VERSION, sparkUserText } from "./prompts/spark.v1.ts";
 import { SUMMARY_SYSTEM, SUMMARY_VERSION } from "./prompts/planner.v1.ts";
+import { SUMMARY_DISNEY_SYSTEM, SUMMARY_DISNEY_VERSION } from "./prompts/planner.v2.ts";
 import { AIError, type BatchItem, type CompletionRequest, type ConceptBrief, type ContentPart } from "./types.ts";
 
 // ---------------------------------------------------------------
@@ -139,14 +140,15 @@ export async function summarizeThread(
   previous: string | null,
   messages: Array<{ role: string; content: string }>,
   userId: string,
+  method: "free" | "disney" = "free",
 ): Promise<string> {
   const transcript = messages.map((m) => `${m.role === "user" ? "Persona" : "Planificador"}: ${m.content}`).join("\n\n");
   const result = await gateway().complete({
     feature: "planner_summary",
     userId,
     tier: "fast",
-    promptVersion: SUMMARY_VERSION,
-    system: [{ text: SUMMARY_SYSTEM }],
+    promptVersion: method === "disney" ? SUMMARY_DISNEY_VERSION : SUMMARY_VERSION,
+    system: [{ text: method === "disney" ? SUMMARY_DISNEY_SYSTEM : SUMMARY_SYSTEM }],
     messages: [{
       role: "user",
       content: [

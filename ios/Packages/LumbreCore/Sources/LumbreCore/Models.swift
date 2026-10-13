@@ -440,6 +440,35 @@ public struct PlannerMessage: Identifiable, Hashable, Sendable {
     }
 }
 
+/// Cómo trabaja el planificador: chat libre (planner.v1) o el método de los tres cuartos de Walt Disney (planner.v2).
+public enum PlannerMethod: String, Sendable {
+    case free
+    case disney
+}
+
+/// Cuartos del método de Disney. Cada respuesta del planificador empieza con una marca `[[room:…]]` que la app oculta.
+public enum PlannerRoom: String, Sendable, CaseIterable {
+    case dreamer, realist, critic, plan
+
+    /// Separa la marca del texto. Mientras la marca llega a medias en el streaming, el texto visible queda vacío.
+    public static func split(_ raw: String) -> (room: PlannerRoom?, text: String) {
+        let trimmed = raw.drop { $0.isWhitespace }
+        guard trimmed.hasPrefix("[[") else { return (nil, raw) }
+        guard let close = trimmed.range(of: "]]") else { return (nil, "") }
+        let tag = trimmed[trimmed.index(trimmed.startIndex, offsetBy: 2)..<close.lowerBound]
+        let room = tag.hasPrefix("room:") ? PlannerRoom(rawValue: String(tag.dropFirst(5))) : nil
+        let text = trimmed[close.upperBound...].drop { $0.isWhitespace }
+        return (room, String(text))
+    }
+}
+
+extension PlannerMessage {
+    /// Cuarto del método al que pertenece la respuesta, si tiene marca.
+    public var room: PlannerRoom? { PlannerRoom.split(content).room }
+    /// El texto para mostrar, sin la marca del cuarto.
+    public var displayText: String { role == .assistant ? PlannerRoom.split(content).text : content }
+}
+
 /// Atajos del planificador (plan.md §4: backlog, abogado del diablo, stack).
 public enum PlannerPreset: String, Sendable, CaseIterable {
     case backlog

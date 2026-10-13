@@ -385,8 +385,8 @@ public struct SupabaseLumbreAPI: LumbreAPI {
     }
 
     /// Streaming por SSE: emite cada `delta` y termina con `done`. Cancelar el stream corta la conexión.
-    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode) -> AsyncThrowingStream<String, Error> {
-        let body = PlannerBody(sparkId: sparkID, message: text, mode: mode.rawValue)
+    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod) -> AsyncThrowingStream<String, Error> {
+        let body = PlannerBody(sparkId: sparkID, message: text, mode: mode.rawValue, method: method.rawValue)
         return AsyncThrowingStream { continuation in
             let task = Task {
                 do {
@@ -622,6 +622,7 @@ private struct PlannerBody: Encodable, Sendable {
     let sparkId: UUID
     let message: String
     let mode: String
+    let method: String
 }
 
 /// Cuerpo de `POST /capture`.

@@ -49,6 +49,7 @@ Argumentos de arranque (esquema → Run → Arguments, o `xcrun simctl launch �
 | Argumento | Qué hace |
 |---|---|
 | `-mock` | Usa `MockLumbreAPI`, con los datos de prueba y sin red |
+| `-mockPro` | Lo mismo, con el perfil de prueba en Pro (para probar el planificador y lo Pro) |
 | `-resetSession` | Solo Debug: cierra la sesión guardada y prueba el primer login |
 
 Las previews de SwiftUI siempre usan `MockLumbreAPI`.

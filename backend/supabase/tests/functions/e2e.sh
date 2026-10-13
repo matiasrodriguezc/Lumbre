@@ -137,6 +137,18 @@ check_true "planner: la respuesta es el backlog" "$(rest "planner_messages?selec
 SSE="$(curl -sN -X POST "$FN/planner" -H "apikey: $ANON_KEY" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
   -d "{\"spark_id\": \"$DAILY_ID\", \"message\": \"Hacé de abogado del diablo\", \"mode\": \"deep\"}")"
 check_true "planner: el plan profundo también responde" "$(echo "$SSE" | grep -q '^event: done' && echo true || echo false)"
+# Método de los tres cuartos (planner.v2): arranca en el Soñador y empuja a pensar más grande.
+disney() {
+  curl -sN -X POST "$FN/planner" -H "apikey: $ANON_KEY" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+    -d "{\"spark_id\": \"$DAILY_ID\", \"message\": \"$1\", \"mode\": \"quick\", \"method\": \"disney\"}" > /dev/null
+}
+last_answer() { rest "planner_messages?select=content&role=eq.assistant&order=id.desc&limit=1" | jq -r '.[0].content'; }
+disney "Empecemos por el Soñador"
+check_true "planner disney: abre el cuarto del Soñador" "$(last_answer | grep -q '^\[\[room:dreamer\]\]' && echo true || echo false)"
+disney "Todas las ciudades sincronizadas"
+check_true "planner disney: empuja a pensar más grande" "$(last_answer | grep -q 'más grande' && echo true || echo false)"
+disney "Pasemos al siguiente cuarto"
+check_true "planner disney: pasa al Realista" "$(last_answer | grep -q '^\[\[room:realist\]\]' && echo true || echo false)"
 call spark "{\"mode\": \"pick\", \"concept_ids\": [\"$(rest "concepts?select=id&order=created_at&limit=1" | jq -r '.[0].id')\", \"$(rest "concepts?select=id&order=created_at.desc&limit=1" | jq -r '.[0].id')\"]}"
 check "spark: Pro elige dos conceptos" "$STATUS|$(echo "$BODY" | jq -r .spark.mode)" "200|pick"
 
@@ -150,8 +162,9 @@ check "register_push_token: registra el token" "$(rest "rpc/register_push_token"
 check "content_reports: reporta la chispa" "$(rest "content_reports" -X POST -o /dev/null -w '%{http_code}' -d "{\"spark_id\": \"$EXTRA_ID\", \"reason\": \"wrong\"}")" "201"
 EXPORT="$(rest "rpc/export_my_data" -X POST -d '{}')"
 check "export_my_data: trae los 6 conceptos" "$(echo "$EXPORT" | jq -r '.concepts | length')" "6"
+# Planificador: 2 turnos libres + 3 del método de los tres cuartos = 10 mensajes.
 check_true "export_my_data: con chispas, proyecto y planificador" \
-  "$(echo "$EXPORT" | jq -r '(.sparks | length) >= 3 and (.projects | length) == 1 and (.planner[0].messages | length) == 4')"
+  "$(echo "$EXPORT" | jq -r '(.sparks | length) >= 3 and (.projects | length) == 1 and (.planner[0].messages | length) == 10')"
 check_true "export_my_data: sin embeddings" "$(echo "$EXPORT" | jq -r '[.concepts[] | has("embedding")] | any | not')"
 check "delete_my_account: borra la cuenta" "$(rest "rpc/delete_my_account" -X POST -o /dev/null -w '%{http_code}' -d '{}')" "204"
 check "delete_my_account: no queda nada del usuario" \

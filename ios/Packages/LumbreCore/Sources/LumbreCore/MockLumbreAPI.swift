@@ -7,9 +7,10 @@ public final class MockLumbreAPI: LumbreAPI {
     private let store: MockStore
 
     /// - Parameter onboarded: false arranca como un invitado nuevo, sin bóveda, para probar el onboarding.
-    public init(latency: Duration = .milliseconds(350), onboarded: Bool = true) {
+    /// `plan` pisa el plan del perfil de prueba (por ejemplo, `.pro` para probar el planificador).
+    public init(latency: Duration = .milliseconds(350), onboarded: Bool = true, plan: Plan? = nil) {
         self.latency = latency
-        store = MockStore(onboarded: onboarded)
+        store = MockStore(onboarded: onboarded, plan: plan)
     }
 
     // MARK: Sesión y perfil
@@ -185,15 +186,18 @@ public final class MockLumbreAPI: LumbreAPI {
         return await store.messages[sparkID] ?? []
     }
 
-    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode) -> AsyncThrowingStream<String, Error> {
+    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod) -> AsyncThrowingStream<String, Error> {
         let store = store
         let latency = latency
         return AsyncThrowingStream { continuation in
             let task = Task {
                 do {
                     guard await store.profile.isPro else { throw LumbreAPIError.proRequired }
+                    let history = await store.messages[sparkID] ?? []
                     await store.appendMessage(sparkID: sparkID, role: .user, content: text, mode: mode)
-                    let reply = MockData.plannerReply(to: text, mode: mode)
+                    let reply = method == .disney
+                        ? MockData.disneyReply(history: history, to: text)
+                        : MockData.plannerReply(to: text, mode: mode)
                     var sent = ""
                     for word in reply.split(separator: " ", omittingEmptySubsequences: false) {
                         try await Task.sleep(for: latency / 10)
@@ -234,8 +238,10 @@ private actor MockStore {
     var extrasUsedToday = 0
     var capturesToday = 0
 
-    init(onboarded: Bool) {
-        (profile, categories, concepts, sparks, projects, messages) = Self.initialState(onboarded: onboarded)
+    init(onboarded: Bool, plan: Plan? = nil) {
+        let state = Self.initialState(onboarded: onboarded)
+        (profile, categories, concepts, sparks, projects, messages) = state
+        if let plan { profile = Self.profile(state.0, with: plan) }
     }
 
     func reset(onboarded: Bool) {
@@ -263,7 +269,11 @@ private actor MockStore {
     }
 
     func setPlan(_ plan: Plan) {
-        profile = Profile(creativeProfiles: profile.creativeProfiles, sparkTime: profile.sparkTime, timezone: profile.timezone, locale: profile.locale, plan: plan, email: plan == .guest ? nil : (profile.email ?? "ana@lumbre.test"), isOnboarded: profile.isOnboarded)
+        profile = Self.profile(profile, with: plan)
+    }
+
+    private static func profile(_ profile: Profile, with plan: Plan) -> Profile {
+        Profile(creativeProfiles: profile.creativeProfiles, sparkTime: profile.sparkTime, timezone: profile.timezone, locale: profile.locale, plan: plan, email: plan == .guest ? nil : (profile.email ?? "ana@lumbre.test"), isOnboarded: profile.isOnboarded)
     }
 
     func credits() -> [Credit] {
@@ -592,6 +602,65 @@ public enum MockData {
         refillsAt: nextOccurrence(of: .default),
         conceptsUntilExtra: 3
     )
+
+    /// Los tres cuartos de Disney sin modelo, con la misma lógica que el proveedor local del backend:
+    /// avanza por respuestas en cada cuarto (Soñador 3, Realista 2, Crítico 3) y cierra con la síntesis.
+    static func disneyReply(history: [PlannerMessage], to text: String) -> String {
+        var current: PlannerRoom?
+        var turns: [PlannerRoom: Int] = [:]
+        for message in history {
+            if message.role == .assistant {
+                current = message.room ?? current
+            } else if let current {
+                turns[current, default: 0] += 1
+            }
+        }
+        let folded = text.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil)
+        let skip = ["siguiente cuarto", "pasemos", "pasamos"].contains { folded.contains($0) }
+        func answers(_ room: PlannerRoom) -> Int { (turns[room] ?? 0) + (current == room ? 1 : 0) }
+        func mark(_ room: PlannerRoom, _ body: String) -> String { "[[room:\(room.rawValue)]]\n\n" + body }
+
+        switch current {
+        case nil:
+            return mark(.dreamer, "Entramos al cuarto del Soñador. Imaginá que esta chispa funciona por completo: sin presupuesto, sin reglas y sin nadie que diga que no. ¿Cómo se ve? ¿Quién la usa y qué cambia en su día?")
+        case .dreamer where !skip && answers(.dreamer) == 1:
+            return mark(.dreamer, "Me encanta. Ahora más grande: ¿qué pasa si en vez de unas pocas personas lo usa todo un país?")
+        case .dreamer where !skip && answers(.dreamer) == 2:
+            return mark(.dreamer, "Una vez más, sin techo: si dentro de diez años esto fuera lo primero que la gente piensa cuando escucha la idea, ¿cómo sería?")
+        case .dreamer:
+            return mark(.realist, "Pasamos al cuarto del Realista. Para volver real ese sueño: ¿cuáles son los pasos, qué gente hace falta, cuánta plata y qué es lo primero que tiene que pasar?")
+        case .realist where !skip && answers(.realist) == 1:
+            return mark(.realist, "Bajemos lo primero a tierra: ¿qué podés hacer esta semana, con lo que ya tenés, para que eso pase?")
+        case .realist:
+            return mark(.critic, "Pasamos al cuarto del Crítico. Primera pregunta: ¿qué le falta a esto?")
+        case .critic where !skip && answers(.critic) == 1:
+            return mark(.critic, "Segunda: ¿qué puede salir mal?")
+        case .critic where !skip && answers(.critic) == 2:
+            return mark(.critic, "Última: ¿quién odiaría esto, y por qué?")
+        case .critic:
+            let least = [PlannerRoom.dreamer, .realist, .critic].min { (turns[$0] ?? 0) < (turns[$1] ?? 0) } ?? .dreamer
+            let names: [PlannerRoom: String] = [.dreamer: "Soñador", .realist: "Realista", .critic: "Crítico"]
+            return mark(.plan, """
+            **El sueño**: que esta chispa sea lo que todos usan sin pensarlo.
+
+            **El plan**:
+            1. Esta semana: probar la versión más chica con 3 personas.
+            2. Armar el mecanismo central con la primera neurona.
+            3. Sumar la segunda como el detalle que lo hace distinto.
+            4. Medir si vuelven solos.
+            5. Decidir qué se corta y qué crece.
+
+            **Los tres agujeros**:
+            - Falta saber quién lo pide hoy. Arreglo: hablar con cinco personas antes de construir.
+            - Puede salir caro. Arreglo: hacerlo a mano la primera vez.
+            - Lo odiarían quienes viven del sistema actual. Arreglo: sumarlos como aliados desde el paso 1.
+
+            **El cuarto que salteás**: el \(names[least] ?? "Soñador"). Volvé ahí la próxima vez antes de pasar al siguiente.
+            """)
+        case .plan:
+            return mark(.plan, "Elegí una sola cosa del plan para esta semana y medí si cambia algo.")
+        }
+    }
 
     static func plannerReply(to text: String, mode: PlannerMode) -> String {
         mode == .deep
