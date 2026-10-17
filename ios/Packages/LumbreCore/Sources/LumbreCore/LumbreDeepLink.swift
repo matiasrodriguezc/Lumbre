@@ -6,6 +6,8 @@ import Foundation
 /// - `lumbre://spark/<id>?entry=widget`: esa chispa (si es la de hoy y no se reveló, Hoy hace el reveal).
 ///   `entry` va a `spark_revealed`; sin él, la app cuenta `app`.
 /// - `lumbre://capture?entry=widget`: la sheet de Capturar; `entry` va al evento `capture_opened`.
+///
+/// Los del widget suman `size` (`?entry=widget&size=small`) para `widget_tapped` (`widgetURL(size:)`, `widgetTap(in:)`).
 public enum LumbreDeepLink: Hashable, Sendable {
     case today
     case spark(UUID, entry: String? = nil)
@@ -57,6 +59,47 @@ public enum LumbreDeepLink: Hashable, Sendable {
             components.queryItems = [URLQueryItem(name: "entry", value: entry)]
         }
         return components.url!
+    }
+
+    // MARK: Widget
+
+    /// Valores de `widget_tapped.size` en iOS (design/compartir/README.md §5).
+    public static let widgetSizes: Set<String> = ["small", "medium", "large", "circular", "rectangular", "inline"]
+
+    /// Lo que va a `widget_tapped`.
+    public struct WidgetTap: Hashable, Sendable {
+        /// `open_spark` o `capture`.
+        public let action: String
+        public let size: String
+
+        public var event: AnalyticsEvent { .widgetTapped(action: action, size: size) }
+    }
+
+    /// El link como lo abre el widget: con `entry=widget` y el tamaño, para que la app mande `widget_tapped`.
+    public func widgetURL(size: String) -> URL {
+        let link: LumbreDeepLink = switch self {
+        case .today: .today
+        case .spark(let id, _): .spark(id, entry: "widget")
+        case .capture: .capture(entry: "widget")
+        }
+        var components = URLComponents(url: link.url, resolvingAgainstBaseURL: false)!
+        components.queryItems = [URLQueryItem(name: "entry", value: "widget"), URLQueryItem(name: "size", value: size)]
+        return components.url!
+    }
+
+    /// `widget_tapped` de un link que abrió el widget; nil si vino de otro lado o el tamaño no es conocido.
+    /// Hoy (`lumbre://today`, el widget sin chispa) no cuenta: `action` solo acepta `open_spark` y `capture`
+    /// (docs/analytics.md).
+    public static func widgetTap(in url: URL) -> WidgetTap? {
+        let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
+        guard items.first(where: { $0.name == "entry" })?.value == "widget",
+              let size = items.first(where: { $0.name == "size" })?.value, widgetSizes.contains(size)
+        else { return nil }
+        switch LumbreDeepLink(url: url) {
+        case .spark: return WidgetTap(action: "open_spark", size: size)
+        case .capture: return WidgetTap(action: "capture", size: size)
+        case .today, nil: return nil
+        }
     }
 
     /// Solo letras, números y guiones bajos (va tal cual a analytics).

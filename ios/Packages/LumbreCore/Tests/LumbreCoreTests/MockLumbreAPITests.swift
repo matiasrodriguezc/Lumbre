@@ -10,6 +10,22 @@ import Testing
         #expect(spark.title.contains(" × "))
     }
 
+    @Test func revealingTheDailySparkUsesItInTheCounter() async throws {
+        let before = try await api.today()
+        let spark = try #require(before.spark)
+        #expect(spark.isPending)
+        #expect(before.sparksToIgnite == 1 + before.quota.extraRemaining)
+        try await api.revealSpark(id: spark.id)
+        let after = try await api.today()
+        // El mock (como `/today`) sigue contando la revelada en `quota.available`; el contador no.
+        #expect(after.quota.available == before.quota.available)
+        #expect(after.sparksToIgnite == after.quota.extraRemaining)
+        // Si el servidor ya la descuenta, no se resta dos veces.
+        let fixed = SparkQuota(available: after.quota.extraRemaining, total: after.quota.total, refillsAt: after.quota.refillsAt,
+                               conceptsUntilExtra: after.quota.conceptsUntilExtra, extraRemaining: after.quota.extraRemaining)
+        #expect(TodayState(spark: after.spark, quota: fixed, runwayDays: 10, conceptCount: 8).sparksToIgnite == after.quota.extraRemaining)
+    }
+
     @Test func everyConceptBelongsToAKnownCategory() async throws {
         let categories = Set(try await api.categories())
         #expect(try await api.concepts().allSatisfy { $0.category.map(categories.contains) ?? false })

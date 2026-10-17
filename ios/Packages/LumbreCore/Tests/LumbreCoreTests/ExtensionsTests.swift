@@ -25,6 +25,27 @@ import Testing
         #expect(LumbreDeepLink(url: URL(string: "lumbre://spark/\(id.uuidString)")!) == .spark(id))
     }
 
+    @Test func widgetLinksCarryTheSizeForWidgetTapped() throws {
+        let id = UUID()
+        let spark = LumbreDeepLink.spark(id).widgetURL(size: "small")
+        #expect(spark.absoluteString == "lumbre://spark/\(id.uuidString.lowercased())?entry=widget&size=small")
+        #expect(LumbreDeepLink(url: spark) == .spark(id, entry: "widget"))
+        #expect(LumbreDeepLink.widgetTap(in: spark)?.event == .widgetTapped(action: "open_spark", size: "small"))
+
+        let capture = LumbreDeepLink.capture(entry: "fab").widgetURL(size: "circular")
+        #expect(LumbreDeepLink(url: capture) == .capture(entry: "widget"))
+        #expect(LumbreDeepLink.widgetTap(in: capture) == .init(action: "capture", size: "circular"))
+
+        // Hoy no está entre las acciones de `widget_tapped`; los links de otro origen tampoco cuentan.
+        #expect(LumbreDeepLink(url: LumbreDeepLink.today.widgetURL(size: "medium")) == .today)
+        #expect(LumbreDeepLink.widgetTap(in: LumbreDeepLink.today.widgetURL(size: "medium")) == nil)
+        #expect(LumbreDeepLink.widgetTap(in: LumbreDeepLink.spark(id, entry: "push").url) == nil)
+        #expect(LumbreDeepLink.widgetTap(in: LumbreDeepLink.capture(entry: "widget").url) == nil)
+        // El tamaño va tal cual a analytics: solo los conocidos.
+        #expect(LumbreDeepLink.widgetTap(in: URL(string: "lumbre://spark/\(id.uuidString)?entry=widget&size=%3Cx%3E")!) == nil)
+        #expect(LumbreDeepLink.widgetTap(in: URL(string: "https://lumbre.app/spark/\(id.uuidString)?entry=widget&size=small")!) == nil)
+    }
+
     @Test func deepLinksAreForgiving() throws {
         #expect(LumbreDeepLink(url: URL(string: "lumbre://capture")!) == .capture(entry: "deeplink"))
         #expect(LumbreDeepLink(url: URL(string: "LUMBRE://Today")!) == .today)

@@ -30,7 +30,7 @@ struct TodaySparkWidgetView: View {
                 }
             }
         }
-        .widgetURL(state.sparkID.map { LumbreDeepLink.spark($0, entry: "widget").url } ?? LumbreDeepLink.today.url)
+        .widgetURL((state.sparkID.map { LumbreDeepLink.spark($0) } ?? .today).widgetURL(size: family.analyticsSize))
     }
 
     // MARK: Pantalla de inicio
@@ -258,7 +258,7 @@ struct QuickCaptureWidgetView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             }
         }
-        .widgetURL(LumbreDeepLink.capture(entry: "widget").url)
+        .widgetURL(LumbreDeepLink.capture(entry: "widget").widgetURL(size: family.analyticsSize))
     }
 }
 
@@ -321,9 +321,10 @@ private struct NeuronName: View {
 /// Link a Capturar (en el widget chico no hay links: todo el widget abre su `widgetURL`).
 private struct CaptureLink<Label: View>: View {
     @ViewBuilder let label: Label
+    @Environment(\.widgetFamily) private var family
 
     var body: some View {
-        Link(destination: LumbreDeepLink.capture(entry: "widget").url) { label }
+        Link(destination: LumbreDeepLink.capture(entry: "widget").widgetURL(size: family.analyticsSize)) { label }
             .accessibilityLabel(Text(extensionsText("Guardar una idea")))
     }
 }
@@ -347,5 +348,19 @@ extension LumbreShared {
     /// Esquema de color que eligió el usuario en Perfil (gris por defecto, como la app).
     static var widgetColorScheme: ColorScheme? {
         (theme.flatMap(ThemePreference.init(rawValue:)) ?? .light).colorScheme
+    }
+}
+
+extension WidgetFamily {
+    /// `size` de `widget_tapped` (`LumbreDeepLink.widgetSizes`).
+    var analyticsSize: String {
+        switch self {
+        case .systemSmall: "small"
+        case .systemMedium: "medium"
+        case .accessoryCircular: "circular"
+        case .accessoryRectangular: "rectangular"
+        case .accessoryInline: "inline"
+        default: "large"
+        }
     }
 }

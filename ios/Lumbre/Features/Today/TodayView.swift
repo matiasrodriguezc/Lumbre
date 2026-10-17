@@ -54,7 +54,7 @@ struct TodayView: View {
 
     @ViewBuilder
     private func content(_ today: TodayState) -> some View {
-        meter(today.quota)
+        meter(today)
 
         if let hero = hero(in: today) {
             if hero.status == .discarded {
@@ -111,16 +111,18 @@ struct TodayView: View {
     // MARK: Contador
 
     @ViewBuilder
-    private func meter(_ quota: SparkQuota) -> some View {
+    private func meter(_ today: TodayState) -> some View {
+        let quota = today.quota
+        let available = today.sparksToIgnite
         let showsEarn = earnsExtras(quota)
         VStack(alignment: .leading, spacing: Space.s2) {
             SparkMeter(
-                available: quota.available,
+                available: available,
                 total: quota.total,
-                status: quota.available > 1
-                    ? Text("\(quota.available) chispas para encender")
-                    : quota.available == 1 ? Text("1 chispa para encender") : Text("Usaste las chispas de hoy"),
-                detail: quota.available == 0 && showsEarn
+                status: available > 1
+                    ? Text("\(available) chispas para encender")
+                    : available == 1 ? Text("1 chispa para encender") : Text("Usaste las chispas de hoy"),
+                detail: available == 0 && showsEarn
                     ? earnText(quota.conceptsUntilExtra)
                     : refillText(quota.refillsAt),
                 earned: showsEarn ? max(0, Self.neuronsPerExtra - quota.conceptsUntilExtra) : nil,
@@ -133,7 +135,7 @@ struct TodayView: View {
                     : AnyLayout(HStackLayout(spacing: Space.s3))
                 layout {
                     Group {
-                        if quota.available > 0 {
+                        if available > 0 {
                             earnText(quota.conceptsUntilExtra)
                         } else {
                             refillText(quota.refillsAt)

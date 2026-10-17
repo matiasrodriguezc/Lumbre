@@ -390,6 +390,13 @@ public struct TodayState: Hashable, Sendable {
     }
 
     public var needsMoreConcepts: Bool { runwayDays < 7 }
+
+    /// Chispas que quedan para encender hoy (el contador de Hoy): la diaria si sigue por encender y las extras que
+    /// todavía se pueden pedir. `quota.available` cuenta también la diaria ya revelada, así que después del reveal
+    /// el contador seguiría en "1 chispa para encender".
+    public var sparksToIgnite: Int {
+        min(quota.available, (spark?.isPending == true ? 1 : 0) + quota.extraRemaining)
+    }
 }
 
 /// Motivo para reportar contenido generado por IA (requisito de Play).

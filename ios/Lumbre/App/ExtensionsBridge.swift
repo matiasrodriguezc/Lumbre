@@ -5,6 +5,7 @@ import SwiftUI
 /// Lo que une la app con el widget, la Share Extension y los App Intents (pasos 49 y 55):
 ///
 /// - Abre los links `lumbre://` (widget, atajos) y los que dejan los App Intents en `DeepLinkInbox`.
+///   Los del widget mandan `widget_tapped`.
 /// - Vacía la cola offline al abrir la app: ahí esperan las capturas de la Share Extension y de Siri.
 /// - Copia el tema al App Group para que el widget se vea igual que la app.
 ///
@@ -18,7 +19,9 @@ struct ExtensionsBridge: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onOpenURL { url in
-                if let link = LumbreDeepLink(url: url) { open(link) }
+                guard let link = LumbreDeepLink(url: url) else { return }
+                if let tap = LumbreDeepLink.widgetTap(in: url) { Analytics.track(tap.event) }
+                open(link)
             }
             .onReceive(NotificationCenter.default.publisher(for: DeepLinkInbox.didReceive)) { _ in
                 consumeInbox()

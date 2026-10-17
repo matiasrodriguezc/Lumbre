@@ -16,6 +16,7 @@ struct SparkActions: View {
     @Environment(\.api) private var api
     @Environment(AppModel.self) private var appModel
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var isChoosingProject = false
     @State private var isAskingFeedback = false
     @State private var isAskingReport = false
@@ -30,16 +31,17 @@ struct SparkActions: View {
     var body: some View {
         VStack(spacing: Space.s2) {
             saveRow
-            HStack(spacing: Space.s2) {
+            pairLayout(spacing: Space.s2) {
                 if FeatureFlag.planner.isEnabled {
                     planButton
+                        .labelStyle(ActionLabelStyle())
                 }
                 if spark.status != .discarded {
                     Button("No me sirve") { isAskingFeedback = true }
                         .buttonStyle(.lumbre(.ghost, fullWidth: true))
                 }
             }
-            HStack(spacing: Space.s2) {
+            pairLayout(spacing: Space.s2) {
                 if FeatureFlag.shareCard.isEnabled {
                     Button {
                         isSharing = true
@@ -47,6 +49,7 @@ struct SparkActions: View {
                         Label("Compartir", systemImage: "square.and.arrow.up")
                     }
                     .buttonStyle(.lumbre(.secondary))
+                    .labelStyle(ActionLabelStyle())
                 }
                 Spacer(minLength: 0)
                 moreMenu
@@ -86,10 +89,19 @@ struct SparkActions: View {
         }
     }
 
+    /// Dos acciones lado a lado; con tamaños de accesibilidad, una abajo de la otra: al lado, "Planificar",
+    /// "Mover" y "Compartir" se cortan por sílabas (como `SparkPairHeader`).
+    private func pairLayout(spacing: CGFloat, @ViewBuilder content: () -> some View) -> some View {
+        let layout = dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: spacing))
+            : AnyLayout(HStackLayout(spacing: spacing))
+        return layout { content() }
+    }
+
     @ViewBuilder
     private var saveRow: some View {
         if spark.status == .saved {
-            HStack(spacing: Space.s3) {
+            pairLayout(spacing: Space.s3) {
                 Label {
                     spark.statusLine
                 } icon: {
@@ -115,6 +127,7 @@ struct SparkActions: View {
                 Label("Guardar idea", systemImage: "bookmark")
             }
             .buttonStyle(.lumbre(.primary, fullWidth: true))
+            .labelStyle(ActionLabelStyle())
             .disabled(isSaving)
         }
     }
@@ -218,6 +231,25 @@ struct SparkActions: View {
             } catch {
                 notice = .failed(error.localizedDescription)
             }
+        }
+    }
+}
+
+/// Con tamaños de accesibilidad, el ícono va arriba del texto: al lado, "Planificar" y "Compartir" no entran en el
+/// panel del reveal y se cortan por sílabas.
+private struct ActionLabelStyle: LabelStyle {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    @ViewBuilder
+    func makeBody(configuration: Configuration) -> some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            VStack(spacing: Space.s1) {
+                configuration.icon
+                configuration.title
+            }
+            .multilineTextAlignment(.center)
+        } else {
+            Label(configuration)
         }
     }
 }
