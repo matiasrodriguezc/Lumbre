@@ -11,7 +11,8 @@ enum AppTab: Hashable {
 /// Lo que abre un link profundo, una push, el widget o un App Intent.
 enum AppRoute: Hashable {
     case today
-    case spark(Spark.ID)
+    /// `entry` llega hasta `spark_revealed`: `app`, `push` o `widget`.
+    case spark(Spark.ID, entry: String = "app")
     case concept(Concept.ID)
     case capture(entry: String)
     case paywall(trigger: String)

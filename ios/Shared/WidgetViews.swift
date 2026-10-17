@@ -30,7 +30,7 @@ struct TodaySparkWidgetView: View {
                 }
             }
         }
-        .widgetURL(state.sparkID.map { LumbreDeepLink.spark($0).url } ?? LumbreDeepLink.today.url)
+        .widgetURL(state.sparkID.map { LumbreDeepLink.spark($0, entry: "widget").url } ?? LumbreDeepLink.today.url)
     }
 
     // MARK: Pantalla de inicio

@@ -3,14 +3,18 @@ import Foundation
 /// Links profundos `lumbre://` que usan el widget, los App Intents y la Share Extension.
 ///
 /// - `lumbre://today`: Hoy.
-/// - `lumbre://spark/<id>`: esa chispa (si es la de hoy y no se reveló, Hoy hace el reveal).
+/// - `lumbre://spark/<id>?entry=widget`: esa chispa (si es la de hoy y no se reveló, Hoy hace el reveal).
+///   `entry` va a `spark_revealed`; sin él, la app cuenta `app`.
 /// - `lumbre://capture?entry=widget`: la sheet de Capturar; `entry` va al evento `capture_opened`.
 public enum LumbreDeepLink: Hashable, Sendable {
     case today
-    case spark(UUID)
+    case spark(UUID, entry: String? = nil)
     case capture(entry: String)
 
     public static let scheme = "lumbre"
+
+    /// Valores de `spark_revealed.entry` que puede traer un link (docs/analytics.md).
+    public static let sparkEntries: Set<String> = ["app", "push", "widget"]
 
     /// `entry` de `capture_opened` cuando el link no trae uno.
     public static let defaultCaptureEntry = "deeplink"
@@ -26,7 +30,9 @@ public enum LumbreDeepLink: Hashable, Sendable {
             self = .today
         case "spark":
             guard parts.count > 1, let id = UUID(uuidString: parts[1]) else { self = .today; return }
-            self = .spark(id)
+            let entry = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+                .queryItems?.first { $0.name == "entry" }?.value
+            self = .spark(id, entry: entry.flatMap { Self.sparkEntries.contains($0) ? $0 : nil })
         case "capture", "capturar":
             let entry = URLComponents(url: url, resolvingAgainstBaseURL: false)?
                 .queryItems?.first { $0.name == "entry" }?.value
@@ -42,9 +48,10 @@ public enum LumbreDeepLink: Hashable, Sendable {
         switch self {
         case .today:
             components.host = "today"
-        case .spark(let id):
+        case .spark(let id, let entry):
             components.host = "spark"
             components.path = "/" + id.uuidString.lowercased()
+            if let entry { components.queryItems = [URLQueryItem(name: "entry", value: entry)] }
         case .capture(let entry):
             components.host = "capture"
             components.queryItems = [URLQueryItem(name: "entry", value: entry)]

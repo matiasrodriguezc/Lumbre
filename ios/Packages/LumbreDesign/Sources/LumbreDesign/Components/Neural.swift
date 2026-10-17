@@ -255,6 +255,94 @@ public struct Synapse: View {
     }
 }
 
+/// Un instante del reveal de la sinapsis (design/reveal/README.md, §2). Cada valor va de 0 a 1, salvo `star`,
+/// que es la escala de la estrella (0,1 → 1, con el rebote del resorte). `.end` es la sinapsis encendida y quieta.
+public struct SynapseProgress: Sendable, Equatable {
+    /// Entrada de las neuronas desde los costados: x ∓22 u → 0 y opacidad.
+    public var enter: Double
+    /// Terminales: la máscara de cada neurona crece del 43 % al 100 % de su ancho, desde el soma hacia el centro.
+    public var reach: Double
+    /// Posición del impulso en su terminal: x 46 → 106 en la izquierda, 194 → 134 en la derecha.
+    public var impulse: Double
+    public var impulseOpacity: Double
+    public var star: Double
+    public var starOpacity: Double
+
+    public init(enter: Double, reach: Double, impulse: Double, impulseOpacity: Double, star: Double, starOpacity: Double) {
+        self.enter = enter
+        self.reach = reach
+        self.impulse = impulse
+        self.impulseOpacity = impulseOpacity
+        self.star = star
+        self.starOpacity = starOpacity
+    }
+
+    public static let start = SynapseProgress(enter: 0, reach: 0, impulse: 0, impulseOpacity: 0, star: 0.1, starOpacity: 0)
+    public static let end = SynapseProgress(enter: 1, reach: 1, impulse: 1, impulseOpacity: 0, star: 1, starOpacity: 1)
+}
+
+/// La sinapsis completa en un instante del reveal: las neuronas entran, estiran sus terminales, cruza un impulso
+/// por cada una y salta la chispa. Sin escala del conjunto: el rebote es solo de la estrella.
+public struct SynapseReveal: View {
+    let progress: SynapseProgress
+
+    public init(_ progress: SynapseProgress) {
+        self.progress = progress
+    }
+
+    public var body: some View {
+        let left = NeuralArt.synapseFullLeft, right = NeuralArt.synapseFullRight
+        let canvas = left.size
+        let mid = canvas.width / 2
+        let axonY = 37.6
+        GeometryReader { proxy in
+            let frame = NeuralFrame(canvas: canvas, in: CGRect(origin: .zero, size: proxy.size))
+            let shift = 22 * (1 - progress.enter) * frame.scale
+            let visible = 0.43 + 0.57 * progress.reach
+            ZStack {
+                terminal(left, visible: visible, fromLeading: true, frame: frame, size: proxy.size)
+                    .offset(x: -shift)
+                    .opacity(progress.enter)
+                terminal(right, visible: visible, fromLeading: false, frame: frame, size: proxy.size)
+                    .offset(x: shift)
+                    .opacity(progress.enter)
+                ForEach(0..<2, id: \.self) { side in
+                    let x = 46 + 60 * progress.impulse
+                    Circle()
+                        .fill(Palette.infoText)
+                        .overlay(Circle().strokeBorder(Palette.surface, lineWidth: 1.8 * frame.scale))
+                        .frame(width: 8 * frame.scale, height: 8 * frame.scale)
+                        .position(frame.point(side == 0 ? x : canvas.width - x, axonY))
+                        .opacity(progress.impulseOpacity)
+                }
+                SparkStar()
+                    .fill(Palette.spark)
+                    .frame(width: 22 * frame.scale, height: 22 * frame.scale)
+                    .scaleEffect(progress.star)
+                    .position(frame.point(mid, canvas.height / 2))
+                    .opacity(progress.starOpacity)
+            }
+        }
+        .aspectRatio(canvas, contentMode: .fit)
+        .accessibilityHidden(true)
+    }
+
+    /// La neurona recortada a la fracción `visible` de su ancho, empezando por el soma.
+    private func terminal(_ art: NeuralArt, visible: Double, fromLeading: Bool, frame: NeuralFrame, size: CGSize) -> some View {
+        let xs = art.layers[0].rings.flatMap { ring in stride(from: 0, to: ring.count, by: 2).map { ring[$0] } }
+        let minX = xs.min() ?? 0, maxX = xs.max() ?? art.size.width
+        let width = (maxX - minX) * visible * frame.scale
+        let originX = fromLeading ? frame.point(minX, 0).x : frame.point(maxX, 0).x - width
+        return NeuralShape(rings: art.layers[0].rings, canvas: art.size)
+            .fill(Palette.ink)
+            .mask(alignment: .topLeading) {
+                Rectangle()
+                    .frame(width: max(width, 0), height: size.height)
+                    .offset(x: originX)
+            }
+    }
+}
+
 // MARK: Pulso
 
 /// Indicador de carga propio para destilar y encender: un impulso recorre un axón en 1,2 s.

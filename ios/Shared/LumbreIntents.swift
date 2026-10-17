@@ -67,7 +67,7 @@ struct OpenTodaySparkIntent: AppIntent {
     @MainActor
     func perform() async throws -> some IntentResult {
         let state = TodayWidgetState.current()
-        DeepLinkInbox.post(state.sparkID.map(LumbreDeepLink.spark) ?? .today)
+        DeepLinkInbox.post(state.sparkID.map { .spark($0) } ?? .today)
         return .result()
     }
 }

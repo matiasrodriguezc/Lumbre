@@ -113,31 +113,34 @@ public struct SparkCard<Actions: View>: View {
 public struct SparkPairHeader: View {
     let a: SparkSide
     let b: SparkSide
+    let enter: Double
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
-    public init(a: SparkSide, b: SparkSide) {
+    /// `enter` es la entrada del reveal (0 → 1): cada nombre llega desde su costado, ∓16 pt, con su neurona.
+    public init(a: SparkSide, b: SparkSide, enter: Double = 1) {
         self.a = a
         self.b = b
+        self.enter = enter
     }
 
     public var body: some View {
         // Con tamaños de accesibilidad, una debajo de la otra: en dos columnas los títulos se cortan por sílabas.
         if dynamicTypeSize.isAccessibilitySize {
             VStack(alignment: .leading, spacing: Space.s3) {
-                label(a, alignment: .leading)
-                label(b, alignment: .leading)
+                label(a, alignment: .leading, from: -1)
+                label(b, alignment: .leading, from: 1)
             }
             .accessibilityElement(children: .combine)
         } else {
             HStack(alignment: .top, spacing: Space.s4) {
-                label(a, alignment: .leading)
-                label(b, alignment: .trailing)
+                label(a, alignment: .leading, from: -1)
+                label(b, alignment: .trailing, from: 1)
             }
             .accessibilityElement(children: .combine)
         }
     }
 
-    private func label(_ side: SparkSide, alignment: HorizontalAlignment) -> some View {
+    private func label(_ side: SparkSide, alignment: HorizontalAlignment, from direction: CGFloat) -> some View {
         VStack(alignment: alignment, spacing: 2) {
             Label(side.category, systemImage: side.categorySymbol)
                 .font(.footnote)
@@ -150,5 +153,7 @@ public struct SparkPairHeader: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: alignment == .leading ? .leading : .trailing)
+        .offset(x: direction * 16 * (1 - enter))
+        .opacity(enter)
     }
 }

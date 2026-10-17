@@ -50,7 +50,7 @@ struct ExtensionsBridge: ViewModifier {
     private func open(_ link: LumbreDeepLink) {
         switch link {
         case .today: appModel.open(.today)
-        case .spark(let id): appModel.open(.spark(id))
+        case .spark(let id, let entry): appModel.open(.spark(id, entry: entry ?? "app"))
         case .capture(let entry): appModel.open(.capture(entry: entry))
         }
     }

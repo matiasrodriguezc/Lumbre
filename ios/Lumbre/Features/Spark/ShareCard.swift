@@ -7,6 +7,9 @@ import UniformTypeIdentifiers
 /// la idea y la firma, sobre el gris de marca. Fija en el tema gris, así sale igual con cualquier tema.
 struct ShareCardView: View {
     let spark: Spark
+    /// Zonas seguras de design/compartir (flag `share_card_safe_zones`): margen de abajo de 340 para que la firma
+    /// no quede bajo la barra de responder de Instagram ni la de abajo de TikTok, y la categoría en una sola línea.
+    var safeZones = FeatureFlag.shareCardSafeZones.isEnabled
 
     static let size = CGSize(width: 1080, height: 1920)
 
@@ -62,7 +65,7 @@ struct ShareCardView: View {
         .padding(.horizontal, 96)
         // Márgenes seguros de las historias: arriba y abajo la app de Instagram pone su interfaz.
         .padding(.top, 250)
-        .padding(.bottom, 200)
+        .padding(.bottom, safeZones ? 340 : 200)
         .frame(width: Self.size.width, height: Self.size.height, alignment: .topLeading)
         .background(alignment: .top) {
             ZStack(alignment: .top) {
@@ -80,6 +83,8 @@ struct ShareCardView: View {
             Text(concept.categoryName)
                 .font(.system(size: 34, weight: .medium))
                 .foregroundStyle(Palette.neuron.opacity(0.65))
+                // Una categoría larga no empuja el título de su neurona ni desalinea las dos columnas.
+                .lineLimit(safeZones ? 1 : nil)
             Text(concept.title)
                 .font(.system(size: 48, weight: .semibold))
                 .foregroundStyle(Palette.neuron)

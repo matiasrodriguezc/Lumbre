@@ -64,7 +64,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate, @preconcurrency UNUser
         Analytics.track(.notificationOpened(type: type, minutesAfterSent: max(0, minutes)))
 
         if let rawID = userInfo["spark_id"] as? String, let sparkID = UUID(uuidString: rawID) {
-            appModel.open(.spark(sparkID))
+            appModel.open(.spark(sparkID, entry: "push"))
         } else {
             appModel.open(.today)
         }

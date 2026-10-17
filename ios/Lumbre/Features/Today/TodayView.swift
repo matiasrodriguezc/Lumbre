@@ -17,6 +17,8 @@ struct TodayView: View {
     @State private var loadError: Error?
     /// Chispa protagonista: la diaria, o la extra recién pedida.
     @State private var heroID: Spark.ID?
+    /// De dónde se llegó a cada chispa por encender (push o widget), para `spark_revealed.entry`.
+    @State private var revealEntries: [Spark.ID: String] = [:]
     @State private var isRequestingExtra = false
     @State private var extraError: String?
     @State private var trackedEmptyReason: String?
@@ -58,7 +60,7 @@ struct TodayView: View {
             if hero.status == .discarded {
                 usedState(hero, quota: today.quota)
             } else {
-                SparkHero(spark: hero, onPlan: { id in path.append(.planner(id, entry: "spark_detail")) },
+                SparkHero(spark: hero, entry: revealEntries[hero.id] ?? "app", onPlan: { id in path.append(.planner(id, entry: "spark_detail")) },
                           onChange: { updated in replace(updated) })
                     .id(hero.id)
             }
@@ -396,12 +398,13 @@ struct TodayView: View {
         case .today:
             appModel.pendingRoute = nil
             path = []
-        case .spark(let id):
+        case .spark(let id, let entry):
             guard let today else { return }
             appModel.pendingRoute = nil
             let todayIDs = (today.spark.map { [$0.id] } ?? []) + today.extras.map(\.id)
             if todayIDs.contains(id), (today.spark?.id == id ? today.spark : today.extras.first { $0.id == id })?.isPending == true {
                 heroID = today.spark?.id == id ? nil : id
+                revealEntries[id] = entry
                 path = []
             } else {
                 path = [.detail(id)]

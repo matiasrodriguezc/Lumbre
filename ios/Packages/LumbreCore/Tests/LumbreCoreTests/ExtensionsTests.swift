@@ -14,6 +14,17 @@ import Testing
         #expect(LumbreDeepLink.spark(id).url.absoluteString == "lumbre://spark/\(id.uuidString.lowercased())")
     }
 
+    @Test func sparkLinkCarriesTheEntryForTheReveal() throws {
+        let id = UUID()
+        let widget = LumbreDeepLink.spark(id, entry: "widget")
+        #expect(widget.url.absoluteString == "lumbre://spark/\(id.uuidString.lowercased())?entry=widget")
+        #expect(LumbreDeepLink(url: widget.url) == widget)
+        // Va tal cual a `spark_revealed.entry`: solo los valores del plan de analytics.
+        #expect(LumbreDeepLink(url: URL(string: "lumbre://spark/\(id.uuidString)?entry=push")!) == .spark(id, entry: "push"))
+        #expect(LumbreDeepLink(url: URL(string: "lumbre://spark/\(id.uuidString)?entry=otra")!) == .spark(id))
+        #expect(LumbreDeepLink(url: URL(string: "lumbre://spark/\(id.uuidString)")!) == .spark(id))
+    }
+
     @Test func deepLinksAreForgiving() throws {
         #expect(LumbreDeepLink(url: URL(string: "lumbre://capture")!) == .capture(entry: "deeplink"))
         #expect(LumbreDeepLink(url: URL(string: "LUMBRE://Today")!) == .today)

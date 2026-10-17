@@ -285,6 +285,11 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     case widgets = "widgets"
     /// App Intents y atajos de Siri: guardar una idea y ver la chispa de hoy.
     case appIntents = "app_intents"
+    /// Reveal de 900 ms con la coreografía de design/reveal: la sinapsis entra, cruza el impulso y salta la chispa;
+    /// cierre con fundido. Apagado, queda el reveal anterior (~1.200 ms).
+    case revealSynapse = "reveal_synapse"
+    /// Tarjeta para compartir con las zonas seguras de design/compartir: margen de abajo de 340 y categoría en una línea.
+    case shareCardSafeZones = "share_card_safe_zones"
 
     public var defaultValue: Bool { true }
 

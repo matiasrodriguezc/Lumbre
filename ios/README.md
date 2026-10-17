@@ -56,6 +56,7 @@ Esquema → Run → Arguments, o `xcrun simctl launch booted com.matiasrodriguez
 | `-seedUser` | Solo Debug y local: entra como Ana, la usuaria de `backend/supabase/seed.sql` |
 | `-resetSession` | Solo Debug: cierra la sesión guardada y prueba el primer login |
 | `-flag.<nombre> YES\|NO` | Solo Debug: pisa un feature flag (`-flag.account_email NO`) |
+| `-revealAt <ms>` | Solo Debug: congela el reveal (flag `reveal_synapse`) en ese instante desde el toque (`-revealAt 450`) |
 
 Las previews de SwiftUI siempre usan `MockLumbreAPI`. En el mock, el código del email es `123456` y `ana@lumbre.test` es una cuenta que ya existe.
 
