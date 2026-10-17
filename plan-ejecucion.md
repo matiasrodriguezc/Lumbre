@@ -234,7 +234,7 @@ Salen de una lista de ideas revisada el 2026-10-17; las elegidas están en `plan
 - [ ] **89. Importar notas: Markdown y Apple Notes** · flag `import_notes`
   Markdown: archivos `.md` sueltos o una carpeta de Obsidian (desde Archivos). Apple Notes: un atajo de Atajos que busca las notas y se las pasa a un App Intent de Lumbre (no hay API para leerlas en bloque). Cada nota entra por `/capture`, con la cola offline, y con los límites de §4: 50 en free, ilimitado en Pro. Vista previa antes de importar, con elegir y descartar.
   A definir antes de empezar: qué tesis lleva una nota larga cuando no se conceptualiza (primera línea, o que el usuario elija), y si importar cuenta para el tope de 30 capturas por día.
-- [ ] **90. Lentes en el planificador** · flag `planner_lenses`
+- [x] **90. Lentes en el planificador** · flag `planner_lenses` · ✅ 2026-10-17: prompt `planner_lens.v1` como bloque aparte sobre planner.v2 (o v1), con la chispa delimitada; `/planner` con `lens`, respuestas con `[[lens:…]]` que no mueven los cuartos de Disney; evento `planner_lens_used` y `lens` en `planner_message_sent`; tests de Deno, e2e (las tres lentes, 400 y 403 sin consentimiento) y verificado en el simulador con `-mockPro`. El formato con el modelo real queda para cuando haya clave de Anthropic.
   Tres atajos más en el planificador (Pro): "Modelo de negocio", "Trama" y "Post". Cada uno es un pedido con su formato de salida, sobre `planner.v2`. Evento con la lente elegida.
   Listo cuando: los tres atajos responden con su formato y respetan el consentimiento para IA.
 - [ ] **91. Perilla de distancia** · flag `distance_dial`
