@@ -213,6 +213,12 @@ lens() {
 lens business_model "Convertila en un modelo de negocio."
 check_true "planner lente: responde con el formato del modelo de negocio" \
   "$(last_answer | grep -q '^\[\[lens:business_model\]\]' && last_answer | grep -q '^\*\*El experimento\*\*' && echo true || echo false)"
+lens plot "Convertila en una trama."
+check_true "planner lente: responde con el formato de la trama" \
+  "$(last_answer | grep -q '^\[\[lens:plot\]\]' && last_answer | grep -q '^\*\*Tres actos\*\*' && echo true || echo false)"
+lens post "Convertila en un post."
+check_true "planner lente: responde con el formato del post" \
+  "$(last_answer | grep -q '^\[\[lens:post\]\]' && last_answer | grep -q '^\*\*Otros dos ganchos\*\*' && echo true || echo false)"
 disney "Pasos, gente y plata"
 check_true "planner lente: el método sigue en el Realista" "$(last_answer | grep -q '^\[\[room:realist\]\]' && echo true || echo false)"
 call planner "{\"spark_id\": \"$DAILY_ID\", \"message\": \"Hola\", \"mode\": \"quick\", \"lens\": \"poema\"}"
@@ -255,9 +261,9 @@ check "register_push_token: registra el token" "$(rest "rpc/register_push_token"
 check "content_reports: reporta la chispa" "$(rest "content_reports" -X POST -o /dev/null -w '%{http_code}' -d "{\"spark_id\": \"$EXTRA_ID\", \"reason\": \"wrong\"}")" "201"
 EXPORT="$(rest "rpc/export_my_data" -X POST -d '{}')"
 check "export_my_data: trae los 10 conceptos (9 y la neurona de la chispa)" "$(echo "$EXPORT" | jq -r '.concepts | length')" "10"
-# Planificador: 2 turnos libres + 4 del método de los tres cuartos + 1 lente = 14 mensajes.
+# Planificador: 2 turnos libres + 4 del método de los tres cuartos + 3 lentes = 18 mensajes.
 check_true "export_my_data: con chispas, proyecto y planificador" \
-  "$(echo "$EXPORT" | jq -r '(.sparks | length) >= 3 and (.projects | length) == 1 and (.planner[0].messages | length) == 14')"
+  "$(echo "$EXPORT" | jq -r '(.sparks | length) >= 3 and (.projects | length) == 1 and (.planner[0].messages | length) == 18')"
 check "export_my_data: incluye el consentimiento (revocado)" "$(echo "$EXPORT" | jq -r '.profile | has("ai_consent_at")')|$(echo "$EXPORT" | jq -r .profile.ai_consent_at)" "true|null"
 check_true "export_my_data: sin embeddings" "$(echo "$EXPORT" | jq -r '[.concepts[] | has("embedding")] | any | not')"
 check "delete_my_account: borra la cuenta" "$(rest "rpc/delete_my_account" -X POST -o /dev/null -w '%{http_code}' -d '{}')" "204"
