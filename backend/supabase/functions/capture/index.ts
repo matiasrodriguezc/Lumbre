@@ -8,6 +8,9 @@
 // 3. Guarda cada concepto con capture_concept() y el JWT del usuario: valida, descuenta la captura y crea la
 //    categoría en una transacción, igual que si la app llamara directo.
 // 4. Embedding y dominio de la categoría. Si fallan, el concepto queda guardado y /process lo completa.
+//
+// Importar notas (paso 89): con `import_source` (markdown o apple_notes) la nota se guarda como texto, sin destilar,
+// y capture_concept() descuenta el cupo 'import' (import_limit) en vez del de capturas por día.
 
 import { requireDeviceIntegrity } from "../_shared/attest/guard.ts";
 import { Analytics } from "../_shared/analytics.ts";
@@ -34,6 +37,7 @@ import { cleanText, wordCount } from "../_shared/text.ts";
 
 const SOURCE_TYPES = ["text", "voice", "selection", "screenshot", "scan", "link", "image", "pdf"] as const;
 const MIME_TYPES = ["image/jpeg", "image/png", "application/pdf"] as const;
+const IMPORT_SOURCES = ["markdown", "apple_notes"] as const;
 
 type Outcome = "none" | "high" | "medium" | "quota_exceeded" | "unavailable" | "consent_required";
 
@@ -47,6 +51,7 @@ interface CaptureBody {
   local_asset_id?: unknown;
   attachment?: { path?: unknown; mime_type?: unknown } | null;
   distill?: unknown;
+  import_source?: unknown;
 }
 
 function optionalString(value: unknown, max: number, code: "invalid_thesis" | "invalid_source" | "invalid_request"): string | null {
@@ -81,6 +86,17 @@ function parse(body: CaptureBody, userId: string) {
     attachment = { path, mimeType: mime as (typeof MIME_TYPES)[number] };
   }
 
+  let importSource: (typeof IMPORT_SOURCES)[number] | null = null;
+  if (body.import_source !== undefined && body.import_source !== null) {
+    if (
+      typeof body.import_source !== "string" || !(IMPORT_SOURCES as readonly string[]).includes(body.import_source) ||
+      sourceType !== "text" || attachment
+    ) {
+      throw new ApiError("invalid_source");
+    }
+    importSource = body.import_source as (typeof IMPORT_SOURCES)[number];
+  }
+
   return {
     thesis,
     category: body.category.trim(),
@@ -91,7 +107,9 @@ function parse(body: CaptureBody, userId: string) {
     excerpt: typeof body.excerpt === "string" ? body.excerpt.trim().slice(0, 500) || null : null,
     localAssetId: optionalString(body.local_asset_id, 200, "invalid_request"),
     attachment,
-    distill: body.distill === true,
+    // Una nota importada nunca se destila: entra con su título o su primera línea como tesis.
+    distill: body.distill === true && !importSource,
+    importSource,
   };
 }
 
@@ -123,6 +141,7 @@ async function saveConcept(user: UserContext, input: Input, thesis: string) {
     p_source_title: input.sourceTitle,
     p_excerpt: input.excerpt,
     p_local_asset_id: input.localAssetId,
+    p_import_source: input.importSource,
   });
   if (error) throw dbError(error);
   const row = (data as Array<{ concept_id: string; category_id: string; category_created: boolean }>)[0];
@@ -260,6 +279,7 @@ Deno.serve(handler("capture", async (req) => {
         concepts_in_capture: ordered.length,
         is_seed: false,
         category_created: saved[0].category_created,
+        import_source: input.importSource,
       });
     }
     if (saved[0].category_created) {

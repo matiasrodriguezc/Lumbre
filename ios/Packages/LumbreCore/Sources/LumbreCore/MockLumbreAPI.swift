@@ -272,6 +272,8 @@ private actor MockStore {
     var messages: [Spark.ID: [PlannerMessage]] = [:]
     var extrasUsedToday = 0
     var capturesToday = 0
+    /// Notas importadas (cupo `import`: 50 en total en free e invitado, 1.000 por día en Pro).
+    var importsUsed = 0
     var aiConsent: Bool?
 
     func setAIConsent(_ granted: Bool) { aiConsent = granted }
@@ -286,6 +288,7 @@ private actor MockStore {
         (profile, categories, concepts, sparks, projects, messages) = Self.initialState(onboarded: onboarded)
         extrasUsedToday = 0
         capturesToday = 0
+        importsUsed = 0
     }
 
     private static func initialState(onboarded: Bool) -> (Profile, [Category], [Concept], [Spark], [Project], [Spark.ID: [PlannerMessage]]) {
@@ -332,11 +335,13 @@ private actor MockStore {
         switch profile.plan {
         case .guest:
             return [Credit(kind: .capture, period: "day", max: 10, remaining: max(0, 10 - capturesToday)),
+                    Credit(kind: .importNotes, period: "total", max: importLimit, remaining: max(0, importLimit - importsUsed)),
                     Credit(kind: .projects, period: "total", max: 1, remaining: max(0, 1 - projects.count))]
         case .free:
             return [Credit(kind: .capture, period: "day", max: 30, remaining: max(0, 30 - capturesToday)),
                     Credit(kind: .distill, period: "month", max: 5, remaining: 3),
                     Credit(kind: .sparkExtra, period: "day", max: 2, remaining: extraRemaining),
+                    Credit(kind: .importNotes, period: "total", max: importLimit, remaining: max(0, importLimit - importsUsed)),
                     Credit(kind: .projects, period: "total", max: 1, remaining: max(0, 1 - projects.count))]
         case .pro:
             return [Credit(kind: .capture, period: "day", max: 200, remaining: 200 - capturesToday),
@@ -344,6 +349,7 @@ private actor MockStore {
                     Credit(kind: .sparkExtra, period: "day", max: 10, remaining: extraRemaining),
                     Credit(kind: .planner, period: "month", max: 300, remaining: 280),
                     Credit(kind: .plannerDeep, period: "month", max: 60, remaining: 58),
+                    Credit(kind: .importNotes, period: "day", max: importLimit, remaining: max(0, importLimit - importsUsed)),
                     Credit(kind: .projects, period: "total", max: 1000, remaining: 1000 - projects.count)]
         }
     }
@@ -459,9 +465,15 @@ private actor MockStore {
         return (category, true)
     }
 
+    var importLimit: Int { profile.plan == .pro ? 1000 : NoteImport.freeLimit }
+
     func capture(_ request: CaptureRequest) throws -> CaptureResult {
-        let limit = profile.plan == .guest ? 10 : profile.plan == .free ? 30 : 200
-        guard capturesToday < limit else { throw LumbreAPIError.quotaExceeded }
+        if request.importSource != nil {
+            guard importsUsed < importLimit else { throw LumbreAPIError.importLimitReached }
+        } else {
+            let limit = profile.plan == .guest ? 10 : profile.plan == .free ? 30 : 200
+            guard capturesToday < limit else { throw LumbreAPIError.quotaExceeded }
+        }
         let thesis = request.thesis?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let canDistill = request.distill && profile.plan != .guest
         if thesis.isEmpty && !canDistill { throw LumbreAPIError.invalidThesis }
@@ -491,7 +503,7 @@ private actor MockStore {
             createdAt: .now
         )
         concepts.insert(concept, at: 0)
-        capturesToday += 1
+        if request.importSource != nil { importsUsed += 1 } else { capturesToday += 1 }
         return CaptureResult(
             conceptID: concept.id, categoryID: category.id, categoryCreated: created,
             concepts: [concept],

@@ -53,6 +53,8 @@ public actor CaptureQueue {
         public let attachmentFile: String?
         /// Intentos fallidos por errores que no son de red.
         public var failures: Int
+        /// Viene de importar notas (paso 89). Falta en las capturas encoladas antes del paso.
+        public var importSource: ImportSource? = nil
     }
 
     private let directory: URL
@@ -151,7 +153,7 @@ public actor CaptureQueue {
             id: id, createdAt: .now, thesis: request.thesis, category: request.category,
             sourceType: request.source.sourceType, sourceURL: sourceURL, sourceTitle: request.sourceTitle,
             excerpt: request.excerpt, localAssetID: request.localAssetID, distill: request.distill,
-            attachmentFile: attachmentFile, failures: 0
+            attachmentFile: attachmentFile, failures: 0, importSource: request.importSource
         )
         do {
             try mutate { $0.append(item) }
@@ -162,6 +164,32 @@ public actor CaptureQueue {
         logger.info("enqueued capture, \(self.items.count, privacy: .public) pending")
         notify(.count(items.count))
         return item
+    }
+
+    /// Encola varias capturas de texto de una vez, con una sola escritura (importar notas).
+    /// Las que traen adjunto van de a una con `enqueue(_:)`.
+    @discardableResult
+    public func enqueue(contentsOf requests: [CaptureRequest]) throws -> [PendingCapture] {
+        let items = requests.map { request -> PendingCapture in
+            precondition(request.source.sourceType != .image && request.source.sourceType != .pdf, "enqueue(contentsOf:) es solo para texto")
+            var sourceURL: URL?
+            switch request.source {
+            case .link(let url): sourceURL = url
+            case .selection(let url): sourceURL = url
+            default: break
+            }
+            return PendingCapture(
+                id: UUID(), createdAt: .now, thesis: request.thesis, category: request.category,
+                sourceType: request.source.sourceType, sourceURL: sourceURL, sourceTitle: request.sourceTitle,
+                excerpt: request.excerpt, localAssetID: request.localAssetID, distill: request.distill,
+                attachmentFile: nil, failures: 0, importSource: request.importSource
+            )
+        }
+        guard !items.isEmpty else { return [] }
+        try mutate { $0.append(contentsOf: items) }
+        logger.info("enqueued \(items.count, privacy: .public) captures, \(self.items.count, privacy: .public) pending")
+        notify(.count(self.items.count))
+        return items
     }
 
     /// Saca una captura de la cola sin mandarla.
@@ -374,7 +402,8 @@ public actor CaptureQueue {
         }
         return CaptureRequest(
             thesis: item.thesis, category: item.category, source: source, sourceTitle: item.sourceTitle,
-            excerpt: item.excerpt, localAssetID: item.localAssetID, distill: item.distill
+            excerpt: item.excerpt, localAssetID: item.localAssetID, distill: item.distill,
+            importSource: item.importSource
         )
     }
 
@@ -468,6 +497,7 @@ extension LumbreAPIError {
         case .invalidEmail: "invalid_email"
         case .invalidCode: "invalid_code"
         case .emailInUse: "email_in_use"
+        case .importLimitReached: "import_limit"
         case .offline: "offline"
         case .unexpected: "unexpected"
         }

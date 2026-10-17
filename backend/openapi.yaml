@@ -44,6 +44,8 @@ paths:
            Un link o un archivo pueden dar hasta 3 conceptos.
         3. Sin `distill` (o sin cupo), `thesis` es obligatoria. Textos de menos de 30 palabras nunca se destilan.
         4. Siempre: embedding y dominio por la categoría. Si la IA falla, el concepto se guarda igual y se procesa después.
+        5. Con `import_source` (importar notas, paso 89): `source_type` tiene que ser `text`, no se destila aunque
+           llegue `distill`, y descuenta el cupo `import` en vez del de capturas por día (429 `import_limit`).
       requestBody:
         required: true
         content:
@@ -68,6 +70,10 @@ paths:
                     path: { type: string, description: "Ruta dentro del bucket capture-temp" }
                     mime_type: { type: string, enum: [image/jpeg, image/png, application/pdf] }
                 distill: { type: boolean, default: false }
+                import_source:
+                  type: string
+                  enum: [markdown, apple_notes]
+                  description: La nota viene de importar (archivos Markdown o carpeta de Obsidian, o Apple Notes por Atajos)
       responses:
         '200':
           description: Guardado
@@ -341,7 +347,7 @@ components:
           description: |
             not_authenticated (401) · invalid_thesis · invalid_category · invalid_source · invalid_request (400) ·
             pro_required (402) · account_required · attestation_failed · ai_consent_required (403) · not_found (404) ·
-            not_enough_concepts (409) · needs_thesis (422) · quota_exceeded · too_many_categories ·
+            not_enough_concepts (409) · needs_thesis (422) · quota_exceeded · import_limit · too_many_categories ·
             too_many_projects · rate_limited (429) · ai_unavailable (503) · internal (500).
             Es un string abierto (la app trata un código desconocido como error genérico).
       x-error-codes:
@@ -358,6 +364,7 @@ components:
         not_enough_concepts: 409
         needs_thesis: 422
         quota_exceeded: 429
+        import_limit: 429
         too_many_categories: 429
         too_many_projects: 429
         rate_limited: 429
