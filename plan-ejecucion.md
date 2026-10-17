@@ -135,7 +135,7 @@ Adelantado: se hace con datos de prueba. Las pantallas llaman a `LumbreAPI`; hoy
 - [x] **45. TabView flotante y botón Capturar** · MAT-258 · ✅ 2026-09-27: Liquid Glass con Capturar separado a la derecha (lugar de la pestaña de búsqueda). Además quedaron versiones visuales con datos de prueba de Hoy, Bóveda, Perfil y la sheet de Capturar; sus pasos (47, 48, 51, 57) siguen abiertos para la funcionalidad completa.
 - [x] **46. Onboarding** · MAT-256 · ✅ 2026-10-16: cuenta con email (flag `account_email`), copy neuronal y consentimiento para IA en el recorrido. Apple y Google con el 20b.
   Perfil, semillas, hora de la chispa, permiso de push y registro del token; crear cuenta o entrar como invitado.
-- [x] **47. Hoy con reveal y contador** · MAT-257 · ✅ 2026-10-16: reveal en modal con Reducir movimiento; sin consentimiento no pide la chispa. Ajustar a la coreografía del paso 12 queda pendiente.
+- [x] **47. Hoy con reveal y contador** · MAT-257 · ✅ 2026-10-16: reveal en modal con Reducir movimiento; sin consentimiento no pide la chispa. 2026-10-17: coreografía del paso 12 aplicada (900 ms, háptico a los 650, cierre con fundido, cruz de 44 pt, `entry` de push y widget; flag `reveal_synapse`) y el contador pasa a usado después del reveal.
 - [x] **48. Sheet de Capturar y cola offline** · MAT-259 · ✅ 2026-10-16: ya estaba completo; sin consentimiento no ofrece destilar y las animaciones respetan Reducir movimiento.
 - [ ] **49. Share Extension** · MAT-260 · Adelantado el 2026-10-16: Share Extension con texto, links, selección de Safari, imagen y PDF; manda con la sesión compartida o encola. Falta verla funcionando (en el simulador no respondía la hoja de compartir) y probarla en dispositivo (H1).
 - [x] **50. OCR con VisionKit** · MAT-261 · ✅ 2026-10-16: VisionKit y Vision ya estaban; revisado sin cambios.
@@ -146,10 +146,10 @@ Adelantado: se hace con datos de prueba. Las pantallas llaman a `LumbreAPI`; hoy
 - [ ] **54. Paywall y RevenueCat** · MAT-265
   Necesita: H1 (RevenueCat y productos en App Store Connect).
 - [x] **55. Widget y App Intents** · MAT-266, MAT-267 · ✅ 2026-10-16: widget de la chispa de hoy y de captura (todos los tamaños, pantalla bloqueada y control de iOS 18), App Intents y atajos de Siri, links `lumbre://`. Falta probarlo en dispositivo.
-- [x] **56. Tarjeta para compartir** · MAT-268 · ✅ 2026-10-16: 1080×1920 con la chispa centrada. Las propuestas del paso 13 (margen de 340, formato feed) quedan sin aplicar.
+- [x] **56. Tarjeta para compartir** · MAT-268 · ✅ 2026-10-16: 1080×1920 con la chispa centrada. 2026-10-17: margen de 340 y categoría en una línea (flag `share_card_safe_zones`) y formato feed 1080×1350 como segunda opción (flag `share_card_feed`).
 - [x] **57. Perfil y ajustes** · MAT-269 · ✅ 2026-10-16: "Crear cuenta" con email; cerrar sesión y borrar la cuenta limpian el consentimiento.
   Incluye exportar datos y borrar cuenta.
-- [ ] **58. Accesibilidad** · MAT-271 · Adelantado el 2026-10-16: AX5 revisado en Hoy, Red, Perfil y Capturar (dos cortes arreglados) y Reducir movimiento en Capturar, planificador y chispa. Falta recorrer detalle, planificador y paywall en AX5 y VoiceOver en dispositivo.
+- [ ] **58. Accesibilidad** · MAT-271 · Adelantado el 2026-10-16: AX5 revisado en Hoy, Red, Perfil y Capturar (dos cortes arreglados) y Reducir movimiento en Capturar, planificador y chispa. 2026-10-17: AX5 recorrido también en detalle, planificador, paywall y onboarding, y la app en inglés. Falta VoiceOver en dispositivo.
   VoiceOver, Dynamic Type al máximo y Reducir movimiento en todas las pantallas.
 - [ ] **59. fastlane y TestFlight interno** · MAT-254 (parte 2)
   Necesita: H1 (Apple Developer).
