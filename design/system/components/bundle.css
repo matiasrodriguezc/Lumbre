@@ -8,7 +8,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-text)
 .ch-btn--primary{background:var(--accent);color:var(--on-accent)}
 .ch-btn--primary.is-glow{box-shadow:var(--glow-spark)}
 .ch-btn--secondary{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--border-strong)}
-.ch-btn--ghost{background:transparent;color:var(--accent-text);padding-left:var(--space-2);padding-right:var(--space-2)}
+.ch-btn--ghost{background:transparent;color:var(--ink);padding-left:var(--space-2);padding-right:var(--space-2)}
 .ch-btn--pro{background:var(--pro);color:var(--on-pro)}
 .ch-btn[disabled]{opacity:.4;cursor:not-allowed}
 /* Star */
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-text)
 /* Chip */
 .ch-chip{display:inline-flex;align-items:center;gap:var(--space-1);font:500 13px/18px var(--font-text);padding:6px var(--space-3);border-radius:var(--radius-full);background:var(--surface-alt);color:var(--ink)}
 .ch-chip--select{background:transparent;box-shadow:inset 0 0 0 1.5px var(--border-strong)}
-.ch-chip--on{background:var(--accent-soft);color:var(--accent-text);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.ch-chip--on{background:var(--accent);color:var(--on-accent);box-shadow:none}
 .ch-chip svg{width:14px;height:14px}
 /* Spark card */
 .ch-spark{position:relative;background:var(--surface);border-radius:var(--radius-lg);padding:var(--space-6) var(--space-5) var(--space-5);width:340px;box-sizing:border-box;box-shadow:var(--glow-spark)}
@@ -34,7 +34,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-text)
 .ch-spark__actions{display:flex;gap:var(--space-2);flex-wrap:wrap}
 /* Meter */
 .ch-meter{display:inline-flex;align-items:center;gap:var(--space-3);background:var(--surface);border-radius:var(--radius-full);padding:var(--space-2) var(--space-4) var(--space-2) var(--space-2);border:1px solid var(--border)}
-.ch-meter__n{font:600 28px/28px var(--font-display);font-variant-numeric:lining-nums tabular-nums;font-variation-settings:"SOFT" 100;color:var(--accent-text);background:var(--accent-soft);border-radius:var(--radius-full);padding:var(--space-2) var(--space-3)}
+.ch-meter__n{font:600 28px/28px var(--font-display);font-variant-numeric:lining-nums tabular-nums;font-variation-settings:"SOFT" 100;color:var(--ink);background:var(--accent-soft);border-radius:var(--radius-full);padding:var(--space-2) var(--space-3)}
 .ch-meter__n.is-empty{color:var(--ink-muted);background:var(--surface-alt)}
 .ch-meter__t{font:500 13px/18px var(--font-text);color:var(--ink-muted)}
 .ch-meter__t b{display:block;font:600 15px/20px var(--font-text);color:var(--ink)}
@@ -63,13 +63,13 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-text)
   box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px color-mix(in srgb, var(--ink) 12%, transparent),0 8px 24px rgba(0,0,0,.28)}
 .ch-nav__i{flex:1;min-width:0;height:50px;border-radius:var(--radius-full);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:600 10px/12px var(--font-text);color:var(--ink)}
 .ch-nav__i svg{width:22px;height:22px}
-.ch-nav__i.is-on{color:var(--accent-text);background:color-mix(in srgb, var(--ink) 10%, transparent)}
+.ch-nav__i.is-on{color:var(--ink);background:color-mix(in srgb, var(--ink) 10%, transparent)}
 .ch-add{flex:none;width:60px;height:60px;border-radius:50%;display:grid;place-items:center;color:var(--on-accent);
   background:color-mix(in srgb, var(--accent) 85%, transparent);-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 8px 24px color-mix(in srgb, var(--accent) 35%, transparent)}
 .ch-nav--md{justify-content:space-between;padding:0 6px;background:var(--surface-alt);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 6px 18px rgba(0,0,0,.28)}
 .ch-nav--md .ch-nav__i{flex:none;flex-direction:row;height:46px;padding:0 10px;font-size:0;color:var(--ink-muted)}
-.ch-nav--md .ch-nav__i.is-on{background:var(--accent-soft);color:var(--accent-text);font-size:13px;line-height:16px;gap:6px;padding:0 14px}
+.ch-nav--md .ch-nav__i.is-on{background:var(--accent-soft);color:var(--ink);font-size:13px;line-height:16px;gap:6px;padding:0 14px}
 .ch-add--md{border-radius:18px;background:var(--accent);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 6px 18px rgba(0,0,0,.28)}
 .ch-lbl{font:500 13px/18px var(--font-text);color:var(--ink-muted);margin:0 0 var(--space-1)}
 /* Plan tile */

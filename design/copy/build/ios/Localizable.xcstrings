@@ -1,0 +1,6826 @@
+{
+  "sourceLanguage" : "es",
+  "strings" : {
+    "%@ no deja leer publicaciones sin iniciar sesión. Si tiene texto, copialo y pegalo; si no, escribí qué idea te deja." : {
+      "comment" : "Estado inaccessible.social_login (Aviso). Ver design/estados/README.md. [estados.social_login_aviso]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ doesn't let us read posts without signing in. If it has text, copy and paste it; if not, write what idea it leaves you with."
+          }
+        }
+      }
+    },
+    "%@ por año. Cancelás cuando quieras." : {
+      "comment" : "[paywall.price_year]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ a year. Cancel anytime."
+          }
+        }
+      }
+    },
+    "%@ por mes" : {
+      "comment" : "[paywall.monthly_equiv]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ a month"
+          }
+        }
+      }
+    },
+    "%@ por mes · %lld días gratis" : {
+      "comment" : "[paywall.monthly_trial]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ a month · %lld days free"
+          }
+        }
+      }
+    },
+    "%@ por mes. Cancelás cuando quieras." : {
+      "comment" : "[paywall.price_month]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ a month. Cancel anytime."
+          }
+        }
+      }
+    },
+    "%@ y %@" : {
+      "comment" : "Las dos neuronas de la chispa. [widget.pending_pair]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ and %@"
+          }
+        }
+      }
+    },
+    "%@ · %@" : {
+      "comment" : "Tipo de fuente · fecha relativa (\"De un link · hace 2 días\"). [red.source_line]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %@"
+          }
+        }
+      }
+    },
+    "%lld capturas esperan conexión" : {
+      "comment" : "[capturar.queue.many]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld captures waiting for a connection"
+          }
+        }
+      }
+    },
+    "%lld chispas para encender" : {
+      "comment" : "[hoy.meter.many]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld sparks to light"
+          }
+        }
+      }
+    },
+    "%lld de %lld" : {
+      "comment" : "[perfil.quota_value]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld of %lld"
+          }
+        }
+      }
+    },
+    "%lld de %lld neuronas para la próxima chispa extra" : {
+      "comment" : "[hoy.meter.earn_a11y]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld of %lld neurons toward your next extra spark"
+          }
+        }
+      }
+    },
+    "%lld de 600 caracteres" : {
+      "comment" : "[capturar.char_count]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld of 600 characters"
+          }
+        }
+      }
+    },
+    "%lld neuronas" : {
+      "comment" : "[red.cat.many_neurons]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld neurons"
+          }
+        }
+      }
+    },
+    "%lld páginas escaneadas" : {
+      "comment" : "[capturar.scanned_many]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld scanned pages"
+          }
+        }
+      }
+    },
+    "%lld páginas. El archivo no se guarda: solo la idea." : {
+      "comment" : "[capturar.pdf_pages]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld pages. The file isn't saved: only the idea."
+          }
+        }
+      }
+    },
+    "1 captura espera conexión" : {
+      "comment" : "[capturar.queue.one]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 capture waiting for a connection"
+          }
+        }
+      }
+    },
+    "1 chispa para encender" : {
+      "comment" : "[hoy.meter.one]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 spark to light"
+          }
+        }
+      }
+    },
+    "1 neurona" : {
+      "comment" : "[red.cat.one_neuron]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 neuron"
+          }
+        }
+      }
+    },
+    "Abogado del diablo" : {
+      "comment" : "[planificador.shortcut.devil]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Devil's advocate"
+          }
+        }
+      }
+    },
+    "Abre el link en Safari" : {
+      "comment" : "[neurona.open_link_hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the link in Safari"
+          }
+        }
+      }
+    },
+    "Abre la chispa" : {
+      "comment" : "[neurona.open_spark_hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the spark"
+          }
+        }
+      }
+    },
+    "Abre la neurona" : {
+      "comment" : "[red.open_neuron_hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the neuron"
+          }
+        }
+      }
+    },
+    "Abre la neurona en tu red" : {
+      "comment" : "[chispa.open_neuron_hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the neuron in your network"
+          }
+        }
+      }
+    },
+    "Abrir" : {
+      "comment" : "[widget.open]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open"
+          }
+        }
+      }
+    },
+    "Abrir Ajustes" : {
+      "comment" : "[capturar.dictate.open_settings]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
+          }
+        }
+      }
+    },
+    "Abrí Capturar directo desde la pantalla de inicio." : {
+      "comment" : "[widget.capture_description]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Capture straight from your Home Screen."
+          }
+        }
+      }
+    },
+    "Abrí Lumbre para empezar" : {
+      "comment" : "[widget.signed_out_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Lumbre to get started"
+          }
+        }
+      }
+    },
+    "Abrí Lumbre para traerla." : {
+      "comment" : "[widget.no_data_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Lumbre to load it."
+          }
+        }
+      }
+    },
+    "Aceptar" : {
+      "comment" : "[comun.accept]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "Acepto" : {
+      "comment" : "[onboarding.consent.accept]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I agree"
+          }
+        }
+      }
+    },
+    "Activados" : {
+      "comment" : "[perfil.notifications_on]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On"
+          }
+        }
+      }
+    },
+    "Activalos en Ajustes" : {
+      "comment" : "[perfil.notifications_settings]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn them on in Settings"
+          }
+        }
+      }
+    },
+    "Activar" : {
+      "comment" : "[perfil.notifications_enable]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn on"
+          }
+        }
+      }
+    },
+    "Adjuntar un PDF" : {
+      "comment" : "[capturar.pdf.attach]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attach a PDF"
+          }
+        }
+      }
+    },
+    "Administrar suscripción" : {
+      "comment" : "[comun.manage_subscription]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage subscription"
+          }
+        }
+      }
+    },
+    "Ahora no" : {
+      "comment" : "[onboarding.push.not_now]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not now"
+          }
+        }
+      }
+    },
+    "Ahorrás %lld%%" : {
+      "comment" : "[paywall.save_pct]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save %lld%%"
+          }
+        }
+      }
+    },
+    "Algo que leíste, viste o pensaste" : {
+      "comment" : "[onboarding.seeds.placeholder]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something you read, saw or thought"
+          }
+        }
+      }
+    },
+    "Algo que leíste, viste o pensaste. Cada idea que guardás es una neurona, y con estas sale tu primera chispa." : {
+      "comment" : "[onboarding.seeds.subtitle]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something you read, saw or thought. Every idea you save is a neuron, and your first spark comes from these."
+          }
+        }
+      }
+    },
+    "Algo salió mal" : {
+      "comment" : "[comun.something_wrong]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong"
+          }
+        }
+      }
+    },
+    "Algo salió mal." : {
+      "comment" : "[capturar.queue.failed_generic]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong."
+          }
+        }
+      }
+    },
+    "Algo salió mal. Probá de nuevo en un rato." : {
+      "comment" : "[errores.later]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong. Try again in a bit."
+          }
+        }
+      }
+    },
+    "Algo salió mal. Probá de nuevo." : {
+      "comment" : "[comun.something_wrong_retry]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong. Try again."
+          }
+        }
+      }
+    },
+    "Anteriores" : {
+      "comment" : "[hoy.previous]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Earlier"
+          }
+        }
+      }
+    },
+    "Anual" : {
+      "comment" : "[paywall.annual]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yearly"
+          }
+        }
+      }
+    },
+    "Apariencia" : {
+      "comment" : "[perfil.appearance]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance"
+          }
+        }
+      }
+    },
+    "Armá un backlog" : {
+      "comment" : "[planificador.shortcut.backlog]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Build a backlog"
+          }
+        }
+      }
+    },
+    "Armá un backlog de 5 tareas para arrancar con esta idea." : {
+      "comment" : "[planificador.shortcut.backlog_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Build a 5-task backlog to get started with this idea."
+          }
+        }
+      }
+    },
+    "Audio" : {
+      "comment" : "[red.source.audio]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio"
+          }
+        }
+      }
+    },
+    "Avisame" : {
+      "comment" : "[onboarding.push.allow]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notify me"
+          }
+        }
+      }
+    },
+    "Avisos" : {
+      "comment" : "[perfil.notifications]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications"
+          }
+        }
+      }
+    },
+    "BORRAR" : {
+      "comment" : "Palabra que hay que escribir para confirmar. Única excepción a sentence case. [perfil.delete.word]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DELETE"
+          }
+        }
+      }
+    },
+    "Bajá cada idea a un plan con el método de los tres cuartos de Walt Disney: soñarla en grande, hacerla real y buscarle los agujeros." : {
+      "comment" : "[planificador.pro.body_disney]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn each idea into a plan with Walt Disney's three-room method: dream it big, make it real and find its holes."
+          }
+        }
+      }
+    },
+    "Bajá cada idea a un plan: un backlog para arrancar, un abogado del diablo y el stack que usarías." : {
+      "comment" : "[planificador.pro.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn each idea into a plan: a backlog to get started, a devil's advocate and the stack you'd use."
+          }
+        }
+      }
+    },
+    "Borra tu cuenta y todo lo que guardaste. No se puede deshacer." : {
+      "comment" : "[perfil.delete_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deletes your account and everything you saved. This can't be undone."
+          }
+        }
+      }
+    },
+    "Borrador · " : {
+      "comment" : "[red.draft_prefix]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Draft · "
+          }
+        }
+      }
+    },
+    "Borrador. Lumbre no estaba del todo seguro de esta idea: confirmala o corregila." : {
+      "comment" : "[neurona.draft_notice]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Draft. Lumbre wasn't quite sure about this idea: confirm it or fix it."
+          }
+        }
+      }
+    },
+    "Borradores para confirmar" : {
+      "comment" : "[red.drafts.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drafts to confirm"
+          }
+        }
+      }
+    },
+    "Borrar" : {
+      "comment" : "[comun.delete]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
+    },
+    "Borrar categoría" : {
+      "comment" : "[red.cat.delete]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete category"
+          }
+        }
+      }
+    },
+    "Borrar circuito" : {
+      "comment" : "[comun.delete_circuit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete circuit"
+          }
+        }
+      }
+    },
+    "Borrar cuenta" : {
+      "comment" : "[comun.delete_account]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete account"
+          }
+        }
+      }
+    },
+    "Borrar la cuenta no cancela tu suscripción a Pro. Cancelala en Ajustes > tu nombre > Suscripciones." : {
+      "comment" : "[perfil.delete.subscription]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deleting your account doesn't cancel your Pro subscription. Cancel it in Settings > your name > Subscriptions."
+          }
+        }
+      }
+    },
+    "Borrar mi cuenta" : {
+      "comment" : "[perfil.delete.button]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete my account"
+          }
+        }
+      }
+    },
+    "Borrar neurona" : {
+      "comment" : "[neurona.delete]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete neuron"
+          }
+        }
+      }
+    },
+    "Buscando ideas parecidas…" : {
+      "comment" : "[red.searching]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Looking for similar ideas…"
+          }
+        }
+      }
+    },
+    "Buscar ideas, no palabras" : {
+      "comment" : "[red.search]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search ideas, not words"
+          }
+        }
+      }
+    },
+    "Cada 3 neuronas que guardás hoy ganás una chispa extra, hasta 2 por día." : {
+      "comment" : "[hoy.extra.how_free]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every 3 neurons you save today earn you an extra spark, up to 2 a day."
+          }
+        }
+      }
+    },
+    "Cada respuesta usa una consulta del planificador." : {
+      "comment" : "[planificador.cost_note]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Each reply uses one planner message."
+          }
+        }
+      }
+    },
+    "Cambiar categoría" : {
+      "comment" : "[comun.change_category]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change category"
+          }
+        }
+      }
+    },
+    "Cambiar el email" : {
+      "comment" : "[cuenta.change_email]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change email"
+          }
+        }
+      }
+    },
+    "Cancelala cuando quieras desde Ajustes > tu nombre > Suscripciones." : {
+      "comment" : "[paywall.cancel_how]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel anytime in Settings > your name > Subscriptions."
+          }
+        }
+      }
+    },
+    "Cancelar" : {
+      "comment" : "[comun.cancel]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "Cancelás cuando quieras" : {
+      "comment" : "[paywall.cancel_anytime]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel anytime"
+          }
+        }
+      }
+    },
+    "Captura de pantalla" : {
+      "comment" : "[red.source.screenshot]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshot"
+          }
+        }
+      }
+    },
+    "Capturar" : {
+      "comment" : "Botón + flotante y accesos para guardar una idea. [comun.capture]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capture"
+          }
+        }
+      }
+    },
+    "Capturar idea" : {
+      "comment" : "Control de iOS 18 (propuesta). [widget.control_capture]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capture idea"
+          }
+        }
+      }
+    },
+    "Capturar neuronas" : {
+      "comment" : "[comun.capture_neurons]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capture neurons"
+          }
+        }
+      }
+    },
+    "Capturar una idea" : {
+      "comment" : "Botón de captura del widget grande. [widget.capture_long]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capture an idea"
+          }
+        }
+      }
+    },
+    "Capturas de hoy" : {
+      "comment" : "[perfil.quota.captures]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Captures today"
+          }
+        }
+      }
+    },
+    "Cargando los precios" : {
+      "comment" : "[paywall.loading]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading prices"
+          }
+        }
+      }
+    },
+    "Categoría" : {
+      "comment" : "[comun.category]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category"
+          }
+        }
+      }
+    },
+    "Categoría de la neurona %lld" : {
+      "comment" : "[onboarding.seeds.category_n]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category for neuron %lld"
+          }
+        }
+      }
+    },
+    "Categoría: %@" : {
+      "comment" : "Accesibilidad. %@ es el nombre de la categoría. [comun.category_label]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category: %@"
+          }
+        }
+      }
+    },
+    "Categorías" : {
+      "comment" : "[red.categories]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categories"
+          }
+        }
+      }
+    },
+    "Categorías sugeridas" : {
+      "comment" : "[onboarding.seeds.suggested]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggested categories"
+          }
+        }
+      }
+    },
+    "Cerrar" : {
+      "comment" : "[comun.close]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
+    },
+    "Cerrar sesión" : {
+      "comment" : "[comun.sign_out]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign out"
+          }
+        }
+      }
+    },
+    "Chispa" : {
+      "comment" : "[chispa.detail_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spark"
+          }
+        }
+      }
+    },
+    "Chispa de hoy" : {
+      "comment" : "Nombre en la galería de widgets. [widget.spark_name]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today's spark"
+          }
+        }
+      }
+    },
+    "Chispa de hoy encendida" : {
+      "comment" : "Contador cuando la chispa de hoy ya se encendió (widget y Hoy). Hoy solo está en el preview del componente. [hoy.meter.lit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today's spark is lit"
+          }
+        }
+      }
+    },
+    "Chispa por encender" : {
+      "comment" : "[hoy.pending_a11y]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spark waiting to be lit"
+          }
+        }
+      }
+    },
+    "Chispa por encender: %@, de %@, con %@, de %@. Tocá para encenderla." : {
+      "comment" : "[widget.a11y_pending]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spark to light: %1$@, from %2$@, with %3$@, from %4$@. Tap to light it."
+          }
+        }
+      }
+    },
+    "Chispa: %@. %@ Combina %@, de %@, con %@, de %@." : {
+      "comment" : "Lo que anuncia VoiceOver al revelar. Título, cuerpo, neurona A, categoría A, neurona B, categoría B. [reveal.a11y_summary]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spark: %1$@. %2$@ It combines %3$@, from %4$@, with %5$@, from %6$@."
+          }
+        }
+      }
+    },
+    "Chispas donde aparece" : {
+      "comment" : "[neurona.sparks]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sparks it appears in"
+          }
+        }
+      }
+    },
+    "Chispas extra de hoy" : {
+      "comment" : "[perfil.quota.extra]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra sparks today"
+          }
+        }
+      }
+    },
+    "Chispas y destilación con IA" : {
+      "comment" : "[perfil.ai.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sparks and distilling with AI"
+          }
+        }
+      }
+    },
+    "Ciencia" : {
+      "comment" : "[perfiles.cat.science]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Science"
+          }
+        }
+      }
+    },
+    "Circuito: %@" : {
+      "comment" : "[planificador.circuit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Circuit: %@"
+          }
+        }
+      }
+    },
+    "Circuitos" : {
+      "comment" : "Pestaña y título: los proyectos. [nav.circuits]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Circuits"
+          }
+        }
+      }
+    },
+    "Circuitos ilimitados" : {
+      "comment" : "[paywall.benefit.circuits]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited circuits"
+          }
+        }
+      }
+    },
+    "Code review" : {
+      "comment" : "[onboarding.welcome.example_b]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Code review"
+          }
+        }
+      }
+    },
+    "Combinar con…" : {
+      "comment" : "[neurona.combine]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Combine with…"
+          }
+        }
+      }
+    },
+    "Como el sistema" : {
+      "comment" : "[perfil.theme.system]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Match system"
+          }
+        }
+      }
+    },
+    "Compartir" : {
+      "comment" : "[chispa.share]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share"
+          }
+        }
+      }
+    },
+    "Compartir imagen" : {
+      "comment" : "[chispa.share.image]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share image"
+          }
+        }
+      }
+    },
+    "Compra pendiente" : {
+      "comment" : "[paywall.pending]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchase pending"
+          }
+        }
+      }
+    },
+    "Comprando" : {
+      "comment" : "Accesibilidad del indicador de compra. [paywall.buying]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchasing"
+          }
+        }
+      }
+    },
+    "Con Lumbre Pro elegís qué neuronas se conectan." : {
+      "comment" : "[neurona.combine_pro]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "With Lumbre Pro you choose which neurons connect."
+          }
+        }
+      }
+    },
+    "Con Pro" : {
+      "comment" : "[perfil.with_pro]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "With Pro"
+          }
+        }
+      }
+    },
+    "Con Pro, hasta 10 por día" : {
+      "comment" : "[hoy.extra.pro_upsell]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "With Pro, up to 10 a day"
+          }
+        }
+      }
+    },
+    "Con el plan gratis tenés un circuito. Con Pro, todos los que quieras." : {
+      "comment" : "[comun.free_one_circuit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The free plan has one circuit. With Pro, as many as you want."
+          }
+        }
+      }
+    },
+    "Con esto elegimos mejor las próximas chispas." : {
+      "comment" : "[chispa.why_not_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This helps us pick better sparks next time."
+          }
+        }
+      }
+    },
+    "Con tres la primera chispa sale mejor, pero podés seguir y sumar más después." : {
+      "comment" : "[onboarding.seeds.fewer_ok]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Three make a better first spark, but you can keep going and add more later."
+          }
+        }
+      }
+    },
+    "Confirmar" : {
+      "comment" : "[comun.confirm]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm"
+          }
+        }
+      }
+    },
+    "Conocé Lumbre Pro" : {
+      "comment" : "[comun.meet_pro]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meet Lumbre Pro"
+          }
+        }
+      }
+    },
+    "Contenido y escritura" : {
+      "comment" : "[perfiles.content]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Content and writing"
+          }
+        }
+      }
+    },
+    "Continuar" : {
+      "comment" : "[comun.continue]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "Continuar con Apple" : {
+      "comment" : "[cuenta.apple]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue with Apple"
+          }
+        }
+      }
+    },
+    "Continuar con Google" : {
+      "comment" : "[cuenta.google]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue with Google"
+          }
+        }
+      }
+    },
+    "Copiar" : {
+      "comment" : "[planificador.copy]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy"
+          }
+        }
+      }
+    },
+    "Crear" : {
+      "comment" : "[comun.create]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create"
+          }
+        }
+      }
+    },
+    "Crear circuito" : {
+      "comment" : "[circuitos.create]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create circuit"
+          }
+        }
+      }
+    },
+    "Crear cuenta" : {
+      "comment" : "[comun.create_account]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create account"
+          }
+        }
+      }
+    },
+    "Crear cuenta o entrar" : {
+      "comment" : "Botón secundario de la bienvenida (propuesta en design/prototipo/invitado.md: reemplaza a \"Ya tengo cuenta\"). [cuenta.entry]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create account or sign in"
+          }
+        }
+      }
+    },
+    "Crear otro circuito" : {
+      "comment" : "[chispa.save.another]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create another circuit"
+          }
+        }
+      }
+    },
+    "Creá tu cuenta" : {
+      "comment" : "[cuenta.create.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create your account"
+          }
+        }
+      }
+    },
+    "Creá tu cuenta o entrá" : {
+      "comment" : "[cuenta.entry.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create your account or sign in"
+          }
+        }
+      }
+    },
+    "Creá tu cuenta para ganar chispas extra guardando neuronas." : {
+      "comment" : "[hoy.extra.guest]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create your account to earn extra sparks by saving neurons."
+          }
+        }
+      }
+    },
+    "Creá tu cuenta para no perder tus ideas" : {
+      "comment" : "[cuenta.banner.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create your account so you don't lose your ideas"
+          }
+        }
+      }
+    },
+    "Creá tu cuenta para recibir tu chispa diaria" : {
+      "comment" : "Solo si no se confirma que el invitado recibe la chispa (design/prototipo/invitado.md). [widget.guest_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create your account to get your daily spark"
+          }
+        }
+      }
+    },
+    "Creá tu cuenta para usar esto." : {
+      "comment" : "[errores.api.account_required]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create your account to use this."
+          }
+        }
+      }
+    },
+    "Crítico" : {
+      "comment" : "[planificador.room.critic]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Critic"
+          }
+        }
+      }
+    },
+    "Cuando guardes una chispa, elegí este circuito para sumarla." : {
+      "comment" : "[circuitos.detail.empty_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When you save a spark, pick this circuit to add it."
+          }
+        }
+      }
+    },
+    "Cuarto actual: %@" : {
+      "comment" : "[planificador.room_current]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current room: %@"
+          }
+        }
+      }
+    },
+    "Cuenta" : {
+      "comment" : "[cuenta.account]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account"
+          }
+        }
+      }
+    },
+    "Curiosidad libre" : {
+      "comment" : "[perfiles.curiosity]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pure curiosity"
+          }
+        }
+      }
+    },
+    "Código" : {
+      "comment" : "[cuenta.code]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Code"
+          }
+        }
+      }
+    },
+    "Código de 6 dígitos" : {
+      "comment" : "[cuenta.code_a11y]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "6-digit code"
+          }
+        }
+      }
+    },
+    "Cómo se ve si funciona por completo, sin presupuesto ni reglas. Y después, más grande." : {
+      "comment" : "[planificador.room.dreamer_desc]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What it looks like if it fully works, with no budget and no rules. Then, bigger."
+          }
+        }
+      }
+    },
+    "De la biblioteca de Lumbre" : {
+      "comment" : "[neurona.from_library]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From the Lumbre library"
+          }
+        }
+      }
+    },
+    "De un link" : {
+      "comment" : "[red.source.link]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From a link"
+          }
+        }
+      }
+    },
+    "Dejá solo la parte que te importa" : {
+      "comment" : "[capturar.keep_relevant]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep just the part that matters to you"
+          }
+        }
+      }
+    },
+    "Descartar" : {
+      "comment" : "[comun.discard]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard"
+          }
+        }
+      }
+    },
+    "Después, %@ por año. Cancelás cuando quieras." : {
+      "comment" : "[paywall.after_trial_year]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Then %@ a year. Cancel anytime."
+          }
+        }
+      }
+    },
+    "Destilaciones del mes" : {
+      "comment" : "[perfil.quota.distill]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distills this month"
+          }
+        }
+      }
+    },
+    "Destilación automática de links, fotos y PDFs" : {
+      "comment" : "[paywall.benefit.distill]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatic distilling of links, photos and PDFs"
+          }
+        }
+      }
+    },
+    "Destilado por Lumbre" : {
+      "comment" : "[neurona.distilled]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distilled by Lumbre"
+          }
+        }
+      }
+    },
+    "Destilando…" : {
+      "comment" : "[capturar.distilling]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distilling…"
+          }
+        }
+      }
+    },
+    "Destilar automáticamente" : {
+      "comment" : "[capturar.distill_auto]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distill automatically"
+          }
+        }
+      }
+    },
+    "Destilar el PDF" : {
+      "comment" : "[capturar.distill_pdf]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distill the PDF"
+          }
+        }
+      }
+    },
+    "Destilar la imagen" : {
+      "comment" : "[capturar.distill_image]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distill the image"
+          }
+        }
+      }
+    },
+    "Destilar lee links, fotos y PDFs y saca las neuronas por vos. Con una cuenta gratis tenés pruebas todos los meses." : {
+      "comment" : "[cuenta.gate.distill]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distilling reads links, photos and PDFs and pulls out the neurons for you. A free account gets you trials every month."
+          }
+        }
+      }
+    },
+    "Detener respuesta" : {
+      "comment" : "[planificador.stop]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop response"
+          }
+        }
+      }
+    },
+    "Dice algo falso" : {
+      "comment" : "[chispa.report.wrong]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It says something false"
+          }
+        }
+      }
+    },
+    "Dictar" : {
+      "comment" : "[capturar.dictate.start]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dictate"
+          }
+        }
+      }
+    },
+    "Diseño" : {
+      "comment" : "[perfiles.design]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Design"
+          }
+        }
+      }
+    },
+    "Donde se encienden las ideas" : {
+      "comment" : "Tagline de la marca. Bienvenida y tarjeta para compartir. [nav.tagline]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Where ideas catch fire"
+          }
+        }
+      }
+    },
+    "Dos neuronas de tu red se conectaron. Entrá a ver qué chispa salió." : {
+      "comment" : "[comun.spark_ready_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Two neurons in your network just connected. Come see what spark came out."
+          }
+        }
+      }
+    },
+    "Dos neuronas tuyas de mundos distintos están por conectarse." : {
+      "comment" : "[reveal.about_to_connect]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Two of your neurons from different worlds are about to connect."
+          }
+        }
+      }
+    },
+    "Dónde la guardás" : {
+      "comment" : "[chispa.save.where]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Where to save it"
+          }
+        }
+      }
+    },
+    "Editar" : {
+      "comment" : "[comun.edit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        }
+      }
+    },
+    "Editar neurona" : {
+      "comment" : "[neurona.edit_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit neuron"
+          }
+        }
+      }
+    },
+    "Ej.: Cobrar por suscripción cambia quién te elige" : {
+      "comment" : "[perfiles.ex.business]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g. Charging by subscription changes who chooses you"
+          }
+        }
+      }
+    },
+    "Ej.: La gente usa lo que ve primero, no lo que es mejor" : {
+      "comment" : "[perfiles.ex.product]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g. People use what they see first, not what's best"
+          }
+        }
+      }
+    },
+    "Ej.: Las hormigas encuentran el camino más corto dejando rastros" : {
+      "comment" : "[perfiles.ex.nature]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g. Ants find the shortest path by leaving trails"
+          }
+        }
+      }
+    },
+    "Ej.: Las rutas comerciales movían ideas, no solo cosas" : {
+      "comment" : "[perfiles.ex.history]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g. Trade routes moved ideas, not just goods"
+          }
+        }
+      }
+    },
+    "Ej.: Limitar la oferta sube el valor percibido" : {
+      "comment" : "[perfiles.ex.marketing]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g. Limiting supply raises perceived value"
+          }
+        }
+      }
+    },
+    "Ej.: Lo que se ve primero es lo que parece importar" : {
+      "comment" : "[perfiles.ex.design]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g. What you see first is what seems to matter"
+          }
+        }
+      }
+    },
+    "Ej.: Los PR chicos se revisan más rápido y con menos errores" : {
+      "comment" : "[perfiles.ex.software]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g. Small PRs get reviewed faster and with fewer bugs"
+          }
+        }
+      }
+    },
+    "Ej.: Los sistemas complejos se autoorganizan sin un jefe" : {
+      "comment" : "[perfiles.ex.science]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g. Complex systems organize themselves without a boss"
+          }
+        }
+      }
+    },
+    "Ej.: Un buen default ahorra mil ajustes" : {
+      "comment" : "[perfiles.ex.interfaces]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g. A good default saves a thousand settings"
+          }
+        }
+      }
+    },
+    "Ej.: Un buen gancho deja una pregunta abierta" : {
+      "comment" : "[perfiles.ex.writing]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g. A good hook leaves a question open"
+          }
+        }
+      }
+    },
+    "Ej.: Un personaje se define por lo que elige perder" : {
+      "comment" : "[perfiles.ex.narrative]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g. A character is defined by what they choose to lose"
+          }
+        }
+      }
+    },
+    "Ej.: Urbanismo" : {
+      "comment" : "[onboarding.seeds.category_placeholder]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g. Urbanism"
+          }
+        }
+      }
+    },
+    "Ejemplo de aviso" : {
+      "comment" : "Accesibilidad de la vista previa del push. [onboarding.push.sample]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sample notification"
+          }
+        }
+      }
+    },
+    "Ejemplo: onda verde de semáforos por code review" : {
+      "comment" : "[onboarding.welcome.example_a11y]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Example: green-wave traffic lights meet code review"
+          }
+        }
+      }
+    },
+    "El PDF pesa más de 20 MB. Probá con uno más liviano." : {
+      "comment" : "[capturar.pdf_too_big]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The PDF is over 20 MB. Try a lighter one."
+          }
+        }
+      }
+    },
+    "El audio no se guarda." : {
+      "comment" : "[capturar.dictate.no_audio_saved]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The audio isn't saved."
+          }
+        }
+      }
+    },
+    "El cambio se ve en todas sus neuronas." : {
+      "comment" : "[red.cat.rename_note]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The change shows on all its neurons."
+          }
+        }
+      }
+    },
+    "El código no es correcto o ya venció. Revisalo o pedí otro." : {
+      "comment" : "[errores.api.invalid_code]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The code is wrong or has expired. Check it or ask for a new one."
+          }
+        }
+      }
+    },
+    "El dictado no está disponible" : {
+      "comment" : "[capturar.dictate.unavailable]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dictation isn't available"
+          }
+        }
+      }
+    },
+    "El link no parece válido." : {
+      "comment" : "Motivo que se agrega al aviso de captura descartada. [estados.queue_discarded_reason_3]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The link doesn't look valid."
+          }
+        }
+      }
+    },
+    "El método todavía no arrancó" : {
+      "comment" : "[planificador.not_started]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The method hasn't started yet"
+          }
+        }
+      }
+    },
+    "El planificador es parte de Lumbre Pro" : {
+      "comment" : "[planificador.pro.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The planner is part of Lumbre Pro"
+          }
+        }
+      }
+    },
+    "El planificador es parte de Lumbre Pro, y Pro va con una cuenta. Creala primero: lo que guardaste pasa con vos." : {
+      "comment" : "[cuenta.gate.planner]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The planner is part of Lumbre Pro, and Pro needs an account. Create one first: what you've saved comes with you."
+          }
+        }
+      }
+    },
+    "El planificador está escribiendo" : {
+      "comment" : "[planificador.typing]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The planner is typing"
+          }
+        }
+      }
+    },
+    "El planificador necesita conexión. Podés leer la conversación mientras tanto." : {
+      "comment" : "Estado offline.planner (Texto). Ver design/estados/README.md. [estados.planner_texto]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The planner needs a connection. You can read the conversation in the meantime."
+          }
+        }
+      }
+    },
+    "El principio lo saca la destilación y no se edita." : {
+      "comment" : "[neurona.principle_locked]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The principle comes from distilling and can't be edited."
+          }
+        }
+      }
+    },
+    "El sueño en una frase, el plan en cinco pasos, los tres agujeros y el cuarto que salteás." : {
+      "comment" : "[planificador.room.synthesis_desc]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The dream in one sentence, the plan in five steps, the three holes and the room you skip."
+          }
+        }
+      }
+    },
+    "Elegir foto" : {
+      "comment" : "[capturar.photo.choose]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose photo"
+          }
+        }
+      }
+    },
+    "Elegí hasta dos. Lo podés cambiar cuando quieras." : {
+      "comment" : "[onboarding.profile.subtitle]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick up to two. You can change this anytime."
+          }
+        }
+      }
+    },
+    "Elegí hasta dos. Son la lente con la que se eligen y escriben tus chispas." : {
+      "comment" : "[perfil.creative.subtitle]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick up to two. They're the lens used to choose and write your sparks."
+          }
+        }
+      }
+    },
+    "Elegí otra neurona y Lumbre enciende una chispa con las dos." : {
+      "comment" : "[neurona.combine_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick another neuron and Lumbre lights a spark with both."
+          }
+        }
+      }
+    },
+    "Elegí otra o mirá todas las neuronas." : {
+      "comment" : "[red.empty_category_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick another one or see all neurons."
+          }
+        }
+      }
+    },
+    "Email" : {
+      "comment" : "[cuenta.email]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
+    },
+    "Empecemos por el Soñador." : {
+      "comment" : "[planificador.start_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let's start with the Dreamer."
+          }
+        }
+      }
+    },
+    "Empezar" : {
+      "comment" : "[onboarding.welcome.start]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get started"
+          }
+        }
+      }
+    },
+    "En esta foto no encontramos una idea para guardar. Escribí qué te deja y la guardamos con la foto." : {
+      "comment" : "Estado inaccessible.image_no_idea (Aviso). Ver design/estados/README.md. [estados.image_no_idea_aviso]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We didn't find an idea to save in this photo. Write what it leaves you with and we'll save it with the photo."
+          }
+        }
+      }
+    },
+    "En este audio no encontramos palabras para transcribir. Escribí qué idea te deja y la guardamos." : {
+      "comment" : "Estado inaccessible.audio_no_speech (Aviso). Ver design/estados/README.md. [estados.audio_no_speech_aviso]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We didn't find any words to transcribe in this audio. Write what idea it leaves you with and we'll save it."
+          }
+        }
+      }
+    },
+    "En una línea, con tus palabras" : {
+      "comment" : "[comun.one_line]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In one line, in your own words"
+          }
+        }
+      }
+    },
+    "Encender" : {
+      "comment" : "Botón del widget chico y del 2×2. [widget.pending_cta_short]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light it"
+          }
+        }
+      }
+    },
+    "Encender la chispa" : {
+      "comment" : "Botón principal negro con el punto rosa. [reveal.ignite]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light the spark"
+          }
+        }
+      }
+    },
+    "Encendiendo…" : {
+      "comment" : "[hoy.extra.lighting]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lighting…"
+          }
+        }
+      }
+    },
+    "Entendido" : {
+      "comment" : "[comun.ok]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Got it"
+          }
+        }
+      }
+    },
+    "Entrar" : {
+      "comment" : "[cuenta.sign_in]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in"
+          }
+        }
+      }
+    },
+    "Entrar al cuarto del Soñador" : {
+      "comment" : "[planificador.start]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter the Dreamer's room"
+          }
+        }
+      }
+    },
+    "Entrar con ese email" : {
+      "comment" : "[cuenta.signin_with_email]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in with that email"
+          }
+        }
+      }
+    },
+    "Entrá a tu cuenta" : {
+      "comment" : "[cuenta.signin.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in to your account"
+          }
+        }
+      }
+    },
+    "Entrá de nuevo con tu email para seguir. Tus neuronas, chispas y circuitos están guardados en tu cuenta." : {
+      "comment" : "Estado error.session_expired (Cuerpo). Ver design/estados/README.md. [estados.session_expired_cuerpo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in again with your email to keep going. Your neurons, sparks and circuits are saved in your account."
+          }
+        }
+      }
+    },
+    "Enviar" : {
+      "comment" : "[planificador.send]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send"
+          }
+        }
+      }
+    },
+    "Es obvia" : {
+      "comment" : "[chispa.feedback.obvious]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It's obvious"
+          }
+        }
+      }
+    },
+    "Es ofensiva" : {
+      "comment" : "[chispa.report.offensive]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It's offensive"
+          }
+        }
+      }
+    },
+    "Es peligrosa" : {
+      "comment" : "[chispa.report.dangerous]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It's dangerous"
+          }
+        }
+      }
+    },
+    "Escanear página" : {
+      "comment" : "[capturar.scan]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan page"
+          }
+        }
+      }
+    },
+    "Escribí o preguntá…" : {
+      "comment" : "[planificador.input]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write or ask…"
+          }
+        }
+      }
+    },
+    "Escritura" : {
+      "comment" : "[perfiles.cat.writing]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Writing"
+          }
+        }
+      }
+    },
+    "Escuchando" : {
+      "comment" : "[capturar.dictate.listening]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listening"
+          }
+        }
+      }
+    },
+    "Escuchando…" : {
+      "comment" : "[capturar.dictate.listening_dots]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listening…"
+          }
+        }
+      }
+    },
+    "Esperando" : {
+      "comment" : "Etiqueta de accesibilidad del indicador de carga. [comun.waiting]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting"
+          }
+        }
+      }
+    },
+    "Esta nota tiene muro de pago: solo pudimos leer el título. Escribí qué idea te deja y la guardamos con el link." : {
+      "comment" : "Estado inaccessible.paywall_link (Aviso). Ver design/estados/README.md. [estados.paywall_link_aviso]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This article is behind a paywall: we could only read the title. Write what idea it leaves you with and we'll save it with the link."
+          }
+        }
+      }
+    },
+    "Este PDF no tiene texto seleccionable. Escaneá las páginas que te importan con Escanear página, o escribí qué idea te deja." : {
+      "comment" : "Estado inaccessible.pdf_no_text (Aviso). Ver design/estados/README.md. [estados.pdf_no_text_aviso]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This PDF has no selectable text. Scan the pages you care about with Scan page, or write what idea it leaves you with."
+          }
+        }
+      }
+    },
+    "Este PDF tiene contraseña. Sacásela o probá con otro." : {
+      "comment" : "Estado inaccessible.file_unreadable (PDF con contraseña). Ver design/estados/README.md. [estados.file_unreadable_pdf_con_contrasena]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This PDF is password-protected. Remove the password or try another one."
+          }
+        }
+      }
+    },
+    "Este documento es privado: Lumbre no puede abrirlo. Escribí qué idea te deja, o compartilo como PDF." : {
+      "comment" : "Estado inaccessible.private_doc (Aviso). Ver design/estados/README.md. [estados.private_doc_aviso]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This document is private: Lumbre can't open it. Write what idea it leaves you with, or share it as a PDF."
+          }
+        }
+      }
+    },
+    "Esto es con cuenta" : {
+      "comment" : "Hoja que aparece cuando un invitado toca algo que necesita cuenta (ver design/prototipo/invitado.md). [cuenta.gate.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This needs an account"
+          }
+        }
+      }
+    },
+    "Esto es parte de Lumbre Pro." : {
+      "comment" : "[errores.api.pro_only]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is part of Lumbre Pro."
+          }
+        }
+      }
+    },
+    "Esto no se puede deshacer" : {
+      "comment" : "[perfil.delete.cant_undo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This can't be undone"
+          }
+        }
+      }
+    },
+    "Esto ya no está en tu red" : {
+      "comment" : "Estado error.not_found (Título). Ver design/estados/README.md. [estados.not_found_titulo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is no longer in your network"
+          }
+        }
+      }
+    },
+    "Exportar a Markdown" : {
+      "comment" : "[comun.export_markdown]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export to Markdown"
+          }
+        }
+      }
+    },
+    "Exportar mis datos" : {
+      "comment" : "[perfil.export]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export my data"
+          }
+        }
+      }
+    },
+    "Falta el permiso" : {
+      "comment" : "[capturar.dictate.no_permission]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permission needed"
+          }
+        }
+      }
+    },
+    "Filtrar neuronas" : {
+      "comment" : "[neurona.filter]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter neurons"
+          }
+        }
+      }
+    },
+    "Filtrar por categoría" : {
+      "comment" : "[red.filter_category]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter by category"
+          }
+        }
+      }
+    },
+    "Foto" : {
+      "comment" : "[capturar.kind.photo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo"
+          }
+        }
+      }
+    },
+    "Fragmento subrayado: %@" : {
+      "comment" : "[neurona.excerpt_a11y]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Highlighted excerpt: %@"
+          }
+        }
+      }
+    },
+    "Fuente" : {
+      "comment" : "[neurona.source]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Source"
+          }
+        }
+      }
+    },
+    "Gracias por avisar. La vamos a revisar." : {
+      "comment" : "[comun.report_thanks]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thanks for letting us know. We'll review it."
+          }
+        }
+      }
+    },
+    "Gracias por bancar Lumbre. Tu suscripción se administra desde tu cuenta de Apple." : {
+      "comment" : "[paywall.already_pro_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thanks for backing Lumbre. Your subscription is managed from your Apple account."
+          }
+        }
+      }
+    },
+    "Gracias. Con esto elegimos mejor las próximas." : {
+      "comment" : "[chispa.feedback.thanks]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thanks. This helps us pick better ones."
+          }
+        }
+      }
+    },
+    "Grafito" : {
+      "comment" : "Tema oscuro. [perfil.theme.graphite]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Graphite"
+          }
+        }
+      }
+    },
+    "Gratis" : {
+      "comment" : "Nombre del plan gratis. [comun.free]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        }
+      }
+    },
+    "Gris" : {
+      "comment" : "Tema claro, el de marca. [perfil.theme.gray]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gray"
+          }
+        }
+      }
+    },
+    "Guardada" : {
+      "comment" : "Femenino: la idea. También estado de una chispa guardada. [onboarding.seeds.saved]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saved"
+          }
+        }
+      }
+    },
+    "Guardada en “%@”" : {
+      "comment" : "Estado de una chispa en Anteriores. %@ es el circuito. [hoy.status.saved_in]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saved in “%@”"
+          }
+        }
+      }
+    },
+    "Guardado el %@" : {
+      "comment" : "[neurona.saved_on]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saved on %@"
+          }
+        }
+      }
+    },
+    "Guardado sin conexión: lo mandamos cuando vuelva" : {
+      "comment" : "[capturar.offline_queued]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saved offline: we'll send it when you're back online"
+          }
+        }
+      }
+    },
+    "Guardamos %lld neuronas" : {
+      "comment" : "[capturar.draft.saved_many]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We saved %lld neurons"
+          }
+        }
+      }
+    },
+    "Guardando" : {
+      "comment" : "Etiqueta de accesibilidad del indicador de carga. [comun.saving]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saving"
+          }
+        }
+      }
+    },
+    "Guardar" : {
+      "comment" : "[comun.save]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        }
+      }
+    },
+    "Guardar %lld neuronas y seguir" : {
+      "comment" : "[onboarding.seeds.save_many]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save %lld neurons and continue"
+          }
+        }
+      }
+    },
+    "Guardar cambios" : {
+      "comment" : "[capturar.draft.save_changes]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save changes"
+          }
+        }
+      }
+    },
+    "Guardar idea" : {
+      "comment" : "Guarda una chispa (la idea que salió). [comun.save_idea]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save idea"
+          }
+        }
+      }
+    },
+    "Guardar neurona" : {
+      "comment" : "[capturar.save]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save neuron"
+          }
+        }
+      }
+    },
+    "Guardar neurona y seguir" : {
+      "comment" : "[onboarding.seeds.save_one]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save neuron and continue"
+          }
+        }
+      }
+    },
+    "Guardá ^[%lld neurona](inflect: true) para ganar 1 extra" : {
+      "comment" : "[hoy.meter.earn]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save ^[%lld neuron](inflect: true) to earn 1 extra"
+          }
+        }
+      }
+    },
+    "Guardá algunas neuronas de temas distintos: una frase, un link o una nota de voz. Con eso Lumbre enciende tu primera chispa." : {
+      "comment" : "[hoy.empty.no_material_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save a few neurons on different topics: a quote, a link or a voice note. That's what Lumbre needs to light your first spark."
+          }
+        }
+      }
+    },
+    "Guardá algunas neuronas más para que las chispas sigan sorprendiendo." : {
+      "comment" : "[hoy.runway.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save a few more neurons so your sparks keep surprising you."
+          }
+        }
+      }
+    },
+    "Guardá lo que te inspira. Cada mañana, dos de tus neuronas se conectan y salta una chispa." : {
+      "comment" : "[onboarding.welcome.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save what inspires you. Every morning, two of your neurons connect and a spark flies."
+          }
+        }
+      }
+    },
+    "Guardá neuronas de otros temas. Las conexiones entre mundos distintos dan las mejores chispas." : {
+      "comment" : "[hoy.empty.no_pair_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save neurons on other topics. Connections between different worlds make the best sparks."
+          }
+        }
+      }
+    },
+    "Guardá neuronas de temas distintos." : {
+      "comment" : "[widget.no_material_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save neurons from different topics."
+          }
+        }
+      }
+    },
+    "Guardá un par de neuronas más para tener material que conectar." : {
+      "comment" : "[errores.api.need_more]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save a couple more neurons so there's something to connect."
+          }
+        }
+      }
+    },
+    "Guardá una frase, un link o una nota de voz para tener material que combinar." : {
+      "comment" : "[comun.no_neurons_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save a quote, a link or a voice note so there's something to connect."
+          }
+        }
+      }
+    },
+    "Guiones, hilos, ensayos y ficción" : {
+      "comment" : "[perfiles.content.desc]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scripts, threads, essays and fiction"
+          }
+        }
+      }
+    },
+    "Hacé de abogado del diablo: ¿por qué podría fallar esta idea?" : {
+      "comment" : "[planificador.shortcut.devil_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Play devil's advocate: why could this idea fail?"
+          }
+        }
+      }
+    },
+    "Hasta 10 chispas por día, destilación automática y el planificador" : {
+      "comment" : "[perfil.pro_pitch]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Up to 10 sparks a day, automatic distilling and the planner"
+          }
+        }
+      }
+    },
+    "Hasta 10 chispas por día, y elegís qué neuronas se conectan" : {
+      "comment" : "[paywall.benefit.sparks]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Up to 10 sparks a day, and you choose which neurons connect"
+          }
+        }
+      }
+    },
+    "Historia" : {
+      "comment" : "[perfiles.cat.history]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
+          }
+        }
+      }
+    },
+    "Hora de la chispa" : {
+      "comment" : "Onboarding y Perfil. [comun.spark_hour]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spark time"
+          }
+        }
+      }
+    },
+    "Hoy" : {
+      "comment" : "Pestaña y título de pantalla. [nav.today]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today"
+          }
+        }
+      }
+    },
+    "Hoy no encontramos un buen par" : {
+      "comment" : "[hoy.empty.no_pair]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't find a good pair today"
+          }
+        }
+      }
+    },
+    "Hoy usás Lumbre como invitado. Con una cuenta, tus ideas quedan a salvo si cambiás o perdés el teléfono." : {
+      "comment" : "[cuenta.banner.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're using Lumbre as a guest. With an account, your ideas stay safe if you change or lose your phone."
+          }
+        }
+      }
+    },
+    "Idea" : {
+      "comment" : "Accesibilidad del campo de texto. [capturar.idea]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idea"
+          }
+        }
+      }
+    },
+    "Idea guardada" : {
+      "comment" : "[comun.idea_saved]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idea saved"
+          }
+        }
+      }
+    },
+    "Ideas por el gusto de pensarlas" : {
+      "comment" : "[perfiles.curiosity.desc]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ideas for the joy of thinking them"
+          }
+        }
+      }
+    },
+    "Idioma" : {
+      "comment" : "[perfil.language]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language"
+          }
+        }
+      }
+    },
+    "Ilimitado en Pro" : {
+      "comment" : "[capturar.trials.unlimited_pro]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlimited with Pro"
+          }
+        }
+      }
+    },
+    "Imagen" : {
+      "comment" : "[red.source.image]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Image"
+          }
+        }
+      }
+    },
+    "Intenta mandarlas ahora" : {
+      "comment" : "Hint de accesibilidad de Reintentar. [capturar.queue.retry_hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tries to send them now"
+          }
+        }
+      }
+    },
+    "Interfaces" : {
+      "comment" : "[perfiles.cat.interfaces]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interfaces"
+          }
+        }
+      }
+    },
+    "Interfaces, marca y producto físico" : {
+      "comment" : "[perfiles.design.desc]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interfaces, brand and physical product"
+          }
+        }
+      }
+    },
+    "Invitado" : {
+      "comment" : "[comun.guest]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guest"
+          }
+        }
+      }
+    },
+    "Ir a Hoy" : {
+      "comment" : "[circuitos.detail.go_today]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to Today"
+          }
+        }
+      }
+    },
+    "La categoría tiene que tener entre 1 y 40 caracteres." : {
+      "comment" : "[errores.api.invalid_category]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The category has to be between 1 and 40 characters."
+          }
+        }
+      }
+    },
+    "La chispa del día te espera a esta hora. El perfil creativo es la lente con la que se eligen las ideas." : {
+      "comment" : "[perfil.your_spark_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your daily spark waits for you at this time. Your creative profile is the lens used to pick the ideas."
+          }
+        }
+      }
+    },
+    "La compra espera una aprobación. Cuando se apruebe, Pro se activa solo." : {
+      "comment" : "[paywall.pending_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The purchase is waiting for approval. Once it's approved, Pro turns on by itself."
+          }
+        }
+      }
+    },
+    "La destilación es con cuenta. Creala desde Perfil y probala gratis." : {
+      "comment" : "[capturar.trials.guest]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distilling needs an account. Create one from Profile and try it for free."
+          }
+        }
+      }
+    },
+    "La idea tiene que tener entre 1 y 600 caracteres." : {
+      "comment" : "[errores.api.invalid_thesis]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The idea has to be between 1 and 600 characters."
+          }
+        }
+      }
+    },
+    "La mayoría la elige a la mañana, antes de arrancar el día. La podés cambiar en Perfil." : {
+      "comment" : "[onboarding.hour.tip]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Most people pick the morning, before the day gets going. You can change it in Profile."
+          }
+        }
+      }
+    },
+    "La neurona no se guarda en tu red." : {
+      "comment" : "[capturar.draft.discard_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The neuron won't be saved to your network."
+          }
+        }
+      }
+    },
+    "La próxima, mañana a las %@" : {
+      "comment" : "El código usa \"La próxima, mañana a las 08:00\" fijo en el preview del componente. [hoy.next.tomorrow]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next one tomorrow at %@"
+          }
+        }
+      }
+    },
+    "La respuesta no llegó" : {
+      "comment" : "Estado error.ai_planner (Título). Ver design/estados/README.md. [estados.ai_planner_titulo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The reply didn't come through"
+          }
+        }
+      }
+    },
+    "La revisamos y ajustamos lo que genera Lumbre." : {
+      "comment" : "[comun.report_detail]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We review it and adjust what Lumbre generates."
+          }
+        }
+      }
+    },
+    "La suscripción se cobra en tu cuenta de Apple y se renueva sola al mismo precio, salvo que la canceles al menos 24 horas antes del fin del período." : {
+      "comment" : "[paywall.legal_renewal]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The subscription is charged to your Apple account and renews automatically at the same price unless you cancel at least 24 hours before the end of the period."
+          }
+        }
+      }
+    },
+    "La tesis puede tener hasta 600 caracteres." : {
+      "comment" : "[neurona.thesis_limit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The thesis can be up to 600 characters."
+          }
+        }
+      }
+    },
+    "La tienda no pudo verificar la compra. Probá de nuevo o tocá Restaurar compras." : {
+      "comment" : "[paywall.verify_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The store couldn't verify the purchase. Try again or tap Restore purchases."
+          }
+        }
+      }
+    },
+    "La tienda no respondió. Probá de nuevo en un rato." : {
+      "comment" : "Estado error.store_failed (Cuerpo). Ver design/estados/README.md. [estados.store_failed_cuerpo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The store didn't respond. Try again in a bit."
+          }
+        }
+      }
+    },
+    "Las chispas extra se ganan guardando neuronas, y se guardan en tu cuenta. Creala gratis: lo que ya guardaste pasa con vos." : {
+      "comment" : "[cuenta.gate.spark_extra]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra sparks are earned by saving neurons, and they're kept in your account. Create one for free: what you've saved comes with you."
+          }
+        }
+      }
+    },
+    "Las chispas necesitan tu permiso" : {
+      "comment" : "Estado empty.hoy_sin_permiso (Título). Ver design/estados/README.md. [estados.hoy_sin_permiso_titulo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sparks need your permission"
+          }
+        }
+      }
+    },
+    "Las chispas usan IA para conectar tus neuronas. Para encenderlas necesitamos tu permiso." : {
+      "comment" : "Versión que usa la app (AIConsent.swift) para empty.hoy_sin_permiso. [estados.hoy_sin_permiso_app_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sparks use AI to connect your neurons. To light them, we need your permission."
+          }
+        }
+      }
+    },
+    "Las cuentas llegan pronto" : {
+      "comment" : "Aviso provisorio mientras no hay login real. [cuenta.soon.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accounts are coming soon"
+          }
+        }
+      }
+    },
+    "Las dos neuronas" : {
+      "comment" : "[chispa.the_two]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The two neurons"
+          }
+        }
+      }
+    },
+    "Leer la política de privacidad" : {
+      "comment" : "[onboarding.consent.read_policy]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Read the privacy policy"
+          }
+        }
+      }
+    },
+    "Leyendo el texto…" : {
+      "comment" : "[capturar.reading_text]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reading the text…"
+          }
+        }
+      }
+    },
+    "Link" : {
+      "comment" : "[capturar.kind.link]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link"
+          }
+        }
+      }
+    },
+    "Listo" : {
+      "comment" : "[comun.done]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        }
+      }
+    },
+    "Listo: tu red ya está en tu cuenta" : {
+      "comment" : "Toast al crear la cuenta desde invitado. [cuenta.created]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done: your network is now in your account"
+          }
+        }
+      }
+    },
+    "Llegaste a las 10 neuronas de hoy como invitado. Con una cuenta gratis guardás hasta 30 por día." : {
+      "comment" : "[cuenta.gate.limit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've saved today's 10 neurons as a guest. A free account lets you save up to 30 a day."
+          }
+        }
+      }
+    },
+    "Llegaste a las capturas de ese día." : {
+      "comment" : "Motivo que se agrega al aviso de captura descartada. [estados.queue_discarded_reason_1]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You'd reached that day's captures."
+          }
+        }
+      }
+    },
+    "Llegaste al límite de hoy. Mañana podés seguir." : {
+      "comment" : "[errores.api.quota]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've hit today's limit. You can keep going tomorrow."
+          }
+        }
+      }
+    },
+    "Llegaste al uso justo de destilación de este mes. Se renueva el mes que viene." : {
+      "comment" : "Estado error.quota_distill_pro (Cuerpo). Ver design/estados/README.md. [estados.quota_distill_pro_cuerpo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've reached this month's fair use for distilling. It renews next month."
+          }
+        }
+      }
+    },
+    "Llegaste al uso justo de plan profundo de este mes. Podés seguir en modo rápido." : {
+      "comment" : "[planificador.limit.deep]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've reached this month's fair use for deep plans. You can keep going in quick mode."
+          }
+        }
+      }
+    },
+    "Llegaste al uso justo del planificador de este mes. Se renueva el mes que viene." : {
+      "comment" : "[planificador.limit.all]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've reached this month's fair use for the planner. It renews next month."
+          }
+        }
+      }
+    },
+    "Llevalo más grande todavía." : {
+      "comment" : "[planificador.chip.bigger_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take it even bigger."
+          }
+        }
+      }
+    },
+    "Lo guardamos sin destilar" : {
+      "comment" : "[capturar.draft.saved_raw]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We saved it without distilling"
+          }
+        }
+      }
+    },
+    "Lo que dictes aparece acá. Podés corregirlo." : {
+      "comment" : "[capturar.dictate.transcript_placeholder]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What you dictate shows up here. You can fix it."
+          }
+        }
+      }
+    },
+    "Lo que digas se transcribe en el teléfono" : {
+      "comment" : "[capturar.dictate.on_device]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What you say is transcribed on your phone"
+          }
+        }
+      }
+    },
+    "Los pasos, la gente, la plata y lo primero que tiene que pasar." : {
+      "comment" : "[planificador.room.realist_desc]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The steps, the people, the money and the first thing that has to happen."
+          }
+        }
+      }
+    },
+    "Lumbre %@ (%@)" : {
+      "comment" : "Versión y build. [perfil.version]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumbre %@ (%@)"
+          }
+        }
+      }
+    },
+    "Lumbre Pro" : {
+      "comment" : "[comun.lumbre_pro]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumbre Pro"
+          }
+        }
+      }
+    },
+    "Lumbre lee el contenido y saca de 1 a 3 neuronas." : {
+      "comment" : "[capturar.trials.what]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumbre reads the content and pulls out 1 to 3 neurons."
+          }
+        }
+      }
+    },
+    "Lumbre lee el contenido y saca las neuronas. Puede tardar unos segundos." : {
+      "comment" : "[capturar.distilling_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumbre reads the content and pulls out the neurons. It may take a few seconds."
+          }
+        }
+      }
+    },
+    "Lumbre no estaba del todo seguro de estas ideas. Abrilas y confirmalas o corregilas." : {
+      "comment" : "[red.drafts.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumbre wasn't quite sure about these ideas. Open them and confirm or fix them."
+          }
+        }
+      }
+    },
+    "Lumbre no está del todo seguro de esta idea. Revisala antes de guardarla." : {
+      "comment" : "[capturar.draft.unsure_one]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumbre isn't quite sure about this idea. Check it before saving."
+          }
+        }
+      }
+    },
+    "Lumbre no está del todo seguro de estas ideas. Revisalas antes de guardarlas." : {
+      "comment" : "[capturar.draft.unsure_many]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumbre isn't quite sure about these ideas. Check them before saving."
+          }
+        }
+      }
+    },
+    "Lumbre no lee archivos de Word, PowerPoint ni videos. Guardá un PDF o el link, o escribí qué idea te deja." : {
+      "comment" : "Estado inaccessible.unsupported_format (Aviso). Ver design/estados/README.md. [estados.unsupported_format_aviso]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumbre doesn't read Word, PowerPoint or video files. Save a PDF or the link, or write what idea it leaves you with."
+          }
+        }
+      }
+    },
+    "Lumbre usa el idioma del teléfono. Lo cambiás en Ajustes > Lumbre > Idioma." : {
+      "comment" : "[perfil.language_note]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumbre uses your phone's language. Change it in Settings > Lumbre > Language."
+          }
+        }
+      }
+    },
+    "Lumbre, cargando" : {
+      "comment" : "Accesibilidad del splash. [nav.loading]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumbre, loading"
+          }
+        }
+      }
+    },
+    "Lumbre-chispa.png" : {
+      "comment" : "Nombre del archivo que se comparte. [chispa.share.filename]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumbre-spark.png"
+          }
+        }
+      }
+    },
+    "Mandar otro código" : {
+      "comment" : "[cuenta.resend]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send a new code"
+          }
+        }
+      }
+    },
+    "Mandarme el código" : {
+      "comment" : "[cuenta.send_code]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send me the code"
+          }
+        }
+      }
+    },
+    "Marcaste que esta no te sirve. Con eso elegimos mejor la de mañana." : {
+      "comment" : "[hoy.used.discarded]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You marked this one as not useful. That helps us pick tomorrow's better."
+          }
+        }
+      }
+    },
+    "Marcaste que no te sirve" : {
+      "comment" : "[hoy.status.discarded]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You marked it as not useful"
+          }
+        }
+      }
+    },
+    "Marketing" : {
+      "comment" : "[perfiles.cat.marketing]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marketing"
+          }
+        }
+      }
+    },
+    "Mañana a las %@" : {
+      "comment" : "[widget.next_lock_when]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tomorrow at %@"
+          }
+        }
+      }
+    },
+    "Mejor si son de temas distintos: así se conectan mundos lejanos. Podés dictarlas con el micrófono del teclado." : {
+      "comment" : "[onboarding.seeds.tip]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Better if they're about different things: that's how distant worlds connect. You can dictate them with the keyboard mic."
+          }
+        }
+      }
+    },
+    "Mensual" : {
+      "comment" : "[paywall.monthly]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly"
+          }
+        }
+      }
+    },
+    "Mi chispa de hoy en Lumbre: %@" : {
+      "comment" : "Texto que acompaña la imagen al compartir (provisorio, espera el dominio). [widget.share_text]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today's spark from Lumbre: %@"
+          }
+        }
+      }
+    },
+    "Mientras tanto, podés capturar neuronas como invitado." : {
+      "comment" : "[widget.guest_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meanwhile, you can capture neurons as a guest."
+          }
+        }
+      }
+    },
+    "Mientras tanto, podés seguir guardando neuronas." : {
+      "comment" : "[estados.hoy_sin_permiso_meanwhile]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meanwhile, you can keep saving neurons."
+          }
+        }
+      }
+    },
+    "Mientras tanto, usás Lumbre como invitado. Todo lo que guardes queda en esta sesión y pasa a tu cuenta cuando la crees." : {
+      "comment" : "[cuenta.soon.guest]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meanwhile, you're using Lumbre as a guest. Everything you save stays in this session and moves to your account when you create it."
+          }
+        }
+      }
+    },
+    "Modelos, servicios y oportunidades" : {
+      "comment" : "[perfiles.business.desc]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Models, services and opportunities"
+          }
+        }
+      }
+    },
+    "Mover" : {
+      "comment" : "[comun.move]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move"
+          }
+        }
+      }
+    },
+    "Mover a otro circuito" : {
+      "comment" : "[chispa.move_circuit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move to another circuit"
+          }
+        }
+      }
+    },
+    "Mover idea" : {
+      "comment" : "[chispa.save.move_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move idea"
+          }
+        }
+      }
+    },
+    "Muy pronto vas a poder entrar con Apple, Google o tu email y tener tus ideas en todos tus dispositivos." : {
+      "comment" : "[cuenta.soon.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soon you'll be able to sign in with Apple, Google or your email and have your ideas on all your devices."
+          }
+        }
+      }
+    },
+    "Más" : {
+      "comment" : "[comun.more]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "More"
+          }
+        }
+      }
+    },
+    "Más acciones" : {
+      "comment" : "[comun.more_actions]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "More actions"
+          }
+        }
+      }
+    },
+    "Más chispas por día y un plan para cada idea." : {
+      "comment" : "[paywall.subtitle]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "More sparks a day and a plan for every idea."
+          }
+        }
+      }
+    },
+    "Más grande todavía" : {
+      "comment" : "[planificador.chip.bigger]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Even bigger"
+          }
+        }
+      }
+    },
+    "Más tarde" : {
+      "comment" : "[cuenta.nudge.later]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Later"
+          }
+        }
+      }
+    },
+    "Música" : {
+      "comment" : "[perfiles.cat.music]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Music"
+          }
+        }
+      }
+    },
+    "Nada en esta categoría" : {
+      "comment" : "[red.empty_category]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing in this category"
+          }
+        }
+      }
+    },
+    "Nada por acá" : {
+      "comment" : "[comun.nothing_here]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing here"
+          }
+        }
+      }
+    },
+    "Narrativa" : {
+      "comment" : "[perfiles.cat.narrative]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storytelling"
+          }
+        }
+      }
+    },
+    "Naturaleza" : {
+      "comment" : "[perfiles.cat.nature]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nature"
+          }
+        }
+      }
+    },
+    "Negocios" : {
+      "comment" : "[perfiles.business]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Business"
+          }
+        }
+      }
+    },
+    "Neurona %lld" : {
+      "comment" : "[onboarding.seeds.idea_n]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neuron %lld"
+          }
+        }
+      }
+    },
+    "Neurona guardada" : {
+      "comment" : "[capturar.saved]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neuron saved"
+          }
+        }
+      }
+    },
+    "Neuronas" : {
+      "comment" : "[red.neurons]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neurons"
+          }
+        }
+      }
+    },
+    "No acepto" : {
+      "comment" : "[onboarding.consent.decline]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I don't agree"
+          }
+        }
+      }
+    },
+    "No encontramos texto. Escribí qué idea te deja o destilá la imagen." : {
+      "comment" : "[capturar.no_text_found]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We didn't find any text. Write what idea it leaves you with, or distill the image."
+          }
+        }
+      }
+    },
+    "No encontramos texto. Escribí qué idea te deja." : {
+      "comment" : "Estado inaccessible.ocr_no_text (Sin destilación). Ver design/estados/README.md. [estados.ocr_no_text_sin_destilacion]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We didn't find any text. Write what idea it leaves you with."
+          }
+        }
+      }
+    },
+    "No encontramos una suscripción a Lumbre Pro en esta cuenta de Apple." : {
+      "comment" : "[paywall.not_found]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We didn't find a Lumbre Pro subscription on this Apple account."
+          }
+        }
+      }
+    },
+    "No hay compras para restaurar" : {
+      "comment" : "[paywall.nothing_to_restore]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing to restore"
+          }
+        }
+      }
+    },
+    "No me sirve" : {
+      "comment" : "[comun.not_useful]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not useful"
+          }
+        }
+      }
+    },
+    "No podemos responder a ese mensaje. Probá planteándolo de otra forma." : {
+      "comment" : "Estado inaccessible.moderated (Planificador). Ver design/estados/README.md. [estados.moderated_planificador]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We can't reply to that message. Try putting it another way."
+          }
+        }
+      }
+    },
+    "No pudimos abrir esa imagen. Probá con otra." : {
+      "comment" : "[capturar.image_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't open that image. Try another one."
+          }
+        }
+      }
+    },
+    "No pudimos abrir ese PDF. Probá con otro." : {
+      "comment" : "[capturar.pdf_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't open that PDF. Try another one."
+          }
+        }
+      }
+    },
+    "No pudimos abrir esta página. Escribí qué idea te deja y la guardamos con el link. No se descontó la prueba." : {
+      "comment" : "Estado inaccessible.unreachable (Aviso). Ver design/estados/README.md. [estados.unreachable_aviso]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't open this page. Write what idea it leaves you with and we'll save it with the link. It didn't use a trial."
+          }
+        }
+      }
+    },
+    "No pudimos armar la imagen. Probá de nuevo." : {
+      "comment" : "[chispa.share.failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't make the image. Try again."
+          }
+        }
+      }
+    },
+    "No pudimos cargar los planes. Revisá tu conexión y probá de nuevo." : {
+      "comment" : "[paywall.load_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't load the plans. Check your connection and try again."
+          }
+        }
+      }
+    },
+    "No pudimos cargar tus cupos. Tocá para reintentar." : {
+      "comment" : "[perfil.quotas_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't load your limits. Tap to try again."
+          }
+        }
+      }
+    },
+    "No pudimos entrar con el link" : {
+      "comment" : "[cuenta.link_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't sign you in with the link"
+          }
+        }
+      }
+    },
+    "No pudimos guardar el circuito" : {
+      "comment" : "[circuitos.save_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't save the circuit"
+          }
+        }
+      }
+    },
+    "No pudimos guardar tu perfil" : {
+      "comment" : "[onboarding.save_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't save your profile"
+          }
+        }
+      }
+    },
+    "No pudimos guardar una captura" : {
+      "comment" : "[capturar.queue.failed_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't save a capture"
+          }
+        }
+      }
+    },
+    "No pudimos sacar una idea de esto. Escribí qué idea te deja y lo guardamos con tus palabras." : {
+      "comment" : "[capturar.no_idea_found]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't get an idea out of this. Write what idea it leaves you with and we'll save it in your words."
+          }
+        }
+      }
+    },
+    "No pudimos sacar una idea de esto. Escribí qué idea te deja." : {
+      "comment" : "[capturar.no_idea_found_short]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't get an idea out of this. Write what idea it leaves you with."
+          }
+        }
+      }
+    },
+    "No pudimos sacar una idea de esto. ¿Qué idea te deja?" : {
+      "comment" : "[errores.api.no_idea]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't get an idea out of this. What idea does it leave you with?"
+          }
+        }
+      }
+    },
+    "No se pudo borrar la cuenta" : {
+      "comment" : "[perfil.delete.failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't delete the account"
+          }
+        }
+      }
+    },
+    "No se pudo cambiar" : {
+      "comment" : "[red.cat.change_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't change it"
+          }
+        }
+      }
+    },
+    "No se pudo cargar" : {
+      "comment" : "[errores.load_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load"
+          }
+        }
+      }
+    },
+    "No se pudo completar" : {
+      "comment" : "[paywall.failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't complete it"
+          }
+        }
+      }
+    },
+    "No se pudo encender" : {
+      "comment" : "[neurona.ignite_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't light it"
+          }
+        }
+      }
+    },
+    "No se pudo encender la chispa" : {
+      "comment" : "Estado error.ai_spark (Título). Ver design/estados/README.md. [estados.ai_spark_titulo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't light the spark"
+          }
+        }
+      }
+    },
+    "No se pudo guardar" : {
+      "comment" : "[comun.save_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't save"
+          }
+        }
+      }
+    },
+    "No se pudo mover" : {
+      "comment" : "[capturar.category.move_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't move it"
+          }
+        }
+      }
+    },
+    "No se puede destilar este link." : {
+      "comment" : "Estado inaccessible.social_login (Nota del interruptor). Ver design/estados/README.md. [estados.social_login_nota_del_interruptor]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This link can't be distilled."
+          }
+        }
+      }
+    },
+    "No sé cuánta plata" : {
+      "comment" : "[planificador.chip.no_money]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not sure how much money"
+          }
+        }
+      }
+    },
+    "No tiene neuronas." : {
+      "comment" : "[red.cat.delete_empty]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It has no neurons."
+          }
+        }
+      }
+    },
+    "No tiene que ver conmigo" : {
+      "comment" : "[chispa.feedback.irrelevant]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It's not relevant to me"
+          }
+        }
+      }
+    },
+    "Nombre" : {
+      "comment" : "[red.cat.name]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
+    },
+    "Nombre del circuito" : {
+      "comment" : "[comun.circuit_name]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Circuit name"
+          }
+        }
+      }
+    },
+    "Nota de voz" : {
+      "comment" : "[red.source.voice]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voice note"
+          }
+        }
+      }
+    },
+    "Nueva neurona" : {
+      "comment" : "[capturar.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New neuron"
+          }
+        }
+      }
+    },
+    "Nuevo circuito" : {
+      "comment" : "[comun.new_circuit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New circuit"
+          }
+        }
+      }
+    },
+    "O escribí una nueva" : {
+      "comment" : "[capturar.category.or_new]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Or type a new one"
+          }
+        }
+      }
+    },
+    "Onda verde de semáforos" : {
+      "comment" : "[onboarding.welcome.example_a]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Green-wave traffic lights"
+          }
+        }
+      }
+    },
+    "Opcional: si la escribís, la destilación la usa" : {
+      "comment" : "[capturar.optional_distill]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optional: if you write it, distilling uses it"
+          }
+        }
+      }
+    },
+    "Opciones de %@" : {
+      "comment" : "[red.cat.options]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Options for %@"
+          }
+        }
+      }
+    },
+    "Otra chispa" : {
+      "comment" : "[hoy.extra.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Another spark"
+          }
+        }
+      }
+    },
+    "Otra foto" : {
+      "comment" : "[capturar.photo.another]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Another photo"
+          }
+        }
+      }
+    },
+    "Otro motivo" : {
+      "comment" : "[chispa.report.other]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something else"
+          }
+        }
+      }
+    },
+    "PDF" : {
+      "comment" : "[capturar.kind.pdf]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PDF"
+          }
+        }
+      }
+    },
+    "Palabra de confirmación" : {
+      "comment" : "[perfil.delete.word_a11y]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmation word"
+          }
+        }
+      }
+    },
+    "Para confirmar, escribí %@" : {
+      "comment" : "[perfil.delete.type_to_confirm]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To confirm, type %@"
+          }
+        }
+      }
+    },
+    "Para destilar lo que guardás y encender las chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic." : {
+      "comment" : "[onboarding.consent.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To distill what you save and light your sparks, Lumbre sends the text of your ideas to Claude, an AI by Anthropic."
+          }
+        }
+      }
+    },
+    "Para destilar tus ideas y encender las chispas, Lumbre manda el texto de tus ideas y tu perfil creativo a Claude, una IA de Anthropic. Sin este permiso podés guardar neuronas, pero no se destilan ni se encienden chispas, y el planificador no responde." : {
+      "comment" : "[perfil.ai.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To distill your ideas and light your sparks, Lumbre sends the text of your ideas and your creative profile to Claude, an AI by Anthropic. Without this permission you can still save neurons, but nothing gets distilled, no sparks are lit and the planner won't reply."
+          }
+        }
+      }
+    },
+    "Para dictar, Lumbre necesita el micrófono y el reconocimiento de voz. Activalos en Ajustes." : {
+      "comment" : "[capturar.dictate.permission_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To dictate, Lumbre needs the microphone and speech recognition. Turn them on in Settings."
+          }
+        }
+      }
+    },
+    "Para encender chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic. Lo activás en Perfil › Privacidad." : {
+      "comment" : "Estado empty.hoy_sin_permiso (Cuerpo). Ver design/estados/README.md. [estados.hoy_sin_permiso_cuerpo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To light sparks, Lumbre sends the text of your ideas to Claude, an AI by Anthropic. You can turn it on in Profile › Privacy."
+          }
+        }
+      }
+    },
+    "Para encender otra chispa hace falta conexión." : {
+      "comment" : "Estado offline.extra_spark (Nota). Ver design/estados/README.md. [estados.extra_spark_nota]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lighting another spark needs a connection."
+          }
+        }
+      }
+    },
+    "Para historias" : {
+      "comment" : "Formato de la tarjeta (propuesta). No usar \"Historia\" a secas: choca con la categoría Historia, que en inglés es History. [widget.share_story]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For stories"
+          }
+        }
+      }
+    },
+    "Para publicaciones" : {
+      "comment" : "Formato de la tarjeta (propuesta). [widget.share_feed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For posts"
+          }
+        }
+      }
+    },
+    "Para suscribirte a Lumbre Pro necesitás una cuenta, así Pro te sigue a cualquier teléfono." : {
+      "comment" : "[cuenta.gate.pro]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To subscribe to Lumbre Pro you need an account, so Pro follows you to any phone."
+          }
+        }
+      }
+    },
+    "Parar el dictado" : {
+      "comment" : "[capturar.dictate.stop]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop dictation"
+          }
+        }
+      }
+    },
+    "Parece un link. Guardalo como link para que quede la fuente." : {
+      "comment" : "[capturar.looks_like_link]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Looks like a link. Save it as a link so the source is kept."
+          }
+        }
+      }
+    },
+    "Pasar a Link" : {
+      "comment" : "[capturar.switch_to_link]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switch to Link"
+          }
+        }
+      }
+    },
+    "Pasemos a la síntesis" : {
+      "comment" : "[planificador.chip.to_synthesis]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On to the synthesis"
+          }
+        }
+      }
+    },
+    "Pasemos al Crítico" : {
+      "comment" : "[planificador.chip.to_critic]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On to the Critic"
+          }
+        }
+      }
+    },
+    "Pasemos al Realista" : {
+      "comment" : "[planificador.chip.to_realist]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On to the Realist"
+          }
+        }
+      }
+    },
+    "Pasemos al siguiente cuarto: el Crítico." : {
+      "comment" : "[planificador.chip.to_critic_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let's move to the next room: the Critic."
+          }
+        }
+      }
+    },
+    "Pasemos al siguiente cuarto: el Realista." : {
+      "comment" : "[planificador.chip.to_realist_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let's move to the next room: the Realist."
+          }
+        }
+      }
+    },
+    "Pasemos al siguiente cuarto: la síntesis." : {
+      "comment" : "[planificador.chip.to_synthesis_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let's move to the next room: the synthesis."
+          }
+        }
+      }
+    },
+    "Paso %lld de %lld" : {
+      "comment" : "Accesibilidad de la barra de progreso. [onboarding.progress]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step %lld of %lld"
+          }
+        }
+      }
+    },
+    "Pedir otra chispa" : {
+      "comment" : "[hoy.extra.request]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get another spark"
+          }
+        }
+      }
+    },
+    "Perfil" : {
+      "comment" : "[nav.profile]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
+          }
+        }
+      }
+    },
+    "Perfil creativo" : {
+      "comment" : "[comun.creative_profile]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creative profile"
+          }
+        }
+      }
+    },
+    "Plan" : {
+      "comment" : "[comun.plan]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan"
+          }
+        }
+      }
+    },
+    "Plan profundo" : {
+      "comment" : "[planificador.mode.deep]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deep plan"
+          }
+        }
+      }
+    },
+    "Planes profundos este mes" : {
+      "comment" : "[perfil.quota.deep]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deep plans this month"
+          }
+        }
+      }
+    },
+    "Planificador" : {
+      "comment" : "[perfil.planner]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planner"
+          }
+        }
+      }
+    },
+    "Planificador este mes" : {
+      "comment" : "[perfil.quota.planner]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planner this month"
+          }
+        }
+      }
+    },
+    "Planificador para bajar cada idea a tareas" : {
+      "comment" : "[paywall.benefit.planner]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A planner to turn each idea into tasks"
+          }
+        }
+      }
+    },
+    "Planificar" : {
+      "comment" : "Abre el planificador de una chispa. Verbo. [comun.plan_action]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan it"
+          }
+        }
+      }
+    },
+    "Podés cambiar esto cuando quieras en Perfil > Privacidad." : {
+      "comment" : "[onboarding.consent.change]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can change this anytime in Profile > Privacy."
+          }
+        }
+      }
+    },
+    "Política de privacidad" : {
+      "comment" : "[perfil.privacy_policy]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy policy"
+          }
+        }
+      }
+    },
+    "Por ejemplo: Marketing" : {
+      "comment" : "[capturar.category.placeholder]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For example: Marketing"
+          }
+        }
+      }
+    },
+    "Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo o el stack que usarías." : {
+      "comment" : "[planificador.intro]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask anything about this idea or pick a shortcut: a backlog to get started, a devil's advocate or the stack you'd use."
+          }
+        }
+      }
+    },
+    "Preparando el micrófono…" : {
+      "comment" : "[capturar.dictate.preparing]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Getting the mic ready…"
+          }
+        }
+      }
+    },
+    "Principio" : {
+      "comment" : "El mecanismo de fondo que sale de la destilación. [comun.principle]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Principle"
+          }
+        }
+      }
+    },
+    "Privacidad" : {
+      "comment" : "[comun.privacy]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy"
+          }
+        }
+      }
+    },
+    "Privacidad y datos" : {
+      "comment" : "[comun.privacy_data]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy and data"
+          }
+        }
+      }
+    },
+    "Pro" : {
+      "comment" : "Etiqueta de Pro. No se traduce. [comun.pro]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro"
+          }
+        }
+      }
+    },
+    "Probar %lld días gratis" : {
+      "comment" : "[paywall.try_days]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try %lld days free"
+          }
+        }
+      }
+    },
+    "Probar 7 días gratis" : {
+      "comment" : "[comun.try_free_7]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try 7 days free"
+          }
+        }
+      }
+    },
+    "Probá con otras palabras o sacá el filtro de categoría." : {
+      "comment" : "[red.no_results_filtered]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try other words or remove the category filter."
+          }
+        }
+      }
+    },
+    "Probá con otras palabras." : {
+      "comment" : "[neurona.try_other_words]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try other words."
+          }
+        }
+      }
+    },
+    "Probá con otras palabras: la búsqueda entiende ideas, no solo coincidencias." : {
+      "comment" : "[red.no_results_semantic]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try other words: search understands ideas, not just matches."
+          }
+        }
+      }
+    },
+    "Probá de nuevo." : {
+      "comment" : "Estado error.ai_planner (Cuerpo). Ver design/estados/README.md. [estados.ai_planner_cuerpo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again."
+          }
+        }
+      }
+    },
+    "Probá en un rato o escribí la idea en Texto." : {
+      "comment" : "[capturar.dictate.unavailable_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again in a bit or type the idea in Text."
+          }
+        }
+      }
+    },
+    "Producto" : {
+      "comment" : "[perfiles.cat.product]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product"
+          }
+        }
+      }
+    },
+    "Productos, features y arquitectura" : {
+      "comment" : "[perfiles.software.desc]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Products, features and architecture"
+          }
+        }
+      }
+    },
+    "Pronto también con Apple y Google." : {
+      "comment" : "[cuenta.soon_providers]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple and Google sign-in coming soon."
+          }
+        }
+      }
+    },
+    "Próxima chispa" : {
+      "comment" : "[widget.next_lock_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next spark"
+          }
+        }
+      }
+    },
+    "Próxima chispa: mañana %@" : {
+      "comment" : "Accesorio inline. %@ es la hora. [widget.next_lock]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next spark: tomorrow %@"
+          }
+        }
+      }
+    },
+    "Psicología" : {
+      "comment" : "[perfiles.cat.psychology]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Psychology"
+          }
+        }
+      }
+    },
+    "Puede que se haya borrado desde otro dispositivo." : {
+      "comment" : "Estado error.not_found (Cuerpo). Ver design/estados/README.md. [estados.not_found_cuerpo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It may have been deleted on another device."
+          }
+        }
+      }
+    },
+    "Página escaneada" : {
+      "comment" : "[capturar.scanned_one]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanned page"
+          }
+        }
+      }
+    },
+    "Queda en tus ideas guardadas" : {
+      "comment" : "[chispa.save.no_circuit_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It stays in your saved ideas"
+          }
+        }
+      }
+    },
+    "Quitar adjunto" : {
+      "comment" : "[capturar.remove_attachment]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove attachment"
+          }
+        }
+      }
+    },
+    "Qué falta, qué puede salir mal y quién lo odiaría." : {
+      "comment" : "[planificador.room.critic_desc]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What's missing, what could go wrong and who would hate it."
+          }
+        }
+      }
+    },
+    "Realista" : {
+      "comment" : "[planificador.room.realist]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Realist"
+          }
+        }
+      }
+    },
+    "Red" : {
+      "comment" : "Pestaña y título: todas las neuronas del usuario (antes Bóveda). [nav.network]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Network"
+          }
+        }
+      }
+    },
+    "Reintentar" : {
+      "comment" : "[comun.retry]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again"
+          }
+        }
+      }
+    },
+    "Renombrar" : {
+      "comment" : "[comun.rename]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rename"
+          }
+        }
+      }
+    },
+    "Renombrar categoría" : {
+      "comment" : "[red.cat.rename_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rename category"
+          }
+        }
+      }
+    },
+    "Renombrar circuito" : {
+      "comment" : "[circuitos.rename_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rename circuit"
+          }
+        }
+      }
+    },
+    "Reportar" : {
+      "comment" : "[comun.report]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report"
+          }
+        }
+      }
+    },
+    "Reportar esta chispa" : {
+      "comment" : "[chispa.report_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report this spark"
+          }
+        }
+      }
+    },
+    "Reportar esta respuesta" : {
+      "comment" : "[planificador.report_reply]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report this reply"
+          }
+        }
+      }
+    },
+    "Restaurar compras" : {
+      "comment" : "[paywall.restore]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore purchases"
+          }
+        }
+      }
+    },
+    "Revela la chispa" : {
+      "comment" : "Hint de accesibilidad. [reveal.ignite_hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reveals the spark"
+          }
+        }
+      }
+    },
+    "Revisando tus pruebas…" : {
+      "comment" : "[capturar.trials.checking]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checking your trials…"
+          }
+        }
+      }
+    },
+    "Revisar el permiso" : {
+      "comment" : "Estado empty.hoy_sin_permiso (Principal). Ver design/estados/README.md. [estados.hoy_sin_permiso_principal]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review permission"
+          }
+        }
+      }
+    },
+    "Revisá el email: no parece válido." : {
+      "comment" : "[errores.api.invalid_email]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check the email: it doesn't look valid."
+          }
+        }
+      }
+    },
+    "Revisá el link: no parece válido." : {
+      "comment" : "[capturar.link_invalid]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check the link: it doesn't look valid."
+          }
+        }
+      }
+    },
+    "Revisá la neurona" : {
+      "comment" : "[capturar.draft.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check the neuron"
+          }
+        }
+      }
+    },
+    "Revisá tu conexión y probá de nuevo." : {
+      "comment" : "[errores.offline_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check your connection and try again."
+          }
+        }
+      }
+    },
+    "Revisá tu conexión y probá de nuevo. Lo que captures mientras tanto queda guardado en el teléfono." : {
+      "comment" : "Estado error.load_offline (Cuerpo). Ver design/estados/README.md. [estados.load_offline_cuerpo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check your connection and try again. Anything you capture in the meantime stays saved on your phone."
+          }
+        }
+      }
+    },
+    "Rápido" : {
+      "comment" : "[planificador.mode.quick]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick"
+          }
+        }
+      }
+    },
+    "Sacar el filtro" : {
+      "comment" : "Estado empty.search (Secundaria con filtro). Ver design/estados/README.md. [estados.search_secundaria_con_filtro]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove filter"
+          }
+        }
+      }
+    },
+    "Sale de tu red y de las próximas chispas. No se puede deshacer." : {
+      "comment" : "[neurona.delete_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It leaves your network and future sparks. This can't be undone."
+          }
+        }
+      }
+    },
+    "Salieron de lo que capturaste. Ya están en tu red." : {
+      "comment" : "[capturar.draft.saved_many_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "They came from what you captured. They're already in your network."
+          }
+        }
+      }
+    },
+    "Se borran tu cuenta, tus neuronas, chispas, circuitos y conversaciones del planificador, en todos tus dispositivos." : {
+      "comment" : "[perfil.delete.what]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your account, neurons, sparks, circuits and planner conversations are deleted, on all your devices."
+          }
+        }
+      }
+    },
+    "Se crea la categoría “%@”" : {
+      "comment" : "[capturar.category.will_create]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creates the category “%@”"
+          }
+        }
+      }
+    },
+    "Se crean a medida que guardás neuronas." : {
+      "comment" : "[red.cat.none_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "They're created as you save neurons."
+          }
+        }
+      }
+    },
+    "Se enciende cuando vuelva la conexión." : {
+      "comment" : "Estado offline.reveal (Cuerpo). Ver design/estados/README.md. [estados.reveal_cuerpo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It lights up when you're back online."
+          }
+        }
+      }
+    },
+    "Se guardaron %lld capturas que esperaban conexión" : {
+      "comment" : "Estado offline.queue_flushed (Varias). Ver design/estados/README.md. [estados.queue_flushed_varias]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld captures that were waiting for a connection were saved"
+          }
+        }
+      }
+    },
+    "Se guardó 1 captura que esperaba conexión" : {
+      "comment" : "Estado offline.queue_flushed (Una). Ver design/estados/README.md. [estados.queue_flushed_una]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 capture that was waiting for a connection was saved"
+          }
+        }
+      }
+    },
+    "Se recarga el %@ a las %@" : {
+      "comment" : "%1 es el día de la semana (\"martes\"), %2 la hora. [hoy.refill.weekday]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refills on %1$@ at %2$@"
+          }
+        }
+      }
+    },
+    "Se recarga hoy a las %@" : {
+      "comment" : "[hoy.refill.today]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refills today at %@"
+          }
+        }
+      }
+    },
+    "Se recarga mañana a las %@" : {
+      "comment" : "[hoy.refill.tomorrow]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refills tomorrow at %@"
+          }
+        }
+      }
+    },
+    "Se transcribe en el teléfono. El audio no se guarda." : {
+      "comment" : "[capturar.dictate.privacy]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It's transcribed on your phone. The audio isn't saved."
+          }
+        }
+      }
+    },
+    "Seguir como invitado" : {
+      "comment" : "[comun.continue_guest]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue as guest"
+          }
+        }
+      }
+    },
+    "Si entrás con esa cuenta, lo que guardaste como invitado en este teléfono no pasa a ella." : {
+      "comment" : "[cuenta.email_in_use]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If you sign in to that account, what you saved as a guest on this phone won't move to it."
+          }
+        }
+      }
+    },
+    "Si no aceptás, podés guardar ideas igual, pero las chispas y la destilación necesitan este permiso." : {
+      "comment" : "[onboarding.consent.decline_note]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If you decline, you can still save ideas, but sparks and distilling need this permission."
+          }
+        }
+      }
+    },
+    "Si preferís sin avisos, la chispa te espera igual en Hoy." : {
+      "comment" : "[onboarding.push.skip_note]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If you'd rather not get notifications, your spark still waits for you in Today."
+          }
+        }
+      }
+    },
+    "Si querés quedarte con una copia, exportá tus datos antes." : {
+      "comment" : "[perfil.delete.export_first]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If you want to keep a copy, export your data first."
+          }
+        }
+      }
+    },
+    "Sin categoría" : {
+      "comment" : "[red.no_category]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No category"
+          }
+        }
+      }
+    },
+    "Sin circuito" : {
+      "comment" : "[chispa.save.no_circuit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No circuit"
+          }
+        }
+      }
+    },
+    "Sin conexión" : {
+      "comment" : "[errores.offline]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're offline"
+          }
+        }
+      }
+    },
+    "Sin conexión y no pudimos guardarlo en el teléfono. Probá de nuevo en un rato." : {
+      "comment" : "[capturar.offline_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're offline and we couldn't save it on the phone. Try again in a bit."
+          }
+        }
+      }
+    },
+    "Sin conexión. Lo guardamos y lo mandamos cuando vuelva." : {
+      "comment" : "[errores.api.offline]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're offline. We saved it and we'll send it when you're back."
+          }
+        }
+      }
+    },
+    "Sin conexión. Probá de nuevo cuando vuelva la red." : {
+      "comment" : "[capturar.offline_retry]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're offline. Try again when you're back online."
+          }
+        }
+      }
+    },
+    "Sin elegir" : {
+      "comment" : "[perfiles.none]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not set"
+          }
+        }
+      }
+    },
+    "Software" : {
+      "comment" : "Categoría sugerida para las semillas y ejemplo de la bienvenida. [perfiles.cat.software]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Software"
+          }
+        }
+      }
+    },
+    "Software y apps" : {
+      "comment" : "[perfiles.software]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Software and apps"
+          }
+        }
+      }
+    },
+    "Solo pudimos leer el título y la descripción. Escribí qué idea te deja y la guardamos con el link." : {
+      "comment" : "Estado inaccessible.paywall_link (Variante: solo título y descripción (por ejemplo, un video sin transcripción)). Ver design/estados/README.md. [estados.paywall_link_variante_solo_titulo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We could only read the title and description. Write what idea it leaves you with and we'll save it with the link."
+          }
+        }
+      }
+    },
+    "Solo se manda lo necesario para cada chispa: tus ideas y tu perfil creativo." : {
+      "comment" : "[onboarding.consent.scope]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only what each spark needs is sent: your ideas and your creative profile."
+          }
+        }
+      }
+    },
+    "Soñador" : {
+      "comment" : "[planificador.room.dreamer]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dreamer"
+          }
+        }
+      }
+    },
+    "Su neurona queda sin categoría. No se borra." : {
+      "comment" : "[red.cat.delete_one]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Its neuron is left without a category. It isn't deleted."
+          }
+        }
+      }
+    },
+    "Sus %lld neuronas quedan sin categoría. No se borran." : {
+      "comment" : "[red.cat.delete_many]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Its %lld neurons are left without a category. They aren't deleted."
+          }
+        }
+      }
+    },
+    "Sus ideas quedan guardadas, sin circuito." : {
+      "comment" : "[comun.delete_circuit_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Its ideas stay saved, without a circuit."
+          }
+        }
+      }
+    },
+    "Suscribirme por %@ al año" : {
+      "comment" : "[paywall.subscribe_year]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscribe for %@ a year"
+          }
+        }
+      }
+    },
+    "Suscribirme por %@ al mes" : {
+      "comment" : "[paywall.subscribe_month]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscribe for %@ a month"
+          }
+        }
+      }
+    },
+    "Suscripción" : {
+      "comment" : "[perfil.subscription]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscription"
+          }
+        }
+      }
+    },
+    "Síntesis" : {
+      "comment" : "[planificador.room.synthesis]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synthesis"
+          }
+        }
+      }
+    },
+    "También hoy" : {
+      "comment" : "[hoy.also_today]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Also today"
+          }
+        }
+      }
+    },
+    "Tarjeta para compartir" : {
+      "comment" : "[chispa.share.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share card"
+          }
+        }
+      }
+    },
+    "Te avisamos cuando esté lista" : {
+      "comment" : "[onboarding.push.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We'll let you know when it's ready"
+          }
+        }
+      }
+    },
+    "Te mandamos otro código." : {
+      "comment" : "[cuenta.code_resent]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We sent you a new code."
+          }
+        }
+      }
+    },
+    "Te mandamos un código a tu email, sin contraseñas. Si todavía no tenés cuenta, la creamos con ese email." : {
+      "comment" : "[cuenta.signin.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We'll email you a code, no passwords. If you don't have an account yet, we'll create one with that email."
+          }
+        }
+      }
+    },
+    "Te mandamos un código a tu email." : {
+      "comment" : "[cuenta.code_sent]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We sent a code to your email."
+          }
+        }
+      }
+    },
+    "Te mandamos un código de 6 dígitos a %@. Escribilo acá o tocá el link del mail en este teléfono." : {
+      "comment" : "[cuenta.code_sent_to]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We sent a 6-digit code to %@. Type it here or tap the link in the email on this phone."
+          }
+        }
+      }
+    },
+    "Te pasaste por %lld caracteres. Dejá solo la idea (hasta 600)." : {
+      "comment" : "[capturar.over_limit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're %lld characters over. Keep just the idea (up to 600)."
+          }
+        }
+      }
+    },
+    "Te queda 1 chispa extra hoy." : {
+      "comment" : "[hoy.extra.one_left]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have 1 extra spark left today."
+          }
+        }
+      }
+    },
+    "Te queda 1 prueba este mes." : {
+      "comment" : "[capturar.trials.one_left]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have 1 trial left this month."
+          }
+        }
+      }
+    },
+    "Te quedan %lld chispas extra hoy." : {
+      "comment" : "[hoy.extra.many_left]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have %lld extra sparks left today."
+          }
+        }
+      }
+    },
+    "Te quedan %lld de %lld" : {
+      "comment" : "[perfil.quota_a11y]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld of %lld left"
+          }
+        }
+      }
+    },
+    "Te quedan %lld este mes" : {
+      "comment" : "[planificador.quota.quick]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld left this month"
+          }
+        }
+      }
+    },
+    "Te quedan %lld profundos" : {
+      "comment" : "[planificador.quota.deep]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld deep plans left"
+          }
+        }
+      }
+    },
+    "Te quedan %lld pruebas este mes." : {
+      "comment" : "[capturar.trials.many_left]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have %lld trials left this month."
+          }
+        }
+      }
+    },
+    "Te quedan pocas combinaciones nuevas" : {
+      "comment" : "[hoy.runway.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're running low on new combinations"
+          }
+        }
+      }
+    },
+    "Tema" : {
+      "comment" : "[perfil.theme]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Theme"
+          }
+        }
+      }
+    },
+    "Tenés %lld días gratis. Si cancelás antes de que terminen, no se te cobra nada." : {
+      "comment" : "[paywall.trial_note]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You get %lld days free. If you cancel before they end, you won't be charged."
+          }
+        }
+      }
+    },
+    "Tesis" : {
+      "comment" : "La idea de la neurona en una frase. [comun.thesis]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thesis"
+          }
+        }
+      }
+    },
+    "Texto" : {
+      "comment" : "Tipo de captura y tipo de fuente en la Red. [capturar.kind.text]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Text"
+          }
+        }
+      }
+    },
+    "Texto reconocido" : {
+      "comment" : "[capturar.recognized_text]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recognized text"
+          }
+        }
+      }
+    },
+    "Texto sacado en el teléfono. La foto queda en tu fototeca." : {
+      "comment" : "[capturar.ocr_on_device]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Text pulled out on your phone. The photo stays in your library."
+          }
+        }
+      }
+    },
+    "Texto seleccionado" : {
+      "comment" : "[red.source.selection]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected text"
+          }
+        }
+      }
+    },
+    "Tipo" : {
+      "comment" : "[capturar.type]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        }
+      }
+    },
+    "Tocá para seguir dictando" : {
+      "comment" : "[capturar.dictate.tap_to_continue]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to keep dictating"
+          }
+        }
+      }
+    },
+    "Tocá y decí tu idea" : {
+      "comment" : "[capturar.dictate.tap_to_speak]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap and say your idea"
+          }
+        }
+      }
+    },
+    "Todavía no hay circuitos" : {
+      "comment" : "[circuitos.empty.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No circuits yet"
+          }
+        }
+      }
+    },
+    "Todavía no hay ideas acá" : {
+      "comment" : "[circuitos.detail.empty_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No ideas here yet"
+          }
+        }
+      }
+    },
+    "Todavía no hay ideas en este circuito." : {
+      "comment" : "Va dentro del Markdown exportado. [circuitos.export_empty]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There are no ideas in this circuit yet."
+          }
+        }
+      }
+    },
+    "Todavía no hay material para combinar" : {
+      "comment" : "[hoy.empty.no_material]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing to combine yet"
+          }
+        }
+      }
+    },
+    "Todavía no hay neuronas" : {
+      "comment" : "[comun.no_neurons_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No neurons yet"
+          }
+        }
+      }
+    },
+    "Todavía no se conectó con otra neurona. Cuando aparezca en una chispa, la vas a ver acá." : {
+      "comment" : "[neurona.no_sparks]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It hasn't connected with another neuron yet. When it shows up in a spark, you'll see it here."
+          }
+        }
+      }
+    },
+    "Todavía no sé cuánta plata haría falta." : {
+      "comment" : "[planificador.chip.no_money_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I don't know yet how much money it would take."
+          }
+        }
+      }
+    },
+    "Todavía no tenés categorías" : {
+      "comment" : "[red.cat.none_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No categories yet"
+          }
+        }
+      }
+    },
+    "Todavía no tenés categorías: se crean a medida que guardás neuronas." : {
+      "comment" : "[capturar.category.none_yet]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No categories yet: they're created as you save neurons."
+          }
+        }
+      }
+    },
+    "Todos" : {
+      "comment" : "Chip de filtro: todas las categorías. [red.all]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All"
+          }
+        }
+      }
+    },
+    "Todos los días, a esta hora, dos de tus neuronas se conectan y salta una chispa." : {
+      "comment" : "[onboarding.hour.subtitle]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every day at this time, two of your neurons connect and a spark flies."
+          }
+        }
+      }
+    },
+    "Transcripción" : {
+      "comment" : "[capturar.dictate.transcript]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcript"
+          }
+        }
+      }
+    },
+    "Tres cuartos, de a uno" : {
+      "comment" : "[planificador.disney.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Three rooms, one at a time"
+          }
+        }
+      }
+    },
+    "Tu chispa" : {
+      "comment" : "[perfil.your_spark]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your spark"
+          }
+        }
+      }
+    },
+    "Tu chispa de hoy" : {
+      "comment" : "[reveal.panel_daily]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today's spark"
+          }
+        }
+      }
+    },
+    "Tu chispa de hoy está lista" : {
+      "comment" : "Hoy, el reveal y el aviso push. [comun.spark_ready_daily]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today's spark is ready"
+          }
+        }
+      }
+    },
+    "Tu chispa de hoy te espera" : {
+      "comment" : "Estado offline.reveal (Título). Ver design/estados/README.md. [estados.reveal_titulo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today's spark is waiting for you"
+          }
+        }
+      }
+    },
+    "Tu chispa del día y un atajo para capturar." : {
+      "comment" : "[widget.spark_description]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your daily spark and a shortcut to capture."
+          }
+        }
+      }
+    },
+    "Tu chispa está lista" : {
+      "comment" : "Accesorios de pantalla bloqueada. [widget.pending_lock]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your spark is ready"
+          }
+        }
+      }
+    },
+    "Tu chispa extra" : {
+      "comment" : "[reveal.panel_extra]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your extra spark"
+          }
+        }
+      }
+    },
+    "Tu chispa extra está lista" : {
+      "comment" : "También el aviso push si una extra se genera en segundo plano. [reveal.ready_extra]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your extra spark is ready"
+          }
+        }
+      }
+    },
+    "Tu chispa nueva te espera" : {
+      "comment" : "[widget.no_data_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your new spark is waiting"
+          }
+        }
+      }
+    },
+    "Tu email" : {
+      "comment" : "[cuenta.email_label]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your email"
+          }
+        }
+      }
+    },
+    "Tu primera chispa ya está. Creá tu cuenta para que tu red no dependa de este teléfono." : {
+      "comment" : "[cuenta.nudge.after_spark]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your first spark is here. Create your account so your network doesn't depend on this phone."
+          }
+        }
+      }
+    },
+    "Tu red queda a salvo aunque cambies o pierdas el teléfono. Todo lo que guardaste como invitado pasa a tu cuenta." : {
+      "comment" : "[cuenta.create.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your network stays safe even if you change or lose your phone. Everything you saved as a guest moves to your account."
+          }
+        }
+      }
+    },
+    "Tu sesión se cerró" : {
+      "comment" : "Estado error.session_expired (Título). Ver design/estados/README.md. [estados.session_expired_titulo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've been signed out"
+          }
+        }
+      }
+    },
+    "Tus cupos" : {
+      "comment" : "[perfil.quotas]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your limits"
+          }
+        }
+      }
+    },
+    "Tus ideas quedan guardadas en tu cuenta. Vas a poder volver a entrar cuando quieras." : {
+      "comment" : "[cuenta.signout_account]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your ideas stay saved in your account. You can sign back in anytime."
+          }
+        }
+      }
+    },
+    "Tus ideas y la IA" : {
+      "comment" : "[onboarding.consent.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your ideas and AI"
+          }
+        }
+      }
+    },
+    "Tus primeras neuronas" : {
+      "comment" : "[onboarding.seeds.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your first neurons"
+          }
+        }
+      }
+    },
+    "Términos" : {
+      "comment" : "[paywall.terms]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms"
+          }
+        }
+      }
+    },
+    "Términos y condiciones" : {
+      "comment" : "[perfil.terms]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms and conditions"
+          }
+        }
+      }
+    },
+    "Título" : {
+      "comment" : "[comun.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Title"
+          }
+        }
+      }
+    },
+    "Un archivo JSON con tu perfil, categorías, neuronas, chispas, circuitos y conversaciones del planificador." : {
+      "comment" : "[perfil.export_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A JSON file with your profile, categories, neurons, sparks, circuits and planner conversations."
+          }
+        }
+      }
+    },
+    "Un aviso por día, a la hora que elegiste. Nada más." : {
+      "comment" : "[onboarding.push.subtitle]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One notification a day, at the time you picked. Nothing else."
+          }
+        }
+      }
+    },
+    "Un circuito junta las ideas que querés llevar adelante. Creá uno o guardá una chispa desde Hoy y elegí dónde sumarla." : {
+      "comment" : "[circuitos.empty.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A circuit gathers the ideas you want to move forward. Create one, or save a spark from Today and choose where to add it."
+          }
+        }
+      }
+    },
+    "Una captura que guardaste sin conexión no se pudo mandar y la sacamos de la cola. %@" : {
+      "comment" : "%@ es el motivo (otro texto de error). [capturar.queue.failed_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A capture you saved offline couldn't be sent, so we took it out of the queue. %@"
+          }
+        }
+      }
+    },
+    "Una frase, un link o una nota de voz" : {
+      "comment" : "[widget.capture_hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A quote, a link or a voice note"
+          }
+        }
+      }
+    },
+    "Urbanismo" : {
+      "comment" : "[onboarding.welcome.example_cat_a]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Urbanism"
+          }
+        }
+      }
+    },
+    "Usaste las chispas de hoy" : {
+      "comment" : "[hoy.meter.used]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've used today's sparks"
+          }
+        }
+      }
+    },
+    "Usaste las pruebas de destilación de este mes. Con Lumbre Pro destilás links, fotos y PDFs sin límite." : {
+      "comment" : "[capturar.draft.saved_raw_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've used this month's distilling trials. With Lumbre Pro you distill links, photos and PDFs with no limit."
+          }
+        }
+      }
+    },
+    "Usaste las pruebas de este mes. Escribí qué idea te deja esto y lo guardamos igual." : {
+      "comment" : "[capturar.trials.used]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've used this month's trials. Write what idea it leaves you with and we'll save it anyway."
+          }
+        }
+      }
+    },
+    "Usás Lumbre como invitado: si cerrás sesión, perdés tus neuronas, chispas y circuitos." : {
+      "comment" : "[cuenta.signout_guest]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're using Lumbre as a guest: if you sign out, you lose your neurons, sparks and circuits."
+          }
+        }
+      }
+    },
+    "Vamos a pasar esta chispa por el método de Walt Disney. No se entra al cuarto siguiente hasta terminar el actual." : {
+      "comment" : "[planificador.disney.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We'll take this spark through the Walt Disney method. You don't enter the next room until you finish the current one."
+          }
+        }
+      }
+    },
+    "Ver Lumbre Pro" : {
+      "comment" : "[comun.see_pro]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See Lumbre Pro"
+          }
+        }
+      }
+    },
+    "Ver todas" : {
+      "comment" : "Estado empty.category (Secundaria). Ver design/estados/README.md. [estados.category_secundaria]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See all"
+          }
+        }
+      }
+    },
+    "Ves lo último que se cargó. Lo que captures se guarda y se manda cuando vuelva." : {
+      "comment" : "Estado offline.banner (Cuerpo). Ver design/estados/README.md. [estados.banner_cuerpo]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're seeing what last loaded. Anything you capture is saved and sent when you're back online."
+          }
+        }
+      }
+    },
+    "Volver" : {
+      "comment" : "Estado error.not_found (Secundaria). Ver design/estados/README.md. [estados.not_found_secundaria]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go back"
+          }
+        }
+      }
+    },
+    "Voz" : {
+      "comment" : "[capturar.kind.voice]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voice"
+          }
+        }
+      }
+    },
+    "Ya elegiste dos. Sacá uno para elegir este." : {
+      "comment" : "[perfiles.max_two]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You already picked two. Remove one to pick this."
+          }
+        }
+      }
+    },
+    "Ya hay una cuenta con ese email. Entrá con esa cuenta." : {
+      "comment" : "[errores.api.email_in_use]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There's already an account with that email. Sign in to that account."
+          }
+        }
+      }
+    },
+    "Ya la había tenido" : {
+      "comment" : "[chispa.feedback.already_had]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I already had it"
+          }
+        }
+      }
+    },
+    "Ya pediste todas las chispas de hoy. Mañana podés seguir." : {
+      "comment" : "[neurona.all_sparks_used]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've asked for all of today's sparks. You can keep going tomorrow."
+          }
+        }
+      }
+    },
+    "Ya tengo cuenta" : {
+      "comment" : "[comun.have_account]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I already have an account"
+          }
+        }
+      }
+    },
+    "Ya tenés 50 categorías." : {
+      "comment" : "Motivo que se agrega al aviso de captura descartada. [estados.queue_discarded_reason_2]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You already have 50 categories."
+          }
+        }
+      }
+    },
+    "Ya tenés 50 categorías. Usá una de las que tenés." : {
+      "comment" : "[errores.api.too_many_categories]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You already have 50 categories. Use one of the ones you have."
+          }
+        }
+      }
+    },
+    "Ya tenés Lumbre Pro" : {
+      "comment" : "[paywall.already_pro]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You already have Lumbre Pro"
+          }
+        }
+      }
+    },
+    "Ya usaste la chispa de hoy" : {
+      "comment" : "[hoy.used.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've used today's spark"
+          }
+        }
+      }
+    },
+    "Ya usaste las chispas extra de hoy. Mañana tenés más." : {
+      "comment" : "[hoy.extra.used_pro]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've used today's extra sparks. More tomorrow."
+          }
+        }
+      }
+    },
+    "Yo" : {
+      "comment" : "Quién habla en el planificador exportado. [markdown.me]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Me"
+          }
+        }
+      }
+    },
+    "^[%lld idea](inflect: true)" : {
+      "comment" : "Ideas (chispas guardadas) en un circuito. [comun.ideas_count]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "^[%lld idea](inflect: true)"
+          }
+        }
+      }
+    },
+    "_(Respuesta detenida)_" : {
+      "comment" : "Markdown: se agrega al final de una respuesta cortada. [planificador.stopped]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "_(Response stopped)_"
+          }
+        }
+      }
+    },
+    "o con tu email" : {
+      "comment" : "[cuenta.or_email]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "or with your email"
+          }
+        }
+      }
+    },
+    "por año" : {
+      "comment" : "[paywall.per_year]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "a year"
+          }
+        }
+      }
+    },
+    "por mes" : {
+      "comment" : "[paywall.per_month]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "a month"
+          }
+        }
+      }
+    },
+    "¿A qué hora querés tu chispa?" : {
+      "comment" : "[onboarding.hour.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When do you want your spark?"
+          }
+        }
+      }
+    },
+    "¿Borrar esta neurona?" : {
+      "comment" : "[neurona.delete_q]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete this neuron?"
+          }
+        }
+      }
+    },
+    "¿Borrar este circuito?" : {
+      "comment" : "[comun.delete_circuit_q]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete this circuit?"
+          }
+        }
+      }
+    },
+    "¿Borrar “%@”?" : {
+      "comment" : "[red.cat.delete_q]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete “%@”?"
+          }
+        }
+      }
+    },
+    "¿Cerrar sesión?" : {
+      "comment" : "[cuenta.signout_q]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign out?"
+          }
+        }
+      }
+    },
+    "¿Descartar este borrador?" : {
+      "comment" : "[capturar.draft.discard_q]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard this draft?"
+          }
+        }
+      }
+    },
+    "¿Por qué no te sirve?" : {
+      "comment" : "[chispa.why_not]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Why isn't it useful?"
+          }
+        }
+      }
+    },
+    "¿Qué idea te deja esto?" : {
+      "comment" : "Pedido de una línea propia cuando no se puede (o no se quiere) destilar. [comun.what_idea]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What idea does this leave you with?"
+          }
+        }
+      }
+    },
+    "¿Qué idea te quedó dando vueltas?" : {
+      "comment" : "[capturar.placeholder]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What idea has been on your mind?"
+          }
+        }
+      }
+    },
+    "¿Qué querés crear?" : {
+      "comment" : "[onboarding.profile.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What do you want to create?"
+          }
+        }
+      }
+    },
+    "¿Qué stack usarías para construir esto?" : {
+      "comment" : "[planificador.shortcut.stack_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What stack would you use to build this?"
+          }
+        }
+      }
+    },
+    "¿Qué stack usarías?" : {
+      "comment" : "[planificador.shortcut.stack]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What stack would you use?"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -1,0 +1,817 @@
+<!doctype html>
+<!-- Lumbre · Paso 12 (MAT-225): coreografía del reveal. Documento + prototipo animado (Web Animations API, sin librerías).
+     La especificación en texto está en README.md, en esta misma carpeta. Para verla: python3 -m http.server -d design. -->
+<html lang="es" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lumbre · Coreografía del reveal</title>
+<link rel="stylesheet" href="../system/tokens.css"><link rel="stylesheet" href="../system/components/bundle.css"><link rel="stylesheet" href="../shared/maqueta.css">
+<script src="../shared/arte.js"></script><script src="../shared/maqueta.js"></script>
+<style>
+/* ---------- Prototipo ---------- */
+.proto{display:grid;grid-template-columns:auto minmax(0,1fr);gap:32px;align-items:start}
+.proto__phone{display:flex;flex-direction:column;align-items:center}
+.proto__phone .tel-wrap{zoom:.8}
+.proto__side{display:flex;flex-direction:column;gap:16px;min-width:0}
+@media (max-width:920px){.proto{grid-template-columns:1fr}}
+@media (max-width:640px){.proto__phone .tel-wrap{zoom:.74}}
+@media (max-width:420px){.proto__phone .tel-wrap{zoom:.72}}
+
+.tel-box{position:relative}
+.hap-ring{position:absolute;inset:0;border-radius:70px;border:3px solid var(--ink);opacity:0;pointer-events:none}
+.tel-box.is-android .hap-ring{border-radius:50px}
+.hap-badge{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);opacity:0;pointer-events:none;z-index:2;
+  font:600 15px/20px var(--font-text);padding:6px 14px;white-space:nowrap}
+.hap-badge code{font-size:14px;color:inherit}
+
+/* Hoy, antes y después del reveal (SparkHero.neuralStage y SparkCard.open) */
+.hoy{display:flex;flex-direction:column;gap:16px;padding:8px 0}
+.hoy[hidden]{display:none}
+.hoy__text{text-align:center}
+.hoy__text b{display:block;font:600 17px/22px var(--font-text)}
+.hoy__text span{display:block;font:400 16px/21px var(--font-text);color:var(--ink-muted);margin-top:4px}
+.hoy .ch-btn.is-gone{opacity:0;pointer-events:none}
+.rv-syn{display:block;width:100%;max-width:320px;margin:8px auto;overflow:visible}
+
+/* El modal del reveal */
+.rv{position:absolute;inset:0;z-index:25}
+.rv[hidden]{display:none}
+.rv-veil{position:absolute;inset:0;background:color-mix(in srgb,var(--neuron) 22%,transparent);
+  -webkit-backdrop-filter:blur(18px) saturate(1.05);backdrop-filter:blur(18px) saturate(1.05)}
+.rv-scroll{position:absolute;inset:0;overflow-y:auto;display:flex;padding:58px 16px 40px;scrollbar-width:none}
+.rv-scroll::-webkit-scrollbar{display:none}
+.rv-panel{position:relative;margin:auto;width:100%;max-width:440px;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:20px;display:flex;flex-direction:column;gap:16px}
+.rv-glow{position:absolute;inset:-1px;border-radius:inherit;box-shadow:var(--glow-spark);pointer-events:none}
+.rv-head{display:flex;align-items:flex-start;justify-content:space-between;min-height:32px}
+.rv-head span{font:600 13px/18px var(--font-text);color:var(--ink-muted);padding-top:6px}
+.rv-close{width:44px;height:44px;margin:-6px -6px 0 0;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--ink);border-radius:50%}
+.rv-close i{width:32px;height:32px;border-radius:50%;background:var(--surface-alt);display:grid;place-items:center}
+.rv-close svg{width:13px;height:13px}
+.rv-close[disabled]{cursor:default}
+.rv-text{display:flex;flex-direction:column;gap:12px}
+.rv-title:focus{outline:none}
+.rv-title:focus-visible{outline:2px solid var(--focus-ring);outline-offset:4px;border-radius:4px}
+.rv-actions{display:flex;flex-direction:column;gap:8px}
+.rv-actions .row{display:flex;gap:8px;align-items:center}
+.rv-actions .row > .ch-btn{flex:1;justify-content:center}
+.rv-actions .row--end > .ch-btn{flex:none}
+.rv-actions .spacer{flex:1}
+.morebtn{width:48px;height:48px;border:0;background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer;border-radius:50%}
+.morebtn svg{width:22px;height:22px}
+/* Estado final por defecto: sin JS (o con Reducir movimiento) se ve la chispa entera. Los impulsos terminan apagados. */
+.rv-imp{fill:var(--info-text);stroke:var(--surface);stroke-width:1.8;opacity:0}
+.rv-star{transform-box:fill-box;transform-origin:center}
+
+/* Controles */
+.ctrl{display:grid;gap:14px}
+.ctrl__row{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.ctrl__lab{font:600 13px/18px var(--font-text);color:var(--ink-muted);min-width:132px}
+.ctrl .ch-btn{min-height:44px;padding:10px 18px}
+.sw{display:inline-flex;align-items:center;gap:10px;border:0;background:transparent;padding:4px 0;cursor:pointer;color:var(--ink);font:600 15px/20px var(--font-text);min-height:44px}
+.sw__track{width:51px;height:31px;border-radius:var(--radius-full);background:var(--surface-alt);box-shadow:inset 0 0 0 1.5px var(--border-strong);position:relative;flex:none;transition:background .15s}
+.sw__track:after{content:"";position:absolute;top:3px;left:3px;width:25px;height:25px;border-radius:50%;background:var(--ink);transition:transform .15s}
+.sw[aria-checked="true"] .sw__track{background:var(--accent);box-shadow:none}
+.sw[aria-checked="true"] .sw__track:after{transform:translateX(20px);background:var(--on-accent)}
+@media (prefers-reduced-motion:reduce){.sw__track,.sw__track:after{transition:none}}
+.clock{display:flex;align-items:baseline;gap:10px}
+.clock b{font:600 34px/1 var(--font-display);font-variation-settings:"SOFT" 100;font-variant-numeric:lining-nums tabular-nums;min-width:4.2ch;text-align:right}
+.clock span{font:500 14px/18px var(--font-text);color:var(--ink-muted)}
+.log{list-style:none;margin:0;padding:0;font-size:14px;line-height:20px;max-height:236px;overflow-y:auto}
+.log li{display:grid;grid-template-columns:62px 1fr;gap:8px;padding:6px 0;border-top:1px solid var(--border)}
+.log li:first-child{border-top:0}
+.log li b{font-variant-numeric:tabular-nums;font-weight:600;color:var(--ink)}
+.log li span{color:var(--ink-muted)}
+.log li span em{font-style:normal;color:var(--ink)}
+.log:empty:before{content:"Tocá “Encender la chispa” en el teléfono o “Repetir”.";color:var(--ink-muted)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Línea de tiempo dibujada */
+.tl{--lab:210px;margin-top:24px;padding:20px 20px 16px}
+.tl__top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}
+.tl__top h3{margin:0}
+.tl__grid{position:relative}
+.tl__axis,.tl__row{display:grid;grid-template-columns:var(--lab) 1fr;align-items:center}
+.tl__axis{height:22px;margin-bottom:4px}
+.tl__ticks{position:relative;height:100%}
+.tl__ticks span{position:absolute;top:0;transform:translateX(-50%);font:500 12px/16px var(--font-text);color:var(--ink-muted);font-variant-numeric:tabular-nums}
+.tl__ticks span:first-child{transform:none}.tl__ticks span:last-child{transform:translateX(-100%)}
+.tl__row{min-height:38px}
+.tl__lab{font:500 13px/16px var(--font-text);color:var(--ink-muted);padding-right:12px;transition:color .1s}
+.tl__lab small{display:block;font-size:11px;line-height:14px;opacity:.85}
+.tl__lane{position:relative;height:38px;border-top:1px solid var(--border);background:repeating-linear-gradient(90deg,transparent 0 calc(10% - 1px),color-mix(in srgb,var(--border) 60%,transparent) calc(10% - 1px) 10%)}
+.tl__bar{position:absolute;top:14px;height:10px;border-radius:var(--radius-full);background:var(--ink);opacity:.28}
+.tl__mark{position:absolute;top:13px;width:12px;height:12px;margin-left:-6px;background:var(--ink);transform:rotate(45deg);border-radius:2px;opacity:.28}
+.tl__row.is-on .tl__bar,.tl__row.is-on .tl__mark{opacity:1}
+.tl__row.is-past .tl__bar,.tl__row.is-past .tl__mark{opacity:.62}
+.tl__row.is-on .tl__lab{color:var(--ink);font-weight:600}
+.tl__end{position:absolute;top:0;bottom:0;border-left:1.5px dashed var(--ink-muted);pointer-events:none}
+.tl__end span{position:absolute;top:-2px;right:6px;font:600 11px/14px var(--font-text);color:var(--ink-muted);white-space:nowrap}
+.tl__cursor{position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--ink);pointer-events:none}
+.tl__cursor:before{content:"";position:absolute;top:-4px;left:-4px;width:10px;height:10px;border-radius:50%;background:var(--ink)}
+.tl__lanepos{position:absolute;top:26px;bottom:0;left:var(--lab);right:0;pointer-events:none}
+.scrub{display:grid;grid-template-columns:var(--lab) 1fr;align-items:center;margin-top:10px}
+.scrub label{font:600 13px/18px var(--font-text);color:var(--ink-muted)}
+.scrub input{width:100%;accent-color:var(--ink);margin:0;min-height:32px}
+@media (max-width:640px){.tl{--lab:118px;padding:16px 12px}.tl__lab{font-size:12px}.tl__lab small{display:none}.tl__ticks .odd{display:none}}
+
+/* Fotogramas */
+.frames{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr))}
+.frame{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px 12px 10px;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.frame .pairhead span{font-size:11px;line-height:14px}
+.frame .pairhead b{font-size:13px;line-height:16px}
+.frame .rv-syn{margin:2px auto}
+.frame .rv-title{font:600 20px/24px var(--font-display);font-variation-settings:"SOFT" 100,"WONK" 1;margin:0;white-space:nowrap}
+.frame figcaption{margin-top:auto;padding-top:8px;border-top:1px solid var(--border);font:400 13px/17px var(--font-text);color:var(--ink-muted)}
+.frame figcaption b{display:block;color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* Curvas */
+.curves{grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr))}
+.curve{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:start}
+.curve svg{width:96px;height:96px;background:var(--bg);border-radius:var(--radius-sm)}
+.curve svg .ax{stroke:var(--border);stroke-width:1;fill:none}
+.curve svg .cv{stroke:var(--ink);stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.curve svg .one{stroke:var(--border-strong);stroke-width:1;stroke-dasharray:3 3;fill:none}
+.curve h3{margin-bottom:2px}
+.curve p{margin:0 0 8px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:13px;line-height:18px;margin:0}
+.kv dt{color:var(--ink-muted);font-weight:600}
+.kv dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.kv code{font-size:12px}
+.dos{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.tabla code{font-size:12.5px}
+.card code,.lead code,.note code,.steps code{overflow-wrap:anywhere}
+.tabla td:first-child{font-weight:600;color:var(--ink)}
+.tabla .rec{color:var(--ink)}
+.tabla--diff td{min-width:200px}
+.tabla--diff td:first-child{min-width:130px}
+.pre{background:var(--surface-alt);border-radius:var(--radius-sm);padding:12px 14px;overflow-x:auto;font:500 12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink);margin:10px 0 0;white-space:pre}
+.steps{margin:0;padding-left:20px;max-width:80ch}
+.steps li{margin:6px 0;color:var(--ink-muted)}
+.steps li b{color:var(--ink)}
+</style>
+</head>
+<body class="doc" data-platform="ios">
+<header class="doc-head"><div class="doc-head__net" data-art="red-horizontal"></div><div class="doc-head__inner">
+  <p class="doc-head__crumb"><a href="../README.md">Lumbre · Diseño</a> · Paso 12 · MAT-225</p>
+  <h1>Coreografía del reveal</h1>
+  <p>El único momento coreografiado de la app, contado como una sinapsis: dos neuronas entran, estiran sus terminales, cruza un impulso y se enciende la chispa. 900&nbsp;ms desde el toque, háptico a los 650&nbsp;ms, y un fundido de 200&nbsp;ms con Reducir movimiento.</p>
+  <div class="toolbar">
+    <div class="seg" role="group" aria-label="Tema"><button data-set-theme="light">Gris</button><button data-set-theme="dark">Grafito</button></div>
+    <div class="seg" role="group" aria-label="Plataforma"><button data-set-platform="ios">iOS</button><button data-set-platform="android">Android</button></div>
+  </div>
+</div></header>
+<main>
+
+<h2 class="sec">Prototipo</h2>
+<p class="lead">Tocá “Encender la chispa” en el teléfono. Bajá la velocidad para ver cada pista, arrastrá la posición para congelar un instante y cerrá con la cruz o tocando afuera (antes de los 900&nbsp;ms el toque se ignora, como en la app).</p>
+
+<div class="proto">
+  <div class="proto__phone">
+    <div class="tel-wrap">
+      <div class="tel-box" id="telBox">
+        <div class="tel" id="tel">
+          <div class="tel__island"></div>
+          <div class="tel__status"><span>9:41</span><i><span style="width:18px"></span><span style="width:16px"></span><span style="width:26px"></span></i></div>
+          <div class="scr" id="scr">
+            <div class="scr__net" data-art="red-encabezado"></div>
+            <h1 class="large-title">Hoy</h1>
+            <div class="pad">
+              <div class="meter"><span data-mini=""></span><div><b id="meterText">1 chispa para encender</b><span>Se recarga mañana a las 8:00</span></div></div>
+              <div class="hoy" id="hoyPending">
+                <div class="pairhead"><div><span>Medios</span><b>Formato podcast</b></div><div class="r"><span>Historia</span><b>Ruinas romanas</b></div></div>
+                <div data-syn="apart"></div>
+                <div class="hoy__text"><b>Tu chispa de hoy está lista</b><span>Dos neuronas tuyas de mundos distintos están por conectarse.</span></div>
+                <button class="ch-btn ch-btn--primary btn-full" id="ignite" type="button"><span class="ch-dot" aria-hidden="true"></span>Encender la chispa</button>
+              </div>
+              <div class="hoy" id="hoyRevealed" hidden></div>
+            </div>
+          </div>
+          <div class="tabbar">
+            <nav class="ch-nav" aria-label="Pestañas">
+              <button class="ch-nav__i is-on" type="button"><span data-art="tab-hoy" style="width:24px"></span>Hoy</button>
+              <button class="ch-nav__i" type="button"><span data-art="tab-red" style="width:24px"></span>Red</button>
+              <button class="ch-nav__i" type="button"><span data-art="tab-circuitos" style="width:24px"></span>Circuitos</button>
+              <button class="ch-nav__i" type="button"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="5"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Perfil</button>
+            </nav>
+            <button class="ch-add" type="button" aria-label="Capturar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+
+          <!-- El reveal: modal a pantalla completa sobre Hoy desenfocado -->
+          <div class="rv" id="rv" hidden>
+            <div class="rv-veil"></div>
+            <div class="rv-scroll" id="rvScroll">
+              <section class="rv-panel" role="dialog" aria-modal="true" aria-labelledby="rvLabel">
+                <div class="rv-glow" aria-hidden="true"></div>
+                <div class="rv-head">
+                  <span id="rvLabel">Tu chispa de hoy</span>
+                  <button class="rv-close" id="rvClose" type="button" aria-label="Cerrar" disabled><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></i></button>
+                </div>
+                <div class="pairhead"><div class="rv-pa"><span>Medios</span><b>Formato podcast</b></div><div class="r rv-pb"><span>Historia</span><b>Ruinas romanas</b></div></div>
+                <div data-syn="anim"></div>
+                <div class="rv-text">
+                  <h2 class="spark-title rv-title" id="rvTitle" tabindex="-1">Podcast × ruinas</h2>
+                  <p class="spark-body rv-body">Un episodio por capa de excavación: cada uno cuenta una época de la misma ciudad con lo que quedó enterrado.</p>
+                </div>
+                <div class="rv-actions">
+                  <button class="ch-btn ch-btn--primary btn-full" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/></svg>Guardar idea</button>
+                  <div class="row">
+                    <button class="ch-btn ch-btn--secondary" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 5h16v11H9.5L4 20z"/><path d="M8 9h8M8 12.5h5" stroke-linecap="round"/></svg>Planificar</button>
+                    <button class="ch-btn ch-btn--ghost" type="button">No me sirve</button>
+                  </div>
+                  <div class="row row--end">
+                    <button class="ch-btn ch-btn--secondary" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M7 10H5v11h14V10h-2"/></svg>Compartir</button>
+                    <span class="spacer"></span>
+                    <button class="morebtn" type="button" aria-label="Más acciones"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+          <div class="tel__home"></div>
+        </div>
+        <div class="hap-ring" id="hapRing" aria-hidden="true"></div>
+        <div class="hap-badge tag tag--dark" id="hapBadge" aria-hidden="true">Háptico <code class="hap-name">.success</code></div>
+      </div>
+    </div>
+    <p class="tel-cap"><b>Hoy → reveal en modal</b>El resto de la app queda desenfocado detrás del velo; al cerrar, la chispa queda en Hoy.</p>
+  </div>
+
+  <div class="proto__side">
+    <div class="card ctrl" aria-label="Controles del prototipo">
+      <div class="clock"><b id="clock">0</b><span>ms desde el toque</span></div>
+      <div class="ctrl__row">
+        <button class="ch-btn ch-btn--primary" id="replay" type="button">Repetir</button>
+        <button class="ch-btn ch-btn--secondary" id="pause" type="button" disabled>Pausar</button>
+        <button class="ch-btn ch-btn--ghost" id="resetBtn" type="button">Volver a Hoy</button>
+      </div>
+      <div class="ctrl__row"><span class="ctrl__lab" id="speedLab">Velocidad</span>
+        <div class="seg" role="group" aria-labelledby="speedLab"><button data-speed="1">1×</button><button data-speed="0.5">0,5×</button><button data-speed="0.25">0,25×</button></div>
+      </div>
+      <div class="ctrl__row"><span class="ctrl__lab">Accesibilidad</span>
+        <button class="sw" id="rmSwitch" type="button" role="switch" aria-checked="false"><span class="sw__track" aria-hidden="true"></span>Reducir movimiento</button>
+      </div>
+      <p class="note" id="rmNote" style="margin:-8px 0 0">Arranca según la preferencia del sistema (<code>prefers-reduced-motion</code>).</p>
+      <div class="ctrl__row"><span class="ctrl__lab">Tema</span>
+        <div class="seg" role="group" aria-label="Tema"><button data-set-theme="light">Gris</button><button data-set-theme="dark">Grafito</button></div>
+      </div>
+      <div class="ctrl__row"><span class="ctrl__lab">Plataforma</span>
+        <div class="seg" role="group" aria-label="Plataforma"><button data-set-platform="ios">iOS</button><button data-set-platform="android">Android</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Qué pasa</h3>
+      <ol class="log" id="log" aria-live="off"></ol>
+    </div>
+    <p class="sr-only" aria-live="polite" id="announce"></p>
+  </div>
+</div>
+
+<div class="card tl" id="tl">
+  <div class="tl__top"><h3 id="tlTitle">Línea de tiempo · completa</h3><span class="note" id="tlNote">Cada barra es una pista; el rombo es un evento sin duración.</span></div>
+  <div class="tl__grid" id="tlGrid"></div>
+  <div class="scrub"><label for="scrub">Posición</label><input type="range" id="scrub" min="0" max="1000" step="5" value="0" aria-describedby="clock"></div>
+</div>
+
+<h2 class="sec">Fotogramas clave</h2>
+<p class="lead">La sinapsis congelada en los momentos que importan, a velocidad 1×. Salen de la misma definición de pistas que mueve el prototipo.</p>
+<div class="frames" id="frames"></div>
+
+<h2 class="sec">Línea de tiempo recomendada</h2>
+<p class="lead">Una sola línea para iOS y Android. El reloj arranca con el toque en “Encender la chispa”: el modal se funde <b>en paralelo</b> con la entrada de las neuronas, no antes. Así la sinapsis empieza en el mismo cuadro del toque y todo termina a los 900&nbsp;ms (hoy la app tarda unos 1.200&nbsp;ms).</p>
+<div class="tabla-wrap"><table class="tabla">
+  <thead><tr><th>Pista</th><th>Inicio</th><th>Dura</th><th>Qué se anima</th><th>Curva</th></tr></thead>
+  <tbody>
+    <tr><td>Velo y desenfoque</td><td class="num">0</td><td class="num">200</td><td>Opacidad 0→1 del velo <code>neuron</code> al 22&nbsp;% y del material desenfocado (los dos juntos)</td><td>fundido</td></tr>
+    <tr><td>Panel</td><td class="num">0</td><td class="num">200</td><td>Opacidad 0→1. Sin escala ni desplazamiento. Nace con su tamaño final</td><td>fundido</td></tr>
+    <tr><td>Etiqueta “Tu chispa de hoy”</td><td class="num">0</td><td class="num">200</td><td>Va con el panel</td><td>fundido</td></tr>
+    <tr><td>Neurona A y su nombre</td><td class="num">0</td><td class="num">250</td><td>Neurona: <i>x</i> −22 → 0 (unidades del lienzo de 240) y opacidad 0→1. Nombre: <i>x</i> −16&nbsp;pt → 0 y opacidad</td><td>entrada</td></tr>
+    <tr><td>Neurona B y su nombre</td><td class="num">0</td><td class="num">250</td><td>Igual, desde la derecha (+22 / +16&nbsp;pt)</td><td>entrada</td></tr>
+    <tr><td>Terminales</td><td class="num">150</td><td class="num">400</td><td>La terminal crece desde el soma hacia el centro: máscara del 43&nbsp;% al 100&nbsp;% del ancho de cada neurona</td><td>alcance</td></tr>
+    <tr><td>Impulsos</td><td class="num">450</td><td class="num">200</td><td>Un punto <code>info-text</code> por terminal viaja del soma al hueco (<i>x</i> 46 → 106). Aparece en los primeros 40&nbsp;ms y se apaga en los últimos 40</td><td>impulso</td></tr>
+    <tr><td>Estrella</td><td class="num">650</td><td class="num">300</td><td>Escala 0,1 → 1 (pasa un 7&nbsp;% y vuelve) y opacidad 0→1 en 70&nbsp;ms</td><td>encendido (resorte)</td></tr>
+    <tr><td><code>glow-spark</code> del panel</td><td class="num">650</td><td class="num">250</td><td>Opacidad de la sombra 0→1. En gris es sombra negra; en grafito, halo rosa</td><td>fundido</td></tr>
+    <tr><td>Háptico</td><td class="num">650</td><td class="num">—</td><td><code>.success</code> en iOS, <code>CONFIRM</code> en Android, en el mismo cuadro que la estrella</td><td>—</td></tr>
+    <tr><td>Título</td><td class="num">650</td><td class="num">250</td><td><i>y</i> +12&nbsp;pt → 0 y opacidad 0→1</td><td>entrada</td></tr>
+    <tr><td>Cuerpo</td><td class="num">700</td><td class="num">200</td><td><i>y</i> +8&nbsp;pt → 0 y opacidad 0→1</td><td>entrada</td></tr>
+    <tr><td>Acciones</td><td class="num">750</td><td class="num">150</td><td>Solo opacidad 0→1</td><td>fundido</td></tr>
+    <tr><td>Cruz y tocar afuera</td><td class="num">900</td><td class="num">100</td><td>La cruz aparece (opacidad) y se habilitan la cruz, el toque afuera, el gesto de escape y el back</td><td>fundido</td></tr>
+    <tr><td>Anuncio y foco</td><td class="num">900</td><td class="num">—</td><td>VoiceOver/TalkBack leen el resumen de la chispa; el foco va al título. Se manda <code>spark_revealed</code> y <code>revealSpark</code></td><td>—</td></tr>
+  </tbody>
+</table></div>
+<div class="callout"><p><b>Por qué el modal va en paralelo.</b> El toque ya es la decisión: cualquier espera antes de la sinapsis se siente como carga. Las neuronas entran mientras el panel se funde, así que el ojo ve armarse la escena en vez de ver primero un panel vacío. A los 200&nbsp;ms el panel está opaco y las neuronas llegan a los 250.</p></div>
+
+<h2 class="sec">Curvas</h2>
+<p class="lead">Cinco curvas con nombre, más la del fundido de Reducir movimiento. Las bezier son las mismas en los tres lenguajes; el resorte se define una vez y se traduce.</p>
+<div class="grid curves" id="curves">
+  <div class="card curve"><svg data-curve="fade" viewBox="0 0 100 100" aria-hidden="true"></svg><div><h3>Fundido</h3><p>Velo, panel, glow, acciones, cruz.</p><dl class="kv"><dt>CSS</dt><dd><code>cubic-bezier(0, 0, 0.2, 1)</code></dd><dt>SwiftUI</dt><dd><code>.timingCurve(0, 0, 0.2, 1, duration: d)</code></dd><dt>Compose</dt><dd><code>tween(d, easing = LinearOutSlowInEasing)</code></dd></dl></div></div>
+  <div class="card curve"><svg data-curve="enter" viewBox="0 0 100 100" aria-hidden="true"></svg><div><h3>Entrada</h3><p>Neuronas, nombres, título y cuerpo: llegan rápido y frenan suave.</p><dl class="kv"><dt>CSS</dt><dd><code>cubic-bezier(0.2, 0.8, 0.2, 1)</code></dd><dt>SwiftUI</dt><dd><code>.timingCurve(0.2, 0.8, 0.2, 1, duration: d)</code></dd><dt>Compose</dt><dd><code>CubicBezierEasing(0.2f, 0.8f, 0.2f, 1f)</code></dd></dl></div></div>
+  <div class="card curve"><svg data-curve="reach" viewBox="0 0 100 100" aria-hidden="true"></svg><div><h3>Alcance</h3><p>Terminales: arranca con decisión y se estira despacio hasta tocarse.</p><dl class="kv"><dt>CSS</dt><dd><code>cubic-bezier(0.3, 0.7, 0.2, 1)</code></dd><dt>SwiftUI</dt><dd><code>.timingCurve(0.3, 0.7, 0.2, 1, duration: 0.4)</code></dd><dt>Compose</dt><dd><code>CubicBezierEasing(0.3f, 0.7f, 0.2f, 1f)</code></dd></dl></div></div>
+  <div class="card curve"><svg data-curve="impulse" viewBox="0 0 100 100" aria-hidden="true"></svg><div><h3>Impulso</h3><p>Acelera hacia el hueco: la descarga junta fuerza antes del encendido.</p><dl class="kv"><dt>CSS</dt><dd><code>cubic-bezier(0.4, 0, 1, 1)</code></dd><dt>SwiftUI</dt><dd><code>.timingCurve(0.4, 0, 1, 1, duration: 0.2)</code></dd><dt>Compose</dt><dd><code>tween(200, easing = FastOutLinearInEasing)</code></dd></dl></div></div>
+  <div class="card curve"><svg data-curve="ignite" viewBox="0 0 100 100" aria-hidden="true"></svg><div><h3>Encendido (resorte)</h3><p>Solo la estrella. Amortiguación 0,65: un rebote chico, nada de gelatina.</p><dl class="kv"><dt>SwiftUI</dt><dd><code>.spring(duration: 0.3, bounce: 0.35)</code></dd><dt>Compose</dt><dd><code>spring(dampingRatio = 0.65f, stiffness = 440f)</code></dd><dt>CSS</dt><dd>keyframes muestreados del mismo resorte (en el prototipo)</dd></dl></div></div>
+  <div class="card curve"><svg data-curve="calm" viewBox="0 0 100 100" aria-hidden="true"></svg><div><h3>Fundido sereno</h3><p>Reducir movimiento: 200&nbsp;ms, solo opacidad.</p><dl class="kv"><dt>CSS</dt><dd><code>cubic-bezier(0.4, 0, 0.2, 1)</code></dd><dt>SwiftUI</dt><dd><code>.timingCurve(0.4, 0, 0.2, 1, duration: 0.2)</code></dd><dt>Compose</dt><dd><code>tween(200, easing = FastOutSlowInEasing)</code></dd></dl></div></div>
+</div>
+<p class="note">Equivalencia del resorte: <code>.spring(duration: d, bounce: b)</code> de SwiftUI es rigidez (2π/d)² y amortiguación 1 − b con masa 1. Con d = 0,3 y b = 0,35 da rigidez 439 y amortiguación 0,65, que es el <code>spring()</code> de Compose de arriba. Llega a 1 a los ~210&nbsp;ms, pasa un 7&nbsp;% y queda quieto antes de los 950.</p>
+
+<h2 class="sec">Háptica</h2>
+<p class="lead">Un solo háptico en todo el reveal, en el cuadro en que se enciende la estrella. Nunca uno por cada pista: la mano tiene que sentir la chispa, no la animación.</p>
+<div class="dos">
+  <div class="card"><h3>iOS</h3><ul>
+    <li><b>Qué:</b> <code>.success</code>. Ya está en el código: <code>.sensoryFeedback(.success, trigger: collisions)</code>. Que el disparador cambie en el mismo cuadro que la estrella (650&nbsp;ms).</li>
+    <li><b>Preparar:</b> con <code>.sensoryFeedback</code> lo maneja SwiftUI. Si en un dispositivo se nota retraso, pasar a <code>UINotificationFeedbackGenerator</code>, llamar <code>prepare()</code> en el toque (t = 0, 650&nbsp;ms antes) y <code>notificationOccurred(.success)</code> a los 650.</li>
+    <li><b>Hápticos del sistema apagados</b> (Ajustes › Sonidos y hápticos): iOS no vibra y no hay que hacer nada. Nada visual depende del háptico.</li>
+  </ul></div>
+  <div class="card"><h3>Android</h3><ul>
+    <li><b>API 30 o más:</b> <code>view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)</code> con la vista del Compose (<code>LocalView.current</code>).</li>
+    <li><b>API 28–29</b> (minSdk 28): <code>HapticFeedbackConstants.VIRTUAL_KEY</code>, un clic corto. Sin <code>Vibrator</code> ni permiso <code>VIBRATE</code>: <code>performHapticFeedback</code> ya respeta el ajuste del sistema. <i>Provisorio.</i></li>
+    <li><b>Respuesta táctil apagada:</b> el sistema no vibra. Nunca usar <code>FLAG_IGNORE_GLOBAL_SETTING</code>.</li>
+    <li>No hace falta preparar nada. Si se prueba <code>HapticFeedbackType.Confirm</code> de Compose, revisar a qué cae en API 28–29 antes de adoptarlo.</li>
+  </ul></div>
+</div>
+
+<h2 class="sec">Reducir movimiento</h2>
+<p class="lead">iOS: <code>@Environment(\.accessibilityReduceMotion)</code>. Android: “Quitar animaciones” deja <code>Settings.Global.ANIMATOR_DURATION_SCALE</code> en 0; se lee con <code>ValueAnimator.areAnimatorsEnabled()</code> (falso en ese caso).</p>
+<div class="dos">
+  <div class="card"><h3>Qué se ve</h3><ul>
+    <li>El modal entero (velo, desenfoque y panel) se funde en 200&nbsp;ms con el fundido sereno. Adentro, todo ya está en su estado final: neuronas en su lugar, terminales tocándose, estrella encendida, título, cuerpo, acciones y cruz.</li>
+    <li>Sin escala, sin rebote, sin desplazamiento, sin impulsos y sin <code>glow</code> animado (el <code>glow-spark</code> viene con el panel).</li>
+    <li>Sin espera previa: el fundido arranca con el toque.</li>
+  </ul></div>
+  <div class="card"><h3>Cuándo pasa cada cosa</h3><ul>
+    <li><b>0&nbsp;ms:</b> toque, empieza el fundido.</li>
+    <li><b>200&nbsp;ms:</b> háptico, cruz y toque afuera habilitados, anuncio y foco al título, <code>spark_revealed</code> con <code>reduce_motion = true</code>. <i>El háptico al final del fundido es provisorio</i> (hoy la app lo dispara al principio).</li>
+    <li>En Android con escala 0, Compose termina las animaciones al instante: el fundido no se ve, y está bien. Lo importante es saltear los <code>delay()</code> de la coreografía para que el háptico y el anuncio no esperen 650/900&nbsp;ms.</li>
+  </ul></div>
+</div>
+
+<h2 class="sec">Accesibilidad</h2>
+<div class="dos">
+  <div class="card"><h3>Foco y anuncio</h3><ul>
+    <li>El panel es modal (<code>.isModal</code> / <code>paneTitle</code> en Compose). Mientras dura la coreografía, lo que todavía no se ve queda oculto a VoiceOver y TalkBack; solo se expone “Tu chispa de hoy”.</li>
+    <li>A los 900&nbsp;ms (200 con Reducir movimiento): anuncio de <code>spark.accessibilitySummary</code> y foco al título (encabezado). En iOS, el anuncio con prioridad alta para que el cambio de foco no lo corte; en Android, una región <code>liveRegion = Polite</code> con el mismo texto.</li>
+    <li>La sinapsis es decorativa y está oculta; el par de neuronas se lee como texto.</li>
+  </ul></div>
+  <div class="card"><h3>Cierre y lo que no depende del movimiento</h3><ul>
+    <li>Se cierra con la cruz (área de 44×44&nbsp;pt / 48×48&nbsp;dp; hoy mide 32), tocando afuera, con el escape de VoiceOver (<code>.accessibilityAction(.escape)</code>) o con el back de Android, siempre recién a los 900&nbsp;ms.</li>
+    <li>Toda la información está en el estado final: nombres de las dos neuronas, título, cuerpo y acciones. El movimiento y el háptico solo acompañan.</li>
+    <li>Con texto grande el panel scrollea (como hoy). Los desplazamientos son fijos en pt, no dependen del tamaño de letra.</li>
+  </ul></div>
+</div>
+
+<h2 class="sec">Casos</h2>
+<div class="tabla-wrap"><table class="tabla">
+  <thead><tr><th>Caso</th><th>Qué pasa</th></tr></thead>
+  <tbody>
+    <tr><td>Chispa diaria o extra</td><td>La misma coreografía. Solo cambia la etiqueta del panel: “Tu chispa de hoy” / “Tu chispa extra” (y en Hoy, “Tu chispa de hoy está lista” / “Tu chispa extra está lista”).</td></tr>
+    <tr><td>Entrada desde push o widget</td><td>No se reproduce sola: la app abre Hoy con la chispa por encender arriba y la coreografía arranca con el toque en “Encender la chispa”, como siempre. El momento le pertenece al usuario. Si la chispa ya se reveló (por ejemplo, en otro dispositivo), llega revelada, sin animación. El reveal manda <code>spark_revealed.entry = push | widget</code> (hoy siempre manda <code>app</code>).</td></tr>
+    <tr><td>Tema gris (default)</td><td>La estrella es el único rosa, apoyada entre las dos terminales negras. <code>glow-spark</code> es una sombra negra suave: el panel “se levanta” cuando salta la chispa.</td></tr>
+    <tr><td>Tema grafito</td><td>Neuronas hueso; <code>glow-spark</code> es un halo rosa de 28&nbsp;px al 30&nbsp;%, alrededor del panel. Es el único momento de la app con ese halo.</td></tr>
+    <tr><td>Toques durante la animación</td><td>“Encender la chispa” queda deshabilitado desde el primer toque (el doble toque no relanza). Hasta los 900&nbsp;ms se ignoran la cruz, el toque afuera, el escape y el back. No se puede saltear: dura menos de un segundo. Las acciones se pueden tocar desde que son visibles (750&nbsp;ms).</td></tr>
+    <tr><td>La app pasa a segundo plano a mitad</td><td>Al volver, la chispa se muestra revelada (estado final, sin repetir). Si la app se cerró antes de los 900&nbsp;ms, <code>revealSpark</code> no llegó: la chispa sigue por encender y el reveal se puede hacer de nuevo.</td></tr>
+    <tr><td>Android sin desenfoque (API 28–30 o ahorro de batería)</td><td><code>Modifier.blur</code> y el desenfoque entre ventanas existen desde API 31. Sin desenfoque, el velo pasa a <code>scrim</code> (<code>neuron</code> al 50&nbsp;%) para que Hoy no compita con el panel. <i>Provisorio.</i></td></tr>
+  </tbody>
+</table></div>
+
+<h2 class="sec">Especificación, código y recomendación</h2>
+<p class="lead">Lo que dice <code>design/system/README.md</code>, lo que hace hoy <code>SparkReveal.swift</code> (leído el 2026-10-13) y qué adoptar. Tiempos del código contados desde el toque.</p>
+<div class="tabla-wrap"><table class="tabla tabla--diff">
+  <thead><tr><th>Tema</th><th>Especificación</th><th>Código actual</th><th>Recomendación</th></tr></thead>
+  <tbody>
+    <tr><td>Arranque</td><td>No dice dónde cae el modal en el tiempo.</td><td>Presenta el <code>fullScreenCover</code> sin animación y espera 300&nbsp;ms (50 con Reducir movimiento) antes de la primera fase.</td><td class="rec">Sin espera: modal y sinapsis arrancan en t = 0; el fundido del modal corre en paralelo.</td></tr>
+    <tr><td>Duración total</td><td>900&nbsp;ms.</td><td>~1.200&nbsp;ms hasta el anuncio (300 + 340 + 220 + 340).</td><td class="rec">900&nbsp;ms.</td></tr>
+    <tr><td>Fundido del modal</td><td>Fundido, sin deslizar.</td><td>Velo y panel con <code>.opacity</code> en 250&nbsp;ms <code>easeOut</code>. El <code>.ultraThinMaterial</code> de <code>presentationBackground</code> queda fuera de esa opacidad: aparece de golpe (verificar en dispositivo).</td><td class="rec">200&nbsp;ms, curva fundido, con el material adentro del mismo fundido.</td></tr>
+    <tr><td>Entrada de las neuronas</td><td>Desde los costados, 0–250.</td><td>No entran: el panel aparece con nombres y sinapsis <code>apart</code> (neuronas corridas 10&nbsp;u hacia afuera) ya en su lugar.</td><td class="rec"><i>x</i> ±22&nbsp;u y opacidad, 0–250, curva entrada; los nombres las acompañan (±16&nbsp;pt).</td></tr>
+    <tr><td>Terminales</td><td>Cada una estira su terminal, 150–550.</td><td><code>approaching</code>, 340&nbsp;ms <code>easeIn</code>: las neuronas enteras se corren 10&nbsp;u hacia el centro; nada se estira.</td><td class="rec">La terminal crece desde el soma (máscara), 150–550, curva alcance.</td></tr>
+    <tr><td>Impulsos</td><td>Cruzan cada terminal, 450–650, en <code>info-text</code>.</td><td>Aparecen quietos en <i>x</i> = 40 durante <code>approaching</code> y en <code>collided</code> viajan al centro mientras se apagan con el resorte.</td><td class="rec">Viajan de <i>x</i> 46 a 106 en 450–650, curva impulso. Con un borde <code>surface</code> de 1,8&nbsp;u y radio 4&nbsp;u: <code>info-text</code> sobre la terminal <code>ink</code> no llega a 2:1 y no se ve. <i>Provisorio.</i></td></tr>
+    <tr><td>Estrella</td><td>Se enciende a los 650.</td><td>A los ~640 (300 + 340), <code>spring(duration: 0.3, bounce: 0.4)</code> de 0,1 a 1.</td><td class="rec">650, <code>.spring(duration: 0.3, bounce: 0.35)</code>.</td></tr>
+    <tr><td>Escala de la sinapsis</td><td>No hay.</td><td>Toda la sinapsis escala a 1,1 en <code>collided</code> y vuelve a 1 en <code>revealed</code>.</td><td class="rec">Sacarla: el rebote es solo de la estrella.</td></tr>
+    <tr><td><code>glow-spark</code></td><td>“Se enciende la estrella con <code>glow-spark</code>”.</td><td>El panel tiene <code>glow-spark</code> fijo desde que aparece.</td><td class="rec">El <code>glow-spark</code> es del panel y se enciende 650–900. La estrella no lleva sombra: en gris el token es una sombra negra que la ensuciaría. <i>Provisorio.</i></td></tr>
+    <tr><td>Háptico</td><td><code>.success</code> / <code>CONFIRM</code> a los 650.</td><td>Al pasar a <code>collided</code> (~640). Coincide.</td><td class="rec">Igual, en el mismo cuadro que la estrella.</td></tr>
+    <tr><td>Título y cuerpo</td><td>El título sube hasta los 900.</td><td>Título y cuerpo entran juntos en <code>revealed</code> (860–1.200) con <code>.move(edge: .bottom)</code>: el recorrido depende del alto del contenedor.</td><td class="rec">Título 650–900 desde +12&nbsp;pt; cuerpo 700–900 desde +8&nbsp;pt; acciones 750–900 solo opacidad.</td></tr>
+    <tr><td>Tamaño del panel</td><td>—</td><td>Título, cuerpo y acciones se insertan al final: el panel crece de golpe y se vuelve a centrar.</td><td class="rec">El panel nace con su tamaño final; lo que no toca todavía va con opacidad 0 y oculto a accesibilidad.</td></tr>
+    <tr><td>Cruz</td><td>Cierra solo ya revelada.</td><td>Oculta y deshabilitada hasta <code>revealed</code>. Mide 32×32&nbsp;pt.</td><td class="rec">Aparece a los 900 en 100&nbsp;ms. Área táctil de 44×44&nbsp;pt.</td></tr>
+    <tr><td>Cierre</td><td>Solo dice que se abre sin deslizar.</td><td><code>isShowingReveal = false</code> con la animación por defecto del <code>fullScreenCover</code>: desliza hacia abajo.</td><td class="rec">Cerrar también con un fundido de 200&nbsp;ms, sin deslizar. <i>Provisorio.</i></td></tr>
+    <tr><td>Reducir movimiento</td><td>Fundido de 200&nbsp;ms sin escala ni rebote.</td><td>Espera 50&nbsp;ms, háptico al principio, <code>revealed</code> con <code>easeInOut(0.2)</code>.</td><td class="rec">Sin espera; fundido sereno de 200&nbsp;ms; háptico y anuncio a los 200. <i>Provisorio el momento del háptico.</i></td></tr>
+    <tr><td>Anuncio</td><td>—</td><td>Al final (~1.200) con <code>accessibilitySummary</code>.</td><td class="rec">A los 900 (200 con Reducir movimiento), con foco al título.</td></tr>
+    <tr><td>Origen</td><td><code>spark_revealed.entry</code>: <code>app</code>, <code>push</code>, <code>widget</code>.</td><td><code>TodayView</code> no le pasa <code>entry</code> a <code>SparkHero</code>: siempre manda <code>app</code>.</td><td class="rec">Pasar el origen de la ruta (<code>AppRoute.spark</code>) hasta el reveal.</td></tr>
+  </tbody>
+</table></div>
+
+<h2 class="sec">Qué cambiar en SparkReveal.swift</h2>
+<p class="lead">No se tocó el código en este paso. Esto es lo que haría la sesión de implementación (el detalle y el esqueleto en Swift y Compose están en el README).</p>
+<ol class="steps">
+  <li><b>Sacar la espera de 300&nbsp;ms</b> y arrancar el reloj en el toque; el fundido del modal pasa a ser una pista más.</li>
+  <li><b>Reemplazar las tres fases con <code>Task.sleep</code></b> por un <code>KeyframeAnimator</code> (o pistas con <code>withAnimation(curva.delay(inicio))</code>) que siga la tabla. Un solo <code>Task</code> queda para lo que no es animación: háptico a los 650; cierre, anuncio, <code>spark_revealed</code> y <code>revealSpark</code> a los 900.</li>
+  <li><b><code>Synapse</code> con progreso continuo</b> (entrada, terminal, impulso, estrella) en lugar de <code>apart / reaching / lit</code>. Los tres estados quedan como atajos para Hoy y compartir.</li>
+  <li><b>Panel con el tamaño final desde el principio</b> y sin la escala 1,1 de la sinapsis.</li>
+  <li><b><code>glow-spark</code> animado</b> en una capa propia detrás del panel.</li>
+  <li><b>Material y velo dentro del fundido</b>: <code>.presentationBackground(.clear)</code> y dibujar el material y el velo en el propio modal.</li>
+  <li><b>Cierre con fundido</b> también sin deslizar; <b>cruz de 44×44</b>; <b><code>.accessibilityAction(.escape)</code></b> solo revelada; <b>ocultar a VoiceOver</b> lo que todavía no se ve.</li>
+  <li><b>Pasar <code>entry</code></b> desde la ruta de push o widget.</li>
+</ol>
+
+<h2 class="sec">Decisiones provisorias</h2>
+<div class="callout callout--prov"><p>Estas no están en <code>plan.md</code> ni en el README del sistema. Quedan a confirmar antes de implementarlas.</p></div>
+<ul class="steps">
+  <li><b><code>glow-spark</code> en el panel, no en la estrella</b>, encendido de 650 a 900.</li>
+  <li><b>Impulso con borde <code>surface</code></b> (1,8&nbsp;u, radio 4&nbsp;u) para que se lea sobre la terminal <code>ink</code>.</li>
+  <li><b>Háptico al final del fundido</b> (200&nbsp;ms) con Reducir movimiento.</li>
+  <li><b>Cierre con fundido de 200&nbsp;ms</b>, sin deslizar, igual que la apertura.</li>
+  <li><b>Respaldo háptico en API 28–29:</b> <code>VIRTUAL_KEY</code>.</li>
+  <li><b>Velo <code>scrim</code> sin desenfoque</b> en Android 28–30 o con el desenfoque apagado.</li>
+  <li><b>Back de Android y escape ignorados</b> hasta los 900&nbsp;ms; no hay forma de saltear la coreografía.</li>
+  <li><b>Técnica de la terminal:</b> máscara que avanza desde el soma. Si queda mejor, separar la terminal en su propia capa en <code>identidad/generar.py</code>.</li>
+</ul>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  /* ---------- Curvas ---------- */
+  var FADE = 'cubic-bezier(0, 0, 0.2, 1)', ENTER = 'cubic-bezier(0.2, 0.8, 0.2, 1)', REACH = 'cubic-bezier(0.3, 0.7, 0.2, 1)',
+      IMPULSE = 'cubic-bezier(0.4, 0, 1, 1)', CALM = 'cubic-bezier(0.4, 0, 0.2, 1)';
+  var BEZ = { fade: [0, 0, .2, 1], enter: [.2, .8, .2, 1], reach: [.3, .7, .2, 1], impulse: [.4, 0, 1, 1], calm: [.4, 0, .2, 1] };
+  /* Resorte de SwiftUI .spring(duration: 0.3, bounce: 0.35) = amortiguación 0,65, rigidez (2π/0,3)². */
+  function spring(t) {
+    var z = 0.65, w = 2 * Math.PI / 0.3, wd = w * Math.sqrt(1 - z * z);
+    return 1 - Math.exp(-z * w * t) * (Math.cos(wd * t) + (z * w / wd) * Math.sin(wd * t));
+  }
+  function springKF() {
+    var n = 36, k = [];
+    for (var i = 0; i <= n; i++) {
+      var x = i === n ? 1 : spring(i / n * 0.3);
+      k.push({ transform: 'scale(' + (0.1 + 0.9 * x).toFixed(4) + ')', offset: i / n });
+    }
+    return k;
+  }
+
+  /* ---------- Pistas: la misma definición mueve el prototipo, dibuja la línea de tiempo y congela los fotogramas ---------- */
+  var FULL = [
+    { label: 'Velo y desenfoque', curve: 'fundido', start: 0, dur: 200, anims: [{ sel: '.rv-veil', kf: [{ opacity: 0 }, { opacity: 1 }], ease: FADE }] },
+    { label: 'Panel', curve: 'fundido', start: 0, dur: 200, anims: [{ sel: '.rv-panel', kf: [{ opacity: 0 }, { opacity: 1 }], ease: FADE }] },
+    { label: 'Neurona A y su nombre', curve: 'entrada', start: 0, dur: 250, anims: [
+      { sel: '.rv-na', kf: [{ transform: 'translateX(-22px)', opacity: 0 }, { transform: 'translateX(0)', opacity: 1 }], ease: ENTER },
+      { sel: '.rv-pa', kf: [{ transform: 'translateX(-16px)', opacity: 0 }, { transform: 'translateX(0)', opacity: 1 }], ease: ENTER }] },
+    { label: 'Neurona B y su nombre', curve: 'entrada', start: 0, dur: 250, anims: [
+      { sel: '.rv-nb', kf: [{ transform: 'translateX(22px)', opacity: 0 }, { transform: 'translateX(0)', opacity: 1 }], ease: ENTER },
+      { sel: '.rv-pb', kf: [{ transform: 'translateX(16px)', opacity: 0 }, { transform: 'translateX(0)', opacity: 1 }], ease: ENTER }] },
+    { label: 'Terminales', curve: 'alcance', start: 150, dur: 400, anims: [
+      { sel: '.rv-ta', kf: [{ clipPath: 'inset(-2px 57% -2px -2px)' }, { clipPath: 'inset(-2px -2px -2px -2px)' }], ease: REACH },
+      { sel: '.rv-tb', kf: [{ clipPath: 'inset(-2px -2px -2px 57%)' }, { clipPath: 'inset(-2px -2px -2px -2px)' }], ease: REACH }] },
+    { label: 'Impulsos', curve: 'impulso', start: 450, dur: 200, anims: [
+      { sel: '.rv-ia', kf: [{ transform: 'translateX(0)' }, { transform: 'translateX(60px)' }], ease: IMPULSE },
+      { sel: '.rv-ib', kf: [{ transform: 'translateX(0)' }, { transform: 'translateX(-60px)' }], ease: IMPULSE },
+      { sel: '.rv-imp', kf: [{ opacity: 0 }, { opacity: 1, offset: 0.2 }, { opacity: 1, offset: 0.8 }, { opacity: 0 }], ease: 'linear' }] },
+    { label: 'Estrella', curve: 'encendido', start: 650, dur: 300, anims: [
+      { sel: '.rv-star', kf: springKF(), ease: 'linear' },
+      { sel: '.rv-star', kf: [{ opacity: 0 }, { opacity: 1 }], dur: 70, ease: 'linear', composite: 'replace' }] },
+    { label: 'glow-spark del panel', curve: 'fundido', start: 650, dur: 250, anims: [{ sel: '.rv-glow', kf: [{ opacity: 0 }, { opacity: 1 }], ease: FADE }] },
+    { label: 'Háptico', curve: '.success / CONFIRM', start: 650, marker: 'haptic' },
+    { label: 'Título', curve: 'entrada', start: 650, dur: 250, anims: [{ sel: '.rv-title', kf: [{ transform: 'translateY(12px)', opacity: 0 }, { transform: 'translateY(0)', opacity: 1 }], ease: ENTER }] },
+    { label: 'Cuerpo', curve: 'entrada', start: 700, dur: 200, anims: [{ sel: '.rv-body', kf: [{ transform: 'translateY(8px)', opacity: 0 }, { transform: 'translateY(0)', opacity: 1 }], ease: ENTER }] },
+    { label: 'Acciones', curve: 'fundido', start: 750, dur: 150, anims: [{ sel: '.rv-actions', kf: [{ opacity: 0 }, { opacity: 1 }], ease: FADE }] },
+    { label: 'Cruz y tocar afuera', curve: 'fundido', start: 900, dur: 100, anims: [{ sel: '.rv-close', kf: [{ opacity: 0 }, { opacity: 1 }], ease: FADE }] },
+    { label: 'Anuncio y foco', curve: 'VoiceOver / TalkBack', start: 900, marker: 'reveal' }
+  ];
+  var REDUCED = [
+    { label: 'Velo y desenfoque', curve: 'fundido sereno', start: 0, dur: 200, anims: [{ sel: '.rv-veil', kf: [{ opacity: 0 }, { opacity: 1 }], ease: CALM }] },
+    { label: 'Panel, ya encendido', curve: 'fundido sereno', start: 0, dur: 200, anims: [{ sel: '.rv-panel', kf: [{ opacity: 0 }, { opacity: 1 }], ease: CALM }] },
+    { label: 'Háptico', curve: '.success / CONFIRM', start: 200, marker: 'haptic' },
+    { label: 'Cruz y tocar afuera', curve: 'se habilitan', start: 200, marker: 'none' },
+    { label: 'Anuncio y foco', curve: 'VoiceOver / TalkBack', start: 200, marker: 'reveal' }
+  ];
+  var DOMAIN = 1000;
+
+  function animate(root, tracks) {
+    var out = [];
+    tracks.forEach(function (tr) {
+      (tr.anims || []).forEach(function (a) {
+        $$(a.sel, root).forEach(function (el) {
+          out.push(el.animate(a.kf, { delay: tr.start + (a.delay || 0), duration: a.dur || tr.dur, easing: a.ease || 'linear', fill: 'both' }));
+        });
+      });
+    });
+    return out;
+  }
+
+  /* ---------- Sinapsis: las tres piezas de arte('sinapsis-completa'), envueltas en grupos para animarlas por separado ---------- */
+  var SYN = (function () {
+    var doc = new DOMParser().parseFromString(window.arte('sinapsis-completa'), 'image/svg+xml');
+    var p = doc.querySelectorAll('path');
+    return { l: p[0].getAttribute('d'), r: p[1].getAttribute('d'), s: p[2].getAttribute('d'), t: p[2].getAttribute('transform') };
+  })();
+  function synSVG(state) {
+    var shift = state === 'apart' ? 10 : 0;
+    return '<svg class="rv-syn" viewBox="0 0 240 80" aria-hidden="true" focusable="false">' +
+      '<g' + (shift ? ' transform="translate(-' + shift + ' 0)"' : '') + '><g class="rv-na"><g class="rv-ta"><path class="n-active" d="' + SYN.l + '"/></g></g></g>' +
+      '<g' + (shift ? ' transform="translate(' + shift + ' 0)"' : '') + '><g class="rv-nb"><g class="rv-tb"><path class="n-active" d="' + SYN.r + '"/></g></g></g>' +
+      (state === 'anim' ? '<circle class="rv-imp rv-ia" cx="46" cy="37.6" r="4"/><circle class="rv-imp rv-ib" cx="194" cy="37.6" r="4"/>' : '') +
+      (state === 'apart' ? '' : '<g transform="' + SYN.t + '"><path class="n-spark rv-star" d="' + SYN.s + '"/></g>') +
+      '</svg>';
+  }
+
+  /* ---------- Estado ---------- */
+  var tel, telBox, rv, rvClose, rvScroll, ignite, hoyPending, hoyRevealed, logEl, clockEl, scrub, pauseBtn, grid, cursor, announceEl;
+  var anims = [], master = null, fired = {}, speed = 1, reduced = false, revealed = false, closing = false, raf = 0;
+
+  function tracks() { return reduced ? REDUCED : FULL; }
+  function endTime() { return reduced ? 200 : 900; }
+  function platform() { return document.body.dataset.platform || 'ios'; }
+  function hapticName() { return platform() === 'android' ? 'CONFIRM' : '.success'; }
+  function summary() {
+    return 'Chispa: Podcast × ruinas. Un episodio por capa de excavación: cada uno cuenta una época de la misma ciudad con lo que quedó enterrado. Combina Formato podcast, de Medios, con Ruinas romanas, de Historia.';
+  }
+
+  function log(ms, html) {
+    var li = document.createElement('li');
+    li.innerHTML = '<b>' + (ms === null ? '—' : Math.round(ms) + ' ms') + '</b><span>' + html + '</span>';
+    logEl.appendChild(li);
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  function events() {
+    var e = [];
+    tracks().forEach(function (tr) { if (tr.marker === 'haptic' || tr.marker === 'reveal') e.push({ at: tr.start, type: tr.marker }); });
+    return e;
+  }
+
+  function fire(ev, silent) {
+    fired[ev.type] = true;
+    if (ev.type === 'haptic') {
+      if (silent) return;
+      flashHaptic();
+      log(ev.at, 'Háptico <em>' + (platform() === 'android' ? 'CONFIRM</em> (API 30+; <em>VIRTUAL_KEY</em> en 28–29)' : '.success</em>') + (reduced ? ', al terminar el fundido.' : ', con la estrella.'));
+    } else if (ev.type === 'reveal') {
+      setRevealed(true);
+      if (silent) return;
+      $('#rvTitle').focus({ preventScroll: true });
+      announceEl.textContent = summary();
+      log(ev.at, 'Cruz y toque afuera habilitados. Foco al título y anuncio: <em>“' + summary() + '”</em>');
+      log(ev.at, '<em>spark_revealed</em> · mode: daily · entry: app · reduce_motion: ' + reduced + '. Llamada a <em>revealSpark</em>.');
+    }
+  }
+
+  function setRevealed(v) {
+    revealed = v;
+    rvClose.disabled = !v;
+  }
+
+  function flashHaptic() {
+    var k = 1 / speed;
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    $('#hapRing').animate(still ? [{ opacity: 1 }, { opacity: 0 }] : [{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(1.035)' }],
+      { duration: 520 * Math.max(1, k * 0.6), easing: 'cubic-bezier(0, 0, 0.2, 1)' });
+    $('#hapBadge').animate([{ opacity: 0 }, { opacity: 1, offset: 0.08 }, { opacity: 1, offset: 0.8 }, { opacity: 0 }],
+      { duration: 1100 * Math.max(1, k * 0.6), easing: 'linear' });
+  }
+
+  function cancelAll() {
+    anims.forEach(function (a) { a.cancel(); });
+    anims = [];
+    if (master) master.cancel();
+    master = null;
+    cancelAnimationFrame(raf);
+  }
+
+  function resetToHoy() {
+    cancelAll();
+    rv.getAnimations().forEach(function (a) { a.cancel(); });
+    rv.hidden = true;
+    closing = false;
+    setRevealed(false);
+    fired = {};
+    hoyRevealed.hidden = true;
+    hoyPending.hidden = false;
+    $('#meterText').textContent = '1 chispa para encender';
+    ignite.classList.remove('is-gone');
+    ignite.disabled = false;
+    announceEl.textContent = '';
+    pauseBtn.disabled = true;
+    pauseBtn.textContent = 'Pausar';
+    paint(0);
+  }
+
+  function start(silentLog) {
+    resetToHoy();
+    logEl.innerHTML = '';
+    ignite.classList.add('is-gone');
+    ignite.disabled = true;
+    rv.hidden = false;
+    anims = animate(rv, tracks());
+    master = new Animation(new KeyframeEffect(null, null, { duration: DOMAIN, fill: 'forwards' }), document.timeline);
+    master.play();
+    setSpeed(speed);
+    pauseBtn.disabled = false;
+    if (!silentLog) log(0, 'Toque en <em>Encender la chispa</em>. ' + (reduced ? 'Reducir movimiento: fundido de 200 ms con la chispa ya encendida.' : 'Empiezan juntos el fundido del modal y la entrada de las neuronas.'));
+    loop();
+  }
+
+  function loop() {
+    cancelAnimationFrame(raf);
+    var step = function () {
+      if (!master) return;
+      var t = master.currentTime || 0;
+      events().forEach(function (ev) { if (!fired[ev.type] && t >= ev.at) fire(ev); });
+      paint(t);
+      if (master.playState === 'running') raf = requestAnimationFrame(step);
+      else if (master.playState === 'finished') { pauseBtn.disabled = true; }
+    };
+    raf = requestAnimationFrame(step);
+  }
+
+  function setSpeed(s) {
+    speed = s;
+    anims.forEach(function (a) { a.playbackRate = s; });
+    if (master) master.playbackRate = s;
+    $$('[data-speed]').forEach(function (b) { b.setAttribute('aria-pressed', String(Number(b.dataset.speed) === s)); });
+  }
+
+  function seek(t) {
+    if (!master) start(true);
+    anims.forEach(function (a) { a.pause(); a.currentTime = t; });
+    master.pause();
+    master.currentTime = t;
+    cancelAnimationFrame(raf);
+    events().forEach(function (ev) { if (t >= ev.at) { if (!fired[ev.type]) fire(ev, true); } else { fired[ev.type] = false; if (ev.type === 'reveal') setRevealed(false); } });
+    pauseBtn.disabled = false;
+    pauseBtn.textContent = 'Seguir';
+    paint(t);
+  }
+
+  function togglePause() {
+    if (!master) return;
+    if (master.playState === 'running') {
+      anims.forEach(function (a) { a.pause(); });
+      master.pause();
+      pauseBtn.textContent = 'Seguir';
+    } else {
+      anims.forEach(function (a) { a.play(); });
+      master.play();
+      pauseBtn.textContent = 'Pausar';
+      loop();
+    }
+  }
+
+  function close(reason) {
+    if (rv.hidden || closing) return;
+    if (!revealed) {
+      var t = master ? Math.round(master.currentTime || 0) : 0;
+      log(t, 'Toque ' + reason + ' ignorado: la chispa todavía no terminó de encenderse.');
+      return;
+    }
+    closing = true;
+    var a = rv.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200 / speed, easing: reduced ? CALM : FADE, fill: 'forwards' });
+    a.onfinish = function () {
+      cancelAll();
+      a.cancel();
+      rv.hidden = true;
+      closing = false;
+      hoyPending.hidden = true;
+      hoyRevealed.hidden = false;
+      $('#meterText').textContent = 'Usaste las chispas de hoy';
+      pauseBtn.disabled = true;
+      log(null, 'Cerrado con ' + reason + ' (fundido de 200 ms, sin deslizar). La chispa queda en Hoy.');
+    };
+  }
+
+  /* ---------- Línea de tiempo ---------- */
+  function drawTimeline() {
+    var trs = tracks();
+    var ticks = '';
+    for (var i = 0; i <= DOMAIN; i += 100) ticks += '<span' + (i % 300 ? ' class="odd"' : '') + ' style="left:' + (i / DOMAIN * 100) + '%">' + i + '</span>';
+    var rows = trs.map(function (tr, idx) {
+      var shape = tr.marker
+        ? '<i class="tl__mark" style="left:' + (tr.start / DOMAIN * 100) + '%"></i>'
+        : '<i class="tl__bar" style="left:' + (tr.start / DOMAIN * 100) + '%;width:' + (tr.dur / DOMAIN * 100) + '%"></i>';
+      var when = tr.marker ? tr.start + ' ms' : tr.start + '–' + (tr.start + tr.dur) + ' ms';
+      return '<div class="tl__row" data-i="' + idx + '"><span class="tl__lab">' + tr.label + '<small>' + when + ' · ' + tr.curve + '</small></span><div class="tl__lane">' + shape + '</div></div>';
+    }).join('');
+    grid.innerHTML = '<div class="tl__axis"><span></span><div class="tl__ticks">' + ticks + '</div></div>' + rows +
+      '<div class="tl__lanepos"><div class="tl__end" style="left:' + (endTime() / DOMAIN * 100) + '%"><span>' + (reduced ? 'listo a los 200' : 'fin · 900') + '</span></div><div class="tl__cursor" id="cursor"></div></div>';
+    cursor = $('#cursor');
+    $('#tlTitle').textContent = reduced ? 'Línea de tiempo · Reducir movimiento' : 'Línea de tiempo · completa';
+    paint(master ? master.currentTime || 0 : 0);
+  }
+
+  function paint(t) {
+    t = Math.max(0, Math.min(DOMAIN, t));
+    clockEl.textContent = Math.round(t);
+    if (document.activeElement !== scrub) scrub.value = Math.round(t);
+    if (cursor) cursor.style.left = (t / DOMAIN * 100) + '%';
+    var trs = tracks();
+    $$('.tl__row', grid).forEach(function (row) {
+      var tr = trs[Number(row.dataset.i)];
+      var end = tr.marker ? tr.start + 60 : tr.start + tr.dur;
+      var on = master && t >= tr.start && t <= end;
+      row.classList.toggle('is-on', !!on);
+      row.classList.toggle('is-past', !!master && t > end);
+    });
+  }
+
+  /* ---------- Fotogramas ---------- */
+  function drawFrames() {
+    var frames = [
+      [120, 'Entran las neuronas', 'Desde los costados, con sus nombres.'],
+      [300, 'Crecen las terminales', 'Desde el soma hacia el hueco.'],
+      [520, 'Cruza el impulso', 'Uno por terminal, acelerando.'],
+      [670, 'Salta la chispa', 'Estrella y háptico desde los 650.'],
+      [720, 'Rebote del encendido', 'Solo la estrella; el título sube.'],
+      [900, 'Revelada', 'Se habilitan la cruz y el anuncio.']
+    ];
+    var box = $('#frames');
+    box.innerHTML = frames.map(function (f) {
+      return '<figure class="frame" style="margin:0"><div class="pairhead"><div class="rv-pa"><span>Medios</span><b>Formato podcast</b></div><div class="r rv-pb"><span>Historia</span><b>Ruinas romanas</b></div></div>' +
+        synSVG('anim') + '<p class="rv-title">Podcast × ruinas</p><figcaption><b>' + f[0] + ' ms · ' + f[1] + '</b>' + f[2] + '</figcaption></figure>';
+    }).join('');
+    $$('.frame', box).forEach(function (fig, i) {
+      animate(fig, FULL).forEach(function (a) { a.pause(); a.currentTime = frames[i][0]; });
+    });
+  }
+
+  /* ---------- Curvas dibujadas ---------- */
+  function drawCurves() {
+    $$('[data-curve]').forEach(function (svg) {
+      var name = svg.dataset.curve, pad = 10, size = 80;
+      var X = function (x) { return pad + x * size; }, Y = function (y) { return pad + 8 + (1 - y) * (size - 8); };
+      var d;
+      if (name === 'ignite') {
+        d = '';
+        for (var i = 0; i <= 60; i++) { var x = i / 60; d += (i ? 'L' : 'M') + X(x).toFixed(1) + ' ' + Y(spring(x * 0.45)).toFixed(1); }
+      } else {
+        var b = BEZ[name];
+        d = 'M' + X(0) + ' ' + Y(0) + ' C' + X(b[0]) + ' ' + Y(b[1]) + ' ' + X(b[2]) + ' ' + Y(b[3]) + ' ' + X(1) + ' ' + Y(1);
+      }
+      svg.innerHTML = '<path class="ax" d="M' + X(0) + ' ' + Y(0) + 'H' + X(1) + 'M' + X(0) + ' ' + Y(0) + 'V' + (pad - 4) + '"/>' +
+        '<path class="one" d="M' + X(0) + ' ' + Y(1) + 'H' + X(1) + '"/><path class="cv" d="' + d + '"/>';
+    });
+  }
+
+  /* ---------- Arranque ---------- */
+  document.addEventListener('DOMContentLoaded', function () {
+    tel = $('#tel'); telBox = $('#telBox'); rv = $('#rv'); rvClose = $('#rvClose'); rvScroll = $('#rvScroll');
+    ignite = $('#ignite'); hoyPending = $('#hoyPending'); hoyRevealed = $('#hoyRevealed');
+    logEl = $('#log'); clockEl = $('#clock'); scrub = $('#scrub'); pauseBtn = $('#pause'); grid = $('#tlGrid'); announceEl = $('#announce');
+
+    $$('[data-syn]').forEach(function (el) { el.outerHTML = synSVG(el.dataset.syn); });
+
+    /* Hoy ya revelada (SparkCard abierta): las mismas piezas del panel, en su estado final. */
+    var parts = ['.pairhead', '.rv-syn', '.rv-text', '.rv-actions'].map(function (s) { return $(s, rv).cloneNode(true); });
+    parts.forEach(function (n) { $$('[id]', n).concat(n.id ? [n] : []).forEach(function (e) { e.removeAttribute('id'); e.removeAttribute('tabindex'); }); hoyRevealed.appendChild(n); });
+    $$('.rv-imp', hoyRevealed).forEach(function (c) { c.remove(); });
+
+    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var setReduced = function (v, replay) {
+      reduced = v;
+      $('#rmSwitch').setAttribute('aria-checked', String(v));
+      drawTimeline();
+      if (replay) start(); else resetToHoy();
+    };
+    setReduced(mq.matches, false);
+    if (mq.matches) $('#rmNote').textContent = 'Tu sistema tiene Reducir movimiento activado, así que arranca encendido. Podés apagarlo acá para ver la versión completa.';
+    if (mq.addEventListener) mq.addEventListener('change', function (e) { setReduced(e.matches, false); });
+    $('#rmSwitch').addEventListener('click', function () { setReduced(!reduced, true); });
+
+    ignite.addEventListener('click', function () { start(); });
+    $('#replay').addEventListener('click', function () { start(); });
+    $('#resetBtn').addEventListener('click', function () { resetToHoy(); logEl.innerHTML = ''; });
+    pauseBtn.addEventListener('click', togglePause);
+    $$('[data-speed]').forEach(function (b) { b.addEventListener('click', function () { setSpeed(Number(b.dataset.speed)); }); });
+    setSpeed(1);
+    scrub.addEventListener('input', function () { seek(Number(scrub.value)); });
+    rvClose.addEventListener('click', function () { close('la cruz'); });
+    rvScroll.addEventListener('click', function (e) { if (e.target === rvScroll) close('afuera'); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !rv.hidden) close('escape'); });
+
+    var syncPlatform = function () {
+      var android = platform() === 'android';
+      tel.classList.toggle('tel--android', android);
+      telBox.classList.toggle('is-android', android);
+      $('.tabbar .ch-nav').classList.toggle('ch-nav--md', android);
+      $('.tabbar .ch-add').classList.toggle('ch-add--md', android);
+      $$('.hap-name').forEach(function (n) { n.textContent = hapticName(); });
+    };
+    document.addEventListener('platformchange', syncPlatform);
+    syncPlatform();
+
+    drawFrames();
+    drawCurves();
+
+    /* Enlace a un instante, para revisiones: ?t=650&tema=dark&rm=1&plataforma=android (no guarda nada). */
+    var q = new URLSearchParams(location.search);
+    if (q.get('tema') === 'light' || q.get('tema') === 'dark') {
+      document.documentElement.dataset.theme = q.get('tema');
+      $$('[data-set-theme]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.setTheme === q.get('tema'))); });
+    }
+    if (q.get('plataforma') === 'ios' || q.get('plataforma') === 'android') {
+      document.body.dataset.platform = q.get('plataforma');
+      $$('[data-set-platform]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.setPlatform === q.get('plataforma'))); });
+      syncPlatform();
+    }
+    if (q.has('rm')) setReduced(q.get('rm') === '1', false);
+    if (q.has('t')) seek(Math.max(0, Math.min(DOMAIN, Number(q.get('t')) || 0)));
+  });
+})();
+</script>
+</body></html>

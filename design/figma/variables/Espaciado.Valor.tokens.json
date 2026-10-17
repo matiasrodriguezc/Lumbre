@@ -1,0 +1,182 @@
+{
+  "espacio": {
+    "space-1": {
+      "$type": "number",
+      "$value": 4.0,
+      "$description": "Separación ícono–texto dentro de un chip.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "GAP",
+          "WIDTH_HEIGHT"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--space-1)",
+          "iOS": "Space.s1"
+        }
+      }
+    },
+    "space-2": {
+      "$type": "number",
+      "$value": 8.0,
+      "$description": "Gap entre chips y entre líneas de metadatos.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "GAP",
+          "WIDTH_HEIGHT"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--space-2)",
+          "iOS": "Space.s2"
+        }
+      }
+    },
+    "space-3": {
+      "$type": "number",
+      "$value": 12.0,
+      "$description": "Padding vertical de botones y filas compactas.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "GAP",
+          "WIDTH_HEIGHT"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--space-3)",
+          "iOS": "Space.s3"
+        }
+      }
+    },
+    "space-4": {
+      "$type": "number",
+      "$value": 16.0,
+      "$description": "Padding de tarjetas y márgenes laterales de pantalla.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "GAP",
+          "WIDTH_HEIGHT"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--space-4)",
+          "iOS": "Space.s4"
+        }
+      }
+    },
+    "space-5": {
+      "$type": "number",
+      "$value": 20.0,
+      "$description": "Margen lateral en pantallas de lectura (Android usa 16 o 24 según ancho).",
+      "$extensions": {
+        "com.figma.scopes": [
+          "GAP",
+          "WIDTH_HEIGHT"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--space-5)",
+          "iOS": "Space.s5"
+        }
+      }
+    },
+    "space-6": {
+      "$type": "number",
+      "$value": 24.0,
+      "$description": "Separación entre secciones de una pantalla.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "GAP",
+          "WIDTH_HEIGHT"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--space-6)",
+          "iOS": "Space.s6"
+        }
+      }
+    },
+    "space-8": {
+      "$type": "number",
+      "$value": 32.0,
+      "$description": "Aire alrededor de la chispa revelada.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "GAP",
+          "WIDTH_HEIGHT"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--space-8)",
+          "iOS": "Space.s8"
+        }
+      }
+    },
+    "space-10": {
+      "$type": "number",
+      "$value": 40.0,
+      "$description": "Separación de bloques en onboarding y paywall.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "GAP",
+          "WIDTH_HEIGHT"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--space-10)",
+          "iOS": "Space.s10"
+        }
+      }
+    }
+  },
+  "radio": {
+    "radius-sm": {
+      "$type": "number",
+      "$value": 8.0,
+      "$description": "Inputs, chips cuadrados, thumbnails.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "CORNER_RADIUS"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--radius-sm)",
+          "iOS": "Radius.sm"
+        }
+      }
+    },
+    "radius-md": {
+      "$type": "number",
+      "$value": 14.0,
+      "$description": "Tarjetas de concepto, botones, filas agrupadas.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "CORNER_RADIUS"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--radius-md)",
+          "iOS": "Radius.md"
+        }
+      }
+    },
+    "radius-lg": {
+      "$type": "number",
+      "$value": 24.0,
+      "$description": "La tarjeta de la chispa del día y los sheets.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "CORNER_RADIUS"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--radius-lg)",
+          "iOS": "Radius.lg"
+        }
+      }
+    },
+    "radius-full": {
+      "$type": "number",
+      "$value": 999.0,
+      "$description": "Pills: chips de dominio, badge Pro, contador.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "CORNER_RADIUS"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--radius-full)",
+          "iOS": "Radius.full"
+        }
+      }
+    }
+  }
+}

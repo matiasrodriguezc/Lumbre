@@ -1,0 +1,202 @@
+{
+  "familia": {
+    "display": {
+      "$type": "string",
+      "$value": "Fraunces",
+      "$description": "Fraunces solo para marca y títulos de 20 pt o más.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "FONT_FAMILY"
+        ]
+      }
+    },
+    "text": {
+      "$type": "string",
+      "$value": "SF Pro Text",
+      "$description": "Fuente del sistema para todo lo demás.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "FONT_FAMILY"
+        ]
+      }
+    }
+  },
+  "texto": {
+    "spark-hero": {
+      "tamano": {
+        "$type": "number",
+        "$value": 34.0,
+        "$description": "Título de la chispa revelada. Uno por pantalla. Fraunces con SOFT 100.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FONT_SIZE"
+          ]
+        }
+      },
+      "interlineado": {
+        "$type": "number",
+        "$value": 38.0,
+        "$description": "Título de la chispa revelada. Uno por pantalla. Fraunces con SOFT 100.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "LINE_HEIGHT"
+          ]
+        }
+      }
+    },
+    "counter": {
+      "tamano": {
+        "$type": "number",
+        "$value": 44.0,
+        "$description": "Contador de chispas y números grandes. Siempre con cifras de caja alta y tabulares (lining-nums tabular-nums).",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FONT_SIZE"
+          ]
+        }
+      },
+      "interlineado": {
+        "$type": "number",
+        "$value": 44.0,
+        "$description": "Contador de chispas y números grandes. Siempre con cifras de caja alta y tabulares (lining-nums tabular-nums).",
+        "$extensions": {
+          "com.figma.scopes": [
+            "LINE_HEIGHT"
+          ]
+        }
+      }
+    },
+    "title-1": {
+      "tamano": {
+        "$type": "number",
+        "$value": 28.0,
+        "$description": "Título grande de pantalla (iOS large title / M3 headlineMedium). Nunca por debajo de 20pt.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FONT_SIZE"
+          ]
+        }
+      },
+      "interlineado": {
+        "$type": "number",
+        "$value": 34.0,
+        "$description": "Título grande de pantalla (iOS large title / M3 headlineMedium). Nunca por debajo de 20pt.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "LINE_HEIGHT"
+          ]
+        }
+      }
+    },
+    "title-2": {
+      "tamano": {
+        "$type": "number",
+        "$value": 22.0,
+        "$description": "Títulos de sección, onboarding y paywall. Tamaño mínimo para Fraunces en toda la app.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FONT_SIZE"
+          ]
+        }
+      },
+      "interlineado": {
+        "$type": "number",
+        "$value": 28.0,
+        "$description": "Títulos de sección, onboarding y paywall. Tamaño mínimo para Fraunces en toda la app.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "LINE_HEIGHT"
+          ]
+        }
+      }
+    },
+    "headline": {
+      "tamano": {
+        "$type": "number",
+        "$value": 17.0,
+        "$description": "Título de tarjeta de concepto y filas de lista.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FONT_SIZE"
+          ]
+        }
+      },
+      "interlineado": {
+        "$type": "number",
+        "$value": 22.0,
+        "$description": "Título de tarjeta de concepto y filas de lista.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "LINE_HEIGHT"
+          ]
+        }
+      }
+    },
+    "body": {
+      "tamano": {
+        "$type": "number",
+        "$value": 17.0,
+        "$description": "Texto corrido y chat. En Android se mapea a bodyLarge (16sp).",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FONT_SIZE"
+          ]
+        }
+      },
+      "interlineado": {
+        "$type": "number",
+        "$value": 24.0,
+        "$description": "Texto corrido y chat. En Android se mapea a bodyLarge (16sp).",
+        "$extensions": {
+          "com.figma.scopes": [
+            "LINE_HEIGHT"
+          ]
+        }
+      }
+    },
+    "callout": {
+      "tamano": {
+        "$type": "number",
+        "$value": 15.0,
+        "$description": "Tesis del concepto, descripciones secundarias.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FONT_SIZE"
+          ]
+        }
+      },
+      "interlineado": {
+        "$type": "number",
+        "$value": 20.0,
+        "$description": "Tesis del concepto, descripciones secundarias.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "LINE_HEIGHT"
+          ]
+        }
+      }
+    },
+    "caption": {
+      "tamano": {
+        "$type": "number",
+        "$value": 13.0,
+        "$description": "Metadatos, fuente, timestamps, etiquetas de tab.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "FONT_SIZE"
+          ]
+        }
+      },
+      "interlineado": {
+        "$type": "number",
+        "$value": 18.0,
+        "$description": "Metadatos, fuente, timestamps, etiquetas de tab.",
+        "$extensions": {
+          "com.figma.scopes": [
+            "LINE_HEIGHT"
+          ]
+        }
+      }
+    }
+  }
+}

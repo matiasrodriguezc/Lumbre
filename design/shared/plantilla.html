@@ -1,0 +1,50 @@
+<!doctype html>
+<!-- Plantilla de los mockups de design/. Copiala a tu carpeta (design/<paso>/index.html) y ajustá las rutas si cambia la profundidad.
+     Base: ../system/tokens.css + ../system/components/bundle.css + ../shared/maqueta.css; arte con data-art="..." (ver arte.py);
+     neuronas chicas con data-mini="lit|dim|" (maqueta.js). Para verla con los SVG y el JS: python3 -m http.server -d design. -->
+<html lang="es" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lumbre · Título</title>
+<link rel="stylesheet" href="../system/tokens.css"><link rel="stylesheet" href="../system/components/bundle.css"><link rel="stylesheet" href="../shared/maqueta.css">
+<script src="../shared/arte.js"></script><script src="../shared/maqueta.js"></script>
+</head>
+<body class="doc" data-platform="ios">
+<header class="doc-head"><div class="doc-head__net" data-art="red-horizontal"></div><div class="doc-head__inner">
+  <p class="doc-head__crumb"><a href="../README.md">Lumbre · Diseño</a> · Paso N</p>
+  <h1>Título</h1>
+  <p>Bajada en una o dos líneas.</p>
+  <div class="toolbar">
+    <div class="seg" role="group" aria-label="Tema"><button data-set-theme="light">Gris</button><button data-set-theme="dark">Grafito</button></div>
+    <div class="seg" role="group" aria-label="Plataforma"><button data-set-platform="ios">iOS</button><button data-set-platform="android">Android</button></div>
+  </div>
+</div></header>
+<main>
+  <h2 class="sec">Sección</h2>
+  <p class="lead">Texto.</p>
+  <div class="tels">
+    <div class="tel-wrap">
+      <div class="tel"><!-- .tel--android para Android -->
+        <div class="tel__island"></div>
+        <div class="tel__status"><span>9:41</span><i><span style="width:18px"></span><span style="width:16px"></span><span style="width:26px"></span></i></div>
+        <div class="scr">
+          <div class="scr__net" data-art="red-encabezado"></div>
+          <h1 class="large-title">Hoy</h1>
+          <div class="pad">
+            <div class="meter"><span data-mini="lit"></span><div><b>1 chispa para encender</b><span>Se recarga mañana a las 8:00</span></div></div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <nav class="ch-nav" aria-label="Pestañas">
+            <button class="ch-nav__i is-on"><span data-art="tab-hoy" style="width:24px"></span>Hoy</button>
+            <button class="ch-nav__i"><span data-art="tab-red" style="width:24px"></span>Red</button>
+            <button class="ch-nav__i"><span data-art="tab-circuitos" style="width:24px"></span>Circuitos</button>
+            <button class="ch-nav__i"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="5"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Perfil</button>
+          </nav>
+          <button class="ch-add" aria-label="Capturar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        </div>
+        <div class="tel__home"></div>
+      </div>
+      <p class="tel-cap"><b>Nombre de la pantalla</b>Qué muestra</p>
+    </div>
+  </div>
+</main>
+</body></html>

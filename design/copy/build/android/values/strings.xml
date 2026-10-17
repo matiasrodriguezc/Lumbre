@@ -1,0 +1,753 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generado por design/copy/copy.py desde design/copy/copy.json (es). No editar a mano. -->
+<resources>
+    <!-- Comunes -->
+    <string name="comun_cancel">Cancelar</string>
+    <string name="comun_ok">Entendido</string>
+    <string name="comun_accept">Aceptar</string>
+    <string name="comun_retry">Reintentar</string>
+    <string name="comun_save">Guardar</string>
+    <string name="comun_done">Listo</string>
+    <string name="comun_close">Cerrar</string>
+    <string name="comun_delete">Borrar</string>
+    <string name="comun_rename">Renombrar</string>
+    <string name="comun_create">Crear</string>
+    <string name="comun_edit">Editar</string>
+    <string name="comun_confirm">Confirmar</string>
+    <string name="comun_discard">Descartar</string>
+    <string name="comun_move">Mover</string>
+    <string name="comun_continue">Continuar</string>
+    <string name="comun_more">Más</string>
+    <string name="comun_more_actions">Más acciones</string>
+    <!-- Etiqueta de accesibilidad del indicador de carga. -->
+    <string name="comun_saving">Guardando</string>
+    <!-- Etiqueta de accesibilidad del indicador de carga. -->
+    <string name="comun_waiting">Esperando</string>
+    <string name="comun_save_failed">No se pudo guardar</string>
+    <string name="comun_something_wrong">Algo salió mal</string>
+    <string name="comun_something_wrong_retry">Algo salió mal. Probá de nuevo.</string>
+    <!-- Botón + flotante y accesos para guardar una idea. -->
+    <string name="comun_capture">Capturar</string>
+    <string name="comun_capture_neurons">Capturar neuronas</string>
+    <string name="comun_change_category">Cambiar categoría</string>
+    <string name="comun_category">Categoría</string>
+    <!-- Accesibilidad. %@ es el nombre de la categoría. -->
+    <string name="comun_category_label">Categoría: %s</string>
+    <string name="comun_title">Título</string>
+    <!-- La idea de la neurona en una frase. -->
+    <string name="comun_thesis">Tesis</string>
+    <!-- El mecanismo de fondo que sale de la destilación. -->
+    <string name="comun_principle">Principio</string>
+    <!-- Pedido de una línea propia cuando no se puede (o no se quiere) destilar. -->
+    <string name="comun_what_idea">¿Qué idea te deja esto?</string>
+    <string name="comun_one_line">En una línea, con tus palabras</string>
+    <string name="comun_plan">Plan</string>
+    <!-- Etiqueta de Pro. No se traduce. -->
+    <string name="comun_pro" translatable="false">Pro</string>
+    <string name="comun_lumbre_pro" translatable="false">Lumbre Pro</string>
+    <string name="comun_guest">Invitado</string>
+    <!-- Nombre del plan gratis. -->
+    <string name="comun_free">Gratis</string>
+    <string name="comun_try_free_7">Probar 7 días gratis</string>
+    <string name="comun_manage_subscription">Administrar suscripción</string>
+    <string name="comun_privacy">Privacidad</string>
+    <string name="comun_privacy_data">Privacidad y datos</string>
+    <string name="comun_creative_profile">Perfil creativo</string>
+    <string name="comun_delete_account">Borrar cuenta</string>
+    <string name="comun_create_account">Crear cuenta</string>
+    <string name="comun_have_account">Ya tengo cuenta</string>
+    <string name="comun_continue_guest">Seguir como invitado</string>
+    <string name="comun_sign_out">Cerrar sesión</string>
+    <string name="comun_export_markdown">Exportar a Markdown</string>
+    <!-- Abre el planificador de una chispa. Verbo. -->
+    <string name="comun_plan_action">Planificar</string>
+    <!-- Guarda una chispa (la idea que salió). -->
+    <string name="comun_save_idea">Guardar idea</string>
+    <string name="comun_idea_saved">Idea guardada</string>
+    <string name="comun_not_useful">No me sirve</string>
+    <string name="comun_report">Reportar</string>
+    <string name="comun_report_thanks">Gracias por avisar. La vamos a revisar.</string>
+    <string name="comun_report_detail">La revisamos y ajustamos lo que genera Lumbre.</string>
+    <!-- Ideas (chispas guardadas) en un circuito. -->
+    <plurals name="comun_ideas_count">
+        <item quantity="one">%d idea</item>
+        <item quantity="other">%d ideas</item>
+    </plurals>
+    <string name="comun_no_neurons_title">Todavía no hay neuronas</string>
+    <string name="comun_no_neurons_body">Guardá una frase, un link o una nota de voz para tener material que combinar.</string>
+    <string name="comun_nothing_here">Nada por acá</string>
+    <string name="comun_new_circuit">Nuevo circuito</string>
+    <string name="comun_circuit_name">Nombre del circuito</string>
+    <string name="comun_delete_circuit">Borrar circuito</string>
+    <string name="comun_delete_circuit_q">¿Borrar este circuito?</string>
+    <string name="comun_delete_circuit_body">Sus ideas quedan guardadas, sin circuito.</string>
+    <string name="comun_free_one_circuit">Con el plan gratis tenés un circuito. Con Pro, todos los que quieras.</string>
+    <!-- Hoy, el reveal y el aviso push. -->
+    <string name="comun_spark_ready_daily">Tu chispa de hoy está lista</string>
+    <string name="comun_spark_ready_body">Dos neuronas de tu red se conectaron. Entrá a ver qué chispa salió.</string>
+    <string name="comun_see_pro">Ver Lumbre Pro</string>
+    <string name="comun_meet_pro">Conocé Lumbre Pro</string>
+    <!-- Onboarding y Perfil. -->
+    <string name="comun_spark_hour">Hora de la chispa</string>
+    <!-- Navegación y arranque -->
+    <!-- Pestaña y título de pantalla. -->
+    <string name="nav_today">Hoy</string>
+    <!-- Pestaña y título: todas las neuronas del usuario (antes Bóveda). -->
+    <string name="nav_network">Red</string>
+    <!-- Pestaña y título: los proyectos. -->
+    <string name="nav_circuits">Circuitos</string>
+    <string name="nav_profile">Perfil</string>
+    <!-- Accesibilidad del splash. -->
+    <string name="nav_loading">Lumbre, cargando</string>
+    <!-- Tagline de la marca. Bienvenida y tarjeta para compartir. -->
+    <string name="nav_tagline">Donde se encienden las ideas</string>
+    <!-- Onboarding -->
+    <string name="onboarding_welcome_start">Empezar</string>
+    <string name="onboarding_welcome_body">Guardá lo que te inspira. Cada mañana, dos de tus neuronas se conectan y salta una chispa.</string>
+    <string name="onboarding_welcome_example_a11y">Ejemplo: onda verde de semáforos por code review</string>
+    <string name="onboarding_welcome_example_cat_a">Urbanismo</string>
+    <string name="onboarding_welcome_example_a">Onda verde de semáforos</string>
+    <string name="onboarding_welcome_example_b">Code review</string>
+    <string name="onboarding_consent_title">Tus ideas y la IA</string>
+    <string name="onboarding_consent_body">Para destilar lo que guardás y encender las chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic.</string>
+    <string name="onboarding_consent_scope">Solo se manda lo necesario para cada chispa: tus ideas y tu perfil creativo.</string>
+    <string name="onboarding_consent_change">Podés cambiar esto cuando quieras en Perfil &gt; Privacidad.</string>
+    <string name="onboarding_consent_decline_note">Si no aceptás, podés guardar ideas igual, pero las chispas y la destilación necesitan este permiso.</string>
+    <string name="onboarding_consent_read_policy">Leer la política de privacidad</string>
+    <string name="onboarding_consent_accept">Acepto</string>
+    <string name="onboarding_consent_decline">No acepto</string>
+    <!-- Accesibilidad de la barra de progreso. -->
+    <string name="onboarding_progress">Paso %1$d de %2$d</string>
+    <string name="onboarding_profile_title">¿Qué querés crear?</string>
+    <string name="onboarding_profile_subtitle">Elegí hasta dos. Lo podés cambiar cuando quieras.</string>
+    <string name="onboarding_seeds_title">Tus primeras neuronas</string>
+    <string name="onboarding_seeds_subtitle">Algo que leíste, viste o pensaste. Cada idea que guardás es una neurona, y con estas sale tu primera chispa.</string>
+    <string name="onboarding_seeds_tip">Mejor si son de temas distintos: así se conectan mundos lejanos. Podés dictarlas con el micrófono del teclado.</string>
+    <string name="onboarding_seeds_fewer_ok">Con tres la primera chispa sale mejor, pero podés seguir y sumar más después.</string>
+    <string name="onboarding_seeds_save_one">Guardar neurona y seguir</string>
+    <string name="onboarding_seeds_save_many">Guardar %d neuronas y seguir</string>
+    <string name="onboarding_seeds_idea_n">Neurona %d</string>
+    <!-- Femenino: la idea. También estado de una chispa guardada. -->
+    <string name="onboarding_seeds_saved">Guardada</string>
+    <string name="onboarding_seeds_placeholder">Algo que leíste, viste o pensaste</string>
+    <string name="onboarding_seeds_category_placeholder">Ej.: Urbanismo</string>
+    <string name="onboarding_seeds_category_n">Categoría de la neurona %d</string>
+    <string name="onboarding_seeds_suggested">Categorías sugeridas</string>
+    <string name="onboarding_hour_title">¿A qué hora querés tu chispa?</string>
+    <string name="onboarding_hour_subtitle">Todos los días, a esta hora, dos de tus neuronas se conectan y salta una chispa.</string>
+    <string name="onboarding_hour_tip">La mayoría la elige a la mañana, antes de arrancar el día. La podés cambiar en Perfil.</string>
+    <string name="onboarding_push_title">Te avisamos cuando esté lista</string>
+    <string name="onboarding_push_subtitle">Un aviso por día, a la hora que elegiste. Nada más.</string>
+    <string name="onboarding_push_skip_note">Si preferís sin avisos, la chispa te espera igual en Hoy.</string>
+    <string name="onboarding_push_allow">Avisame</string>
+    <string name="onboarding_push_not_now">Ahora no</string>
+    <!-- Accesibilidad de la vista previa del push. -->
+    <string name="onboarding_push_sample">Ejemplo de aviso</string>
+    <string name="onboarding_save_failed">No pudimos guardar tu perfil</string>
+    <!-- Perfiles creativos y ejemplos -->
+    <string name="perfiles_software">Software y apps</string>
+    <string name="perfiles_software_desc">Productos, features y arquitectura</string>
+    <string name="perfiles_content">Contenido y escritura</string>
+    <string name="perfiles_content_desc">Guiones, hilos, ensayos y ficción</string>
+    <string name="perfiles_business">Negocios</string>
+    <string name="perfiles_business_desc">Modelos, servicios y oportunidades</string>
+    <string name="perfiles_design">Diseño</string>
+    <string name="perfiles_design_desc">Interfaces, marca y producto físico</string>
+    <string name="perfiles_curiosity">Curiosidad libre</string>
+    <string name="perfiles_curiosity_desc">Ideas por el gusto de pensarlas</string>
+    <string name="perfiles_max_two">Ya elegiste dos. Sacá uno para elegir este.</string>
+    <string name="perfiles_none">Sin elegir</string>
+    <!-- Categoría sugerida para las semillas y ejemplo de la bienvenida. -->
+    <string name="perfiles_cat_software">Software</string>
+    <string name="perfiles_cat_product">Producto</string>
+    <string name="perfiles_cat_writing">Escritura</string>
+    <string name="perfiles_cat_narrative">Narrativa</string>
+    <string name="perfiles_cat_marketing">Marketing</string>
+    <string name="perfiles_cat_interfaces">Interfaces</string>
+    <string name="perfiles_cat_science">Ciencia</string>
+    <string name="perfiles_cat_history">Historia</string>
+    <string name="perfiles_cat_nature">Naturaleza</string>
+    <string name="perfiles_cat_psychology">Psicología</string>
+    <string name="perfiles_cat_music">Música</string>
+    <string name="perfiles_ex_software">Ej.: Los PR chicos se revisan más rápido y con menos errores</string>
+    <string name="perfiles_ex_product">Ej.: La gente usa lo que ve primero, no lo que es mejor</string>
+    <string name="perfiles_ex_writing">Ej.: Un buen gancho deja una pregunta abierta</string>
+    <string name="perfiles_ex_narrative">Ej.: Un personaje se define por lo que elige perder</string>
+    <string name="perfiles_ex_business">Ej.: Cobrar por suscripción cambia quién te elige</string>
+    <string name="perfiles_ex_marketing">Ej.: Limitar la oferta sube el valor percibido</string>
+    <string name="perfiles_ex_design">Ej.: Lo que se ve primero es lo que parece importar</string>
+    <string name="perfiles_ex_interfaces">Ej.: Un buen default ahorra mil ajustes</string>
+    <string name="perfiles_ex_science">Ej.: Los sistemas complejos se autoorganizan sin un jefe</string>
+    <string name="perfiles_ex_history">Ej.: Las rutas comerciales movían ideas, no solo cosas</string>
+    <string name="perfiles_ex_nature">Ej.: Las hormigas encuentran el camino más corto dejando rastros</string>
+    <!-- Cuenta e invitado -->
+    <string name="cuenta_create_title">Creá tu cuenta</string>
+    <string name="cuenta_signin_title">Entrá a tu cuenta</string>
+    <string name="cuenta_create_body">Tu red queda a salvo aunque cambies o pierdas el teléfono. Todo lo que guardaste como invitado pasa a tu cuenta.</string>
+    <string name="cuenta_signin_body">Te mandamos un código a tu email, sin contraseñas. Si todavía no tenés cuenta, la creamos con ese email.</string>
+    <string name="cuenta_email">Email</string>
+    <string name="cuenta_soon_providers">Pronto también con Apple y Google.</string>
+    <string name="cuenta_code_sent_to">Te mandamos un código de 6 dígitos a %s. Escribilo acá o tocá el link del mail en este teléfono.</string>
+    <string name="cuenta_code">Código</string>
+    <string name="cuenta_code_a11y">Código de 6 dígitos</string>
+    <string name="cuenta_code_resent">Te mandamos otro código.</string>
+    <string name="cuenta_resend">Mandar otro código</string>
+    <string name="cuenta_change_email">Cambiar el email</string>
+    <string name="cuenta_email_in_use">Si entrás con esa cuenta, lo que guardaste como invitado en este teléfono no pasa a ella.</string>
+    <string name="cuenta_signin_with_email">Entrar con ese email</string>
+    <string name="cuenta_send_code">Mandarme el código</string>
+    <string name="cuenta_sign_in">Entrar</string>
+    <string name="cuenta_code_sent">Te mandamos un código a tu email.</string>
+    <!-- Aviso provisorio mientras no hay login real. -->
+    <string name="cuenta_soon_title">Las cuentas llegan pronto</string>
+    <string name="cuenta_link_failed">No pudimos entrar con el link</string>
+    <string name="cuenta_soon_body">Muy pronto vas a poder entrar con Apple, Google o tu email y tener tus ideas en todos tus dispositivos.</string>
+    <string name="cuenta_soon_guest">Mientras tanto, usás Lumbre como invitado. Todo lo que guardes queda en esta sesión y pasa a tu cuenta cuando la crees.</string>
+    <string name="cuenta_banner_title">Creá tu cuenta para no perder tus ideas</string>
+    <string name="cuenta_banner_body">Hoy usás Lumbre como invitado. Con una cuenta, tus ideas quedan a salvo si cambiás o perdés el teléfono.</string>
+    <string name="cuenta_signout_q">¿Cerrar sesión?</string>
+    <string name="cuenta_signout_guest">Usás Lumbre como invitado: si cerrás sesión, perdés tus neuronas, chispas y circuitos.</string>
+    <string name="cuenta_signout_account">Tus ideas quedan guardadas en tu cuenta. Vas a poder volver a entrar cuando quieras.</string>
+    <string name="cuenta_account">Cuenta</string>
+    <!-- Hoja que aparece cuando un invitado toca algo que necesita cuenta (ver design/prototipo/invitado.md). -->
+    <string name="cuenta_gate_title">Esto es con cuenta</string>
+    <string name="cuenta_gate_spark_extra">Las chispas extra se ganan guardando neuronas, y se guardan en tu cuenta. Creala gratis: lo que ya guardaste pasa con vos.</string>
+    <string name="cuenta_gate_distill">Destilar lee links, fotos y PDFs y saca las neuronas por vos. Con una cuenta gratis tenés pruebas todos los meses.</string>
+    <string name="cuenta_gate_planner">El planificador es parte de Lumbre Pro, y Pro va con una cuenta. Creala primero: lo que guardaste pasa con vos.</string>
+    <string name="cuenta_gate_pro">Para suscribirte a Lumbre Pro necesitás una cuenta, así Pro te sigue a cualquier teléfono.</string>
+    <string name="cuenta_gate_limit">Llegaste a las 10 neuronas de hoy como invitado. Con una cuenta gratis guardás hasta 30 por día.</string>
+    <string name="cuenta_nudge_after_spark">Tu primera chispa ya está. Creá tu cuenta para que tu red no dependa de este teléfono.</string>
+    <string name="cuenta_nudge_later">Más tarde</string>
+    <!-- Botón secundario de la bienvenida (propuesta en design/prototipo/invitado.md: reemplaza a "Ya tengo cuenta"). -->
+    <string name="cuenta_entry">Crear cuenta o entrar</string>
+    <string name="cuenta_entry_title">Creá tu cuenta o entrá</string>
+    <string name="cuenta_google">Continuar con Google</string>
+    <string name="cuenta_or_email">o con tu email</string>
+    <!-- Toast al crear la cuenta desde invitado. -->
+    <string name="cuenta_created">Listo: tu red ya está en tu cuenta</string>
+    <string name="cuenta_email_label">Tu email</string>
+    <!-- Hoy -->
+    <string name="hoy_also_today">También hoy</string>
+    <string name="hoy_previous">Anteriores</string>
+    <string name="hoy_meter_one">1 chispa para encender</string>
+    <string name="hoy_meter_many">%d chispas para encender</string>
+    <string name="hoy_meter_used">Usaste las chispas de hoy</string>
+    <!-- Contador cuando la chispa de hoy ya se encendió (widget y Hoy). Hoy solo está en el preview del componente. -->
+    <string name="hoy_meter_lit">Chispa de hoy encendida</string>
+    <plurals name="hoy_meter_earn">
+        <item quantity="one">Guardá %d neurona para ganar 1 extra</item>
+        <item quantity="other">Guardá %d neuronas para ganar 1 extra</item>
+    </plurals>
+    <string name="hoy_meter_earn_a11y">%1$d de %2$d neuronas para la próxima chispa extra</string>
+    <string name="hoy_refill_today">Se recarga hoy a las %s</string>
+    <string name="hoy_refill_tomorrow">Se recarga mañana a las %s</string>
+    <!-- %1 es el día de la semana ("martes"), %2 la hora. -->
+    <string name="hoy_refill_weekday">Se recarga el %1$s a las %2$s</string>
+    <!-- El código usa "La próxima, mañana a las 08:00" fijo en el preview del componente. -->
+    <string name="hoy_next_tomorrow">La próxima, mañana a las %s</string>
+    <string name="hoy_extra_title">Otra chispa</string>
+    <string name="hoy_extra_lighting">Encendiendo…</string>
+    <string name="hoy_extra_request">Pedir otra chispa</string>
+    <string name="hoy_extra_one_left">Te queda 1 chispa extra hoy.</string>
+    <string name="hoy_extra_many_left">Te quedan %d chispas extra hoy.</string>
+    <string name="hoy_extra_used_pro">Ya usaste las chispas extra de hoy. Mañana tenés más.</string>
+    <string name="hoy_extra_how_free">Cada 3 neuronas que guardás hoy ganás una chispa extra, hasta 2 por día.</string>
+    <string name="hoy_extra_pro_upsell">Con Pro, hasta 10 por día</string>
+    <string name="hoy_extra_guest">Creá tu cuenta para ganar chispas extra guardando neuronas.</string>
+    <string name="hoy_runway_title">Te quedan pocas combinaciones nuevas</string>
+    <string name="hoy_runway_body">Guardá algunas neuronas más para que las chispas sigan sorprendiendo.</string>
+    <string name="hoy_used_title">Ya usaste la chispa de hoy</string>
+    <string name="hoy_used_discarded">Marcaste que esta no te sirve. Con eso elegimos mejor la de mañana.</string>
+    <string name="hoy_empty_no_material">Todavía no hay material para combinar</string>
+    <string name="hoy_empty_no_pair">Hoy no encontramos un buen par</string>
+    <string name="hoy_empty_no_material_body">Guardá algunas neuronas de temas distintos: una frase, un link o una nota de voz. Con eso Lumbre enciende tu primera chispa.</string>
+    <string name="hoy_empty_no_pair_body">Guardá neuronas de otros temas. Las conexiones entre mundos distintos dan las mejores chispas.</string>
+    <string name="hoy_pending_a11y">Chispa por encender</string>
+    <!-- Estado de una chispa en Anteriores. %@ es el circuito. -->
+    <string name="hoy_status_saved_in">Guardada en “%s”</string>
+    <string name="hoy_status_discarded">Marcaste que no te sirve</string>
+    <!-- Reveal de la chispa -->
+    <!-- También el aviso push si una extra se genera en segundo plano. -->
+    <string name="reveal_ready_extra">Tu chispa extra está lista</string>
+    <string name="reveal_about_to_connect">Dos neuronas tuyas de mundos distintos están por conectarse.</string>
+    <!-- Botón principal negro con el punto rosa. -->
+    <string name="reveal_ignite">Encender la chispa</string>
+    <!-- Hint de accesibilidad. -->
+    <string name="reveal_ignite_hint">Revela la chispa</string>
+    <string name="reveal_panel_daily">Tu chispa de hoy</string>
+    <string name="reveal_panel_extra">Tu chispa extra</string>
+    <!-- Lo que anuncia VoiceOver al revelar. Título, cuerpo, neurona A, categoría A, neurona B, categoría B. -->
+    <string name="reveal_a11y_summary">Chispa: %1$s. %2$s Combina %3$s, de %4$s, con %5$s, de %6$s.</string>
+    <!-- Chispa: acciones, detalle, guardar y compartir -->
+    <string name="chispa_share">Compartir</string>
+    <string name="chispa_why_not">¿Por qué no te sirve?</string>
+    <string name="chispa_why_not_body">Con esto elegimos mejor las próximas chispas.</string>
+    <string name="chispa_feedback_obvious">Es obvia</string>
+    <string name="chispa_feedback_irrelevant">No tiene que ver conmigo</string>
+    <string name="chispa_feedback_already_had">Ya la había tenido</string>
+    <string name="chispa_feedback_thanks">Gracias. Con esto elegimos mejor las próximas.</string>
+    <string name="chispa_report_title">Reportar esta chispa</string>
+    <string name="chispa_report_offensive">Es ofensiva</string>
+    <string name="chispa_report_dangerous">Es peligrosa</string>
+    <string name="chispa_report_wrong">Dice algo falso</string>
+    <string name="chispa_report_other">Otro motivo</string>
+    <string name="chispa_move_circuit">Mover a otro circuito</string>
+    <string name="chispa_detail_title">Chispa</string>
+    <string name="chispa_the_two">Las dos neuronas</string>
+    <string name="chispa_open_neuron_hint">Abre la neurona en tu red</string>
+    <string name="chispa_save_no_circuit">Sin circuito</string>
+    <string name="chispa_save_no_circuit_body">Queda en tus ideas guardadas</string>
+    <string name="chispa_save_where">Dónde la guardás</string>
+    <string name="chispa_save_another">Crear otro circuito</string>
+    <string name="chispa_save_move_title">Mover idea</string>
+    <string name="chispa_share_title">Tarjeta para compartir</string>
+    <string name="chispa_share_image">Compartir imagen</string>
+    <string name="chispa_share_failed">No pudimos armar la imagen. Probá de nuevo.</string>
+    <!-- Nombre del archivo que se comparte. -->
+    <string name="chispa_share_filename">Lumbre-chispa.png</string>
+    <!-- Planificador -->
+    <string name="planificador_report_reply">Reportar esta respuesta</string>
+    <string name="planificador_typing">El planificador está escribiendo</string>
+    <string name="planificador_circuit">Circuito: %s</string>
+    <string name="planificador_intro">Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo o el stack que usarías.</string>
+    <string name="planificador_copy">Copiar</string>
+    <string name="planificador_input">Escribí o preguntá…</string>
+    <string name="planificador_stop">Detener respuesta</string>
+    <string name="planificador_send">Enviar</string>
+    <string name="planificador_mode_quick">Rápido</string>
+    <string name="planificador_mode_deep">Plan profundo</string>
+    <string name="planificador_quota_quick">Te quedan %d este mes</string>
+    <string name="planificador_quota_deep">Te quedan %d profundos</string>
+    <string name="planificador_chip_bigger">Más grande todavía</string>
+    <string name="planificador_chip_bigger_msg">Llevalo más grande todavía.</string>
+    <string name="planificador_chip_to_realist">Pasemos al Realista</string>
+    <string name="planificador_chip_to_realist_msg">Pasemos al siguiente cuarto: el Realista.</string>
+    <string name="planificador_chip_no_money">No sé cuánta plata</string>
+    <string name="planificador_chip_no_money_msg">Todavía no sé cuánta plata haría falta.</string>
+    <string name="planificador_chip_to_critic">Pasemos al Crítico</string>
+    <string name="planificador_chip_to_critic_msg">Pasemos al siguiente cuarto: el Crítico.</string>
+    <string name="planificador_chip_to_synthesis">Pasemos a la síntesis</string>
+    <string name="planificador_chip_to_synthesis_msg">Pasemos al siguiente cuarto: la síntesis.</string>
+    <string name="planificador_disney_title">Tres cuartos, de a uno</string>
+    <string name="planificador_disney_body">Vamos a pasar esta chispa por el método de Walt Disney. No se entra al cuarto siguiente hasta terminar el actual.</string>
+    <string name="planificador_room_dreamer">Soñador</string>
+    <string name="planificador_room_dreamer_desc">Cómo se ve si funciona por completo, sin presupuesto ni reglas. Y después, más grande.</string>
+    <string name="planificador_room_realist">Realista</string>
+    <string name="planificador_room_realist_desc">Los pasos, la gente, la plata y lo primero que tiene que pasar.</string>
+    <string name="planificador_room_critic">Crítico</string>
+    <string name="planificador_room_critic_desc">Qué falta, qué puede salir mal y quién lo odiaría.</string>
+    <string name="planificador_room_synthesis">Síntesis</string>
+    <string name="planificador_room_synthesis_desc">El sueño en una frase, el plan en cinco pasos, los tres agujeros y el cuarto que salteás.</string>
+    <string name="planificador_start_msg">Empecemos por el Soñador.</string>
+    <string name="planificador_start">Entrar al cuarto del Soñador</string>
+    <string name="planificador_cost_note">Cada respuesta usa una consulta del planificador.</string>
+    <string name="planificador_pro_title">El planificador es parte de Lumbre Pro</string>
+    <string name="planificador_pro_body_disney">Bajá cada idea a un plan con el método de los tres cuartos de Walt Disney: soñarla en grande, hacerla real y buscarle los agujeros.</string>
+    <string name="planificador_pro_body">Bajá cada idea a un plan: un backlog para arrancar, un abogado del diablo y el stack que usarías.</string>
+    <string name="planificador_limit_deep">Llegaste al uso justo de plan profundo de este mes. Podés seguir en modo rápido.</string>
+    <string name="planificador_limit_all">Llegaste al uso justo del planificador de este mes. Se renueva el mes que viene.</string>
+    <!-- Markdown: se agrega al final de una respuesta cortada. -->
+    <string name="planificador_stopped">_(Respuesta detenida)_</string>
+    <string name="planificador_shortcut_backlog">Armá un backlog</string>
+    <string name="planificador_shortcut_devil">Abogado del diablo</string>
+    <string name="planificador_shortcut_stack">¿Qué stack usarías?</string>
+    <string name="planificador_shortcut_backlog_msg">Armá un backlog de 5 tareas para arrancar con esta idea.</string>
+    <string name="planificador_shortcut_devil_msg">Hacé de abogado del diablo: ¿por qué podría fallar esta idea?</string>
+    <string name="planificador_shortcut_stack_msg">¿Qué stack usarías para construir esto?</string>
+    <string name="planificador_room_current">Cuarto actual: %s</string>
+    <string name="planificador_not_started">El método todavía no arrancó</string>
+    <!-- Capturar -->
+    <string name="capturar_title">Nueva neurona</string>
+    <string name="capturar_type">Tipo</string>
+    <!-- Tipo de captura y tipo de fuente en la Red. -->
+    <string name="capturar_kind_text">Texto</string>
+    <string name="capturar_kind_voice">Voz</string>
+    <string name="capturar_kind_link">Link</string>
+    <string name="capturar_kind_photo">Foto</string>
+    <string name="capturar_kind_pdf">PDF</string>
+    <string name="capturar_placeholder">¿Qué idea te quedó dando vueltas?</string>
+    <!-- Accesibilidad del campo de texto. -->
+    <string name="capturar_idea">Idea</string>
+    <string name="capturar_link_invalid">Revisá el link: no parece válido.</string>
+    <string name="capturar_optional_distill">Opcional: si la escribís, la destilación la usa</string>
+    <string name="capturar_distill_pdf">Destilar el PDF</string>
+    <string name="capturar_distill_image">Destilar la imagen</string>
+    <string name="capturar_distill_auto">Destilar automáticamente</string>
+    <string name="capturar_over_limit">Te pasaste por %d caracteres. Dejá solo la idea (hasta 600).</string>
+    <string name="capturar_char_count">%d de 600 caracteres</string>
+    <string name="capturar_looks_like_link">Parece un link. Guardalo como link para que quede la fuente.</string>
+    <string name="capturar_switch_to_link">Pasar a Link</string>
+    <string name="capturar_save">Guardar neurona</string>
+    <string name="capturar_saved">Neurona guardada</string>
+    <string name="capturar_distilling">Destilando…</string>
+    <string name="capturar_distilling_body">Lumbre lee el contenido y saca las neuronas. Puede tardar unos segundos.</string>
+    <string name="capturar_no_idea_found">No pudimos sacar una idea de esto. Escribí qué idea te deja y lo guardamos con tus palabras.</string>
+    <string name="capturar_no_idea_found_short">No pudimos sacar una idea de esto. Escribí qué idea te deja.</string>
+    <string name="capturar_offline_queued">Guardado sin conexión: lo mandamos cuando vuelva</string>
+    <string name="capturar_offline_failed">Sin conexión y no pudimos guardarlo en el teléfono. Probá de nuevo en un rato.</string>
+    <string name="capturar_offline_retry">Sin conexión. Probá de nuevo cuando vuelva la red.</string>
+    <string name="capturar_dictate_stop">Parar el dictado</string>
+    <string name="capturar_dictate_start">Dictar</string>
+    <string name="capturar_dictate_on_device">Lo que digas se transcribe en el teléfono</string>
+    <string name="capturar_dictate_open_settings">Abrir Configuración</string>
+    <string name="capturar_dictate_listening_dots">Escuchando…</string>
+    <string name="capturar_dictate_transcript">Transcripción</string>
+    <string name="capturar_dictate_transcript_placeholder">Lo que dictes aparece acá. Podés corregirlo.</string>
+    <string name="capturar_dictate_tap_to_speak">Tocá y decí tu idea</string>
+    <string name="capturar_dictate_tap_to_continue">Tocá para seguir dictando</string>
+    <string name="capturar_dictate_preparing">Preparando el micrófono…</string>
+    <string name="capturar_dictate_listening">Escuchando</string>
+    <string name="capturar_dictate_no_permission">Falta el permiso</string>
+    <string name="capturar_dictate_unavailable">El dictado no está disponible</string>
+    <string name="capturar_dictate_permission_body">Para dictar, Lumbre necesita el micrófono. Activalo en Configuración.</string>
+    <string name="capturar_dictate_unavailable_body">Probá en un rato o escribí la idea en Texto.</string>
+    <string name="capturar_dictate_privacy">Se transcribe en el teléfono. El audio no se guarda.</string>
+    <string name="capturar_dictate_no_audio_saved">El audio no se guarda.</string>
+    <string name="capturar_photo_choose">Elegir foto</string>
+    <string name="capturar_photo_another">Otra foto</string>
+    <string name="capturar_scan">Escanear página</string>
+    <string name="capturar_pdf_attach">Adjuntar un PDF</string>
+    <string name="capturar_reading_text">Leyendo el texto…</string>
+    <string name="capturar_remove_attachment">Quitar adjunto</string>
+    <string name="capturar_recognized_text">Texto reconocido</string>
+    <string name="capturar_keep_relevant">Dejá solo la parte que te importa</string>
+    <string name="capturar_scanned_one">Página escaneada</string>
+    <string name="capturar_scanned_many">%d páginas escaneadas</string>
+    <string name="capturar_pdf_pages">%d páginas. El archivo no se guarda: solo la idea.</string>
+    <string name="capturar_no_text_found">No encontramos texto. Escribí qué idea te deja o destilá la imagen.</string>
+    <string name="capturar_ocr_on_device">Texto sacado en el teléfono. La foto queda en tu galería.</string>
+    <string name="capturar_image_failed">No pudimos abrir esa imagen. Probá con otra.</string>
+    <string name="capturar_pdf_failed">No pudimos abrir ese PDF. Probá con otro.</string>
+    <string name="capturar_pdf_too_big">El PDF pesa más de 20 MB. Probá con uno más liviano.</string>
+    <string name="capturar_trials_checking">Revisando tus pruebas…</string>
+    <string name="capturar_trials_what">Lumbre lee el contenido y saca de 1 a 3 neuronas.</string>
+    <string name="capturar_trials_used">Usaste las pruebas de este mes. Escribí qué idea te deja esto y lo guardamos igual.</string>
+    <string name="capturar_trials_guest">La destilación es con cuenta. Creala desde Perfil y probala gratis.</string>
+    <string name="capturar_trials_one_left">Te queda 1 prueba este mes.</string>
+    <string name="capturar_trials_many_left">Te quedan %d pruebas este mes.</string>
+    <string name="capturar_trials_unlimited_pro">Ilimitado en Pro</string>
+    <string name="capturar_queue_failed_title">No pudimos guardar una captura</string>
+    <string name="capturar_queue_failed_generic">Algo salió mal.</string>
+    <!-- %@ es el motivo (otro texto de error). -->
+    <string name="capturar_queue_failed_body">Una captura que guardaste sin conexión no se pudo mandar y la sacamos de la cola. %s</string>
+    <string name="capturar_queue_one">1 captura espera conexión</string>
+    <string name="capturar_queue_many">%d capturas esperan conexión</string>
+    <plurals name="capturar_queue_pending">
+        <item quantity="one">%d captura espera conexión</item>
+        <item quantity="other">%d capturas esperan conexión</item>
+    </plurals>
+    <!-- Hint de accesibilidad de Reintentar. -->
+    <string name="capturar_queue_retry_hint">Intenta mandarlas ahora</string>
+    <string name="capturar_category_placeholder">Por ejemplo: Marketing</string>
+    <string name="capturar_category_or_new">O escribí una nueva</string>
+    <string name="capturar_category_will_create">Se crea la categoría “%s”</string>
+    <string name="capturar_category_none_yet">Todavía no tenés categorías: se crean a medida que guardás neuronas.</string>
+    <string name="capturar_category_move_failed">No se pudo mover</string>
+    <string name="capturar_draft_unsure_one">Lumbre no está del todo seguro de esta idea. Revisala antes de guardarla.</string>
+    <string name="capturar_draft_unsure_many">Lumbre no está del todo seguro de estas ideas. Revisalas antes de guardarlas.</string>
+    <string name="capturar_draft_title">Revisá la neurona</string>
+    <string name="capturar_draft_discard_q">¿Descartar este borrador?</string>
+    <string name="capturar_draft_discard_body">La neurona no se guarda en tu red.</string>
+    <string name="capturar_draft_save_changes">Guardar cambios</string>
+    <string name="capturar_draft_saved_many">Guardamos %d neuronas</string>
+    <string name="capturar_draft_saved_many_body">Salieron de lo que capturaste. Ya están en tu red.</string>
+    <string name="capturar_draft_saved_raw">Lo guardamos sin destilar</string>
+    <string name="capturar_draft_saved_raw_body">Usaste las pruebas de destilación de este mes. Con Lumbre Pro destilás links, fotos y PDFs sin límite.</string>
+    <!-- Red -->
+    <string name="red_search">Buscar ideas, no palabras</string>
+    <string name="red_categories">Categorías</string>
+    <string name="red_drafts_title">Borradores para confirmar</string>
+    <string name="red_drafts_body">Lumbre no estaba del todo seguro de estas ideas. Abrilas y confirmalas o corregilas.</string>
+    <string name="red_neurons">Neuronas</string>
+    <string name="red_empty_category">Nada en esta categoría</string>
+    <string name="red_empty_category_body">Elegí otra o mirá todas las neuronas.</string>
+    <string name="red_no_results_semantic">Probá con otras palabras: la búsqueda entiende ideas, no solo coincidencias.</string>
+    <string name="red_no_results_filtered">Probá con otras palabras o sacá el filtro de categoría.</string>
+    <string name="red_searching">Buscando ideas parecidas…</string>
+    <string name="red_open_neuron_hint">Abre la neurona</string>
+    <!-- Chip de filtro: todas las categorías. -->
+    <string name="red_all">Todos</string>
+    <string name="red_filter_category">Filtrar por categoría</string>
+    <string name="red_no_category">Sin categoría</string>
+    <!-- Tipo de fuente · fecha relativa ("De un link · hace 2 días"). -->
+    <string name="red_source_line">%1$s · %2$s</string>
+    <string name="red_source_voice">Nota de voz</string>
+    <string name="red_source_selection">Texto seleccionado</string>
+    <string name="red_source_screenshot">Captura de pantalla</string>
+    <string name="red_source_link">De un link</string>
+    <string name="red_source_image">Imagen</string>
+    <string name="red_source_audio">Audio</string>
+    <string name="red_draft_prefix">Borrador · </string>
+    <string name="red_cat_none_title">Todavía no tenés categorías</string>
+    <string name="red_cat_none_body">Se crean a medida que guardás neuronas.</string>
+    <string name="red_cat_rename_title">Renombrar categoría</string>
+    <string name="red_cat_name">Nombre</string>
+    <string name="red_cat_rename_note">El cambio se ve en todas sus neuronas.</string>
+    <string name="red_cat_delete_q">¿Borrar “%s”?</string>
+    <string name="red_cat_delete">Borrar categoría</string>
+    <string name="red_cat_delete_empty">No tiene neuronas.</string>
+    <string name="red_cat_delete_one">Su neurona queda sin categoría. No se borra.</string>
+    <string name="red_cat_delete_many">Sus %d neuronas quedan sin categoría. No se borran.</string>
+    <string name="red_cat_change_failed">No se pudo cambiar</string>
+    <string name="red_cat_one_neuron">1 neurona</string>
+    <string name="red_cat_many_neurons">%d neuronas</string>
+    <string name="red_cat_options">Opciones de %s</string>
+    <!-- Detalle de neurona -->
+    <string name="neurona_delete_q">¿Borrar esta neurona?</string>
+    <string name="neurona_delete">Borrar neurona</string>
+    <string name="neurona_delete_body">Sale de tu red y de las próximas chispas. No se puede deshacer.</string>
+    <string name="neurona_saved_on">Guardado el %s</string>
+    <string name="neurona_distilled">Destilado por Lumbre</string>
+    <string name="neurona_from_library">De la biblioteca de Lumbre</string>
+    <string name="neurona_draft_notice">Borrador. Lumbre no estaba del todo seguro de esta idea: confirmala o corregila.</string>
+    <string name="neurona_source">Fuente</string>
+    <string name="neurona_open_link_hint">Abre el link en el navegador</string>
+    <string name="neurona_excerpt_a11y">Fragmento subrayado: %s</string>
+    <string name="neurona_sparks">Chispas donde aparece</string>
+    <string name="neurona_no_sparks">Todavía no se conectó con otra neurona. Cuando aparezca en una chispa, la vas a ver acá.</string>
+    <string name="neurona_open_spark_hint">Abre la chispa</string>
+    <string name="neurona_combine">Combinar con…</string>
+    <string name="neurona_combine_body">Elegí otra neurona y Lumbre enciende una chispa con las dos.</string>
+    <string name="neurona_combine_pro">Con Lumbre Pro elegís qué neuronas se conectan.</string>
+    <string name="neurona_thesis_limit">La tesis puede tener hasta 600 caracteres.</string>
+    <string name="neurona_principle_locked">El principio lo saca la destilación y no se edita.</string>
+    <string name="neurona_edit_title">Editar neurona</string>
+    <string name="neurona_try_other_words">Probá con otras palabras.</string>
+    <string name="neurona_filter">Filtrar neuronas</string>
+    <string name="neurona_ignite_failed">No se pudo encender</string>
+    <string name="neurona_all_sparks_used">Ya pediste todas las chispas de hoy. Mañana podés seguir.</string>
+    <!-- Circuitos -->
+    <string name="circuitos_empty_title">Todavía no hay circuitos</string>
+    <string name="circuitos_empty_body">Un circuito junta las ideas que querés llevar adelante. Creá uno o guardá una chispa desde Hoy y elegí dónde sumarla.</string>
+    <string name="circuitos_create">Crear circuito</string>
+    <string name="circuitos_save_failed">No pudimos guardar el circuito</string>
+    <string name="circuitos_rename_title">Renombrar circuito</string>
+    <string name="circuitos_detail_empty_title">Todavía no hay ideas acá</string>
+    <string name="circuitos_detail_empty_body">Cuando guardes una chispa, elegí este circuito para sumarla.</string>
+    <string name="circuitos_detail_go_today">Ir a Hoy</string>
+    <!-- Va dentro del Markdown exportado. -->
+    <string name="circuitos_export_empty">Todavía no hay ideas en este circuito.</string>
+    <!-- Perfil y ajustes -->
+    <string name="perfil_subscription">Suscripción</string>
+    <string name="perfil_pro_pitch">Hasta 10 chispas por día, destilación automática y el planificador</string>
+    <string name="perfil_your_spark">Tu chispa</string>
+    <string name="perfil_your_spark_body">La chispa del día te espera a esta hora. El perfil creativo es la lente con la que se eligen las ideas.</string>
+    <string name="perfil_notifications">Avisos</string>
+    <string name="perfil_notifications_on">Activados</string>
+    <string name="perfil_notifications_settings">Activalos en Configuración</string>
+    <string name="perfil_notifications_enable">Activar</string>
+    <string name="perfil_quotas_failed">No pudimos cargar tus cupos. Tocá para reintentar.</string>
+    <string name="perfil_planner">Planificador</string>
+    <string name="perfil_with_pro">Con Pro</string>
+    <string name="perfil_quotas">Tus cupos</string>
+    <string name="perfil_theme">Tema</string>
+    <string name="perfil_language">Idioma</string>
+    <string name="perfil_appearance">Apariencia</string>
+    <string name="perfil_language_note">Lumbre usa el idioma del teléfono. Lo cambiás en Configuración &gt; Sistema &gt; Idiomas &gt; Idiomas de las apps.</string>
+    <string name="perfil_privacy_policy">Política de privacidad</string>
+    <string name="perfil_terms">Términos y condiciones</string>
+    <!-- Versión y build. -->
+    <string name="perfil_version">Lumbre %1$s (%2$s)</string>
+    <string name="perfil_quota_value">%1$d de %2$d</string>
+    <string name="perfil_quota_a11y">Te quedan %1$d de %2$d</string>
+    <string name="perfil_quota_captures">Capturas de hoy</string>
+    <string name="perfil_quota_distill">Destilaciones del mes</string>
+    <string name="perfil_quota_extra">Chispas extra de hoy</string>
+    <string name="perfil_quota_planner">Planificador este mes</string>
+    <string name="perfil_quota_deep">Planes profundos este mes</string>
+    <!-- Tema oscuro. -->
+    <string name="perfil_theme_graphite">Grafito</string>
+    <!-- Tema claro, el de marca. -->
+    <string name="perfil_theme_gray">Gris</string>
+    <string name="perfil_theme_system">Como el sistema</string>
+    <string name="perfil_creative_subtitle">Elegí hasta dos. Son la lente con la que se eligen y escriben tus chispas.</string>
+    <string name="perfil_ai_title">Chispas y destilación con IA</string>
+    <string name="perfil_ai_body">Para destilar tus ideas y encender las chispas, Lumbre manda el texto de tus ideas y tu perfil creativo a Claude, una IA de Anthropic. Sin este permiso podés guardar neuronas, pero no se destilan ni se encienden chispas, y el planificador no responde.</string>
+    <string name="perfil_export">Exportar mis datos</string>
+    <string name="perfil_export_body">Un archivo JSON con tu perfil, categorías, neuronas, chispas, circuitos y conversaciones del planificador.</string>
+    <string name="perfil_delete_body">Borra tu cuenta y todo lo que guardaste. No se puede deshacer.</string>
+    <!-- Palabra que hay que escribir para confirmar. Única excepción a sentence case. -->
+    <string name="perfil_delete_word">BORRAR</string>
+    <string name="perfil_delete_cant_undo">Esto no se puede deshacer</string>
+    <string name="perfil_delete_what">Se borran tu cuenta, tus neuronas, chispas, circuitos y conversaciones del planificador, en todos tus dispositivos.</string>
+    <string name="perfil_delete_subscription">Borrar la cuenta no cancela tu suscripción a Pro. Cancelala en Google Play &gt; Pagos y suscripciones &gt; Suscripciones.</string>
+    <string name="perfil_delete_export_first">Si querés quedarte con una copia, exportá tus datos antes.</string>
+    <string name="perfil_delete_type_to_confirm">Para confirmar, escribí %s</string>
+    <string name="perfil_delete_word_a11y">Palabra de confirmación</string>
+    <string name="perfil_delete_button">Borrar mi cuenta</string>
+    <string name="perfil_delete_failed">No se pudo borrar la cuenta</string>
+    <!-- Paywall -->
+    <string name="paywall_subtitle">Más chispas por día y un plan para cada idea.</string>
+    <string name="paywall_benefit_sparks">Hasta 10 chispas por día, y elegís qué neuronas se conectan</string>
+    <string name="paywall_benefit_distill">Destilación automática de links, fotos y PDFs</string>
+    <string name="paywall_benefit_planner">Planificador para bajar cada idea a tareas</string>
+    <string name="paywall_benefit_circuits">Circuitos ilimitados</string>
+    <string name="paywall_loading">Cargando los precios</string>
+    <string name="paywall_monthly_trial">%1$s por mes · %2$d días gratis</string>
+    <string name="paywall_monthly_equiv">%s por mes</string>
+    <string name="paywall_annual">Anual</string>
+    <string name="paywall_per_year">por año</string>
+    <string name="paywall_save_pct">Ahorrás %d%%</string>
+    <string name="paywall_monthly">Mensual</string>
+    <string name="paywall_per_month">por mes</string>
+    <string name="paywall_cancel_anytime">Cancelás cuando quieras</string>
+    <string name="paywall_trial_note">Tenés %d días gratis. Si cancelás antes de que terminen, no se te cobra nada.</string>
+    <string name="paywall_legal_renewal">La suscripción se cobra en tu cuenta de Google Play y se renueva sola al mismo precio, salvo que la canceles antes del fin del período.</string>
+    <string name="paywall_cancel_how">Cancelala cuando quieras desde Google Play &gt; Pagos y suscripciones &gt; Suscripciones.</string>
+    <string name="paywall_already_pro">Ya tenés Lumbre Pro</string>
+    <string name="paywall_already_pro_body">Gracias por bancar Lumbre. Tu suscripción se administra desde Google Play.</string>
+    <string name="paywall_restore">Restaurar compras</string>
+    <string name="paywall_terms">Términos</string>
+    <!-- Accesibilidad del indicador de compra. -->
+    <string name="paywall_buying">Comprando</string>
+    <string name="paywall_try_days">Probar %d días gratis</string>
+    <string name="paywall_subscribe_year">Suscribirme por %s al año</string>
+    <string name="paywall_subscribe_month">Suscribirme por %s al mes</string>
+    <string name="paywall_after_trial_year">Después, %s por año. Cancelás cuando quieras.</string>
+    <string name="paywall_price_year">%s por año. Cancelás cuando quieras.</string>
+    <string name="paywall_price_month">%s por mes. Cancelás cuando quieras.</string>
+    <string name="paywall_pending">Compra pendiente</string>
+    <string name="paywall_nothing_to_restore">No hay compras para restaurar</string>
+    <string name="paywall_failed">No se pudo completar</string>
+    <string name="paywall_pending_body">La compra espera una aprobación. Cuando se apruebe, Pro se activa solo.</string>
+    <string name="paywall_not_found">No encontramos una suscripción a Lumbre Pro en esta cuenta de Google.</string>
+    <string name="paywall_load_failed">No pudimos cargar los planes. Revisá tu conexión y probá de nuevo.</string>
+    <string name="paywall_verify_failed">La tienda no pudo verificar la compra. Probá de nuevo o tocá Restaurar compras.</string>
+    <!-- Errores y carga -->
+    <string name="errores_offline">Sin conexión</string>
+    <string name="errores_offline_body">Revisá tu conexión y probá de nuevo.</string>
+    <string name="errores_load_failed">No se pudo cargar</string>
+    <string name="errores_later">Algo salió mal. Probá de nuevo en un rato.</string>
+    <string name="errores_api_quota">Llegaste al límite de hoy. Mañana podés seguir.</string>
+    <string name="errores_api_too_many_categories">Ya tenés 50 categorías. Usá una de las que tenés.</string>
+    <string name="errores_api_invalid_thesis">La idea tiene que tener entre 1 y 600 caracteres.</string>
+    <string name="errores_api_invalid_category">La categoría tiene que tener entre 1 y 40 caracteres.</string>
+    <string name="errores_api_no_idea">No pudimos sacar una idea de esto. ¿Qué idea te deja?</string>
+    <string name="errores_api_pro_only">Esto es parte de Lumbre Pro.</string>
+    <string name="errores_api_need_more">Guardá un par de neuronas más para tener material que conectar.</string>
+    <string name="errores_api_account_required">Creá tu cuenta para usar esto.</string>
+    <string name="errores_api_offline">Sin conexión. Lo guardamos y lo mandamos cuando vuelva.</string>
+    <string name="errores_api_invalid_email">Revisá el email: no parece válido.</string>
+    <string name="errores_api_invalid_code">El código no es correcto o ya venció. Revisalo o pedí otro.</string>
+    <string name="errores_api_email_in_use">Ya hay una cuenta con ese email. Entrá con esa cuenta.</string>
+    <!-- Estados vacíos, error, offline y contenido inaccesible -->
+    <!-- Estado empty.search (Secundaria con filtro). Ver design/estados/README.md. -->
+    <string name="estados_search_secundaria_con_filtro">Sacar el filtro</string>
+    <!-- Estado empty.category (Secundaria). Ver design/estados/README.md. -->
+    <string name="estados_category_secundaria">Ver todas</string>
+    <!-- Estado empty.hoy_sin_permiso (Título). Ver design/estados/README.md. -->
+    <string name="estados_hoy_sin_permiso_titulo">Las chispas necesitan tu permiso</string>
+    <!-- Estado empty.hoy_sin_permiso (Cuerpo). Ver design/estados/README.md. -->
+    <string name="estados_hoy_sin_permiso_cuerpo">Para encender chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic. Lo activás en Perfil › Privacidad.</string>
+    <!-- Estado empty.hoy_sin_permiso (Principal). Ver design/estados/README.md. -->
+    <string name="estados_hoy_sin_permiso_principal">Revisar el permiso</string>
+    <!-- Estado error.not_found (Título). Ver design/estados/README.md. -->
+    <string name="estados_not_found_titulo">Esto ya no está en tu red</string>
+    <!-- Estado error.not_found (Cuerpo). Ver design/estados/README.md. -->
+    <string name="estados_not_found_cuerpo">Puede que se haya borrado desde otro dispositivo.</string>
+    <!-- Estado error.not_found (Secundaria). Ver design/estados/README.md. -->
+    <string name="estados_not_found_secundaria">Volver</string>
+    <!-- Estado error.load_offline (Cuerpo). Ver design/estados/README.md. -->
+    <string name="estados_load_offline_cuerpo">Revisá tu conexión y probá de nuevo. Lo que captures mientras tanto queda guardado en el teléfono.</string>
+    <!-- Estado error.quota_distill_pro (Cuerpo). Ver design/estados/README.md. -->
+    <string name="estados_quota_distill_pro_cuerpo">Llegaste al uso justo de destilación de este mes. Se renueva el mes que viene.</string>
+    <!-- Estado error.store_failed (Cuerpo). Ver design/estados/README.md. -->
+    <string name="estados_store_failed_cuerpo">La tienda no respondió. Probá de nuevo en un rato.</string>
+    <!-- Estado error.ai_spark (Título). Ver design/estados/README.md. -->
+    <string name="estados_ai_spark_titulo">No se pudo encender la chispa</string>
+    <!-- Estado error.ai_planner (Título). Ver design/estados/README.md. -->
+    <string name="estados_ai_planner_titulo">La respuesta no llegó</string>
+    <!-- Estado error.ai_planner (Cuerpo). Ver design/estados/README.md. -->
+    <string name="estados_ai_planner_cuerpo">Probá de nuevo.</string>
+    <!-- Estado error.session_expired (Título). Ver design/estados/README.md. -->
+    <string name="estados_session_expired_titulo">Tu sesión se cerró</string>
+    <!-- Estado error.session_expired (Cuerpo). Ver design/estados/README.md. -->
+    <string name="estados_session_expired_cuerpo">Entrá de nuevo con tu email para seguir. Tus neuronas, chispas y circuitos están guardados en tu cuenta.</string>
+    <!-- Estado offline.banner (Cuerpo). Ver design/estados/README.md. -->
+    <string name="estados_banner_cuerpo">Ves lo último que se cargó. Lo que captures se guarda y se manda cuando vuelva.</string>
+    <!-- Estado offline.extra_spark (Nota). Ver design/estados/README.md. -->
+    <string name="estados_extra_spark_nota">Para encender otra chispa hace falta conexión.</string>
+    <!-- Estado offline.reveal (Título). Ver design/estados/README.md. -->
+    <string name="estados_reveal_titulo">Tu chispa de hoy te espera</string>
+    <!-- Estado offline.reveal (Cuerpo). Ver design/estados/README.md. -->
+    <string name="estados_reveal_cuerpo">Se enciende cuando vuelva la conexión.</string>
+    <!-- Estado offline.queue_flushed (Una). Ver design/estados/README.md. -->
+    <string name="estados_queue_flushed_una">Se guardó 1 captura que esperaba conexión</string>
+    <!-- Estado offline.queue_flushed (Varias). Ver design/estados/README.md. -->
+    <string name="estados_queue_flushed_varias">Se guardaron %d capturas que esperaban conexión</string>
+    <!-- Motivo que se agrega al aviso de captura descartada. -->
+    <string name="estados_queue_discarded_reason_1">Llegaste a las capturas de ese día.</string>
+    <!-- Motivo que se agrega al aviso de captura descartada. -->
+    <string name="estados_queue_discarded_reason_2">Ya tenés 50 categorías.</string>
+    <!-- Motivo que se agrega al aviso de captura descartada. -->
+    <string name="estados_queue_discarded_reason_3">El link no parece válido.</string>
+    <!-- Estado offline.planner (Texto). Ver design/estados/README.md. -->
+    <string name="estados_planner_texto">El planificador necesita conexión. Podés leer la conversación mientras tanto.</string>
+    <!-- Estado inaccessible.moderated (Planificador). Ver design/estados/README.md. -->
+    <string name="estados_moderated_planificador">No podemos responder a ese mensaje. Probá planteándolo de otra forma.</string>
+    <!-- Estado inaccessible.audio_no_speech (Aviso). Ver design/estados/README.md. -->
+    <string name="estados_audio_no_speech_aviso">En este audio no encontramos palabras para transcribir. Escribí qué idea te deja y la guardamos.</string>
+    <!-- Estado inaccessible.paywall_link (Aviso). Ver design/estados/README.md. -->
+    <string name="estados_paywall_link_aviso">Esta nota tiene muro de pago: solo pudimos leer el título. Escribí qué idea te deja y la guardamos con el link.</string>
+    <!-- Estado inaccessible.paywall_link (Variante: solo título y descripción (por ejemplo, un video sin transcripción)). Ver design/estados/README.md. -->
+    <string name="estados_paywall_link_variante_solo_titulo">Solo pudimos leer el título y la descripción. Escribí qué idea te deja y la guardamos con el link.</string>
+    <!-- Estado inaccessible.social_login (Aviso). Ver design/estados/README.md. -->
+    <string name="estados_social_login_aviso">%s no deja leer publicaciones sin iniciar sesión. Si tiene texto, copialo y pegalo; si no, escribí qué idea te deja.</string>
+    <!-- Estado inaccessible.social_login (Nota del interruptor). Ver design/estados/README.md. -->
+    <string name="estados_social_login_nota_del_interruptor">No se puede destilar este link.</string>
+    <!-- Estado inaccessible.private_doc (Aviso). Ver design/estados/README.md. -->
+    <string name="estados_private_doc_aviso">Este documento es privado: Lumbre no puede abrirlo. Escribí qué idea te deja, o compartilo como PDF.</string>
+    <!-- Estado inaccessible.unreachable (Aviso). Ver design/estados/README.md. -->
+    <string name="estados_unreachable_aviso">No pudimos abrir esta página. Escribí qué idea te deja y la guardamos con el link. No se descontó la prueba.</string>
+    <!-- Estado inaccessible.image_no_idea (Aviso). Ver design/estados/README.md. -->
+    <string name="estados_image_no_idea_aviso">En esta foto no encontramos una idea para guardar. Escribí qué te deja y la guardamos con la foto.</string>
+    <!-- Estado inaccessible.ocr_no_text (Sin destilación). Ver design/estados/README.md. -->
+    <string name="estados_ocr_no_text_sin_destilacion">No encontramos texto. Escribí qué idea te deja.</string>
+    <!-- Estado inaccessible.pdf_no_text (Aviso). Ver design/estados/README.md. -->
+    <string name="estados_pdf_no_text_aviso">Este PDF no tiene texto seleccionable. Escaneá las páginas que te importan con Escanear página, o escribí qué idea te deja.</string>
+    <!-- Estado inaccessible.file_unreadable (PDF con contraseña). Ver design/estados/README.md. -->
+    <string name="estados_file_unreadable_pdf_con_contrasena">Este PDF tiene contraseña. Sacásela o probá con otro.</string>
+    <!-- Estado inaccessible.unsupported_format (Aviso). Ver design/estados/README.md. -->
+    <string name="estados_unsupported_format_aviso">Lumbre no lee archivos de Word, PowerPoint ni videos. Guardá un PDF o el link, o escribí qué idea te deja.</string>
+    <!-- Versión que usa la app (AIConsent.swift) para empty.hoy_sin_permiso. -->
+    <string name="estados_hoy_sin_permiso_app_body">Las chispas usan IA para conectar tus neuronas. Para encenderlas necesitamos tu permiso.</string>
+    <string name="estados_hoy_sin_permiso_meanwhile">Mientras tanto, podés seguir guardando neuronas.</string>
+    <!-- Widget y tarjeta para compartir -->
+    <!-- Nombre en la galería de widgets. -->
+    <string name="widget_spark_name">Chispa de hoy</string>
+    <string name="widget_spark_description">Tu chispa del día y un atajo para capturar.</string>
+    <string name="widget_capture_description">Abrí Capturar directo desde la pantalla de inicio.</string>
+    <!-- Botón de captura del widget grande. -->
+    <string name="widget_capture_long">Capturar una idea</string>
+    <string name="widget_capture_hint">Una frase, un link o una nota de voz</string>
+    <!-- Botón del widget chico y del 2×2. -->
+    <string name="widget_pending_cta_short">Encender</string>
+    <!-- Accesorios de pantalla bloqueada. -->
+    <string name="widget_pending_lock">Tu chispa está lista</string>
+    <!-- Las dos neuronas de la chispa. -->
+    <string name="widget_pending_pair">%1$s y %2$s</string>
+    <!-- Accesorio inline. %@ es la hora. -->
+    <string name="widget_next_lock">Próxima chispa: mañana %s</string>
+    <string name="widget_next_lock_title">Próxima chispa</string>
+    <string name="widget_next_lock_when">Mañana a las %s</string>
+    <string name="widget_no_material_body">Guardá neuronas de temas distintos.</string>
+    <string name="widget_signed_out_title">Abrí Lumbre para empezar</string>
+    <!-- Solo si no se confirma que el invitado recibe la chispa (design/prototipo/invitado.md). -->
+    <string name="widget_guest_title">Creá tu cuenta para recibir tu chispa diaria</string>
+    <string name="widget_guest_body">Mientras tanto, podés capturar neuronas como invitado.</string>
+    <string name="widget_no_data_title">Tu chispa nueva te espera</string>
+    <string name="widget_no_data_body">Abrí Lumbre para traerla.</string>
+    <string name="widget_open">Abrir</string>
+    <string name="widget_a11y_pending">Chispa por encender: %1$s, de %2$s, con %3$s, de %4$s. Tocá para encenderla.</string>
+    <!-- Control de iOS 18 (propuesta). -->
+    <string name="widget_control_capture">Capturar idea</string>
+    <!-- Texto que acompaña la imagen al compartir (provisorio, espera el dominio). -->
+    <string name="widget_share_text">Mi chispa de hoy en Lumbre: %s</string>
+    <!-- Formato de la tarjeta (propuesta). No usar "Historia" a secas: choca con la categoría Historia, que en inglés es History. -->
+    <string name="widget_share_story">Para historias</string>
+    <!-- Formato de la tarjeta (propuesta). -->
+    <string name="widget_share_feed">Para publicaciones</string>
+    <!-- Export a Markdown -->
+    <!-- Quién habla en el planificador exportado. -->
+    <string name="markdown_me">Yo</string>
+</resources>

@@ -1,0 +1,606 @@
+{
+  "marca": {
+    "neuron": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.0549,
+          0.0549,
+          0.06275
+        ],
+        "alpha": 1.0,
+        "hex": "#0E0E10"
+      },
+      "$description": "Marca: negro neurona. El símbolo, la tinta del tema gris y el relleno del botón principal. Fijo en ambos temas.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "TEXT_FILL",
+          "STROKE_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--neuron)",
+          "iOS": "Palette.neuron"
+        }
+      }
+    },
+    "gray": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.8902,
+          0.8902,
+          0.87451
+        ],
+        "alpha": 1.0,
+        "hex": "#E3E3DF"
+      },
+      "$description": "Marca: gris. Fondo del tema de marca (default) y del ícono de app. Fijo en ambos temas.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--gray)",
+          "iOS": "Palette.gray"
+        }
+      }
+    },
+    "graphite": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.16471,
+          0.16471,
+          0.17255
+        ],
+        "alpha": 1.0,
+        "hex": "#2A2A2C"
+      },
+      "$description": "Marca: grafito. Fondo del modo oscuro. Fijo en ambos temas.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--graphite)",
+          "iOS": "Palette.graphite"
+        }
+      }
+    },
+    "bone": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.92941,
+          0.92941,
+          0.9098
+        ],
+        "alpha": 1.0,
+        "hex": "#EDEDE8"
+      },
+      "$description": "Marca: hueso. La neurona y la tinta en el modo oscuro. Fijo en ambos temas.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "TEXT_FILL",
+          "STROKE_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--bone)",
+          "iOS": "Palette.bone"
+        }
+      }
+    },
+    "spark": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1.0,
+          0.24314,
+          0.64706
+        ],
+        "alpha": 1.0,
+        "hex": "#FF3EA5"
+      },
+      "$description": "Marca: rosa chispa. El único color. Siempre apoyado en negro (o en la neurona): el núcleo, el punto del botón principal, la chispa en la sinapsis. Sobre gris no alcanza contraste (2,5:1): nunca como texto ni relleno grande sobre bg.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--spark)",
+          "iOS": "Palette.spark"
+        }
+      }
+    }
+  },
+  "superficie": {
+    "bg": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.8902,
+          0.8902,
+          0.87451
+        ],
+        "alpha": 1.0,
+        "hex": "#E3E3DF"
+      },
+      "$description": "Fondo de pantalla (window/scaffold).",
+      "$extensions": {
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--bg)",
+          "iOS": "Palette.bg"
+        }
+      }
+    },
+    "surface": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.92549,
+          0.92549,
+          0.91373
+        ],
+        "alpha": 1.0,
+        "hex": "#ECECE9"
+      },
+      "$description": "Superficies apenas elevadas: sheets, barras y la tarjeta de neurona.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--surface)",
+          "iOS": "Palette.surface"
+        }
+      }
+    },
+    "surface-alt": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.83529,
+          0.83529,
+          0.81569
+        ],
+        "alpha": 1.0,
+        "hex": "#D5D5D0"
+      },
+      "$description": "Inputs, campos de búsqueda, chips inactivos y neuronas dormidas de las ilustraciones.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "STROKE_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--surface-alt)",
+          "iOS": "Palette.surfaceAlt"
+        }
+      }
+    },
+    "scrim": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.0549,
+          0.0549,
+          0.06275
+        ],
+        "alpha": 0.5,
+        "hex": "#0E0E10"
+      },
+      "$description": "Velo detrás de sheets y diálogos.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--scrim)",
+          "iOS": "Palette.scrim"
+        }
+      }
+    }
+  },
+  "texto": {
+    "ink": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.0549,
+          0.0549,
+          0.06275
+        ],
+        "alpha": 1.0,
+        "hex": "#0E0E10"
+      },
+      "$description": "Texto principal, íconos y neuronas encendidas (≥9:1 en ambos temas).",
+      "$extensions": {
+        "com.figma.scopes": [
+          "TEXT_FILL",
+          "SHAPE_FILL",
+          "STROKE_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--ink)",
+          "iOS": "Palette.ink"
+        }
+      }
+    },
+    "ink-muted": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.35294,
+          0.35294,
+          0.36863
+        ],
+        "alpha": 1.0,
+        "hex": "#5A5A5E"
+      },
+      "$description": "Texto secundario y metadatos (≥4.4:1 en todas las superficies).",
+      "$extensions": {
+        "com.figma.scopes": [
+          "TEXT_FILL",
+          "SHAPE_FILL",
+          "STROKE_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--ink-muted)",
+          "iOS": "Palette.inkMuted"
+        }
+      }
+    },
+    "accent-text": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.6902,
+          0.06275,
+          0.36863
+        ],
+        "alpha": 1.0,
+        "hex": "#B0105E"
+      },
+      "$description": "Rosa como texto chico cuando hace falta (links de la chispa). 5.3:1 sobre bg.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--accent-text)",
+          "iOS": "Palette.accentText"
+        }
+      }
+    },
+    "pro-text": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.0549,
+          0.0549,
+          0.06275
+        ],
+        "alpha": 1.0,
+        "hex": "#0E0E10"
+      },
+      "$description": "Texto de cosas Pro: siempre junto a la palabra Pro o un ícono.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--pro-text)",
+          "iOS": "Palette.proText"
+        }
+      }
+    },
+    "info-text": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.22745,
+          0.22745,
+          0.24314
+        ],
+        "alpha": 1.0,
+        "hex": "#3A3A3E"
+      },
+      "$description": "Información neutra y links secundarios (subrayados).",
+      "$extensions": {
+        "com.figma.scopes": [
+          "TEXT_FILL",
+          "SHAPE_FILL",
+          "STROKE_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--info-text)",
+          "iOS": "Palette.infoText"
+        }
+      }
+    }
+  },
+  "borde": {
+    "border": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.77647,
+          0.77647,
+          0.75294
+        ],
+        "alpha": 1.0,
+        "hex": "#C6C6C0"
+      },
+      "$description": "Separadores, el eje de las listas y las conexiones de la red de fondo. Decorativo.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "STROKE_COLOR",
+          "SHAPE_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--border)",
+          "iOS": "Palette.border"
+        }
+      }
+    },
+    "border-strong": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.46275,
+          0.46275,
+          0.47843
+        ],
+        "alpha": 1.0,
+        "hex": "#76767A"
+      },
+      "$description": "Borde de controles (≥3:1).",
+      "$extensions": {
+        "com.figma.scopes": [
+          "STROKE_COLOR",
+          "SHAPE_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--border-strong)",
+          "iOS": "Palette.borderStrong"
+        }
+      }
+    },
+    "focus-ring": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.0549,
+          0.0549,
+          0.06275
+        ],
+        "alpha": 1.0,
+        "hex": "#0E0E10"
+      },
+      "$description": "Anillo de foco de 2px, separado 2px del control.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "STROKE_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--focus-ring)",
+          "iOS": "Palette.focusRing"
+        }
+      }
+    }
+  },
+  "accion": {
+    "accent": {
+      "$type": "color",
+      "$value": "{texto.ink}",
+      "$description": "Relleno de la acción principal: negro en el tema gris, hueso en el grafito. Lleva el punto spark adentro.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--accent)",
+          "iOS": "Palette.accent"
+        }
+      }
+    },
+    "on-accent": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.94902,
+          0.94902,
+          0.93725
+        ],
+        "alpha": 1.0,
+        "hex": "#F2F2EF"
+      },
+      "$description": "Texto e íconos sobre accent.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "TEXT_FILL",
+          "SHAPE_FILL",
+          "STROKE_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--on-accent)",
+          "iOS": "Palette.onAccent"
+        }
+      }
+    },
+    "accent-soft": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.81569,
+          0.81569,
+          0.79608
+        ],
+        "alpha": 1.0,
+        "hex": "#D0D0CB"
+      },
+      "$description": "Fondo de selección. El elegido de verdad va en accent (negro) con on-accent.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--accent-soft)",
+          "iOS": "Palette.accentSoft"
+        }
+      }
+    },
+    "pro": {
+      "$type": "color",
+      "$value": "{texto.ink}",
+      "$description": "Pro: negro con la palabra Pro. Ya no hay un color propio.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--pro)",
+          "iOS": "Palette.pro"
+        }
+      }
+    },
+    "on-pro": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.94902,
+          0.94902,
+          0.93725
+        ],
+        "alpha": 1.0,
+        "hex": "#F2F2EF"
+      },
+      "$description": "Texto sobre pro.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "TEXT_FILL",
+          "SHAPE_FILL",
+          "STROKE_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--on-pro)",
+          "iOS": "Palette.onPro"
+        }
+      }
+    }
+  },
+  "estado": {
+    "success": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.05098,
+          0.38039,
+          0.27059
+        ],
+        "alpha": 1.0,
+        "hex": "#0D6145"
+      },
+      "$description": "Éxito, siempre con ícono y palabra.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "TEXT_FILL",
+          "SHAPE_FILL",
+          "STROKE_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--success)",
+          "iOS": "Palette.success"
+        }
+      }
+    },
+    "warning": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.47843,
+          0.3098,
+          0.0
+        ],
+        "alpha": 1.0,
+        "hex": "#7A4F00"
+      },
+      "$description": "Advertencia, siempre con ícono y palabra.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "TEXT_FILL",
+          "SHAPE_FILL",
+          "STROKE_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--warning)",
+          "iOS": "Palette.warning"
+        }
+      }
+    },
+    "danger": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.63922,
+          0.13333,
+          0.10588
+        ],
+        "alpha": 1.0,
+        "hex": "#A3221B"
+      },
+      "$description": "Error y acciones destructivas, siempre con ícono y palabra.",
+      "$extensions": {
+        "com.figma.scopes": [
+          "TEXT_FILL",
+          "SHAPE_FILL",
+          "STROKE_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "var(--danger)",
+          "iOS": "Palette.danger"
+        }
+      }
+    }
+  }
+}

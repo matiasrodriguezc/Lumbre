@@ -1,0 +1,795 @@
+<!doctype html>
+<!-- Paso 13 · Tarjeta para compartir y widget (MAT-228, MAT-229). Especificación en texto: README.md de esta carpeta.
+     Base: ../system/tokens.css + ../system/components/bundle.css + ../shared/maqueta.css; arte con data-art (arte.js).
+     Los widgets se dibujan con JS (más abajo) a tamaño real: 1 px CSS = 1 pt (iOS) o 1 dp (Android). -->
+<html lang="es" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lumbre · Tarjeta para compartir y widget</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400..700&display=swap">
+<link rel="stylesheet" href="../system/tokens.css"><link rel="stylesheet" href="../system/components/bundle.css"><link rel="stylesheet" href="../shared/maqueta.css">
+<script src="../shared/arte.js"></script><script src="../shared/maqueta.js"></script>
+<style>
+  /* ---------- Documento ---------- */
+  .toolbar .seg{flex:none;max-width:100%}
+  .seg--wrap{flex-wrap:wrap;border-radius:20px}
+  .row-wrap{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+  .fig{margin:0}
+  .fig figcaption{font:500 13px/18px var(--font-text);color:var(--ink-muted);margin-top:10px;max-width:360px}
+  .fig figcaption b{display:block;color:var(--ink);font-size:15px;line-height:20px}
+  .fig figcaption a{font-weight:600;color:var(--ink)}
+  .scrollx{overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch}
+  .prov{display:inline-block;font:600 12px/16px var(--font-text);padding:1px 8px;border-radius:var(--radius-full);box-shadow:inset 0 0 0 1.5px var(--border-strong);color:var(--ink);vertical-align:2px;margin-left:4px;white-space:nowrap}
+  .prop{background:var(--accent);color:var(--on-accent);box-shadow:none}
+  h3.sub{font:600 20px/26px var(--font-text);margin:40px 0 6px}
+  .spec{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));margin:16px 0}
+  .kv{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:4px 12px;font-size:14px;line-height:20px}
+  .kv dt{color:var(--ink-muted)}.kv dd{margin:0;color:var(--ink)}
+  .tabla code{font-size:12.5px}
+  .tabla td.es,.tabla td.en{min-width:180px}
+  .tabla td.id{white-space:nowrap}
+
+  /* ---------- Tarjeta achicada (iframe de tarjeta.html) ---------- */
+  .cards{display:grid;gap:24px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+  .cardfr{--s:.2;width:calc(1080px * var(--s));height:calc(1920px * var(--s));position:relative;overflow:hidden;border-radius:var(--radius-md);
+    box-shadow:0 0 0 1px var(--border),var(--elev-card);background:var(--gray)}
+  .cardfr.is-feed{height:calc(1350px * var(--s))}
+  .cardfr iframe{position:absolute;left:0;top:0;width:1080px;height:1920px;border:0;transform:scale(var(--s));transform-origin:0 0;pointer-events:none}
+  .cardfr.is-feed iframe{height:1350px}
+  .cards--big{grid-template-columns:repeat(auto-fill,minmax(324px,1fr))}
+  .cards--big .cardfr{--s:.3}
+  .linkbtn{display:inline-flex;align-items:center;gap:6px;font:600 14px/18px var(--font-text);color:var(--ink);text-decoration:none;
+    border-radius:var(--radius-full);padding:7px 12px;box-shadow:inset 0 0 0 1.5px var(--border-strong);margin-top:8px;min-height:34px}
+  .linkbtn svg{width:14px;height:14px}
+
+  /* ---------- Fondos de pantalla de las maquetas (solo tokens) ---------- */
+  .wall{background:linear-gradient(160deg,var(--surface-alt) 0%,var(--border-strong) 100%)}
+  .wall--dark{background:linear-gradient(165deg,var(--ink-muted) 0%,var(--graphite) 55%,var(--neuron) 100%)}
+  .stage{border-radius:var(--radius-lg);padding:24px;display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
+  .stage--col{flex-direction:column}
+  .stage .lbl{font:600 13px/18px var(--font-text);color:var(--on-accent);background:var(--accent);border-radius:var(--radius-full);padding:2px 10px;align-self:flex-start}
+  .matrix{display:grid;gap:20px 20px;align-items:start}
+  #ios-matrix,#and-matrix{width:max-content;min-width:100%}
+  .matrix .rowlbl{font:600 15px/20px var(--font-text);color:var(--ink);align-self:start;padding-top:4px}
+  .matrix .rowlbl span{display:block;font:400 13px/18px var(--font-text);color:var(--ink-muted);margin-top:2px}
+  .matrix .colh{font:600 13px/18px var(--font-text);color:var(--ink-muted)}
+
+  /* ---------- Widget iOS (WidgetKit) ---------- */
+  .wi{position:relative;flex:none;overflow:hidden;background:var(--bg);color:var(--ink);border-radius:22px;padding:16px;
+    display:flex;flex-direction:column;font-family:var(--font-text);box-shadow:0 1px 2px rgba(14,14,16,.08),0 6px 20px rgba(14,14,16,.10);
+    text-align:left}
+  .wi--l{border-radius:24px}
+  .wi > *{position:relative}
+  .wi .wi-net{position:absolute;left:0;right:0;top:0;height:120px;opacity:.8;pointer-events:none;
+    -webkit-mask-image:linear-gradient(#000 0,#000 30%,transparent);mask-image:linear-gradient(#000 0,#000 30%,transparent)}
+  .wi .wi-net svg{width:100%;height:100%}
+  .wi .wi-net .n-active{fill:var(--surface-alt)}.wi .wi-net .n-spark{display:none}
+  .grow{flex:1 1 auto;min-height:0}
+  .hrow{display:flex;align-items:center;gap:8px}
+  .hrow > .push{margin-left:auto}
+  .r{text-align:right}
+  .muted{color:var(--ink-muted)}
+  .l1,.l2,.l3,.l4,.l5{display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+  .l1{-webkit-line-clamp:1}.l2{-webkit-line-clamp:2}.l3{-webkit-line-clamp:3}.l4{-webkit-line-clamp:4}.l5{-webkit-line-clamp:5}
+  .t11{font:500 11px/13px var(--font-text)}
+  .t12{font:400 12px/15px var(--font-text)}
+  .t13{font:400 13px/17px var(--font-text)}
+  .t14{font:600 14px/17px var(--font-text)}
+  .t15{font:600 15px/19px var(--font-text)}
+  .t15r{font:400 15px/20px var(--font-text)}
+  .t17{font:600 17px/22px var(--font-text)}
+  .fr{font-family:var(--font-display);font-weight:600;font-variation-settings:"SOFT" 100,"WONK" 1;letter-spacing:-.01em}
+  .fr20{font-size:20px;line-height:23px}.fr22{font-size:22px;line-height:26px}.fr28{font-size:28px;line-height:32px}
+  .ph{display:flex;justify-content:space-between;gap:12px}
+  .ph > div{min-width:0;flex:1 1 0}
+  .syn{display:block;flex:none}
+  .syn svg{width:100%;height:auto}
+  .syn .ch-syn-full{width:100%;margin:0}
+  .syn.is-off .n-spark{display:none}
+  .center{margin-left:auto;margin-right:auto}
+  .cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:var(--on-accent);
+    font:600 15px/18px var(--font-text);border-radius:var(--radius-full);padding:0 14px;height:36px;white-space:nowrap;flex:none}
+  .cta i{width:8px;height:8px;border-radius:50%;background:var(--spark);flex:none}
+  .cta .star{display:none;width:12px;height:12px}
+  .cta--s{height:30px;font-size:14px;padding:0 12px}
+  .cta--full{width:100%;height:40px}
+  .hrow .cta--full{flex:1 1 auto;width:auto}
+  .cta--line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--border-strong)}
+  .cta svg.plus{width:14px;height:14px}
+  .capbtn{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;flex:none;box-shadow:inset 0 0 0 1.5px var(--border-strong);color:var(--ink)}
+  .capbtn svg{width:16px;height:16px}
+  .capbtn--40{width:40px;height:40px}
+  .wmeter{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+  .wmeter .mini{width:26px;height:26px}
+  .wmeter b{display:block;font:600 15px/19px var(--font-text)}
+  .wmeter span{display:block;font:400 12px/15px var(--font-text);color:var(--ink-muted)}
+  .wmeter .dots{margin-left:auto;display:flex;gap:2px}
+  .wmeter .dots .mini{width:14px;height:14px}
+  .sk{display:block;background:var(--surface-alt);border-radius:5px}
+  .wordm{display:inline-flex;align-items:baseline;gap:3px;font:600 28px/1 var(--font-display);font-variation-settings:"SOFT" 100}
+  .wordm i{width:7px;height:7px;border-radius:50%;background:var(--spark)}
+  .capw__btn{width:44px;height:44px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center}
+  .capw__btn svg{width:20px;height:20px}
+  .art{display:block}
+  .art svg{width:100%;height:auto}
+
+  /* Modos de render de iOS: tintado y transparente (accented). Sin rosa: todo monocromo con el tinte del sistema. */
+  .m-tinted,.m-clear{--bg:transparent;--ink:var(--bone);--ink-muted:color-mix(in srgb,var(--bone) 72%,transparent);
+    --border:color-mix(in srgb,var(--bone) 30%,transparent);--border-strong:color-mix(in srgb,var(--bone) 70%,transparent);
+    --surface-alt:color-mix(in srgb,var(--bone) 22%,transparent);--accent:transparent;--on-accent:var(--bone);--spark:var(--bone)}
+  .m-tinted .wi{background:color-mix(in srgb,var(--neuron) 52%,transparent);-webkit-backdrop-filter:blur(18px) saturate(.2);backdrop-filter:blur(18px) saturate(.2);box-shadow:none}
+  .m-clear .wi{background:color-mix(in srgb,var(--bone) 12%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bone) 35%,transparent),inset 0 1px 0 color-mix(in srgb,var(--bone) 55%,transparent)}
+  .m-tinted .wi-net,.m-clear .wi-net{display:none}
+  .stage.m-tinted .lbl,.stage.m-clear .lbl{background:var(--bone);color:var(--neuron)}
+  .m-tinted .cta,.m-clear .cta{box-shadow:inset 0 0 0 1.5px var(--bone)}
+  .m-tinted .cta i,.m-clear .cta i{display:none}
+  .m-tinted .cta .star,.m-clear .cta .star{display:block}
+  .m-tinted .capw__btn,.m-clear .capw__btn{box-shadow:inset 0 0 0 1.5px var(--bone)}
+  .m-tinted .n-dormant,.m-clear .n-dormant{fill:var(--surface-alt)}
+  /* StandBy: el sistema saca el fondo y agranda el widget sobre negro. Ahí el rosa sí va apoyado en negro. */
+  .m-standby .wi{background:transparent;box-shadow:none}
+  .m-standby .wi-net{display:none}
+
+  /* ---------- Accesorios de pantalla bloqueada (vibrant: monocromo sobre el fondo) ---------- */
+  .acc{color:var(--bone);font-family:var(--font-text);flex:none;position:relative}
+  .acc .n-active,.acc .n-spark{fill:var(--bone)}
+  .acc--circ{border-radius:50%;background:color-mix(in srgb,var(--bone) 18%,transparent);display:grid;place-items:center;text-align:center}
+  .acc--circ .mini{width:44%;height:44%}
+  .acc--circ .mini .nuc{display:none}
+  .acc--circ svg.star{width:34%;height:34%}
+  .acc--circ b{display:block;font:600 15px/16px var(--font-text);margin-top:1px}
+  .acc--circ small{display:block;font:600 10px/11px var(--font-text);opacity:.8}
+  .acc--rect{display:flex;flex-direction:column;justify-content:center;gap:1px;text-align:left}
+  .acc--rect b{font:600 15px/18px var(--font-text)}
+  .acc--rect span{font:400 13px/16px var(--font-text);opacity:.85}
+  .acc--inline{display:flex;align-items:center;gap:5px;font:600 15px/26px var(--font-text);white-space:nowrap;overflow:hidden}
+  .acc svg.star{fill:currentColor;flex:none}
+  .acc--inline svg.star{width:13px;height:13px}
+  .acc--rect svg.star{width:11px;height:11px;display:inline-block;margin-right:4px;vertical-align:-1px}
+
+  /* ---------- Widget Android (Glance) ---------- */
+  .wa{--fa:"Roboto Flex",Roboto,var(--font-text);font-family:var(--fa);border-radius:24px;box-shadow:0 1px 3px rgba(14,14,16,.12)}
+  .wa .t11,.wa .t12,.wa .t13,.wa .t14,.wa .t15,.wa .t15r,.wa .t17,.wa .cta,.wa .wmeter b,.wa .wmeter span{font-family:var(--fa)}
+  .wa .fr{font-family:var(--fa);font-variation-settings:normal;letter-spacing:0;font-weight:600}
+  .wa .fr20{font-size:19px;line-height:24px}
+  .wa .cta{height:40px}
+  .wa .cta--s{height:40px}
+  .wa .capbtn{width:40px;height:40px}
+  .wa--s{padding:12px}
+
+  /* ---------- Pantallas de inicio ---------- */
+  .home{position:absolute;inset:0;padding:54px 0 0}
+  .tel--android .home{padding-top:40px}
+  .home__grid{position:absolute;left:0;right:0;display:flex;flex-wrap:wrap}
+  .appi{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .appi i{display:block;width:62px;height:62px;border-radius:15px;background:color-mix(in srgb,var(--bg) 70%,transparent)}
+  .appi u{display:block;width:40px;height:7px;border-radius:4px;background:color-mix(in srgb,var(--on-accent) 55%,transparent)}
+  .appi .lumbre-ic{overflow:hidden}
+  .appi .lumbre-ic svg{width:100%;height:100%}
+  .dock{position:absolute;left:12px;right:12px;bottom:12px;height:94px;border-radius:38px;background:color-mix(in srgb,var(--bg) 35%,transparent);
+    display:flex;justify-content:space-around;align-items:center;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+  .dock .appi u{display:none}
+  .tel--android .appi i{border-radius:50%;width:56px;height:56px}
+  .tel--android .dock{border-radius:28px;height:84px;bottom:28px;left:16px;right:16px}
+  .lock-date{position:absolute;left:0;right:0;top:70px;display:flex;justify-content:center;align-items:center;gap:8px;color:var(--bone);font:600 19px/26px var(--font-text)}
+  .lock-clock{position:absolute;left:0;right:0;top:94px;text-align:center;color:var(--bone);font:600 104px/1 var(--font-text);letter-spacing:-.02em}
+  .lock-acc{position:absolute;left:0;right:0;top:222px;display:flex;justify-content:center;gap:12px}
+  .lock-foot{position:absolute;left:0;right:0;bottom:36px;display:flex;justify-content:space-between;padding:0 46px}
+  .lock-foot i{width:50px;height:50px;border-radius:50%;background:color-mix(in srgb,var(--neuron) 45%,transparent);display:block}
+  .standby{width:852px;height:393px;background:var(--neuron);border-radius:56px;position:relative;overflow:hidden;
+    box-shadow:0 0 0 12px var(--neuron),0 0 0 13px var(--border-strong);margin:14px;display:flex;align-items:center;justify-content:center;gap:40px}
+  .standby .slot{width:330px;height:330px;display:grid;place-items:center}
+  .standby .slot > .wi{transform:scale(2);transform-origin:center}
+  .standby-wrap{zoom:.62}
+
+  /* ---------- Zonas táctiles ---------- */
+  body.show-taps [data-tap]{outline:2px dashed var(--ink);outline-offset:-2px}
+  body.show-taps .wi[data-tap],body.show-taps .acc[data-tap]{outline-offset:2px}
+  body.show-taps [data-tap]::after{content:'→ ' attr(data-tapl);position:absolute;z-index:9;left:4px;bottom:4px;font:600 10px/14px ui-monospace,Menlo,monospace;
+    background:var(--accent);color:var(--on-accent);border-radius:4px;padding:1px 5px;white-space:nowrap;pointer-events:none;letter-spacing:0;text-transform:none}
+  body.show-taps .cta[data-tap],body.show-taps .capbtn[data-tap]{position:relative}
+  body.show-taps .cta[data-tap]::after,body.show-taps .capbtn[data-tap]::after{left:auto;right:0;bottom:auto;top:-18px}
+  body.show-taps .m-tinted [data-tap],body.show-taps .m-clear [data-tap],body.show-taps .stage.wall--dark [data-tap]{outline-color:var(--bone)}
+
+  @media (max-width:640px){
+    .cards{grid-template-columns:repeat(2,1fr)}
+    .cardfr{--s:.145}
+    .cards--big{grid-template-columns:repeat(2,1fr)}
+    .cards--big .cardfr{--s:.145}
+    .stage{padding:16px}
+    .standby-wrap{zoom:.38}
+  }
+</style>
+</head>
+<body class="doc" data-platform="ios">
+<header class="doc-head"><div class="doc-head__net" data-art="red-horizontal"></div><div class="doc-head__inner">
+  <p class="doc-head__crumb"><a href="../README.md">Lumbre · Diseño</a> · Paso 13 · MAT-228, MAT-229</p>
+  <h1>Tarjeta para compartir y widget</h1>
+  <p>La chispa sale de la app de dos maneras: como imagen para historias (el loop de crecimiento) y como widget en la pantalla de inicio y la bloqueada. Todo a tamaño real; la especificación en texto está en <a href="README.md">README.md</a>.</p>
+  <div class="toolbar">
+    <div class="seg" role="group" aria-label="Tema"><button data-set-theme="light">Gris</button><button data-set-theme="dark">Grafito</button></div>
+    <div class="seg" role="group" aria-label="Idioma de los widgets"><button data-lang="es">es</button><button data-lang="en">en</button></div>
+    <div class="seg" role="group" aria-label="Zonas táctiles"><button data-taps="off">Sin zonas</button><button data-taps="on">Zonas táctiles</button></div>
+  </div>
+</div></header>
+<main>
+
+<!-- ============================================================ TARJETA ============================================================ -->
+<h2 class="sec" id="tarjeta">Tarjeta para compartir</h2>
+<p class="lead">Historia vertical de 1080 × 1920 px, siempre en el tema gris, con la chispa centrada y la firma abajo. Es la misma vista que se renderiza en <code>ShareCard.swift</code>. Cada miniatura es <a href="tarjeta.html">tarjeta.html</a> achicada; el botón la abre al 100% para revisar o sacar el PNG.</p>
+<div class="toolbar" style="margin:0 0 20px">
+  <div class="seg seg--wrap" role="group" aria-label="Guías de zona segura">
+    <button data-guias="">Sin guías</button><button data-guias="medidas">Medidas</button><button data-guias="ig">Instagram</button><button data-guias="tiktok">TikTok</button><button data-guias="wa">WhatsApp</button><button data-guias="todas">Todas</button>
+  </div>
+</div>
+<div class="cards" id="cards"></div>
+
+<h3 class="sub">Actual y con las mejoras propuestas <span class="prov prop">Propuesta</span></h3>
+<p class="lead">A la izquierda, la tarjeta de hoy. A la derecha, tres cambios chicos: margen de abajo de 340 en vez de 200 (la firma hoy cae dentro de la barra de responder de Instagram), categoría en una sola línea y la frase de la marca en dos líneas parejas. Con las guías de Instagram se ve la diferencia.</p>
+<div class="cards cards--big" id="cards-prop"></div>
+
+<h3 class="sub">Formato feed 1080 × 1350 <span class="prov prop">Propuesta</span></h3>
+<p class="lead">Para publicar en el feed de Instagram o LinkedIn, donde no hay interfaz encima. Mismo orden, márgenes parejos, título de 88 y cuerpo de 40 (hasta 5 líneas). Se ofrecería como segunda opción en la hoja de compartir, no por defecto.</p>
+<div class="cards cards--big" id="cards-feed"></div>
+
+<div class="spec">
+  <div class="card">
+    <h3>Anatomía (px a 1×)</h3>
+    <dl class="kv">
+      <dt>Lienzo</dt><dd>1080 × 1920, fondo <code>gray</code>, tema gris fijo</dd>
+      <dt>Márgenes</dt><dd>96 a los costados, 250 arriba, 200 abajo (ancho útil 888)</dd>
+      <dt>Red</dt><dd>Red dormida (<code>.tall</code>) de 1000 de alto, recortada al centro, opaca hasta 500 y desvanecida a 1000</dd>
+      <dt>Neuronas</dt><dd>Dos columnas con 48 entre ellas; categoría 34 medium al 65%, 12, título 48 semibold hasta 3 líneas; la B a la derecha; 40 abajo</dd>
+      <dt>Sinapsis</dt><dd>Encendida, 880 de ancho (≈ 293 de alto), centrada; 96 abajo</dd>
+      <dt>Título</dt><dd>Fraunces 104 (<code>spark-hero</code>, WONK 1), interlineado +6, hasta 4 líneas, escala mínima 0,6; 48 abajo</dd>
+      <dt>Cuerpo</dt><dd>Sistema 46 regular al 85%, interlineado +12, hasta 7 líneas, escala mínima 0,7</dd>
+      <dt>Firma</dt><dd>Marca larga 150 · 24 · "Lumbre" Fraunces 72 + punto <code>spark</code> de 18 · frase 32 medium al 65% a la derecha. Mínimo 96 entre el cuerpo y la firma</dd>
+      <dt>Centrado</dt><dd>El bloque de la chispa queda centrado entre el margen de arriba y la firma</dd>
+    </dl>
+  </div>
+  <div class="card">
+    <h3>Zonas seguras de cada app</h3>
+    <p>Ninguna app publica un número oficial para publicaciones orgánicas. Estas son las referencias más usadas (ver fuentes en el README); hay que validarlas con capturas reales.</p>
+    <ul>
+      <li><b>Instagram Historias:</b> 250 arriba (nombre, progreso, cerrar) y 250 abajo (responder); 340 abajo si queremos ir a lo seguro.</li>
+      <li><b>TikTok:</b> 160 arriba, 480 abajo (texto, sonido, barra) y 120 a la derecha (botones).</li>
+      <li><b>WhatsApp Estados:</b> unos 200 arriba y 200 abajo. <span class="prov">Estimado</span></li>
+    </ul>
+    <p style="margin-top:8px">El título y el cuerpo quedan dentro de todas. La firma queda dentro de la zona de responder de Instagram y de la de TikTok: por eso la propuesta de subirla a 340.</p>
+  </div>
+  <div class="card">
+    <h3>Qué se comparte además de la imagen <span class="prov">Provisorio</span></h3>
+    <ul>
+      <li>Hoy se comparte solo el PNG (<code>Lumbre-chispa.png</code>). Instagram y TikTok ignoran el texto.</li>
+      <li>Propuesta: en destinos que aceptan texto (WhatsApp, Mensajes, X, mail) sumar una línea: <i>"Mi chispa de hoy en Lumbre: Podcast × ruinas"</i> + link a la landing con <code>utm_source=share_card</code>.</li>
+      <li>El link espera al dominio definitivo (H3, búsqueda de marca). Hasta entonces, solo la imagen.</li>
+      <li>Sin link en la imagen hasta tener dominio; cuando exista, va en la firma en 28 medium al 65%.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================ WIDGET iOS ============================================================ -->
+<h2 class="sec" id="ios">Widget de iOS (WidgetKit)</h2>
+<p class="lead">Dos widgets: <b>Chispa de hoy</b> (chico, mediano y grande, más los accesorios de la pantalla bloqueada) y <b>Capturar</b> (chico, una sola acción). Siguen el tema del sistema: gris de día, grafito de noche. Medidas en puntos de la tabla de Apple (Human Interface Guidelines, Widgets).</p>
+
+<div class="tels" id="ios-home"></div>
+
+<h3 class="sub">Todos los estados a tamaño real</h3>
+<p class="lead">1 px = 1 pt. Margen interno de 16 pt (el <code>contentMargins</code> por defecto del sistema). Activá "Zonas táctiles" arriba para ver qué abre cada parte.</p>
+<div class="toolbar" style="margin:0 0 16px">
+  <div class="seg" role="group" aria-label="iPhone"><button data-dev="393">iPhone 393 × 852</button><button data-dev="430">iPhone 430 × 932</button></div>
+</div>
+<div class="scrollx"><div class="stage wall" id="ios-matrix" style="display:block"></div></div>
+
+<h3 class="sub">Modos de render</h3>
+<p class="lead">En gris y grafito el widget va a todo color. En tintado y transparente (iOS 18 y Liquid Glass de iOS 26) el sistema saca el fondo y pinta todo de un solo color: ahí no hay rosa, la estrella y el botón pasan al grupo de acento (<code>.widgetAccentable()</code>) y el botón negro se vuelve contorno, porque un relleno se tiñe y se come el texto.</p>
+<div class="scrollx"><div class="row-wrap" id="ios-modes"></div></div>
+
+<h3 class="sub">StandBy</h3>
+<p class="lead">El chico aparece agrandado sobre negro y sin fondo (<code>containerBackground</code> removible). Es el único lugar donde la estrella rosa queda apoyada en negro de verdad. Con poca luz el sistema lo pinta todo en rojo monocromo: no hay que hacer nada.</p>
+<div class="scrollx"><div class="standby-wrap"><div class="standby" id="standby"></div></div></div>
+
+<h3 class="sub">Pantalla bloqueada</h3>
+<p class="lead">Accesorios circular, rectangular e inline, en modo <i>vibrant</i>: monocromo, el sistema elige el tono según el fondo. Sin Fraunces (quedan por debajo de 20 pt) y con los títulos marcados como privados (<code>.privacySensitive()</code>) para que no se lean con el teléfono bloqueado si la persona así lo configuró.</p>
+<div class="row-wrap">
+  <div class="tels" id="ios-lock" style="justify-content:flex-start"></div>
+  <div class="scrollx" style="flex:1 1 360px"><div class="stage wall--dark stage--col" id="acc-matrix"></div></div>
+</div>
+
+<!-- ============================================================ ANDROID ============================================================ -->
+<h2 class="sec" id="android">Widget de Android (Jetpack Glance)</h2>
+<p class="lead">Un widget redimensionable con <code>SizeMode.Responsive</code> y cuatro layouts (2×2, 4×1, 4×2 y 4×3), más un widget Capturar de 2×1. Medidas en dp de la tabla de Android para una grilla de 5 × 4 (fórmula: ancho 73n − 16, alto 118m − 16). Gris y grafito con colores propios; dynamic color apagado. Glance no carga fuentes propias: todo va en la fuente del sistema.</p>
+<div class="tels" id="and-home"></div>
+<h3 class="sub">Todos los estados a tamaño real</h3>
+<p class="lead">1 px = 1 dp. Radio de 24 dp en la maqueta (en el código, <code>system_app_widget_background_radius</code>, que nunca pasa de 28 dp). Áreas táctiles de 48 dp como mínimo.</p>
+<div class="scrollx"><div class="stage wall" id="and-matrix" style="display:block"></div></div>
+
+<!-- ============================================================ COPY ============================================================ -->
+<h2 class="sec" id="copy">Copy es/en</h2>
+<p class="lead">Ids sugeridos para el String Catalog y <code>strings.xml</code>. "Ya existe" marca textos que la app ya usa: se reusan tal cual.</p>
+<div class="tabla-wrap"><table class="tabla" id="copy-table"><thead><tr><th>Id</th><th>es</th><th>en</th><th>Dónde</th></tr></thead><tbody></tbody></table></div>
+
+</main>
+
+<script>
+(function () {
+  var STAR = '<svg class="star" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1 Q12 12 23 12 Q12 12 12 23 Q12 12 1 12 Q12 12 12 1Z"/></svg>';
+  var PLUS = '<svg class="plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+
+  // ---------------- Copy (ids sugeridos). ex: true = ya existe en la app. ----------------
+  var COPY = [
+    ['widget.spark.name', 'Chispa de hoy', "Today's spark", 'Galería de widgets'],
+    ['widget.spark.description', 'Tu chispa del día y un atajo para capturar.', 'Your daily spark and a shortcut to capture.', 'Galería de widgets'],
+    ['widget.capture.name', 'Capturar', 'Capture', 'Galería de widgets', 1],
+    ['widget.capture.description', 'Abrí Capturar directo desde la pantalla de inicio.', 'Open Capture straight from your Home Screen.', 'Galería de widgets'],
+    ['widget.pending.title', 'Tu chispa de hoy está lista', 'Your spark for today is ready', 'Por encender (grande, mediano)', 1],
+    ['widget.pending.extra.title', 'Tu chispa extra está lista', 'Your extra spark is ready', 'Por encender, chispa extra', 1],
+    ['widget.pending.body', 'Dos neuronas tuyas de mundos distintos están por conectarse.', 'Two of your neurons from different worlds are about to connect.', 'Por encender (grande)', 1],
+    ['widget.pending.cta', 'Encender la chispa', 'Light the spark', 'Botón principal (mediano, grande)', 1],
+    ['widget.pending.cta.short', 'Encender', 'Light it', 'Botón del chico y del 2×2'],
+    ['widget.pending.lock', 'Tu chispa está lista', 'Your spark is ready', 'Accesorios rectangular e inline'],
+    ['widget.pending.pair', '{a} y {b}', '{a} and {b}', 'Rectangular y fila 4×1'],
+    ['widget.revealed.label', 'Tu chispa de hoy', "Today's spark", 'Revelada (mediano)', 1],
+    ['widget.meter.available', '1 chispa para encender', '1 spark to light', 'Contador (grande)', 1],
+    ['widget.meter.lit', 'Chispa de hoy encendida', "Today's spark is lit", 'Contador (grande)', 1],
+    ['widget.meter.used', 'Usaste las chispas de hoy', "You've used today's sparks", 'Contador (grande)', 1],
+    ['widget.refill.tomorrow', 'Se recarga mañana a las {time}', 'Refills tomorrow at {time}', 'Contador', 1],
+    ['widget.next.tomorrow', 'La próxima, mañana a las {time}', 'Next one tomorrow at {time}', 'Revelada y sin chispa', 1],
+    ['widget.next.lock', 'Próxima chispa: mañana {time}', 'Next spark: tomorrow {time}', 'Inline'],
+    ['widget.next.lock.title', 'Próxima chispa', 'Next spark', 'Rectangular, sin chispa'],
+    ['widget.next.lock.when', 'Mañana a las {time}', 'Tomorrow at {time}', 'Rectangular, sin chispa'],
+    ['widget.used.title', 'Ya usaste la chispa de hoy', "You've used today's spark", 'Sin chispa', 1],
+    ['widget.used.earn', 'Guardá {n} neuronas para ganar 1 extra', 'Save {n} neurons to earn 1 extra', 'Sin chispa (grande, mediano)', 1],
+    ['widget.noMaterial.title', 'Todavía no hay material para combinar', 'Nothing to connect yet', 'Sin material', 1],
+    ['widget.noMaterial.body', 'Guardá neuronas de temas distintos.', 'Save neurons from different topics.', 'Sin material (mediano)'],
+    ['widget.noMaterial.body.long', 'Guardá algunas neuronas de temas distintos: una frase, un link o una nota de voz. Con eso Lumbre enciende tu primera chispa.', 'Save a few neurons from different topics: a quote, a link or a voice note. That gives Lumbre what it needs to light your first spark.', 'Sin material (grande)', 1],
+    ['widget.capture.cta', 'Capturar', 'Capture', 'Botón de captura', 1],
+    ['widget.capture.cta.long', 'Capturar una idea', 'Capture an idea', 'Botón de captura (grande)', 1],
+    ['widget.capture.cta.neurons', 'Capturar neuronas', 'Capture neurons', 'Sin material, sin chispa', 1],
+    ['widget.capture.hint', 'Una frase, un link o una nota de voz', 'A quote, a link or a voice note', 'Widget Capturar'],
+    ['widget.signedOut.title', 'Abrí Lumbre para empezar', 'Open Lumbre to get started', 'Sin sesión'],
+    ['widget.signedOut.body', 'Guardá lo que te inspira. Cada mañana, dos de tus neuronas se conectan y salta una chispa.', 'Save what inspires you. Every morning, two of your neurons connect and a spark flies.', 'Sin sesión (mediano, grande)', 1],
+    ['widget.guest.title', 'Creá tu cuenta para recibir tu chispa diaria', 'Create your account to get your daily spark', 'Invitado sin chispa (provisorio)'],
+    ['widget.guest.body', 'Mientras tanto, podés capturar neuronas como invitado.', 'Meanwhile, you can capture neurons as a guest.', 'Invitado sin chispa (provisorio)'],
+    ['widget.noData.title', 'Tu chispa nueva te espera', 'Your new spark is waiting', 'Sin datos (después de la recarga)'],
+    ['widget.noData.body', 'Abrí Lumbre para traerla.', 'Open Lumbre to load it.', 'Sin datos'],
+    ['widget.open', 'Abrir', 'Open', 'Sin datos'],
+    ['widget.a11y.pending', 'Chispa por encender: {a}, de {catA}, con {b}, de {catB}. Tocá para encenderla.', 'Spark to light: {a}, from {catA}, with {b}, from {catB}. Tap to light it.', 'VoiceOver y TalkBack'],
+    ['widget.a11y.revealed', 'Chispa: {title}. {body} Combina {a}, de {catA}, con {b}, de {catB}.', 'Spark: {title}. {body} Combines {a}, from {catA}, with {b}, from {catB}.', 'VoiceOver y TalkBack', 1],
+    ['widget.a11y.capture', 'Capturar una idea', 'Capture an idea', 'Botón de captura', 1],
+    ['control.capture.title', 'Capturar idea', 'Capture idea', 'Control de iOS 18 (propuesta)'],
+    ['share.tagline', 'Donde se encienden las ideas', 'Where ideas catch fire', 'Firma de la tarjeta', 1],
+    ['share.text', 'Mi chispa de hoy en Lumbre: {title}', "Today's spark from Lumbre: {title}", 'Texto que acompaña la imagen (provisorio)'],
+    ['share.button', 'Compartir imagen', 'Share image', 'Hoja de la tarjeta', 1],
+    ['share.sheet.title', 'Tarjeta para compartir', 'Share card', 'Hoja de la tarjeta', 1],
+    ['share.format.story', 'Para historias', 'For stories', 'Selector de formato (propuesta)'],
+    ['share.format.feed', 'Para publicaciones', 'For posts', 'Selector de formato (propuesta)']
+  ];
+  var T = { es: {}, en: {} };
+  COPY.forEach(function (c) { T.es[c[0]] = c[1]; T.en[c[0]] = c[2]; });
+
+  var SPARK = {
+    es: { ca: 'Medios', a: 'Formato podcast', cb: 'Historia', b: 'Ruinas romanas', title: 'Podcast × ruinas',
+      body: 'Un episodio por capa de excavación: cada uno cuenta una época de la misma ciudad con lo que quedó enterrado.', time: '8:00' },
+    en: { ca: 'Media', a: 'Podcast format', cb: 'History', b: 'Roman ruins', title: 'Podcast × ruins',
+      body: 'One episode per excavation layer: each one tells an era of the same city through what was left buried.', time: '8:00 AM' }
+  };
+
+  var DEV = {
+    393: { s: [158, 158], m: [338, 158], l: [338, 354], circ: 72, rect: [160, 72], inline: [234, 26], tel: [393, 852] },
+    430: { s: [170, 170], m: [364, 170], l: [364, 382], circ: 76, rect: [172, 76], inline: [257, 26], tel: [430, 932] }
+  };
+  var AND = { s: [130, 220], row: [276, 102], m: [276, 220], l: [276, 337], cap: [130, 102] };
+
+  var STATES = [
+    ['pending', 'Por encender', 'No la revela: las dos neuronas y el llamado a encender'],
+    ['revealed', 'Revelada', 'Título y la primera línea'],
+    ['used', 'Sin chispa', 'Ya usada, descartada o sin par: cuándo se recarga'],
+    ['nomaterial', 'Sin material', 'Invita a capturar'],
+    ['signedout', 'Sin sesión', 'Antes del onboarding o después de cerrar sesión'],
+    ['guest', 'Invitado sin chispa', 'Respaldo: según prototipo/invitado.md el invitado recibe la chispa y ve los estados normales'],
+    ['loading', 'Cargando', 'Placeholder del sistema (redacted)'],
+    ['nodata', 'Sin datos', 'Pasó la recarga y la app todavía no trajo la nueva']
+  ];
+
+  var st = { lang: 'es', dev: 393 };
+  function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function write(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+  function t(id, vars) {
+    var s = T[st.lang][id] || id;
+    vars = vars || {};
+    return s.replace(/\{(\w+)\}/g, function (_, k) { return vars[k] != null ? vars[k] : '{' + k + '}'; });
+  }
+  function sp() { return SPARK[st.lang]; }
+
+  // ---------------- Piezas ----------------
+  function syn(off, w, center) { return '<span class="syn' + (off ? ' is-off' : '') + (center ? ' center' : '') + '" style="width:' + w + 'px">' + arte('sinapsis-completa') + '</span>'; }
+  function term(w) { return '<span class="syn" style="width:' + w + 'px">' + arte('sinapsis') + '</span>'; }
+  function mn(opts) { return window.mini(opts); }
+  function cta(text, cls, tap) { return '<span class="cta ' + (cls || '') + '"' + (tap ? ' data-tap="' + tap + '"' : '') + '><i></i>' + STAR + esc(text) + '</span>'; }
+  function capPill(text, cls, tap) { return '<span class="cta ' + (cls || 'cta--line') + '" data-tap="' + (tap || LINK.capture) + '">' + PLUS + esc(text) + '</span>'; }
+  function capBtn(cls) { return '<span class="capbtn ' + (cls || '') + '" data-tap="' + LINK.capture + '" role="button" aria-label="' + esc(t('widget.a11y.capture')) + '">' + PLUS + '</span>'; }
+  function meter(kind) {
+    // En el widget el contador no lleva núcleo rosa: la chispa de la pieza es el botón o la estrella.
+    var m = kind === 'avail' ? mn({ size: 26 }) : mn({ dim: true, size: 26 });
+    var s = kind === 'avail' ? t('widget.meter.available') : kind === 'lit' ? t('widget.meter.lit') : t('widget.meter.used');
+    var d = kind === 'lit' ? t('widget.next.tomorrow', { time: sp().time }) : t('widget.refill.tomorrow', { time: sp().time });
+    var dots = kind === 'used' ? '<span class="dots" aria-hidden="true">' + mn({ size: 14 }) + mn({ dim: true, size: 14 }) + mn({ dim: true, size: 14 }) + '</span>' : '';
+    return '<div class="wmeter">' + m + '<div><b>' + esc(s) + '</b><span>' + esc(d) + '</span></div>' + dots + '</div>';
+  }
+  function pair(catCls, titleCls, lines) {
+    var s = sp();
+    return '<div class="ph"><div><span class="' + catCls + ' muted l1">' + esc(s.ca) + '</span><b class="' + titleCls + ' ' + lines + '">' + esc(s.a) + '</b></div>' +
+      '<div class="r"><span class="' + catCls + ' muted l1">' + esc(s.cb) + '</span><b class="' + titleCls + ' ' + lines + '">' + esc(s.b) + '</b></div></div>';
+  }
+  function sk(w, h, extra) { return '<span class="sk" style="width:' + w + ';height:' + h + 'px;' + (extra || '') + '"></span>'; }
+
+  var LINK = {
+    spark: 'lumbre://spark/{id}?entry=widget', today: 'lumbre://today?entry=widget', capture: 'lumbre://capture?entry=widget',
+    account: 'lumbre://account?entry=widget'
+  };
+
+  // ---------------- iOS: chico, mediano y grande ----------------
+  function small(state) {
+    var s = sp(), h = '', tap = LINK.spark;
+    switch (state) {
+      case 'pending':
+        h = '<b class="t14 l1">' + esc(s.a) + '</b><span class="grow"></span>' + syn(true, 110, true) + '<span class="grow"></span>' +
+          '<b class="t14 l1 r">' + esc(s.b) + '</b><div style="margin-top:8px">' + cta(t('widget.pending.cta.short'), 'cta--s') + '</div>';
+        break;
+      case 'revealed':
+        h = term(52) + '<p class="fr fr20 l3" style="margin:8px 0 4px">' + esc(s.title) + '</p><p class="t12 muted l2" style="margin:0">' + esc(s.body) + '</p>';
+        break;
+      case 'used':
+        tap = LINK.today;
+        h = syn(true, 96) + '<span class="grow"></span><b class="t15 l2">' + esc(t('widget.used.title')) + '</b><span class="t12 muted l2" style="margin-top:4px">' + esc(t('widget.next.tomorrow', { time: s.time })) + '</span>';
+        break;
+      case 'nomaterial':
+        tap = LINK.capture;
+        h = mn({ dim: true, size: 28 }) + '<span class="grow"></span><b class="t14 l3">' + esc(t('widget.noMaterial.title')) + '</b><div style="margin-top:8px">' + capPill(t('widget.capture.cta'), 'cta--s cta--line', '') + '</div>';
+        break;
+      case 'signedout':
+        tap = LINK.today;
+        h = '<span class="art" style="width:64px">' + arte('marca') + '</span><span class="grow"></span><b class="t15 l3">' + esc(t('widget.signedOut.title')) + '</b>';
+        break;
+      case 'guest':
+        tap = LINK.account;
+        h = mn({ dim: true, size: 28 }) + '<span class="grow"></span><b class="t14 l4">' + esc(t('widget.guest.title')) + '</b>';
+        break;
+      case 'loading':
+        tap = LINK.today;
+        h = sk('70%', 14) + '<span class="grow"></span>' + sk('100%', 36, 'border-radius:18px') + '<span class="grow"></span>' + sk('60%', 14, 'margin-left:auto') + sk('76px', 30, 'border-radius:15px;margin-top:8px');
+        break;
+      case 'nodata':
+        tap = LINK.today;
+        h = syn(true, 96) + '<span class="grow"></span><b class="t15 l2">' + esc(t('widget.noData.title')) + '</b><span class="t12 muted l2" style="margin-top:4px">' + esc(t('widget.noData.body')) + '</span>';
+        break;
+    }
+    // El chico tiene una sola zona táctil (widgetURL): todo el widget.
+    h = h.replace(/ data-tap="[^"]*"/g, '');
+    return { html: h, tap: tap };
+  }
+
+  function medium(state) {
+    var s = sp(), h = '', tap = LINK.spark;
+    switch (state) {
+      case 'pending':
+        h = pair('t11', 't14', 'l1') + '<span class="grow"></span>' + syn(true, 150, true) + '<span class="grow"></span>' +
+          '<div class="hrow">' + cta(t('widget.pending.cta'), '', LINK.spark) + '<span class="push">' + capBtn() + '</span></div>';
+        break;
+      case 'revealed':
+        h = '<div class="hrow">' + term(44) + '<span class="t12 muted" style="font-weight:600">' + esc(t('widget.revealed.label')) + '</span><span class="push">' + capBtn('') + '</span></div>' +
+          '<p class="fr fr22 l2" style="margin:6px 0 2px">' + esc(s.title) + '</p><p class="t13 muted l2" style="margin:0">' + esc(s.body) + '</p>';
+        break;
+      case 'used':
+        tap = LINK.today;
+        h = '<div class="hrow" style="gap:12px;align-items:flex-start">' + syn(true, 84) + '<div><b class="t15 l2">' + esc(t('widget.used.title')) + '</b><span class="t13 muted l2" style="margin-top:2px">' + esc(t('widget.next.tomorrow', { time: s.time })) + '</span></div></div>' +
+          '<span class="grow"></span><div class="hrow"><span class="t12 muted l2">' + esc(t('widget.used.earn', { n: 3 })) + '</span><span class="push">' + capPill(t('widget.capture.cta'), 'cta--s cta--line') + '</span></div>';
+        break;
+      case 'nomaterial':
+        tap = LINK.capture;
+        h = '<div class="hrow" style="gap:12px;align-items:flex-start">' + mn({ dim: true, size: 32 }) + '<div><b class="t15 l2">' + esc(t('widget.noMaterial.title')) + '</b><span class="t13 muted l2" style="margin-top:2px">' + esc(t('widget.noMaterial.body')) + '</span></div></div>' +
+          '<span class="grow"></span><div>' + capPill(t('widget.capture.cta.neurons'), 'cta--s') + '</div>';
+        break;
+      case 'signedout':
+        tap = LINK.today;
+        h = '<div class="hrow"><span class="art" style="width:56px">' + arte('marca') + '</span></div><span class="grow"></span><b class="t15 l1">' + esc(t('widget.signedOut.title')) + '</b><span class="t13 muted l2" style="margin-top:2px">' + esc(t('widget.signedOut.body')) + '</span>';
+        break;
+      case 'guest':
+        tap = LINK.account;
+        h = '<div class="hrow" style="gap:12px;align-items:flex-start">' + mn({ dim: true, size: 32 }) + '<div><b class="t15 l2">' + esc(t('widget.guest.title')) + '</b><span class="t13 muted l2" style="margin-top:2px">' + esc(t('widget.guest.body')) + '</span></div></div>' +
+          '<span class="grow"></span><div>' + capPill(t('widget.capture.cta')) + '</div>';
+        break;
+      case 'loading':
+        tap = LINK.today;
+        h = '<div class="ph">' + sk('40%', 14) + sk('40%', 14) + '</div><span class="grow"></span>' + sk('150px', 50, 'margin:0 auto;border-radius:25px') + '<span class="grow"></span><div class="hrow">' + sk('150px', 36, 'border-radius:18px') + '<span class="push">' + sk('36px', 36, 'border-radius:50%') + '</span></div>';
+        break;
+      case 'nodata':
+        tap = LINK.today;
+        h = '<div class="hrow" style="gap:12px;align-items:flex-start">' + syn(true, 84) + '<div><b class="t15 l2">' + esc(t('widget.noData.title')) + '</b><span class="t13 muted l2" style="margin-top:2px">' + esc(t('widget.noData.body')) + '</span></div></div>' +
+          '<span class="grow"></span><div class="hrow">' + cta(t('widget.open'), 'cta--s cta--line', LINK.today) + '<span class="push">' + capBtn() + '</span></div>';
+        break;
+    }
+    return { html: h, tap: tap };
+  }
+
+  function large(state) {
+    // La red de fondo solo acompaña a la chispa (por encender y revelada); en los vacíos ya hay ilustración.
+    var s = sp(), h = '', tap = LINK.spark, net = state === 'pending' || state === 'revealed';
+    switch (state) {
+      case 'pending':
+        h = meter('avail') + '<p class="fr fr22 l2" style="margin:12px 0 2px">' + esc(t('widget.pending.title')) + '</p><p class="t13 muted l2" style="margin:0 0 10px">' + esc(t('widget.pending.body')) + '</p>' +
+          pair('t12', 't15', 'l2') + '<span class="grow"></span>' + syn(true, 190, true) + '<span class="grow"></span>' +
+          '<div class="hrow">' + cta(t('widget.pending.cta'), 'cta--full', LINK.spark) + capBtn('capbtn--40') + '</div>';
+        break;
+      case 'revealed':
+        h = meter('lit') + '<div style="margin-top:12px">' + pair('t12', 't14', 'l1') + '</div><div style="margin-top:6px">' + syn(false, 160, true) + '</div>' +
+          '<p class="fr fr28 l2" style="margin:4px 0 4px">' + esc(s.title) + '</p><p class="t15r muted l3" style="margin:0">' + esc(s.body) + '</p><span class="grow"></span>' +
+          '<div style="margin-top:10px">' + capPill(t('widget.capture.cta.long'), 'cta--full cta--line') + '</div>';
+        break;
+      case 'used':
+        tap = LINK.today;
+        h = meter('used') + '<span class="grow"></span><span class="art center" style="width:170px">' + arte('estado-sin-chispa') + '</span><span class="grow"></span>' +
+          '<b class="t17 l2">' + esc(t('widget.used.title')) + '</b><span class="t13 muted l2" style="margin-top:2px">' + esc(t('widget.used.earn', { n: 3 })) + '</span>' +
+          '<div style="margin-top:12px">' + capPill(t('widget.capture.cta.neurons'), 'cta--full cta--line') + '</div>';
+        break;
+      case 'nomaterial':
+        tap = LINK.capture;
+        h = '<span class="grow"></span><span class="art center" style="width:170px">' + arte('estado-red-vacia') + '</span><span class="grow"></span>' +
+          '<b class="t17 l2">' + esc(t('widget.noMaterial.title')) + '</b><span class="t13 muted l3" style="margin-top:2px">' + esc(t('widget.noMaterial.body.long')) + '</span>' +
+          '<div style="margin-top:12px">' + capPill(t('widget.capture.cta.neurons'), 'cta--full') + '</div>';
+        break;
+      case 'signedout':
+        tap = LINK.today;
+        h = '<span class="grow"></span><div class="hrow" style="gap:10px"><span class="art" style="width:72px">' + arte('marca') + '</span><span class="wordm">Lumbre<i></i></span></div><span class="grow"></span>' +
+          '<b class="t17 l2">' + esc(t('widget.signedOut.title')) + '</b><span class="t13 muted l3" style="margin-top:2px">' + esc(t('widget.signedOut.body')) + '</span>';
+        break;
+      case 'guest':
+        tap = LINK.account;
+        h = '<span class="grow"></span><span class="art center" style="width:170px">' + arte('estado-red-vacia') + '</span><span class="grow"></span>' +
+          '<p class="fr fr22 l3" style="margin:0 0 2px">' + esc(t('widget.guest.title')) + '</p><span class="t13 muted l2">' + esc(t('widget.guest.body')) + '</span>' +
+          '<div style="margin-top:12px">' + capPill(t('widget.capture.cta.long'), 'cta--full cta--line') + '</div>';
+        break;
+      case 'loading':
+        tap = LINK.today; net = false;
+        h = '<div class="hrow">' + sk('26px', 26, 'border-radius:50%') + '<div style="flex:1">' + sk('60%', 13) + sk('40%', 10, 'margin-top:6px') + '</div></div>' +
+          '<div style="margin-top:20px" class="ph">' + sk('40%', 14) + sk('40%', 14) + '</div><span class="grow"></span>' + sk('170px', 56, 'margin:0 auto;border-radius:28px') +
+          '<span class="grow"></span>' + sk('80%', 24) + sk('100%', 12, 'margin-top:10px') + sk('70%', 12, 'margin-top:6px') + sk('100%', 40, 'margin-top:16px;border-radius:20px');
+        break;
+      case 'nodata':
+        tap = LINK.today;
+        h = '<span class="grow"></span>' + syn(true, 190, true) + '<span class="grow"></span><p class="fr fr22 l2" style="margin:0 0 2px">' + esc(t('widget.noData.title')) + '</p>' +
+          '<span class="t13 muted l2">' + esc(t('widget.noData.body')) + '</span><div class="hrow" style="margin-top:12px">' + cta(t('widget.open'), 'cta--full cta--line', LINK.today) + capBtn('capbtn--40') + '</div>';
+        break;
+    }
+    return { html: (net ? '<div class="wi-net" aria-hidden="true">' + arte('red-encabezado') + '</div>' : '') + h, tap: tap };
+  }
+
+  function capWidget() {
+    return { html: '<span class="capw__btn">' + PLUS + '</span><span class="grow"></span><b class="t17">' + esc(t('widget.capture.cta')) + '</b><span class="t12 muted l2" style="margin-top:2px">' + esc(t('widget.capture.hint')) + '</span>', tap: LINK.capture };
+  }
+
+  function a11y(state) {
+    var s = sp();
+    if (state === 'pending') return t('widget.a11y.pending', { a: s.a, catA: s.ca, b: s.b, catB: s.cb });
+    if (state === 'revealed') return t('widget.a11y.revealed', { title: s.title, body: s.body, a: s.a, catA: s.ca, b: s.b, catB: s.cb });
+    return '';
+  }
+
+  // fam: s|m|l|cap ; platform: ios|android ; size [w,h]
+  function widget(fam, state, size, platform, bucket) {
+    var r = fam === 'cap' ? capWidget() : fam === 's' ? small(state) : fam === 'm' ? medium(state) : large(state);
+    if (platform === 'android' && fam === 'cap') {
+      // Capturar 2×1: una fila, sin la ayuda (no entra en 102 dp de alto con la letra grande).
+      r.html = '<span class="grow"></span><div class="hrow" style="gap:12px"><span class="capw__btn">' + PLUS + '</span><b class="t17">' + esc(t('widget.capture.cta')) + '</b></div><span class="grow"></span>';
+    }
+    if (platform === 'android' && fam === 's') {
+      // El 2×2 es más angosto y más alto que el chico de iOS: nombres en dos líneas y más cuerpo.
+      r.html = r.html.replace(/t14 l1/g, 't14 l2').replace('fr20 l3', 'fr20 l4').replace('t12 muted l2', 't13 muted l5');
+    }
+    if (platform === 'android' && fam === 'm' && state === 'revealed') r.html = r.html.replace('t13 muted l2', 't13 muted l5');
+    var cls = 'wi wi--' + (fam === 'cap' ? 's' : fam) + (platform === 'android' ? ' wa' + (bucket === 's' || fam === 'cap' ? ' wa--s' : '') : '');
+    var label = a11y(state);
+    return '<div class="' + cls + '" style="width:' + size[0] + 'px;height:' + size[1] + 'px"' + (r.tap ? ' data-tap="' + r.tap + '"' : '') +
+      (label ? ' role="group" aria-label="' + esc(label) + '"' : '') + '>' + r.html + '</div>';
+  }
+
+  // Android 4×1: una fila.
+  function rowWidget(state) {
+    var s = sp(), lead = '', b = '', d = '', tap = LINK.spark, end = capBtn();
+    switch (state) {
+      case 'pending': lead = mn({ lit: true, size: 32 }); b = t('widget.pending.lock'); d = t('widget.pending.pair', { a: s.a, b: s.b }); break;
+      case 'revealed': lead = term(40); b = s.title; d = s.body; break;
+      case 'used': tap = LINK.today; lead = mn({ dim: true, size: 32 }); b = t('widget.used.title'); d = t('widget.next.tomorrow', { time: s.time }); break;
+      case 'nomaterial': tap = LINK.capture; lead = mn({ dim: true, size: 32 }); b = t('widget.noMaterial.title'); d = t('widget.noMaterial.body'); break;
+      case 'signedout': tap = LINK.today; lead = '<span class="art" style="width:44px">' + arte('marca') + '</span>'; b = t('widget.signedOut.title'); d = t('widget.spark.description'); end = ''; break;
+      case 'guest': tap = LINK.account; lead = mn({ dim: true, size: 32 }); b = t('widget.guest.title'); d = t('widget.guest.body'); break;
+      case 'loading': tap = LINK.today; return '<div class="wi wa" style="width:' + AND.row[0] + 'px;height:' + AND.row[1] + 'px;justify-content:center" data-tap="' + tap + '"><div class="hrow" style="gap:12px">' + sk('32px', 32, 'border-radius:50%') + '<div style="flex:1">' + sk('80%', 14) + sk('60%', 11, 'margin-top:6px') + '</div>' + sk('40px', 40, 'border-radius:50%') + '</div></div>';
+      case 'nodata': tap = LINK.today; lead = syn(true, 48); b = t('widget.noData.title'); d = t('widget.noData.body'); break;
+    }
+    return '<div class="wi wa" style="width:' + AND.row[0] + 'px;height:' + AND.row[1] + 'px;justify-content:center" data-tap="' + tap + '"><div class="hrow" style="gap:12px">' + lead +
+      '<div style="flex:1;min-width:0"><b class="t15 ' + (state === 'pending' || state === 'revealed' ? 'l1' : 'l2') + '">' + esc(b) + '</b><span class="t13 muted ' + (state === 'pending' || state === 'revealed' ? 'l2' : 'l1') + '">' + esc(d) + '</span></div>' + end + '</div></div>';
+  }
+
+  // ---------------- Accesorios de pantalla bloqueada ----------------
+  function accCirc(state, d) {
+    var inner = '', tap = LINK.spark, lbl = '';
+    if (state === 'pending') { inner = mn({ size: 30 }); lbl = t('widget.pending.lock'); }
+    else if (state === 'revealed') { inner = STAR; lbl = sp().title; }
+    else if (state === 'used') { inner = '<div><span style="display:block;width:22px;margin:0 auto 2px" class="mini-wrap">' + mn({ size: 22 }) + '</span><b>' + esc(sp().time.replace(' AM', '')) + '</b></div>'; tap = LINK.today; lbl = t('widget.next.lock', { time: sp().time }); }
+    else { inner = PLUS.replace('class="plus"', 'class="plus" style="width:34%;height:34%"'); tap = LINK.capture; lbl = t('widget.a11y.capture'); }
+    return '<div class="acc acc--circ" style="width:' + d + 'px;height:' + d + 'px" data-tap="' + tap + '" role="img" aria-label="' + esc(lbl) + '">' + inner + '</div>';
+  }
+  function accRect(state, size) {
+    var s = sp(), b = '', d = '', tap = LINK.spark;
+    if (state === 'pending') { b = STAR + esc(t('widget.pending.lock')); d = esc(t('widget.pending.pair', { a: s.a, b: s.b })); }
+    else if (state === 'revealed') { b = esc(s.title); d = esc(s.body); }
+    else if (state === 'used') { b = esc(t('widget.next.lock.title')); d = esc(t('widget.next.lock.when', { time: s.time })); tap = LINK.today; }
+    else { b = PLUS.replace('class="plus"', 'class="plus" style="width:13px;height:13px;display:inline-block;vertical-align:-2px;margin-right:4px"') + esc(t('widget.capture.cta.long')); d = esc(t('widget.capture.hint')); tap = LINK.capture; }
+    return '<div class="acc acc--rect" style="width:' + size[0] + 'px;height:' + size[1] + 'px" data-tap="' + tap + '"><b class="l1">' + b + '</b><span class="l2">' + d + '</span></div>';
+  }
+  function accInline(state, size) {
+    var s = sp(), x = '';
+    if (state === 'pending') x = t('widget.pending.lock');
+    else if (state === 'revealed') x = s.title;
+    else if (state === 'used') x = t('widget.next.lock', { time: s.time });
+    else x = t('widget.capture.cta.long');
+    return '<div class="acc acc--inline" style="width:' + size[0] + 'px;height:' + size[1] + 'px" data-tap="' + (state === 'capture' ? LINK.capture : state === 'used' ? LINK.today : LINK.spark) + '">' + (state === 'capture' ? PLUS.replace('class="plus"', 'class="plus" style="width:13px;height:13px;flex:none"') : STAR) + '<span>' + esc(x) + '</span></div>';
+  }
+
+  // Etiqueta corta de cada zona táctil (el link completo queda en data-tap).
+  var SHORT = {}; SHORT[LINK.spark] = 'spark/{id}'; SHORT[LINK.today] = 'today'; SHORT[LINK.capture] = 'capture'; SHORT[LINK.account] = 'account';
+  function tagTaps(html) { return html.replace(/data-tap="([^"]*)"/g, function (m, u) { return m + ' data-tapl="' + (SHORT[u] || u) + '"'; }); }
+
+  // ---------------- Teléfonos ----------------
+  function status(android) {
+    return '<div class="tel__island"></div><div class="tel__status" style="color:var(--on-accent)"><span>9:41</span><i><span style="width:18px"></span><span style="width:16px"></span><span style="width:26px"></span></i></div>';
+  }
+  function icons(n, w, extra) {
+    var h = '';
+    for (var i = 0; i < n; i++) h += '<div class="appi" style="width:' + w + 'px"><i></i><u></u></div>';
+    return h;
+  }
+  function lumbreIcon() { return '<div class="appi"><i class="lumbre-ic">' + arte('icono-app') + '</i><u></u></div>'; }
+
+  function iosHome(devKey) {
+    var d = DEV[devKey], tw = d.tel[0], th = d.tel[1], side = (tw - d.m[0]) / 2, gap = d.m[0] - 2 * d.s[0];
+    var colW = (d.m[0] + gap / 2) / 4;
+    var top, body;
+    if (devKey === '393') {
+      body = '<div style="position:absolute;left:' + side + 'px;top:' + 72 + 'px;display:flex;flex-direction:column;gap:' + gap + 'px">' +
+        widget('m', 'pending', d.m, 'ios') +
+        '<div style="display:flex;gap:' + gap + 'px">' + widget('s', 'revealed', d.s, 'ios') + widget('cap', '', d.s, 'ios') + '</div></div>' +
+        '<div class="home__grid" style="top:' + (72 + d.m[1] + gap + d.s[1] + 30) + 'px;left:' + side + 'px;right:' + side + 'px;row-gap:22px;justify-content:space-between">' + icons(8, 72) + '</div>';
+      top = 'Pantalla de inicio · 393 × 852 pt';
+    } else {
+      body = '<div style="position:absolute;left:' + side + 'px;top:' + 72 + 'px;display:flex;flex-direction:column;gap:' + gap + 'px">' +
+        widget('l', 'revealed', d.l, 'ios') +
+        '<div style="display:flex;gap:' + gap + 'px">' + widget('s', 'pending', d.s, 'ios') + '<div class="home__grid" style="position:static;width:' + d.s[0] + 'px;row-gap:26px;justify-content:space-between;padding-top:6px">' + icons(4, 76) + '</div></div></div>';
+      top = 'Pantalla de inicio · 430 × 932 pt';
+    }
+    return '<div class="tel-wrap"><div class="tel" style="--tel-w:' + tw + 'px;--tel-h:' + th + 'px"><div class="home wall--dark">' + body +
+      '<div class="dock">' + lumbreIcon() + icons(3, 62) + '</div></div>' + status() + '<div class="tel__home" style="background:var(--bone)"></div></div>' +
+      '<p class="tel-cap"><b>' + top + '</b>' + (devKey === '393' ? 'Mediano por encender, chico revelado y el widget Capturar' : 'Grande revelado y chico por encender') + '</p></div>';
+  }
+
+  function iosLock() {
+    var d = DEV[393];
+    return '<div class="tel-wrap"><div class="tel" style="--tel-w:393px;--tel-h:852px"><div class="home wall--dark">' +
+      '<div class="lock-date"><span>' + (st.lang === 'es' ? 'lun 13' : 'Mon 13') + '</span>' + accInline('pending', [d.inline[0] - 80, 26]) + '</div>' +
+      '<div class="lock-clock">9:41</div>' +
+      '<div class="lock-acc">' + accRect('pending', d.rect) + accCirc('pending', d.circ) + accCirc('capture', d.circ) + '</div>' +
+      '<div class="lock-foot"><i></i><i></i></div></div>' + status() + '<div class="tel__home" style="background:var(--bone)"></div></div>' +
+      '<p class="tel-cap"><b>Pantalla bloqueada · 393 × 852 pt</b>Inline junto a la fecha, rectangular y dos circulares (chispa y Capturar)</p></div>';
+  }
+
+  function andHome() {
+    var cell = 73, left = (412 - 5 * cell) / 2 + 8;
+    function pos(c, r) { return 'position:absolute;left:' + (left + c * cell) + 'px;top:' + (64 + r * 118) + 'px'; }
+    var b = '<div style="' + pos(0, 0) + '">' + widget('m', 'pending', AND.m, 'android', 'm') + '</div>' +
+      '<div style="' + pos(4, 0) + ';width:57px">' + icons(1, 57) + '</div>' +
+      '<div style="' + pos(4, 1) + ';width:57px">' + icons(1, 57) + '</div>' +
+      '<div style="' + pos(0, 2) + '">' + widget('s', 'revealed', AND.s, 'android', 's') + '</div>' +
+      '<div style="' + pos(2, 2) + '">' + widget('cap', '', AND.cap, 'android') + '</div>' +
+      '<div style="' + pos(2, 3) + ';display:flex;gap:16px">' + icons(3, 57) + '</div>';
+    return '<div class="tel-wrap"><div class="tel tel--android"><div class="home wall--dark">' + b +
+      '<div class="dock">' + lumbreIcon() + icons(3, 56) + '</div></div>' + status(true) + '<div class="tel__home" style="background:var(--bone)"></div></div>' +
+      '<p class="tel-cap"><b>Pantalla de inicio · 412 × 892 dp</b>4×2 por encender, 2×2 revelado y Capturar 2×1 (grilla de 5 columnas)</p></div>';
+  }
+
+  // ---------------- Render ----------------
+  function renderCards() {
+    var g = document.querySelector('[data-guias][aria-pressed="true"]');
+    var guias = g ? g.dataset.guias : '';
+    var V = [['corto', 'Título corto', 'Podcast × ruinas'], ['largo', 'Título largo', 'Prueba el límite de 4 líneas: achica hasta ×0,6'],
+      ['cuerpo', 'Cuerpo largo', 'Prueba el límite de 7 líneas: achica hasta ×0,7'], ['nombres', 'Neuronas largas', 'Títulos de neurona hasta 3 líneas'],
+      ['en', 'En inglés', 'Podcast × ruins']];
+    function frame(q, cap, sub, feed) {
+      var url = 'tarjeta.html?' + q + (guias ? '&guias=' + guias : '');
+      return '<figure class="fig"><div class="cardfr' + (feed ? ' is-feed' : '') + '"><iframe src="' + url + '&limpio=1" title="' + esc(cap) + '" loading="lazy" tabindex="-1"></iframe></div>' +
+        '<figcaption><b>' + esc(cap) + '</b>' + esc(sub) + '<br><a class="linkbtn" href="' + url + '" target="_blank" rel="noopener">Ver al 100% <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17 17 7M9 7h8v8"/></svg></a></figcaption></figure>';
+    }
+    document.getElementById('cards').innerHTML = V.map(function (v) { return frame('v=' + v[0], v[1], v[2]); }).join('');
+    document.getElementById('cards-prop').innerHTML = frame('v=corto', 'Actual', 'ShareCard.swift tal cual') + frame('v=corto&propuesta=1', 'Con las mejoras', 'Abajo 340, categoría en 1 línea, frase en 2 líneas');
+    document.getElementById('cards-feed').innerHTML = frame('v=corto&formato=feed', 'Feed 1080 × 1350', 'Corto', true) + frame('v=largo&formato=feed', 'Feed, título largo', 'Mismo ajuste de líneas', true);
+  }
+
+  function renderIOS() {
+    var d = DEV[st.dev];
+    document.getElementById('ios-home').innerHTML = iosHome('393') + iosHome('430');
+    var m = document.getElementById('ios-matrix');
+    var h = '<div class="matrix" style="grid-template-columns:150px ' + d.s[0] + 'px ' + d.m[0] + 'px ' + d.l[0] + 'px">' +
+      '<span></span><span class="colh">Chico ' + d.s.join(' × ') + '</span><span class="colh">Mediano ' + d.m.join(' × ') + '</span><span class="colh">Grande ' + d.l.join(' × ') + '</span>';
+    STATES.forEach(function (s) {
+      h += '<div class="rowlbl">' + s[1] + '<span>' + s[2] + '</span></div>' + widget('s', s[0], d.s, 'ios') + widget('m', s[0], d.m, 'ios') + widget('l', s[0], d.l, 'ios');
+    });
+    h += '<div class="rowlbl">Widget Capturar<span>Solo chico, una acción</span></div>' + widget('cap', '', d.s, 'ios') + '<span></span><span></span></div>';
+    m.innerHTML = h;
+
+    var modes = [['', 'light', 'Gris (todo color)', 'wall'], ['', 'dark', 'Grafito (todo color)', 'wall'], ['m-tinted', 'dark', 'Tintado', 'wall--dark'], ['m-clear', 'dark', 'Transparente (iOS 26)', 'wall--dark']];
+    document.getElementById('ios-modes').innerHTML = modes.map(function (md) {
+      return '<div class="stage ' + md[3] + ' stage--col ' + md[0] + '" data-theme="' + md[1] + '"><span class="lbl">' + md[2] + '</span>' +
+        widget('m', 'pending', DEV[393].m, 'ios') + '<div style="display:flex;gap:22px">' + widget('s', 'revealed', DEV[393].s, 'ios') + widget('cap', '', DEV[393].s, 'ios') + '</div></div>';
+    }).join('');
+
+    document.getElementById('standby').innerHTML = '<div class="slot m-standby" data-theme="dark">' + widget('s', 'revealed', [158, 158], 'ios') + '</div>' +
+      '<div class="slot m-standby" data-theme="dark">' + widget('cap', '', [158, 158], 'ios') + '</div>';
+
+    document.getElementById('ios-lock').innerHTML = iosLock();
+    var a = document.getElementById('acc-matrix');
+    var ah = '<span class="lbl">Accesorios · ' + st.dev + ' pt</span>';
+    [['pending', 'Por encender'], ['revealed', 'Revelada'], ['used', 'Sin chispa'], ['capture', 'Capturar']].forEach(function (s) {
+      ah += '<div><p class="t13" style="color:var(--bone);margin:0 0 8px;font-weight:600">' + s[1] + '</p><div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center">' +
+        accCirc(s[0], d.circ) + accRect(s[0], d.rect) + accInline(s[0], d.inline) + '</div></div>';
+    });
+    a.innerHTML = ah;
+  }
+
+  function renderAndroid() {
+    document.getElementById('and-home').innerHTML = andHome();
+    var h = '<div class="matrix" style="grid-template-columns:150px ' + AND.s[0] + 'px ' + AND.row[0] + 'px ' + AND.m[0] + 'px ' + AND.l[0] + 'px">' +
+      '<span></span><span class="colh">2×2 · ' + AND.s.join(' × ') + '</span><span class="colh">4×1 · ' + AND.row.join(' × ') + '</span><span class="colh">4×2 · ' + AND.m.join(' × ') + '</span><span class="colh">4×3 · ' + AND.l.join(' × ') + '</span>';
+    STATES.forEach(function (s) {
+      h += '<div class="rowlbl">' + s[1] + '<span>' + s[2] + '</span></div>' + widget('s', s[0], AND.s, 'android', 's') + rowWidget(s[0]) +
+        widget('m', s[0], AND.m, 'android', 'm') + widget('l', s[0], AND.l, 'android', 'l');
+    });
+    h += '<div class="rowlbl">Widget Capturar<span>2×1, una acción</span></div>' + widget('cap', '', AND.cap, 'android') + '<span></span><span></span><span></span></div>';
+    document.getElementById('and-matrix').innerHTML = h;
+  }
+
+  function renderCopy() {
+    document.querySelector('#copy-table tbody').innerHTML = COPY.map(function (c) {
+      return '<tr><td class="id"><code>' + c[0] + '</code></td><td class="es">' + esc(c[1]) + '</td><td class="en">' + esc(c[2]) + '</td><td><small>' + esc(c[3]) + (c[4] ? ' · ya existe' : '') + '</small></td></tr>';
+    }).join('');
+  }
+
+  function renderAll() {
+    renderIOS(); renderAndroid();
+    ['ios-home', 'ios-matrix', 'ios-modes', 'standby', 'ios-lock', 'acc-matrix', 'and-home', 'and-matrix'].forEach(function (id) {
+      var el = document.getElementById(id); el.innerHTML = tagTaps(el.innerHTML);
+    });
+    window.pintarMinis && window.pintarMinis();
+  }
+
+  function seg(attr, val) {
+    document.querySelectorAll('[' + attr + ']').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute(attr) === String(val))); });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    st.lang = read('lumbre.compartir.lang') || 'es';
+    st.dev = read('lumbre.compartir.dev') || '393';
+    var taps = read('lumbre.compartir.taps') || 'off';
+    seg('data-lang', st.lang); seg('data-dev', st.dev); seg('data-taps', taps); seg('data-guias', '');
+    document.body.classList.toggle('show-taps', taps === 'on');
+
+    document.querySelectorAll('[data-lang]').forEach(function (b) { b.onclick = function () { st.lang = b.dataset.lang; write('lumbre.compartir.lang', st.lang); seg('data-lang', st.lang); renderAll(); }; });
+    document.querySelectorAll('[data-dev]').forEach(function (b) { b.onclick = function () { st.dev = b.dataset.dev; write('lumbre.compartir.dev', st.dev); seg('data-dev', st.dev); renderAll(); }; });
+    document.querySelectorAll('[data-taps]').forEach(function (b) { b.onclick = function () { write('lumbre.compartir.taps', b.dataset.taps); seg('data-taps', b.dataset.taps); document.body.classList.toggle('show-taps', b.dataset.taps === 'on'); }; });
+    document.querySelectorAll('[data-guias]').forEach(function (b) { b.onclick = function () { seg('data-guias', b.dataset.guias); renderCards(); }; });
+
+    renderCards(); renderAll(); renderCopy();
+  });
+})();
+</script>
+</body></html>

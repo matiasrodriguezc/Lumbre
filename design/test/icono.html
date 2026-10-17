@@ -1,0 +1,104 @@
+<!doctype html>
+<!-- Paso 15 (MAT-210): el ícono solo, sin wordmark ni nombre, para el test con personas. Ver guion.md, sección 2.
+     A propósito no dice "Lumbre" en ningún lado visible: la persona no tiene que saber qué app es. -->
+<html lang="es" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Test</title>
+<link rel="stylesheet" href="../system/tokens.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#1B1B1D;color:#EDEDE8;font:400 15px/1.4 -apple-system,"SF Pro Text","Roboto Flex",Roboto,system-ui,sans-serif;display:flex;flex-direction:column}
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:24px 16px 96px}
+.view{display:none}
+.view.on{display:flex}
+/* Pantalla de inicio: grilla de 4 columnas como un iPhone, sin nombres debajo */
+.home{width:390px;max-width:100%;aspect-ratio:390/844;border-radius:48px;padding:72px 26px 30px;flex-direction:column;justify-content:space-between;
+  background:radial-gradient(120% 80% at 30% 10%,#4A4A4E,#2A2A2C 55%,#18181A);box-shadow:0 0 0 10px #0E0E10,0 0 0 11px #46464A}
+.grid{display:grid;grid-template-columns:repeat(4,60px);justify-content:space-between;row-gap:30px}
+.dock{display:grid;grid-template-columns:repeat(4,60px);justify-content:space-between;background:rgba(255,255,255,.12);border-radius:30px;padding:14px 16px;margin:0 -10px}
+.ic{width:60px;height:60px;border-radius:13.4px;overflow:hidden;display:grid;place-items:center}
+.ic img{width:100%;height:100%;display:block}
+.ic svg{width:30px;height:30px}
+/* Íconos de relleno, genéricos y sin marcas */
+.g1{background:#D5D5D0;color:#3A3A3E}.g2{background:#5A5A5E;color:#EDEDE8}.g3{background:#EDEDE8;color:#0E0E10}.g4{background:#76767A;color:#F2F2EF}.g5{background:#3B3B3E;color:#C8C8CB}.g6{background:#C6C6C0;color:#2A2A2C}
+.solo{flex-direction:column;align-items:center;gap:24px}
+.solo .ic{width:240px;height:240px;border-radius:53.7px}
+.chico{gap:40px;align-items:flex-end;flex-wrap:wrap;justify-content:center}
+.chico figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:10px}
+.chico figcaption,.var figcaption{font-size:13px;color:#A3A3A6}
+.row29{display:flex;align-items:center;gap:12px;background:#2A2A2C;border-radius:12px;padding:10px 14px;width:280px}
+.row29 .ic{width:29px;height:29px;border-radius:6.5px}
+.row29 span{display:block;height:10px;border-radius:5px;background:#46464A;flex:1}
+.var{gap:32px;flex-wrap:wrap;justify-content:center}
+.var figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:10px}
+.var .ic{width:120px;height:120px;border-radius:26.8px}
+.var .round{border-radius:50%}
+.var .bg-dark{background:#000}
+.bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:12px;background:#0E0E10;border-top:1px solid #2A2A2C}
+.bar button{font:600 13px/18px inherit;font-family:inherit;border:0;border-radius:999px;padding:8px 14px;background:#2A2A2C;color:#EDEDE8;cursor:pointer;min-height:36px}
+.bar button[aria-pressed="true"]{background:#EDEDE8;color:#0E0E10}
+.bar .hint{width:100%;text-align:center;font-size:12px;color:#8C8C90}
+@media (max-width:420px){.home{border-radius:36px;padding:56px 18px 22px}.grid,.dock{grid-template-columns:repeat(4,54px)}.ic{width:54px;height:54px}}
+</style></head>
+<body>
+<main>
+  <section class="view home on" id="v-home" aria-label="Pantalla de inicio">
+    <div class="grid" id="grid"></div>
+    <div class="dock" id="dock"></div>
+  </section>
+  <section class="view solo" id="v-solo" aria-label="El ícono grande">
+    <div class="ic"><img src="../system/logo/exportes/ios/AppIcon-light.png" alt="Ícono a evaluar"></div>
+  </section>
+  <section class="view chico" id="v-chico" aria-label="El ícono chico">
+    <figure><div class="row29"><div class="ic"><img src="../system/logo/exportes/ios/AppIcon-light.png" alt="Ícono a 29 pt"></div><span></span></div><figcaption>29 pt (Ajustes, Spotlight)</figcaption></figure>
+    <figure><div class="ic" style="width:40px;height:40px;border-radius:9px"><img src="../system/logo/exportes/ios/AppIcon-light.png" alt="Ícono a 40 pt"></div><figcaption>40 pt (notificaciones)</figcaption></figure>
+    <figure><div class="ic"><img src="../system/logo/exportes/ios/AppIcon-light.png" alt="Ícono a 60 pt"></div><figcaption>60 pt (inicio)</figcaption></figure>
+  </section>
+  <section class="view var" id="v-var" aria-label="Variantes">
+    <figure><div class="ic"><img src="../system/logo/exportes/ios/AppIcon-light.png" alt="Ícono claro"></div><figcaption>iOS claro</figcaption></figure>
+    <figure><div class="ic bg-dark"><img src="../system/logo/exportes/ios/AppIcon-dark.png" alt="Ícono oscuro"></div><figcaption>iOS oscuro</figcaption></figure>
+    <figure><div class="ic bg-dark"><img src="../system/logo/exportes/ios/AppIcon-tinted.png" alt="Ícono tintado"></div><figcaption>iOS tintado</figcaption></figure>
+    <figure><div class="ic round"><img src="../system/logo/exportes/android/playstore-512.png" alt="Ícono de Android"></div><figcaption>Android (máscara redonda)</figcaption></figure>
+  </section>
+</main>
+<nav class="bar" aria-label="Vistas (para quien modera)">
+  <button data-v="home" aria-pressed="true">1 · Pantalla de inicio</button>
+  <button data-v="solo" aria-pressed="false">2 · Solo</button>
+  <button data-v="chico" aria-pressed="false">3 · Chico</button>
+  <button data-v="var" aria-pressed="false">4 · Variantes</button>
+  <button data-v="none" aria-pressed="false">Ocultar</button>
+  <span class="hint">Teclas 1 a 4 para cambiar de vista, 0 para ocultar. En la vista 1 contá 5 segundos y ocultá.</span>
+</nav>
+<script>
+(function () {
+  // Íconos genéricos de relleno: formas simples, sin marcas reales.
+  var glyphs = [
+    '<circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="2"/>',
+    '<rect x="5" y="5" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>',
+    '<path d="M12 4 20 19H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+    '<path d="M4 12h16M12 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+    '<path d="M5 17 10 9l4 5 2-3 3 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+    '<circle cx="9" cy="12" r="4" fill="currentColor"/><circle cx="16" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>',
+    '<path d="M6 6h12v9H9l-3 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+    '<path d="M8 4v16M16 4v16M4 9h16M4 15h16" stroke="currentColor" stroke-width="1.8"/>'
+  ];
+  function filler(i) {
+    return '<div class="ic g' + (i % 6 + 1) + '" aria-hidden="true"><svg viewBox="0 0 24 24">' + glyphs[(i * 5) % glyphs.length] + '</svg></div>';
+  }
+  var target = '<div class="ic"><img src="../system/logo/exportes/ios/AppIcon-light.png" alt="Ícono a evaluar"></div>';
+  var grid = '';
+  for (var i = 0; i < 16; i++) grid += i === 9 ? target : filler(i);
+  document.getElementById('grid').innerHTML = grid;
+  document.getElementById('dock').innerHTML = filler(20) + filler(21) + filler(22) + filler(23);
+
+  function show(v) {
+    document.querySelectorAll('.view').forEach(function (el) { el.classList.toggle('on', el.id === 'v-' + v); });
+    document.querySelectorAll('.bar button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.v === v)); });
+  }
+  document.querySelectorAll('.bar button').forEach(function (b) { b.addEventListener('click', function () { show(b.dataset.v); }); });
+  document.addEventListener('keydown', function (e) {
+    var map = { '1': 'home', '2': 'solo', '3': 'chico', '4': 'var', '0': 'none' };
+    if (map[e.key]) show(map[e.key]);
+  });
+})();
+</script>
+</body></html>

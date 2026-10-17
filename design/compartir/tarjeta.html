@@ -1,0 +1,292 @@
+<!doctype html>
+<!-- Tarjeta para compartir a tamaño real (1080 × 1920 px), igual a ios/Lumbre/Features/Spark/ShareCard.swift.
+     Parámetros: ?v=corto|largo|cuerpo|nombres|en  ·  ?guias=medidas|ig|tiktok|wa|todas  ·  ?formato=feed (propuesta 1080 × 1350)
+     Mejoras propuestas aplicadas: ?propuesta=1  ·  Achicar para revisar: ?zoom=0.5
+     Chispa propia: ?titulo=…&cuerpo=…&a=…&ca=…&b=…&cb=…&lang=es|en  ·  ?limpio=1 oculta el panel (para sacar el PNG).
+     Para el PNG: abrila al 100% y capturá el nodo #card (por ejemplo, con las DevTools: "Capture node screenshot"). -->
+<html lang="es" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=1080">
+<title>Lumbre · Tarjeta para compartir</title>
+<link rel="stylesheet" href="../system/tokens.css"><link rel="stylesheet" href="../system/components/bundle.css">
+<script src="../shared/arte.js"></script>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--surface-alt)}
+  body{font-family:var(--font-text);-webkit-font-smoothing:antialiased}
+  svg{display:block}
+
+  /* ---------- La tarjeta (valores fijos de marca: siempre tema gris) ---------- */
+  .card{--muted:color-mix(in srgb,var(--neuron) 65%,var(--gray));--body:color-mix(in srgb,var(--neuron) 85%,var(--gray));
+    width:1080px;height:1920px;position:relative;overflow:hidden;background:var(--gray);color:var(--neuron);
+    display:flex;flex-direction:column;padding:250px 96px 200px}
+  .card .n-dormant{fill:var(--surface-alt)}.card .n-link{fill:var(--border)}.card .n-active{fill:var(--neuron)}.card .n-spark{fill:var(--spark)}
+  .net{position:absolute;left:0;right:0;top:0;height:1000px;pointer-events:none;
+    -webkit-mask-image:linear-gradient(#000 0,#000 50%,transparent 100%);mask-image:linear-gradient(#000 0,#000 50%,transparent 100%)}
+  .net svg{width:100%;height:100%}
+  .card > :not(.net):not(.guides){position:relative;flex-shrink:0}
+  .card > .sp-top{flex:1 1 0;min-height:0;flex-shrink:1}
+  .card > .sp-bottom{flex:1 1 0;min-height:96px;flex-shrink:1}
+  .pair{display:flex;gap:48px;margin-bottom:40px}
+  .pair > div{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:12px}
+  .pair .r{text-align:right;align-items:flex-end}
+  .cat{font:500 34px/1.19 var(--font-text);color:var(--muted)}
+  .ct{font:600 48px/1.19 var(--font-text);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+  .syn{width:880px;margin:0 auto 96px}
+  .syn .ch-syn-full{width:100%;height:auto;margin:0}
+  .title{font:600 104px/calc(1.2em + 6px) var(--font-display);font-variation-settings:"SOFT" 100,"WONK" 1;letter-spacing:-.01em;margin:0 0 48px;overflow:hidden;overflow-wrap:break-word}
+  .body{font:400 46px/calc(1.19em + 12px) var(--font-text);color:var(--body);margin:0;overflow:hidden}
+  .sign{display:flex;align-items:center;gap:24px}
+  .sign .mark{width:150px;flex:none}
+  .word{display:flex;align-items:baseline;gap:6px;font:600 72px/1 var(--font-display);font-variation-settings:"SOFT" 100;flex:none}
+  .word i{width:18px;height:18px;border-radius:50%;background:var(--spark);flex:none}
+  .tagline{margin-left:auto;font:500 32px/1.19 var(--font-text);color:var(--muted);text-align:right}
+
+  /* Propuesta feed 1080 × 1350: sin interfaz encima, márgenes parejos de 96. */
+  .card.is-feed{height:1350px;padding:120px 96px 112px}
+  .card.is-feed .net{height:700px}
+  .card.is-feed .syn{width:760px;margin-bottom:64px}
+  .card.is-feed .pair{margin-bottom:28px}
+  .card.is-feed .title{font-size:88px;margin-bottom:36px}
+  .card.is-feed .body{font-size:40px}
+  .card.is-feed .sp-bottom{min-height:72px}
+
+  /* Propuestas (?propuesta=1): firma fuera de la barra de respuesta, categoría en una línea, tagline equilibrada. */
+  .card.is-prop:not(.is-feed){padding-bottom:340px}
+  .card.is-prop .cat{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .card.is-prop .tagline{max-width:300px;text-wrap:balance}
+
+  /* ---------- Guías (no salen en el PNG si están apagadas) ---------- */
+  .guides{position:absolute;inset:0;pointer-events:none;z-index:5;font:600 26px/1.2 var(--font-text)}
+  .g-band{position:absolute;left:0;right:0;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--neuron) 16%,transparent) 0 14px,transparent 14px 28px);
+    border:0 dashed var(--neuron)}
+  .g-band.top{top:0;border-bottom-width:3px}.g-band.bottom{bottom:0;border-top-width:3px}
+  .g-band.right{top:0;bottom:0;left:auto;border-left-width:3px}
+  .g-band.left{top:0;bottom:0;right:auto;border-right-width:3px}
+  .g-line{position:absolute;left:0;right:0;border-top:3px dashed var(--neuron)}
+  .g-lbl{position:absolute;background:var(--neuron);color:var(--on-accent);padding:6px 14px;border-radius:999px;white-space:nowrap}
+  .g-box{position:absolute;border:3px dashed var(--neuron)}
+
+  /* ---------- Panel (fuera del PNG) ---------- */
+  .panel{position:fixed;top:24px;right:24px;z-index:20;background:var(--surface);color:var(--ink);border-radius:var(--radius-md);
+    box-shadow:0 8px 32px rgba(14,14,16,.2);padding:16px;width:300px;font:400 15px/1.4 var(--font-text)}
+  .panel h1{font:600 17px/22px var(--font-text);margin:0 0 4px}
+  .panel p{margin:0 0 12px;color:var(--ink-muted);font-size:13px}
+  .panel label{display:block;font:600 13px/18px var(--font-text);margin:10px 0 4px}
+  .panel select{width:100%;font:400 15px/20px var(--font-text);padding:8px;border-radius:var(--radius-sm);border:1.5px solid var(--border-strong);background:var(--bg);color:var(--ink)}
+  .panel button{margin-top:12px;font:600 14px/18px var(--font-text);border:0;border-radius:999px;padding:8px 14px;background:var(--accent);color:var(--on-accent);cursor:pointer}
+  .panel output{display:block;margin-top:10px;font:500 13px/18px var(--font-text);color:var(--ink-muted)}
+  body.limpio .panel{display:none}
+</style>
+</head>
+<body>
+<div class="card" id="card" role="img">
+  <div class="net" data-art="red-vertical"></div>
+  <div class="sp-top"></div>
+  <div class="pair">
+    <div><span class="cat" id="ca"></span><b class="ct" id="a"></b></div>
+    <div class="r"><span class="cat" id="cb"></span><b class="ct" id="b"></b></div>
+  </div>
+  <div class="syn" data-art="sinapsis-completa"></div>
+  <h1 class="title" id="title"></h1>
+  <p class="body" id="body"></p>
+  <div class="sp-bottom"></div>
+  <div class="sign">
+    <span class="mark" data-art="marca"></span>
+    <span class="word">Lumbre<i></i></span>
+    <span class="tagline" id="tagline"></span>
+  </div>
+  <div class="guides" id="guides" aria-hidden="true"></div>
+</div>
+
+<aside class="panel" aria-label="Opciones de la tarjeta">
+  <h1>Tarjeta para compartir</h1>
+  <p>1080 × 1920 px, igual a ShareCard.swift. Para el PNG, capturá el nodo <code>#card</code>.</p>
+  <label for="sel-v">Chispa</label>
+  <select id="sel-v">
+    <option value="corto">Título corto · Podcast × ruinas</option>
+    <option value="largo">Título largo (límite de 4 líneas)</option>
+    <option value="cuerpo">Cuerpo largo (límite de 7 líneas)</option>
+    <option value="nombres">Neuronas con nombres largos</option>
+    <option value="en">En inglés · Podcast × ruins</option>
+  </select>
+  <label for="sel-g">Guías</label>
+  <select id="sel-g">
+    <option value="">Sin guías</option>
+    <option value="medidas">Medidas de la tarjeta</option>
+    <option value="ig">Instagram Historias</option>
+    <option value="tiktok">TikTok</option>
+    <option value="wa">WhatsApp Estados</option>
+    <option value="todas">Todas las apps</option>
+  </select>
+  <label for="sel-f">Formato</label>
+  <select id="sel-f">
+    <option value="">Historia 1080 × 1920</option>
+    <option value="feed">Feed 1080 × 1350 (propuesta)</option>
+  </select>
+  <label for="sel-p">Versión</label>
+  <select id="sel-p">
+    <option value="">Actual (ShareCard.swift)</option>
+    <option value="1">Con las mejoras propuestas</option>
+  </select>
+  <button type="button" id="hide">Ocultar panel</button>
+  <output id="fit"></output>
+</aside>
+
+<script>
+(function () {
+  var SPARKS = {
+    corto: { lang: 'es', ca: 'Medios', a: 'Formato podcast', cb: 'Historia', b: 'Ruinas romanas',
+      titulo: 'Podcast × ruinas',
+      cuerpo: 'Un episodio por capa de excavación: cada uno cuenta una época de la misma ciudad con lo que quedó enterrado.' },
+    largo: { lang: 'es', ca: 'Urbanismo', a: 'Onda verde de semáforos', cb: 'Software', b: 'Code review',
+      titulo: 'Onda verde de semáforos × revisión de código entre pares a distancia, sin reuniones',
+      cuerpo: 'Si un PR se aprueba rápido, los siguientes del mismo autor entran en una “onda verde” con revisión prioritaria. Premia los PR chicos sin reglas nuevas.' },
+    cuerpo: { lang: 'es', ca: 'Cocina', a: 'Fermentación lenta', cb: 'Economía', b: 'Interés compuesto',
+      titulo: 'Fermentación × interés compuesto',
+      cuerpo: 'Un newsletter que no se promociona: cada edición recupera y mejora una idea vieja en vez de buscar una nueva. Las ideas que fermentan más tiempo vuelven con intereses: cada mes elegís tres notas del archivo, les sumás lo que aprendiste desde entonces y las volvés a publicar con las dos fechas. Al año, el archivo vale más que cualquier lanzamiento y cada suscriptor nuevo encuentra una biblioteca viva.' },
+    nombres: { lang: 'es', ca: 'Tecnología y software', a: 'Sistemas de recomendación por filtrado colaborativo entre desconocidos',
+      cb: 'Arquitectura y urbanismo', b: 'Patios andaluces que enfrían la casa sin aire acondicionado',
+      titulo: 'Recomendaciones × patios',
+      cuerpo: 'Un recomendador que, como un patio, baja la temperatura: menos sugerencias en las horas de más ruido y más cuando la persona vuelve a la calma.' },
+    en: { lang: 'en', ca: 'Media', a: 'Podcast format', cb: 'History', b: 'Roman ruins',
+      titulo: 'Podcast × ruins',
+      cuerpo: 'One episode per excavation layer: each one tells an era of the same city through what was left buried.' }
+  };
+  var TAGLINE = { es: 'Donde se encienden las ideas', en: 'Where ideas catch fire' };
+
+  var q = new URLSearchParams(location.search);
+  var inFrame = window.self !== window.top;
+  if (q.get('limpio') === '1' || inFrame) document.body.classList.add('limpio');
+
+  var v = SPARKS[q.get('v')] ? q.get('v') : 'corto';
+  var s = Object.assign({}, SPARKS[v]);
+  ['titulo', 'cuerpo', 'a', 'ca', 'b', 'cb', 'lang'].forEach(function (k) { if (q.get(k)) s[k] = q.get(k); });
+  var feed = q.get('formato') === 'feed';
+  var guias = q.get('guias') || '';
+  var prop = q.get('propuesta') === '1';
+
+  var card = document.getElementById('card');
+  if (feed) card.classList.add('is-feed');
+  if (prop) card.classList.add('is-prop');
+  var zoom = parseFloat(q.get('zoom')) > 0 ? q.get('zoom') : '';
+  document.documentElement.lang = s.lang;
+  function set(id, t) { document.getElementById(id).textContent = t; }
+  set('a', s.a); set('ca', s.ca); set('b', s.b); set('cb', s.cb);
+  set('title', s.titulo); set('body', s.cuerpo); set('tagline', TAGLINE[s.lang] || TAGLINE.es);
+  // Lo que lee el lector de pantalla: la chispa como una unidad (accessibilitySummary de SparkSupport.swift).
+  card.setAttribute('aria-label', s.lang === 'en'
+    ? 'Spark: ' + s.titulo + '. ' + s.cuerpo + ' Combines ' + s.a + ', from ' + s.ca + ', with ' + s.b + ', from ' + s.cb + '. Lumbre.'
+    : 'Chispa: ' + s.titulo + '. ' + s.cuerpo + ' Combina ' + s.a + ', de ' + s.ca + ', con ' + s.b + ', de ' + s.cb + '. Lumbre.');
+
+  // ---- Ajuste como en SwiftUI: lineLimit + minimumScaleFactor ----
+  function lines(el) {
+    var lh = parseFloat(getComputedStyle(el).lineHeight);
+    return Math.round(el.scrollHeight / lh);
+  }
+  function fit(el, base, limit, minScale) {
+    var size = base;
+    el.style.fontSize = size + 'px';
+    el.style.maxHeight = 'none';
+    while (lines(el) > limit && size > base * minScale) {
+      size = Math.max(base * minScale, size - 1);
+      el.style.fontSize = size + 'px';
+    }
+    var n = lines(el);
+    if (n > limit) { // como SwiftUI: si ni a la escala mínima entra, corta con "…"
+      el.style.display = '-webkit-box'; el.style.webkitBoxOrient = 'vertical'; el.style.webkitLineClamp = String(limit);
+    }
+    return { size: Math.round(size * 10) / 10, scale: Math.round(size / base * 100) / 100, lines: Math.min(n, limit), cut: n > limit };
+  }
+
+  function guides() {
+    var g = document.getElementById('guides'), H = feed ? 1350 : 1920, h = [];
+    function band(side, px, label, pos) {
+      var st = side === 'top' || side === 'bottom' ? 'height:' + px + 'px' : 'width:' + px + 'px';
+      h.push('<div class="g-band ' + side + '" style="' + st + '"></div>');
+      if (label) h.push('<span class="g-lbl" style="' + pos + '">' + label + '</span>');
+    }
+    if (guias === 'medidas') {
+      var pt = feed ? 120 : 250, pb = feed ? 112 : (prop ? 340 : 200);
+      band('top', pt, 'Arriba ' + pt, 'top:' + (pt / 2 - 20) + 'px;left:120px');
+      band('bottom', pb, 'Abajo ' + pb, 'bottom:' + (pb / 2 - 20) + 'px;left:120px');
+      band('left', 96, '', ''); band('right', 96, '', '');
+      h.push('<span class="g-lbl" style="top:' + (pt + 20) + 'px;left:110px">96 a cada lado · ancho útil 888</span>');
+      var se = document.querySelector('.syn'), sx = se.offsetLeft, sy = se.offsetTop, sw = se.offsetWidth, sh = se.offsetHeight;
+      h.push('<div class="g-box" style="left:' + sx + 'px;top:' + sy + 'px;width:' + sw + 'px;height:' + sh + 'px"></div>');
+      h.push('<span class="g-lbl" style="left:' + (sx + 20) + 'px;top:' + (sy + 12) + 'px">Sinapsis ' + sw + ' × ' + sh + '</span>');
+      h.push('<span class="g-lbl" style="top:' + (H - 1000 + (feed ? 300 : 0)) + 'px;right:120px;display:' + (feed ? 'none' : 'block') + '">La red se desvanece hasta y = 1000</span>');
+      h.push('<div class="g-line" style="top:1000px;display:' + (feed ? 'none' : 'block') + '"></div>');
+    }
+    if (!feed && (guias === 'ig' || guias === 'todas')) {
+      band('top', 250, guias === 'todas' ? '' : 'Instagram: nombre, progreso y cerrar · 250', 'top:100px;left:120px');
+      band('bottom', 250, guias === 'todas' ? '' : 'Instagram: responder y enviar · 250', 'bottom:100px;left:120px');
+      h.push('<div class="g-line" style="top:' + (1920 - 340) + 'px"></div><span class="g-lbl" style="top:' + (1920 - 400) + 'px;right:120px">Conservador: 340 abajo</span>');
+    }
+    if (!feed && (guias === 'tiktok' || guias === 'todas')) {
+      if (guias === 'todas') {
+        h.push('<div class="g-line" style="top:160px"></div><div class="g-line" style="top:' + (1920 - 480) + 'px"></div>');
+        h.push('<div class="g-box" style="top:160px;bottom:480px;right:0;width:120px;border-right:0"></div>');
+        h.push('<span class="g-lbl" style="top:' + (1920 - 470) + 'px;left:120px">TikTok: 160 arriba, 480 abajo, 120 a la derecha</span>');
+      } else {
+        band('top', 160, 'TikTok: pestañas · 160', 'top:60px;left:120px');
+        band('bottom', 480, 'TikTok: texto, sonido y barra · 480', 'bottom:200px;left:120px');
+        h.push('<div class="g-band right" style="width:120px;top:160px;bottom:480px"></div>');
+        h.push('<span class="g-lbl" style="top:900px;right:140px">Botones · 120</span>');
+      }
+    }
+    if (!feed && (guias === 'wa' || guias === 'todas')) {
+      if (guias === 'todas') {
+        h.push('<div class="g-line" style="top:200px"></div><span class="g-lbl" style="top:180px;right:120px">WhatsApp: 200 arriba y abajo</span>');
+        h.push('<div class="g-line" style="top:' + (1920 - 200) + 'px"></div>');
+      } else {
+        band('top', 200, 'WhatsApp: progreso y contacto · 200', 'top:80px;left:120px');
+        band('bottom', 200, 'WhatsApp: responder · 200', 'bottom:80px;left:120px');
+      }
+    }
+    g.innerHTML = h.join('');
+  }
+
+  // Además del límite de líneas, SwiftUI achica si el bloque no entra en el alto disponible.
+  function overflow() {
+    var last = document.querySelector('.sign');
+    return last.offsetTop + last.offsetHeight > card.clientHeight - parseFloat(getComputedStyle(card).paddingBottom) + 0.5 ||
+      document.querySelector('.sp-bottom').offsetHeight < 96 - 0.5;
+  }
+  function shrinkToFit(el, base, minScale) {
+    var size = parseFloat(el.style.fontSize);
+    while (overflow() && size > base * minScale) { size = Math.max(base * minScale, size - 1); el.style.fontSize = size + 'px'; }
+    return { size: Math.round(size * 10) / 10, scale: Math.round(size / base * 100) / 100, lines: lines(el) };
+  }
+
+  function run() {
+    card.style.zoom = ''; // se mide a tamaño real
+    var tb = feed ? 88 : 104, bb = feed ? 40 : 46;
+    var t = fit(document.getElementById('title'), tb, 4, 0.6);
+    var b = fit(document.getElementById('body'), bb, feed ? 5 : 7, 0.7);
+    if (overflow()) { var b2 = shrinkToFit(document.getElementById('body'), bb, 0.7); b.size = b2.size; b.scale = b2.scale; b.lines = b2.lines; }
+    if (overflow()) { var t2 = shrinkToFit(document.getElementById('title'), tb, 0.6); t.size = t2.size; t.scale = t2.scale; t.lines = t2.lines; }
+    document.getElementById('fit').textContent = 'Título ' + t.size + ' px (×' + t.scale + ', ' + t.lines + ' líneas' + (t.cut ? ', cortado' : '') + ') · cuerpo ' + b.size + ' px (×' + b.scale + ', ' + b.lines + ' líneas' + (b.cut ? ', cortado' : '') + ')' + (overflow() ? ' · no entra' : '');
+    card.dataset.fit = JSON.stringify({ title: t, body: b, overflow: overflow() });
+    guides();
+    card.style.zoom = zoom;
+  }
+
+  // Panel
+  function go(k, val) { if (val) q.set(k, val); else q.delete(k); location.search = q.toString(); }
+  var sv = document.getElementById('sel-v'), sg = document.getElementById('sel-g'), sf = document.getElementById('sel-f');
+  var sp = document.getElementById('sel-p');
+  sv.value = v; sg.value = guias; sf.value = feed ? 'feed' : ''; sp.value = prop ? '1' : '';
+  sp.onchange = function () { go('propuesta', sp.value); };
+  sv.onchange = function () { go('v', sv.value); };
+  sg.onchange = function () { go('guias', sg.value); };
+  sf.onchange = function () { go('formato', sf.value); };
+  document.getElementById('hide').onclick = function () { document.body.classList.add('limpio'); };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    window.pintarArte();
+    var svg = document.querySelector('.net svg');
+    if (svg) svg.setAttribute('preserveAspectRatio', 'xMidYMid slice'); // .fill de NeuralNetworkBackground
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(run);
+  });
+})();
+</script>
+</body></html>
