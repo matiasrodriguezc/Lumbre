@@ -3,7 +3,7 @@ import SwiftData
 
 /// Caché offline (plan.md §7): envuelve cualquier `LumbreAPI`, guarda la última respuesta de las lecturas
 /// principales y, si un pedido falla por falta de red, devuelve lo último que tiene. Las escrituras pasan directo.
-/// También deja la chispa de hoy en el App Group para el widget.
+/// También deja en el App Group la chispa de hoy (widget) y los nombres de las categorías (Share Extension, atajos).
 public struct CachedLumbreAPI: LumbreAPI {
     public enum Storage: Sendable {
         /// En `LumbreShared.cacheStoreURL` (App Group si existe).
@@ -18,10 +18,13 @@ public struct CachedLumbreAPI: LumbreAPI {
     private let cache: ResponseCache?
     private let writesWidgetSnapshot: Bool
 
-    public init(wrapping base: any LumbreAPI, storage: Storage = .shared) {
+    /// - Parameter sharesWithExtensions: escribe en el App Group lo que leen el widget y la Share Extension.
+    ///   Por defecto, sí salvo con `.inMemory` (tests y previews).
+    public init(wrapping base: any LumbreAPI, storage: Storage = .shared, sharesWithExtensions: Bool? = nil) {
         self.base = base
         cache = ResponseCache.open(storage)
-        writesWidgetSnapshot = if case .inMemory = storage { false } else { true }
+        let isPersistent = if case .inMemory = storage { false } else { true }
+        writesWidgetSnapshot = sharesWithExtensions ?? isPersistent
     }
 
     // MARK: Lecturas con caché
@@ -33,11 +36,7 @@ public struct CachedLumbreAPI: LumbreAPI {
     public func today() async throws -> TodayState {
         let state = try await cached("today", TodayDTO.self, encode: TodayDTO.init, decode: \.model) { try await base.today() }
         if writesWidgetSnapshot {
-            if let spark = state.spark {
-                LumbreShared.writeTodaySnapshot(.init(spark: spark))
-            } else {
-                LumbreShared.clearTodaySnapshot()
-            }
+            LumbreShared.writeToday(state)
         }
         return state
     }
@@ -51,7 +50,11 @@ public struct CachedLumbreAPI: LumbreAPI {
     }
 
     public func categories() async throws -> [Category] {
-        try await cached("categories", [CategoryDTO].self, encode: { $0.map(CategoryDTO.init) }, decode: { $0.map(\.model) }) { try await base.categories() }
+        let categories = try await cached("categories", [CategoryDTO].self, encode: { $0.map(CategoryDTO.init) }, decode: { $0.map(\.model) }) { try await base.categories() }
+        if writesWidgetSnapshot {
+            LumbreShared.categoryNames = categories.map(\.name)
+        }
+        return categories
     }
 
     public func projects() async throws -> [Project] {
@@ -115,7 +118,7 @@ public struct CachedLumbreAPI: LumbreAPI {
 
     private func clear() async {
         await cache?.clear()
-        if writesWidgetSnapshot { LumbreShared.clearTodaySnapshot() }
+        if writesWidgetSnapshot { LumbreShared.clearUserData() }
     }
 
     // MARK: Directo

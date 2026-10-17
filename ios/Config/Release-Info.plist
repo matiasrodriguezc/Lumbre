@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyLists/PROPERTY_LIST_1.0.dtd">
-<!-- Release: se suma al Info.plist generado. El esquema lumbre:// (vuelta del link del email, lumbre://auth-callback). -->
+<!-- Release: se suma al Info.plist generado. Links lumbre:// (vuelta del link del email, widget y atajos). En Debug van en Debug-Info.plist. -->
 <plist version="1.0">
 <dict>
 	<key>CFBundleURLTypes</key>

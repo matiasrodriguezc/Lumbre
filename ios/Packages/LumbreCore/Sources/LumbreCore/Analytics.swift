@@ -279,6 +279,12 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     case disneyPlanner = "planner_disney"
     /// Crear la cuenta o entrar con un código por email (en vez del aviso de "las cuentas llegan pronto").
     case emailAccount = "account_email"
+    /// Share Extension: compartir texto, links, imágenes y PDFs desde otras apps.
+    case shareExtension = "share_extension"
+    /// Widgets de la chispa de hoy y de captura rápida (y el control de captura).
+    case widgets = "widgets"
+    /// App Intents y atajos de Siri: guardar una idea y ver la chispa de hoy.
+    case appIntents = "app_intents"
 
     public var defaultValue: Bool { true }
 
@@ -286,19 +292,25 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
         if let override = UserDefaults.standard.object(forKey: "flag.\(rawValue)") as? Bool {
             return override
         }
-        return FeatureFlags.remote(self) ?? defaultValue
+        return FeatureFlags.remote(self) ?? FeatureFlags.shared(self) ?? defaultValue
     }
 }
 
 public enum FeatureFlags {
     private static let lock = OSAllocatedUnfairLock<[String: Bool]>(initialState: [:])
 
-    /// Valores que llegan de PostHog (paso 44).
+    /// Valores que llegan de PostHog (paso 44). Quedan también en el App Group para las extensiones.
     public static func update(_ values: [String: Bool]) {
         lock.withLock { $0 = values }
+        LumbreShared.flags = values
     }
 
     static func remote(_ flag: FeatureFlag) -> Bool? {
         lock.withLock { $0[flag.rawValue] }
+    }
+
+    /// Lo último que la app recibió de PostHog, leído desde el App Group (widget, Share Extension).
+    static func shared(_ flag: FeatureFlag) -> Bool? {
+        LumbreShared.flags[flag.rawValue]
     }
 }

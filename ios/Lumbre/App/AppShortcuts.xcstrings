@@ -1,0 +1,86 @@
+{
+  "sourceLanguage" : "es",
+  "strings" : {
+    "Abrir Capturar en ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Capture in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Anotar una idea en ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note an idea in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Capturar en ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capture in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Guardar una idea en ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save an idea in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Guardá una idea en ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save a thought in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Mostrame la chispa de ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show me my ${applicationName} spark"
+          }
+        }
+      }
+    },
+    "Qué chispa salió hoy en ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What's today's spark in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Ver la chispa de hoy en ${applicationName}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See today's spark in ${applicationName}"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

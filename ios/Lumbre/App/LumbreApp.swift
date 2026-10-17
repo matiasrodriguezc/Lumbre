@@ -14,6 +14,7 @@ struct LumbreApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .extensionsBridge()
                 .environment(\.api, appDelegate.api)
                 .environment(\.purchases, appDelegate.purchases)
                 .environment(appDelegate.appModel)

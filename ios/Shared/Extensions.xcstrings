@@ -1,0 +1,376 @@
+{
+  "sourceLanguage" : "es",
+  "strings" : {
+    "Abre Capturar para sumar una neurona a tu Red." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens Capture to add a neuron to your Network."
+          }
+        }
+      }
+    },
+    "Abre Lumbre en la chispa del día." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens Lumbre on today's spark."
+          }
+        }
+      }
+    },
+    "Abre Lumbre listo para guardar una idea." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens Lumbre ready to save an idea."
+          }
+        }
+      }
+    },
+    "Abrí Lumbre" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Lumbre"
+          }
+        }
+      }
+    },
+    "Abrí Lumbre para encenderla" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Lumbre to light it up"
+          }
+        }
+      }
+    },
+    "Abrí Lumbre para ver la chispa del día" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Lumbre to see today's spark"
+          }
+        }
+      }
+    },
+    "Capturar" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capture"
+          }
+        }
+      }
+    },
+    "Capturar en Lumbre" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capture in Lumbre"
+          }
+        }
+      }
+    },
+    "Categoría" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category"
+          }
+        }
+      }
+    },
+    "Chispa de hoy" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today's spark"
+          }
+        }
+      }
+    },
+    "Elegí una categoría." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a category."
+          }
+        }
+      }
+    },
+    "Escribí la idea que querés guardar." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write the idea you want to save."
+          }
+        }
+      }
+    },
+    "Esto todavía no está disponible en Lumbre." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This isn't available in Lumbre yet."
+          }
+        }
+      }
+    },
+    "Guarda una neurona en tu Red sin abrir la app." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saves a neuron to your Network without opening the app."
+          }
+        }
+      }
+    },
+    "Guardada. Se suma a tu Red la próxima vez que abras Lumbre." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saved. It joins your Network next time you open Lumbre."
+          }
+        }
+      }
+    },
+    "Guardar ${idea} en ${category}" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save ${idea} in ${category}"
+          }
+        }
+      }
+    },
+    "Guardar una idea" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save an idea"
+          }
+        }
+      }
+    },
+    "Guardar una idea en Lumbre" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save an idea in Lumbre"
+          }
+        }
+      }
+    },
+    "Idea" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idea"
+          }
+        }
+      }
+    },
+    "La idea es muy larga: dejala en 600 caracteres o menos." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The idea is too long: keep it to 600 characters or fewer."
+          }
+        }
+      }
+    },
+    "Las dos neuronas que se conectaron hoy y la chispa que salió." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The two neurons that connected today and the spark they made."
+          }
+        }
+      }
+    },
+    "Lista para encender" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ready to light up"
+          }
+        }
+      }
+    },
+    "Llega a las" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrives at"
+          }
+        }
+      }
+    },
+    "Neurona guardada en tu Red." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neuron saved to your Network."
+          }
+        }
+      }
+    },
+    "No pudimos guardarla. Probá de nuevo." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't save it. Try again."
+          }
+        }
+      }
+    },
+    "Pronto en Lumbre" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coming soon to Lumbre"
+          }
+        }
+      }
+    },
+    "Próxima chispa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next spark"
+          }
+        }
+      }
+    },
+    "Tocá para encenderla" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to light it up"
+          }
+        }
+      }
+    },
+    "Tu chispa de hoy" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your spark for today"
+          }
+        }
+      }
+    },
+    "Tu chispa de hoy ya está lista" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today's spark is ready"
+          }
+        }
+      }
+    },
+    "Tu chispa está lista" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your spark is ready"
+          }
+        }
+      }
+    },
+    "Tu próxima chispa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your next spark"
+          }
+        }
+      }
+    },
+    "Va directo a tu Red" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Straight to your Network"
+          }
+        }
+      }
+    },
+    "Ver la chispa de hoy" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See today's spark"
+          }
+        }
+      }
+    },
+    "Ya está lista" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It's ready"
+          }
+        }
+      }
+    },
+    "¿En qué categoría?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In which category?"
+          }
+        }
+      }
+    },
+    "¿Qué idea querés guardar?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What idea do you want to save?"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

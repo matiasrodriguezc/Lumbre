@@ -75,6 +75,35 @@ En Debug la app usa el Supabase local (`cd backend && supabase start`); con `-re
 
 `Lumbre/Resources/PrivacyInfo.xcprivacy`: sin tracking; API de razón requerida solo UserDefaults (CA92.1); datos vinculados a la cuenta para que la app funcione (email, ideas, fotos y PDFs que se mandan a destilar, id de usuario, compras) y la interacción para analytics. Si se suma un SDK (PostHog, Sentry, RevenueCat) o un dato nuevo, se actualiza junto con las etiquetas de App Store Connect.
 
+## Extensiones: Share Extension, widget y App Intents
+
+| Carpeta | Target | Qué hace |
+|---|---|---|
+| `LumbreShare` | Share Extension (`…lumbre.share`) | Compartir texto, links, texto seleccionado en Safari (con URL y título, vía `GetPageInfo.js`), una imagen o un PDF hacia la Red. Pide "¿Qué idea te deja esto?" y la categoría (sugiere las del usuario). |
+| `LumbreWidgets` | Widget (`…lumbre.widgets`) | "Chispa de hoy" (chico, mediano, grande, rectangular e inline de pantalla bloqueada), "Guardar una idea" (chico y circular) y, en iOS 18, el control de captura. |
+| `Shared` | App y widget | App Intents (`SaveIdeaIntent`, `OpenTodaySparkIntent`, `OpenCaptureIntent`), las vistas del widget y la tabla de textos `Extensions.xcstrings` (es-AR base, en). |
+
+Cómo se conectan (todo por el App Group `group.com.matiasrodriguezc.lumbre`, en los tres `.entitlements` de `Config/`):
+
+- **Snapshot del widget:** `CachedLumbreAPI` escribe la chispa de hoy y la próxima hora al cargar Hoy, y los nombres de las categorías al cargarlas (`LumbreShared`). El widget no habla con el servidor. Con `-mock` también se escribe.
+- **Capturas desde afuera** (`ExternalCapture`): si la app dejó backend y sesión vigente, la extensión manda directo con la sesión **prestada** (la lee del Keychain, que usa el App Group como access group, y nunca la renueva: la app es la única dueña del refresh token). Si no hay sesión, falta red o el servidor falla, queda en la cola offline compartida y la manda la app al volver a primer plano. La cola relee el disco y escribe con `NSFileCoordinator`, así dos procesos no se pisan.
+- **Links profundos:** `lumbre://today`, `lumbre://spark/<id>` y `lumbre://capture?entry=widget`. Los abre `ExtensionsBridge` (único enganche en `LumbreApp`), que también recibe los App Intents que abren la app y copia el tema al widget.
+- **Flags:** `share_extension`, `widgets` y `app_intents`. Las extensiones leen los últimos valores remotos que la app guarda en el App Group.
+
+Probar en el simulador:
+
+```bash
+# Renderiza todos los widgets a PNG en <App Group>/WidgetSnapshots/
+xcrun simctl launch booted com.matiasrodriguezc.lumbre -mock -renderWidgetSnapshots
+xcrun simctl get_app_container booted com.matiasrodriguezc.lumbre groups
+# Link profundo
+xcrun simctl openurl booted "lumbre://capture?entry=widget"
+# Con el backend local: guarda una neurona de prueba por el camino de la extensión y anota el resultado en el log
+xcrun simctl launch booted com.matiasrodriguezc.lumbre -checkExternalCapture
+```
+
+Provisorio (decisiones conservadoras, a confirmar): desde la Share Extension y Siri no se destila, siempre se escribe la idea; una imagen compartida queda en la otra app y se guarda solo la idea (como una foto en free); el widget de una chispa sin revelar muestra las dos neuronas pero no el título, para no arruinar el reveal. Con cuenta de Apple Developer (H1) hay que registrar el App Group para los tres bundle IDs.
+
 ## Pendientes conocidos
 
 - **Apple y Google** para entrar: esperan sus credenciales (H1, paso 20b). La sheet de cuenta ya avisa que llegan.

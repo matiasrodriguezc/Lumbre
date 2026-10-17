@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyLists/PROPERTY_LIST_1.0.dtd">
-<!-- Solo Debug: se suma al Info.plist generado. El esquema lumbre:// (vuelta del link del email) y http con el Supabase local (127.0.0.1 y localhost). Release usa Release-Info.plist. -->
+<!-- Solo Debug: se suma al Info.plist generado. Deja hablar por http con el Supabase local (127.0.0.1 y localhost)
+     y registra los links lumbre:// (en Release van en Release-Info.plist). -->
 <plist version="1.0">
 <dict>
 	<key>CFBundleURLTypes</key>
