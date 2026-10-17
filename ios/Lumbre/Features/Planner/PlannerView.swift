@@ -113,7 +113,9 @@ struct PlannerView: View {
                 .padding(.vertical, Space.s3)
             }
             .scrollDismissesKeyboard(.interactively)
-            .defaultScrollAnchor(.bottom)
+            // Sin `defaultScrollAnchor(.bottom)`: con pocos mensajes pegaba el hilo abajo y dejaba un hueco arriba.
+            // Arranca arriba y baja al último mensaje solo si el hilo no entra en la pantalla.
+            .onAppear { scrollToBottom(proxy, animated: false) }
             .onChange(of: messages.count) { scrollToBottom(proxy) }
             .onChange(of: pending?.answer) { scrollToBottom(proxy, animated: false) }
             .safeAreaInset(edge: .bottom) { composer }

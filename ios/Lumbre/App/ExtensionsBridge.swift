@@ -85,6 +85,8 @@ struct ExtensionsBridge: ViewModifier {
         case "consent": appModel.presentAIConsent()
         case "import": appModel.presentImport()
         case "vault": appModel.selectedTab = .vault
+        case "projects": appModel.selectedTab = .projects
+        case "profile": appModel.selectedTab = .profile
         // Hoy con la chispa del día ya encendida (el aviso de pocos pares y los temas puente van debajo).
         case "revealed":
             Task {
