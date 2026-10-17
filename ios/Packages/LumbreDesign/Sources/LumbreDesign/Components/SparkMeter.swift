@@ -84,8 +84,8 @@ public struct SparkMeter: View {
 
 #Preview {
     VStack(spacing: Space.s4) {
-        SparkMeter(available: 1, total: 1, status: Text("1 chispa para encender"), detail: Text("Se recarga mañana a las 08:00"), earned: 1)
-        SparkMeter(available: 0, total: 1, status: Text("Chispa de hoy encendida"), detail: Text("La próxima, mañana a las 08:00"))
+        SparkMeter(available: 1, total: 1, status: Text("1 chispa para encender"), detail: Text(verbatim: "Se recarga mañana a las 08:00"), earned: 1)
+        SparkMeter(available: 0, total: 1, status: Text("Chispa de hoy encendida"), detail: Text(verbatim: "La próxima, mañana a las 08:00"))
     }
     .padding()
     .background(Palette.bg)

@@ -133,6 +133,47 @@
         }
       }
     },
+    "%lld ideas" : {
+      "comment" : "Ideas (chispas guardadas) en un circuito. [comun.ideas_count]",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld idea"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ideas"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld idea"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ideas"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld neuronas" : {
       "comment" : "[red.cat.many_neurons]",
       "localizations" : {
@@ -2795,13 +2836,43 @@
         }
       }
     },
-    "Guardá ^[%lld neurona](inflect: true) para ganar 1 extra" : {
+    "Guardá %lld neuronas para ganar 1 extra" : {
       "comment" : "[hoy.meter.earn]",
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save ^[%lld neuron](inflect: true) to earn 1 extra"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Save %lld neuron to earn 1 extra"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Save %lld neurons to earn 1 extra"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Guardá %lld neurona para ganar 1 extra"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Guardá %lld neuronas para ganar 1 extra"
+                }
+              }
+            }
           }
         }
       }
@@ -6630,17 +6701,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Me"
-          }
-        }
-      }
-    },
-    "^[%lld idea](inflect: true)" : {
-      "comment" : "Ideas (chispas guardadas) en un circuito. [comun.ideas_count]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "^[%lld idea](inflect: true)"
           }
         }
       }

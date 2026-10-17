@@ -23,25 +23,31 @@ Regenerar los tokens después de cambiar `tokens.json`:
 python3 ios/scripts/generate_tokens.py
 ```
 
-Compilar para el simulador:
+Compilar para el simulador (el udid sale de `xcrun simctl list devices available`):
 
 ```bash
-xcodebuild -project ios/Lumbre.xcodeproj -scheme Lumbre -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -derivedDataPath ios/.build/DerivedData build
+xcodebuild -project ios/Lumbre.xcodeproj -scheme Lumbre -destination 'id=<udid>' -derivedDataPath ios/.build/DerivedData build
 ```
 
 Correr los tests de LumbreCore (Swift Testing; los de integración se saltean si no está el Supabase local):
 
 ```bash
-cd ios/Packages/LumbreCore && xcodebuild test -scheme LumbreCore -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -derivedDataPath ../../.build/DerivedData
+cd ios/Packages/LumbreCore && xcodebuild test -scheme LumbreCore -destination 'id=<udid>' -derivedDataPath ../../.build/DerivedData
 ```
 
 Llevar al String Catalog los textos nuevos del código (Xcode lo hace solo al compilar desde el IDE; con `xcodebuild`, después del build):
 
 ```bash
-cd ios && bash -c 'args=(); while IFS= read -r f; do args+=(--stringsdata "$f"); done < <(find .build/DerivedData/Build/Intermediates.noindex/{Lumbre,LumbreCore,LumbreDesign}.build -name "*.stringsdata" -path "*arm64*"); xcrun xcstringstool sync Lumbre/Resources/Localizable.xcstrings "${args[@]}"'
+cd ios && bash -c 'args=(); while IFS= read -r f; do args+=(--stringsdata "$f"); done < <(find .build/DerivedData/Build/Intermediates.noindex/{Lumbre.build/Debug-iphonesimulator/Lumbre,LumbreCore,LumbreDesign}.build -name "*.stringsdata" -path "*arm64*"); xcrun xcstringstool sync Lumbre/Resources/Localizable.xcstrings "${args[@]}"'
 ```
 
-O abrir `ios/Lumbre.xcodeproj` en Xcode y correr el esquema **Lumbre** (arranca en español de Argentina).
+Y después cargar el inglés desde `design/copy/copy.json` (ver `design/copy/README.md`):
+
+```bash
+python3 design/copy/copy.py xcstrings --out ios/Lumbre/Resources/Localizable.xcstrings && python3 design/copy/copy.py revisar-ios
+```
+
+O abrir `ios/Lumbre.xcodeproj` en Xcode y correr el esquema **Lumbre** (arranca en español de Argentina). Para probar en inglés: `-AppleLanguages "(en)"` al lanzar.
 
 ## Argumentos de arranque
 

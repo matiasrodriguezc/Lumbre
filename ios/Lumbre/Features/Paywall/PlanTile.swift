@@ -85,7 +85,7 @@ struct PlanTilePlaceholder: View {
 
 #Preview {
     VStack(spacing: Space.s3) {
-        PlanTile(name: "Anual", price: "US$ 49,99", period: "por año", detail: Text("US$ 4,17 por mes · 7 días gratis"), badge: Text("Ahorrás 40%"), isSelected: true) {}
+        PlanTile(name: "Anual", price: "US$ 49,99", period: "por año", detail: Text(verbatim: "US$ 4,17 por mes · 7 días gratis"), badge: Text(verbatim: "Ahorrás 40%"), isSelected: true) {}
         PlanTile(name: "Mensual", price: "US$ 6,99", period: "por mes", detail: Text("Cancelás cuando quieras"), isSelected: false) {}
         PlanTilePlaceholder()
     }

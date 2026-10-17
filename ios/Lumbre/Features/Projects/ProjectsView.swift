@@ -161,7 +161,7 @@ private struct ProjectRow: View {
                 Text(project.name)
                     .font(.headline)
                     .foregroundStyle(Palette.ink)
-                Text("^[\(project.sparkCount) idea](inflect: true)")
+                Text("\(project.sparkCount) ideas")
                     .font(.footnote.weight(.medium))
                     .foregroundStyle(Palette.inkMuted)
             }

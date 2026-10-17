@@ -99,7 +99,7 @@ struct TodayView: View {
 
     private var placeholder: some View {
         VStack(alignment: .leading, spacing: Space.s6) {
-            SparkMeter(available: 1, total: 1, status: Text("1 chispa para encender"), detail: Text("Se recarga mañana a las 8:00"))
+            SparkMeter(available: 1, total: 1, status: Text("1 chispa para encender"), detail: Text(verbatim: "Se recarga mañana a las 8:00"))
             SparkCard(a: SparkSide(MockData.todaySpark.conceptA), b: SparkSide(MockData.todaySpark.conceptB), title: MockData.todaySpark.title, explanation: MockData.todaySpark.body) {
                 EmptyView()
             }
@@ -165,7 +165,7 @@ struct TodayView: View {
     }
 
     private func earnText(_ count: Int) -> Text {
-        Text("Guardá ^[\(count) neurona](inflect: true) para ganar 1 extra")
+        Text("Guardá \(count) neuronas para ganar 1 extra")
     }
 
     // MARK: Extras

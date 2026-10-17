@@ -14,7 +14,7 @@
       "note": "Contexto para quien traduce (va como comentario en el catálogo).",
       "platform": "ios o android si el texto existe en una sola plataforma.",
       "android": "Reemplazo de es/en solo para Android (rutas de Ajustes, tienda, etc.).",
-      "plural": "Formas one/other por idioma para Android (<plurals>). iOS usa es/en con ^[…](inflect: true) o dos claves.",
+      "plural": "Formas one/other por idioma (con %d y %s). En Android van a <plurals>; en iOS, a las variaciones de plural del catálogo, con es/en (la forma other) como clave.",
       "status": "app: está en la app de iOS hoy. nuevo: copy definido en design/ que todavía no está en el código.",
       "propuesta": "Cambio de copy propuesto en design/ para un texto que ya está en la app (es/en y de dónde sale). Se aplica cambiando es/en cuando la app lo adopte."
     }
@@ -80,7 +80,7 @@
         {"id": "comun.report", "es": "Reportar", "en": "Report"},
         {"id": "comun.report_thanks", "es": "Gracias por avisar. La vamos a revisar.", "en": "Thanks for letting us know. We'll review it."},
         {"id": "comun.report_detail", "es": "La revisamos y ajustamos lo que genera Lumbre.", "en": "We review it and adjust what Lumbre generates."},
-        {"id": "comun.ideas_count", "es": "^[%lld idea](inflect: true)", "en": "^[%lld idea](inflect: true)", "note": "Ideas (chispas guardadas) en un circuito.", "plural": {"es": {"one": "%d idea", "other": "%d ideas"}, "en": {"one": "%d idea", "other": "%d ideas"}}},
+        {"id": "comun.ideas_count", "es": "%lld ideas", "en": "%lld ideas", "note": "Ideas (chispas guardadas) en un circuito.", "plural": {"es": {"one": "%d idea", "other": "%d ideas"}, "en": {"one": "%d idea", "other": "%d ideas"}}},
         {"id": "comun.no_neurons_title", "es": "Todavía no hay neuronas", "en": "No neurons yet"},
         {"id": "comun.no_neurons_body", "es": "Guardá una frase, un link o una nota de voz para tener material que combinar.", "en": "Save a quote, a link or a voice note so there's something to connect.", "propuesta": {"es": "Guardá una frase, un link o una nota de voz para tener material que conectar.", "en": "Save a quote, a link or a voice note so there's something to connect.", "origen": "design/estados (empty.red)"}},
         {"id": "comun.nothing_here", "es": "Nada por acá", "en": "Nothing here", "propuesta": {"es": "Ninguna neurona coincide", "en": "No neurons match", "origen": "design/estados (empty.combinar)"}},
@@ -257,7 +257,7 @@
         {"id": "hoy.meter.many", "es": "%lld chispas para encender", "en": "%lld sparks to light"},
         {"id": "hoy.meter.used", "es": "Usaste las chispas de hoy", "en": "You've used today's sparks"},
         {"id": "hoy.meter.lit", "es": "Chispa de hoy encendida", "en": "Today's spark is lit", "note": "Contador cuando la chispa de hoy ya se encendió (widget y Hoy). Hoy solo está en el preview del componente.", "status": "nuevo"},
-        {"id": "hoy.meter.earn", "es": "Guardá ^[%lld neurona](inflect: true) para ganar 1 extra", "en": "Save ^[%lld neuron](inflect: true) to earn 1 extra", "plural": {"es": {"one": "Guardá %d neurona para ganar 1 extra", "other": "Guardá %d neuronas para ganar 1 extra"}, "en": {"one": "Save %d neuron to earn 1 extra", "other": "Save %d neurons to earn 1 extra"}}},
+        {"id": "hoy.meter.earn", "es": "Guardá %lld neuronas para ganar 1 extra", "en": "Save %lld neurons to earn 1 extra", "plural": {"es": {"one": "Guardá %d neurona para ganar 1 extra", "other": "Guardá %d neuronas para ganar 1 extra"}, "en": {"one": "Save %d neuron to earn 1 extra", "other": "Save %d neurons to earn 1 extra"}}},
         {"id": "hoy.meter.earn_a11y", "es": "%lld de %lld neuronas para la próxima chispa extra", "en": "%lld of %lld neurons toward your next extra spark"},
         {"id": "hoy.refill.today", "es": "Se recarga hoy a las %@", "en": "Refills today at %@"},
         {"id": "hoy.refill.tomorrow", "es": "Se recarga mañana a las %@", "en": "Refills tomorrow at %@"},

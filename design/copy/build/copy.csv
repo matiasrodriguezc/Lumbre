@@ -54,7 +54,7 @@ comun.not_useful,Comunes,No me sirve,Not useful,,,ambas,app,
 comun.report,Comunes,Reportar,Report,,,ambas,app,
 comun.report_thanks,Comunes,Gracias por avisar. La vamos a revisar.,Thanks for letting us know. We'll review it.,,,ambas,app,
 comun.report_detail,Comunes,La revisamos y ajustamos lo que genera Lumbre.,We review it and adjust what Lumbre generates.,,,ambas,app,
-comun.ideas_count,Comunes,^[%lld idea](inflect: true),^[%lld idea](inflect: true),,,ambas,app,Ideas (chispas guardadas) en un circuito.
+comun.ideas_count,Comunes,%lld ideas,%lld ideas,,,ambas,app,Ideas (chispas guardadas) en un circuito.
 comun.no_neurons_title,Comunes,Todavía no hay neuronas,No neurons yet,,,ambas,app,
 comun.no_neurons_body,Comunes,"Guardá una frase, un link o una nota de voz para tener material que combinar.","Save a quote, a link or a voice note so there's something to connect.",,,ambas,app,
 comun.nothing_here,Comunes,Nada por acá,Nothing here,,,ambas,app,
@@ -196,7 +196,7 @@ hoy.meter.one,Hoy,1 chispa para encender,1 spark to light,,,ambas,app,
 hoy.meter.many,Hoy,%lld chispas para encender,%lld sparks to light,,,ambas,app,
 hoy.meter.used,Hoy,Usaste las chispas de hoy,You've used today's sparks,,,ambas,app,
 hoy.meter.lit,Hoy,Chispa de hoy encendida,Today's spark is lit,,,ambas,nuevo,Contador cuando la chispa de hoy ya se encendió (widget y Hoy). Hoy solo está en el preview del componente.
-hoy.meter.earn,Hoy,Guardá ^[%lld neurona](inflect: true) para ganar 1 extra,Save ^[%lld neuron](inflect: true) to earn 1 extra,,,ambas,app,
+hoy.meter.earn,Hoy,Guardá %lld neuronas para ganar 1 extra,Save %lld neurons to earn 1 extra,,,ambas,app,
 hoy.meter.earn_a11y,Hoy,%lld de %lld neuronas para la próxima chispa extra,%lld of %lld neurons toward your next extra spark,,,ambas,app,
 hoy.refill.today,Hoy,Se recarga hoy a las %@,Refills today at %@,,,ambas,app,
 hoy.refill.tomorrow,Hoy,Se recarga mañana a las %@,Refills tomorrow at %@,,,ambas,app,

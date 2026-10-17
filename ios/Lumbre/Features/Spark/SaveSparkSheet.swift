@@ -25,7 +25,7 @@ struct SaveSparkSheet: View {
                     ForEach(projects) { project in
                         destinationRow(
                             name: Text(project.name),
-                            detail: Text("^[\(project.sparkCount) idea](inflect: true)"),
+                            detail: Text("\(project.sparkCount) ideas"),
                             systemImage: nil,
                             projectID: project.id,
                             projectName: project.name

@@ -39,7 +39,7 @@ struct ProjectDetailView: View {
                     }
                     .padding(.top, Space.s8)
                 } else {
-                    Text("^[\(sparks.count) idea](inflect: true)")
+                    Text("\(sparks.count) ideas")
                         .font(.footnote.weight(.medium))
                         .foregroundStyle(Palette.inkMuted)
                     ForEach(sparks) { spark in

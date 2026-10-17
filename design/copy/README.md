@@ -26,7 +26,7 @@ python3 design/copy/copy.py xcstrings --out ios/Lumbre/Resources/Localizable.xcs
 python3 design/copy/copy.py android --out android/app/src/main/res
 ```
 
-`xcstrings --out` **mezcla**: conserva las claves y traducciones que ya tenga el catálogo y solo agrega o pisa las de `copy.json`. Android genera los dos archivos completos.
+`xcstrings --out` **mezcla**: conserva las claves y traducciones que ya tenga el catálogo y solo agrega o pisa las de `copy.json` (las `nuevo` entran recién cuando el compilador las extrae del código). Las claves sin palabras (`×`, `%@ · %@`) quedan con `shouldTranslate: false`. Android genera los dos archivos completos.
 
 ## Cómo está armado `copy.json`
 
@@ -39,7 +39,7 @@ Cada texto:
 - **`id`**: `pantalla.elemento`, estable. En Android es el nombre del recurso (`hoy_extra_many_left`).
 - **`es`**: el texto fuente. **En iOS también es la clave**: SwiftUI usa el literal (`Text("Te quedan \(n) chispas extra hoy.")`) como clave del catálogo, así que tiene que coincidir con el código. Las interpolaciones se escriben como las escribe Xcode: `%lld` para enteros, `%@` para textos y fechas formateadas, `%%` para un % literal.
 - **`en`**: la traducción, con los mismos placeholders. Si cambia el orden, posicionales: `%1$@`, `%2$@`.
-- Opcionales: `note` (contexto; va como comentario en el catálogo), `platform` (`ios` o `android` si existe en una sola), `android` (reemplazo de es/en solo para Android: rutas de Configuración, Google Play, galería), `plural` (formas `one`/`other` para un `<plurals>` de Android), `status` (`nuevo` = definido en diseño y todavía no en el código).
+- Opcionales: `note` (contexto; va como comentario en el catálogo), `platform` (`ios` o `android` si existe en una sola), `android` (reemplazo de es/en solo para Android: rutas de Configuración, Google Play, galería), `plural` (formas `one`/`other` con `%d` y `%s`: `<plurals>` en Android y variaciones de plural del catálogo en iOS, en los dos idiomas), `status` (`nuevo` = definido en diseño y todavía no en el código).
 - Como en iOS la clave es el texto, **un mismo texto va una sola vez**. Lo que se repite entre pantallas vive en `comun`. `validar` falla si hay dos iguales.
 
 Pantallas: comunes, navegación, onboarding, perfiles creativos, cuenta e invitado, Hoy, reveal, chispa, planificador, Capturar, Red, neurona, Circuitos, Perfil, paywall, errores, estados (vacíos, error, offline, contenido inaccesible), widget, export a Markdown.
@@ -53,8 +53,9 @@ Pantallas: comunes, navegación, onboarding, perfiles creativos, cuenta e invita
 
 ## Notas para quien implemente
 
-- **iOS:** el catálogo de la app (`ios/Lumbre/Resources/Localizable.xcstrings`) hoy está vacío y los textos viven en los `Text("…")`. Para cargarlo: `copy.py xcstrings --out …` y compilar; Xcode marca como *stale* las claves que no encuentre. Agregar `en` a los idiomas del proyecto (Project → Info → Localizations).
-- Los textos de los paquetes (`LumbreDesign`, `LumbreCore`) se resuelven contra el bundle del paquete cuando usan `String(localized:)` o `bundle: .module`. Los mensajes de error de `LumbreAPI.swift` son `String` que conviene pasar a `String(localized:bundle: .main)` (o darle un catálogo propio al paquete) para que se traduzcan.
-- Los plurales de iOS usan concordancia automática (`^[%lld neurona](inflect: true)`) o dos claves (`1 captura…` / `%lld capturas…`). En Android esos casos van como `<plurals>` con `plural`.
+- **iOS, app:** `ios/Lumbre/Resources/Localizable.xcstrings` tiene `en` para todo lo de la app. Después de cambiar textos: compilar, sincronizar el catálogo (`ios/README.md`), `copy.py xcstrings --out …` y `revisar-ios`, que también lista las claves sin inglés de los cuatro catálogos.
+- Los textos de los paquetes (`LumbreDesign`, `LumbreCore`: `Text("…")` y `String(localized:)` sin `bundle:`) se buscan en el bundle principal, o sea en el catálogo de la app. En la Share Extension el bundle principal es el de la extensión: por eso `LumbreShare/Localizable.xcstrings` también lleva los errores de `LumbreAPIError`.
+- **Extensiones:** el widget y los App Intents usan la tabla `Extensions` (`ios/Shared/Extensions.xcstrings`, con `extensionsText(…)` o `table: "Extensions"`), la Share Extension su propio `Localizable.xcstrings` y las frases de Siri `ios/Lumbre/App/AppShortcuts.xcstrings`. Esos tres catálogos se mantienen a mano, con su inglés; no salen de `copy.json`. El compilador igual extrae los `extensionsText(…)` a la tabla de la app: ahí quedan con `shouldTranslate: false`.
+- Los plurales de iOS van con `plural` en `copy.json`: la clave es la forma `other` (`Guardá %lld neuronas para ganar 1 extra`) y el catálogo lleva las variaciones `one`/`other` en es y en. No usar `^[…](inflect: true)`: en español no concuerda. O dos claves (`1 captura…` / `%lld capturas…`). En Android esos casos van como `<plurals>`.
 - **Android:** el idioma por defecto (`values/`) es el español, porque el foco inicial es hispano (plan.md §2 y §12). `values-en/` para inglés. Los nombres son `pantalla_elemento`.
 - Cuando cambie un texto en el código, cambialo acá primero y corré `revisar-ios`: lista lo que falta y lo que quedó viejo.

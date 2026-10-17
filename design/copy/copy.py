@@ -107,19 +107,37 @@ def validate(data: dict) -> list[str]:
 # ---------- iOS: String Catalog ----------
 
 def build_xcstrings(data: dict, existing: dict | None = None) -> dict:
+    """Con `existing` (el catálogo de la app) mezcla y saltea las `nuevo` que el compilador todavía no extrajo."""
     catalog = existing or {"sourceLanguage": "es", "strings": {}, "version": "1.0"}
     catalog.setdefault("strings", {})
     for _, e in entries(data):
-        if not is_ios(e):
-            continue
         key = e["es"]
+        if not is_ios(e) or (existing is not None and e.get("status") == "nuevo" and key not in catalog["strings"]):
+            continue
         item = catalog["strings"].get(key, {})
         comment = e.get("note", "").strip()
         item["comment"] = (comment + " " if comment else "") + f"[{e['id']}]"
         locs = item.setdefault("localizations", {})
-        locs["en"] = {"stringUnit": {"state": "translated", "value": e["en"]}}
+        plural = e.get("plural")
+        if plural:
+            # Plurales del catálogo (Vary by plural) en los dos idiomas, también en el de origen.
+            for lang in LANGS:
+                locs[lang] = {"variations": {"plural": {
+                    qty: {"stringUnit": {"state": "translated", "value": ios_format(text)}}
+                    for qty, text in plural[lang].items()}}}
+        else:
+            locs["en"] = {"stringUnit": {"state": "translated", "value": e["en"]}}
         catalog["strings"][key] = item
+    for key, item in catalog["strings"].items():
+        # Símbolos y formatos sin palabras ("×", "%@ · %@"): iguales en todos los idiomas.
+        if not item.get("localizations") and not re.search(r"[A-Za-zÁÉÍÓÚáéíóúñÑ]", SPEC.sub("", key)):
+            item["shouldTranslate"] = False
     return catalog
+
+
+def ios_format(text: str) -> str:
+    """Las formas de `plural` están en formato Android (%d, %s): en iOS van %lld y %@."""
+    return SPEC.sub(lambda m: "%" + (m.group(1) + "$" if m.group(1) else "") + ("@" if m.group(2) in ("@", "s") else "lld" if m.group(2) in ("d", "ld", "lld") else m.group(2)), text)
 
 
 def dump_xcstrings(catalog: dict) -> str:
@@ -283,8 +301,21 @@ def looks_like_copy(text: str) -> bool:
 IGNORED = {
     "Lumbre", "Fraunces", "Volver a ver el onboarding", "Desarrollo", "Solo en Debug. El plan real lo cambia el webhook de RevenueCat.",
     "Se recarga mañana a las 8:00", "US$ 00,00", "US$ 0,00 por mes", "Fecha con un formato desconocido",
-    "Content-Type", "Accept", "Authorization", "Bearer {}", "PGRST116", "Cache.store", "Cache-local.store",
+    "Content-Type", "Accept", "Authorization", "Bearer {}", "PGRST116", "PGRST204", "Cache.store", "Cache-local.store",
 }
+
+# Archivos con sus propias tablas: las frases de Siri están en AppShortcuts.xcstrings y los títulos en Extensions.xcstrings.
+SKIPPED_FILES = {"AppShortcuts.swift"}
+
+# Todos los catálogos de iOS: cada clave necesita `en` (o shouldTranslate false si no es texto).
+CATALOGS = ["ios/Lumbre/Resources/Localizable.xcstrings", "ios/Lumbre/App/AppShortcuts.xcstrings",
+            "ios/Shared/Extensions.xcstrings", "ios/LumbreShare/Localizable.xcstrings"]
+
+
+def untranslated(path: Path) -> list[str]:
+    catalog = json.loads(path.read_text(encoding="utf-8"))
+    return [k for k, v in catalog["strings"].items()
+            if v.get("shouldTranslate", True) and v.get("extractionState") != "stale" and "en" not in v.get("localizations", {})]
 
 
 def normalize(text: str) -> str:
@@ -298,7 +329,7 @@ def review_ios(data: dict) -> int:
     every: set[str] = set()
     for root in roots:
         for path in sorted(root.rglob("*.swift")):
-            if "Mock" in path.name or "Preview" in path.name:
+            if "Mock" in path.name or "Preview" in path.name or path.name in SKIPPED_FILES:
                 continue
             src = path.read_text(encoding="utf-8")
             lines = src.splitlines()
@@ -326,6 +357,12 @@ def review_ios(data: dict) -> int:
         print(f"\nMarcados 'nuevo' que ya están en el código ({len(nuevos)}): pasalos a status app.")
         for e in nuevos:
             print(f"  {e['id']}")
+    for rel in CATALOGS:
+        pending = untranslated(ROOT / rel)
+        if pending:
+            print(f"\nSin inglés en {rel} ({len(pending)}): traducilos (copy.json y xcstrings --out) o, si no son texto, shouldTranslate false.")
+            for k in pending:
+                print(f"  {k!r}")
     return 0
 
 

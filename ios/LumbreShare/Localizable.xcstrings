@@ -1,6 +1,17 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "Algo salió mal. Probá de nuevo." : {
+      "comment" : "[comun.something_wrong_retry]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong. Try again."
+          }
+        }
+      }
+    },
     "Cancelar" : {
       "localizations" : {
         "en" : {
@@ -31,6 +42,28 @@
         }
       }
     },
+    "Con el plan gratis tenés un circuito. Con Pro, todos los que quieras." : {
+      "comment" : "[comun.free_one_circuit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The free plan has one circuit. With Pro, as many as you want."
+          }
+        }
+      }
+    },
+    "Creá tu cuenta para usar esto." : {
+      "comment" : "[errores.api.account_required]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create your account to use this."
+          }
+        }
+      }
+    },
     "Dejala en %lld caracteres o menos" : {
       "localizations" : {
         "en" : {
@@ -51,12 +84,34 @@
         }
       }
     },
+    "El código no es correcto o ya venció. Revisalo o pedí otro." : {
+      "comment" : "[errores.api.invalid_code]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The code is wrong or has expired. Check it or ask for a new one."
+          }
+        }
+      }
+    },
     "Escribila en una frase" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Write it in one sentence"
+          }
+        }
+      }
+    },
+    "Esto es parte de Lumbre Pro." : {
+      "comment" : "[errores.api.pro_only]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is part of Lumbre Pro."
           }
         }
       }
@@ -91,6 +146,17 @@
         }
       }
     },
+    "Guardá un par de neuronas más para tener material que conectar." : {
+      "comment" : "[errores.api.need_more]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save a couple more neurons so there's something to connect."
+          }
+        }
+      }
+    },
     "Idea" : {
       "localizations" : {
         "en" : {
@@ -111,12 +177,45 @@
         }
       }
     },
+    "La categoría tiene que tener entre 1 y 40 caracteres." : {
+      "comment" : "[errores.api.invalid_category]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The category has to be between 1 and 40 characters."
+          }
+        }
+      }
+    },
+    "La idea tiene que tener entre 1 y 600 caracteres." : {
+      "comment" : "[errores.api.invalid_thesis]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The idea has to be between 1 and 600 characters."
+          }
+        }
+      }
+    },
     "Link" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Link"
+          }
+        }
+      }
+    },
+    "Llegaste al límite de hoy. Mañana podés seguir." : {
+      "comment" : "[errores.api.quota]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've hit today's limit. You can keep going tomorrow."
           }
         }
       }
@@ -161,6 +260,17 @@
         }
       }
     },
+    "No pudimos sacar una idea de esto. ¿Qué idea te deja?" : {
+      "comment" : "[errores.api.no_idea]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't get an idea out of this. What idea does it leave you with?"
+          }
+        }
+      }
+    },
     "O escribí una nueva" : {
       "localizations" : {
         "en" : {
@@ -181,6 +291,17 @@
         }
       }
     },
+    "Plan" : {
+      "comment" : "[comun.plan]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan"
+          }
+        }
+      }
+    },
     "Por ejemplo: Marketing" : {
       "localizations" : {
         "en" : {
@@ -191,12 +312,45 @@
         }
       }
     },
+    "Revisá el email: no parece válido." : {
+      "comment" : "[errores.api.invalid_email]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check the email: it doesn't look valid."
+          }
+        }
+      }
+    },
+    "Revisá el link: no parece válido." : {
+      "comment" : "[capturar.link_invalid]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check the link: it doesn't look valid."
+          }
+        }
+      }
+    },
     "Se crea la categoría “%@”" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The category “%@” will be created"
+          }
+        }
+      }
+    },
+    "Sin conexión. Lo guardamos y lo mandamos cuando vuelva." : {
+      "comment" : "[errores.api.offline]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're offline. We saved it and we'll send it when you're back."
           }
         }
       }
@@ -221,12 +375,56 @@
         }
       }
     },
+    "Todavía no hay ideas en este circuito." : {
+      "comment" : "[circuitos.export_empty]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There are no ideas in this circuit yet."
+          }
+        }
+      }
+    },
     "Tu idea" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your idea"
+          }
+        }
+      }
+    },
+    "Ya hay una cuenta con ese email. Entrá con esa cuenta." : {
+      "comment" : "[errores.api.email_in_use]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There's already an account with that email. Sign in to that account."
+          }
+        }
+      }
+    },
+    "Ya tenés 50 categorías. Usá una de las que tenés." : {
+      "comment" : "[errores.api.too_many_categories]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You already have 50 categories. Use one of the ones you have."
+          }
+        }
+      }
+    },
+    "Yo" : {
+      "comment" : "[markdown.me]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Me"
           }
         }
       }
@@ -240,6 +438,9 @@
           }
         }
       }
+    },
+    "“%@”" : {
+      "shouldTranslate" : false
     }
   },
   "version" : "1.0"
