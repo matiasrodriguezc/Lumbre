@@ -361,7 +361,7 @@ public actor CaptureQueue {
     private func makeRequest(_ item: PendingCapture) throws -> CaptureRequest {
         let source: CaptureSource
         switch item.sourceType {
-        case .text, .audio: source = .text
+        case .text, .audio, .spark: source = .text
         case .voice: source = .voice
         case .selection: source = .selection(item.sourceURL)
         case .screenshot: source = .screenshot

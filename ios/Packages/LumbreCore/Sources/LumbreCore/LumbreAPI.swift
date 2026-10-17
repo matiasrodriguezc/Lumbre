@@ -81,7 +81,8 @@ public protocol LumbreAPI: Sendable {
     func plannerMessages(sparkID: Spark.ID) async throws -> [PlannerMessage]
     /// Manda un mensaje al planificador y devuelve la respuesta a medida que llega.
     /// Con `.disney`, las respuestas empiezan con la marca del cuarto (`PlannerRoom.split`).
-    func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod) -> AsyncThrowingStream<String, Error>
+    /// Con una lente, la respuesta sigue su formato y empieza con `[[lens:…]]` (`PlannerLens.of`).
+    func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod, lens: PlannerLens?) -> AsyncThrowingStream<String, Error>
 
     // MARK: Desarrollo
 
@@ -140,7 +141,7 @@ public enum LumbreAPIError: LocalizedError, Equatable {
     public var errorDescription: String? {
         switch self {
         case .quotaExceeded: String(localized: "Llegaste al límite de hoy. Mañana podés seguir.", bundle: .module)
-        case .tooManyCategories: String(localized: "Ya tenés 50 categorías. Usá una de las que tenés.", bundle: .module)
+        case .tooManyCategories: String(localized: "Ya tenés 50 categorías, el máximo. Elegí una de las que tenés o borrá alguna desde Red › Categorías.", bundle: .module)
         case .invalidThesis: String(localized: "La idea tiene que tener entre 1 y 600 caracteres.", bundle: .module)
         case .invalidCategory: String(localized: "La categoría tiene que tener entre 1 y 40 caracteres.", bundle: .module)
         case .invalidSource: String(localized: "Revisá el link: no parece válido.", bundle: .module)
@@ -161,6 +162,11 @@ public enum LumbreAPIError: LocalizedError, Equatable {
 extension LumbreAPI {
     /// Chat libre del planificador (planner.v1).
     public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode) -> AsyncThrowingStream<String, Error> {
-        sendPlannerMessage(sparkID: sparkID, text: text, mode: mode, method: .free)
+        sendPlannerMessage(sparkID: sparkID, text: text, mode: mode, method: .free, lens: nil)
+    }
+
+    /// Sin lente.
+    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod) -> AsyncThrowingStream<String, Error> {
+        sendPlannerMessage(sparkID: sparkID, text: text, mode: mode, method: method, lens: nil)
     }
 }

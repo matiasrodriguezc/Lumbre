@@ -230,6 +230,9 @@ struct ConceptDetailView: View {
                         .font(.body)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+                if concept.sourceType == .spark, let sparkID = concept.originSparkID, FeatureFlag.sparkNeuron.isEnabled {
+                    originSparkButton(sparkID)
+                }
                 if let url = concept.sourceURL {
                     Button {
                         openURL(url)
@@ -258,6 +261,21 @@ struct ConceptDetailView: View {
                 }
             }
         }
+    }
+
+    /// Desde la neurona que nació de una chispa, a la chispa original.
+    private func originSparkButton(_ sparkID: Spark.ID) -> some View {
+        Button {
+            Analytics.track(.sparkOriginOpened)
+            appModel.open(.spark(sparkID))
+        } label: {
+            Label("Ver la chispa original", systemImage: "arrow.up.forward.circle")
+                .font(.callout.weight(.medium))
+                .foregroundStyle(Palette.infoText)
+                .frame(minHeight: 44)
+        }
+        .buttonStyle(.plain)
+        .accessibilityHint(Text("Abre la chispa de la que nació esta neurona"))
     }
 
     @ViewBuilder

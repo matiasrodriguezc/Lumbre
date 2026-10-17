@@ -147,8 +147,8 @@ public struct CachedLumbreAPI: LumbreAPI {
     public func sparks(inProject id: Project.ID) async throws -> [Spark] { try await base.sparks(inProject: id) }
     public func exportProjectMarkdown(id: Project.ID) async throws -> String { try await base.exportProjectMarkdown(id: id) }
     public func plannerMessages(sparkID: Spark.ID) async throws -> [PlannerMessage] { try await base.plannerMessages(sparkID: sparkID) }
-    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod) -> AsyncThrowingStream<String, Error> {
-        base.sendPlannerMessage(sparkID: sparkID, text: text, mode: mode, method: method)
+    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod, lens: PlannerLens?) -> AsyncThrowingStream<String, Error> {
+        base.sendPlannerMessage(sparkID: sparkID, text: text, mode: mode, method: method, lens: lens)
     }
     public func setPlanForDevelopment(_ plan: Plan) async throws { try await base.setPlanForDevelopment(plan) }
 }

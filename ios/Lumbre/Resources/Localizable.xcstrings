@@ -309,6 +309,17 @@
         }
       }
     },
+    "Abre la chispa de la que nació esta neurona" : {
+      "comment" : "[neurona.origin_spark_hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the spark this neuron was born from"
+          }
+        }
+      }
+    },
     "Abre la neurona" : {
       "comment" : "[red.open_neuron_hint]",
       "localizations" : {
@@ -1426,6 +1437,39 @@
         }
       }
     },
+    "Convertí esta chispa en un modelo de negocio." : {
+      "comment" : "Mensaje que manda la lente; el formato lo pide el servidor. [planificador.lens.business_model_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn this spark into a business model."
+          }
+        }
+      }
+    },
+    "Convertí esta chispa en un post." : {
+      "comment" : "[planificador.lens.post_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn this spark into a post."
+          }
+        }
+      }
+    },
+    "Convertí esta chispa en una trama." : {
+      "comment" : "[planificador.lens.plot_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn this spark into a plot."
+          }
+        }
+      }
+    },
     "Copiar" : {
       "comment" : "[planificador.copy]",
       "localizations" : {
@@ -1921,13 +1965,13 @@
         }
       }
     },
-    "El PDF pesa más de 20 MB. Probá con uno más liviano." : {
+    "El PDF pesa más de 20 MB. Probá con uno más liviano o escaneá solo las páginas que te importan." : {
       "comment" : "[capturar.pdf_too_big]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The PDF is over 20 MB. Try a lighter one."
+            "value" : "The PDF is over 20 MB. Try a lighter one or scan just the pages you care about."
           }
         }
       }
@@ -2306,6 +2350,17 @@
         }
       }
     },
+    "Esta categoría no tiene neuronas" : {
+      "comment" : "[red.empty_category]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This category has no neurons"
+          }
+        }
+      }
+    },
     "Esto no se puede deshacer" : {
       "comment" : "[perfil.delete.cant_undo]",
       "localizations" : {
@@ -2368,6 +2423,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filter by category"
+          }
+        }
+      }
+    },
+    "Formato" : {
+      "comment" : "Etiqueta del selector historias / publicaciones (la lee VoiceOver). [chispa.share.format]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Format"
           }
         }
       }
@@ -2710,7 +2776,7 @@
         }
       }
     },
-    "Guardá una frase, un link o una nota de voz para tener material que combinar." : {
+    "Guardá una frase, un link o una nota de voz para tener material que conectar." : {
       "comment" : "[comun.no_neurons_body]",
       "localizations" : {
         "en" : {
@@ -3095,6 +3161,17 @@
         }
       }
     },
+    "Lente: %@" : {
+      "comment" : "Sobre la respuesta de una lente y en la etiqueta de VoiceOver del atajo. [planificador.lens.label]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lens: %@"
+          }
+        }
+      }
+    },
     "Leyendo el texto…" : {
       "comment" : "[capturar.reading_text]",
       "localizations" : {
@@ -3442,6 +3519,17 @@
         }
       }
     },
+    "Modelo de negocio" : {
+      "comment" : "[planificador.lens.business_model]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Business model"
+          }
+        }
+      }
+    },
     "Modelos, servicios y oportunidades" : {
       "comment" : "[perfiles.business.desc]",
       "localizations" : {
@@ -3552,13 +3640,13 @@
         }
       }
     },
-    "Nada en esta categoría" : {
-      "comment" : "[red.empty_category]",
+    "Nació de una chispa" : {
+      "comment" : "Fuente de una neurona que nació de una chispa guardada (flag spark_neuron) [red.source.spark]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nothing in this category"
+            "value" : "Born from a spark"
           }
         }
       }
@@ -3680,6 +3768,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nothing to restore"
+          }
+        }
+      }
+    },
+    "No hay conexión y no pudimos guardarlo en el teléfono. Lo que escribiste sigue acá: probá de nuevo en un rato." : {
+      "comment" : "[capturar.offline_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There's no connection and we couldn't save it on your phone. What you wrote is still here: try again in a bit."
           }
         }
       }
@@ -4003,6 +4102,17 @@
         }
       }
     },
+    "O mirala con una lente" : {
+      "comment" : "[planificador.lens.intro_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Or look at it through a lens"
+          }
+        }
+      }
+    },
     "Onda verde de semáforos" : {
       "comment" : "[onboarding.welcome.example_a]",
       "localizations" : {
@@ -4131,6 +4241,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "To dictate, Lumbre needs the microphone and speech recognition. Turn them on in Settings."
+          }
+        }
+      }
+    },
+    "Para historias" : {
+      "comment" : "Selector de formato en la hoja de la tarjeta para compartir. No usar \"Historia\" a secas: choca con la categoría Historia, que en inglés es History. [widget.share_story]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For stories"
+          }
+        }
+      }
+    },
+    "Para publicaciones" : {
+      "comment" : "Selector de formato en la hoja de la tarjeta para compartir. [widget.share_feed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For posts"
           }
         }
       }
@@ -4394,6 +4526,17 @@
         }
       }
     },
+    "Post" : {
+      "comment" : "[planificador.lens.post]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Post"
+          }
+        }
+      }
+    },
     "Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo o el stack que usarías." : {
       "comment" : "[planificador.intro]",
       "localizations" : {
@@ -4405,8 +4548,27 @@
         }
       }
     },
+    "Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo, el stack que usarías o una lente para verla como modelo de negocio, trama o post." : {
+      "comment" : "Con el flag planner_lenses. [planificador.intro_lenses]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask anything about this idea or pick a shortcut: a backlog to get started, a devil's advocate, the stack you'd use or a lens to see it as a business model, a plot or a post."
+          }
+        }
+      }
+    },
     "Preguntá…" : {
-
+      "comment" : "Versión corta del campo con texto de accesibilidad, para que entre en una línea. [planificador.input_short]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask…"
+          }
+        }
+      }
     },
     "Preparando el micrófono…" : {
       "comment" : "[capturar.dictate.preparing]",
@@ -5019,17 +5181,6 @@
         }
       }
     },
-    "Sin conexión y no pudimos guardarlo en el teléfono. Probá de nuevo en un rato." : {
-      "comment" : "[capturar.offline_failed]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You're offline and we couldn't save it on the phone. Try again in a bit."
-          }
-        }
-      }
-    },
     "Sin conexión. Probá de nuevo cuando vuelva la red." : {
       "comment" : "[capturar.offline_retry]",
       "localizations" : {
@@ -5487,24 +5638,24 @@
         }
       }
     },
-    "Todavía no hay ideas acá" : {
+    "Todavía no hay ideas en este circuito" : {
       "comment" : "[circuitos.detail.empty_title]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No ideas here yet"
+            "value" : "No ideas in this circuit yet"
           }
         }
       }
     },
-    "Todavía no hay material para combinar" : {
+    "Todavía no hay material para conectar" : {
       "comment" : "[hoy.empty.no_material]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nothing to combine yet"
+            "value" : "Nothing to connect yet"
           }
         }
       }
@@ -5582,6 +5733,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Every day at this time, two of your neurons connect and a spark flies."
+          }
+        }
+      }
+    },
+    "Trama" : {
+      "comment" : "[planificador.lens.plot]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plot"
           }
         }
       }
@@ -5828,6 +5990,17 @@
         }
       }
     },
+    "Un modelo de negocio, una trama o un post, cada uno con su formato." : {
+      "comment" : "[planificador.lens.intro_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A business model, a plot or a post, each in its own format."
+          }
+        }
+      }
+    },
     "Una captura que guardaste sin conexión no se pudo mandar y la sacamos de la cola. %@" : {
       "comment" : "%@ es el motivo (otro texto de error). [capturar.queue.failed_body]",
       "localizations" : {
@@ -5923,6 +6096,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "See Lumbre Pro"
+          }
+        }
+      }
+    },
+    "Ver la chispa original" : {
+      "comment" : "[neurona.origin_spark]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See the original spark"
           }
         }
       }

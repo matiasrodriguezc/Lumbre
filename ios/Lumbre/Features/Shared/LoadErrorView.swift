@@ -122,7 +122,7 @@ struct EmptyStateLabel: View {
 }
 
 #Preview("Vacío") {
-    EmptyStateView("Todavía no hay neuronas", message: "Guardá una frase, un link o una nota de voz para tener material que combinar.", systemImage: "square.stack.3d.up") {
+    EmptyStateView("Todavía no hay neuronas", message: "Guardá una frase, un link o una nota de voz para tener material que conectar.", systemImage: "square.stack.3d.up") {
         Button("Capturar una idea") {}
             .buttonStyle(.lumbre(.primary))
     }

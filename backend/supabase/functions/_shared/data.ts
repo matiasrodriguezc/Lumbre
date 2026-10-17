@@ -11,7 +11,7 @@ import { cleanText } from "./text.ts";
 // ---------------------------------------------------------------
 const DOMAIN_COLUMNS = "slug,name_es,name_en,symbol_ios";
 export const CONCEPT_COLUMNS =
-  `id,title,thesis,principle,status,distilled,confidence,source_type,source_url,source_title,excerpt,from_library,created_at,` +
+  `id,title,thesis,principle,status,distilled,confidence,source_type,source_url,source_title,excerpt,from_library,origin_spark_id,created_at,` +
   `category:categories(id,name,domain:domains(${DOMAIN_COLUMNS}))`;
 export const SPARK_COLUMNS =
   `id,title,body,mode,status,feedback,project_id,scheduled_for,created_at,project:projects(name),` +
@@ -54,8 +54,20 @@ export async function conceptBriefs(client: SupabaseClient, ids: string[]): Prom
 // ---------------------------------------------------------------
 // Embeddings de conceptos
 // ---------------------------------------------------------------
-/** Con destilación se embebe principio + tesis; sin destilación, el texto limpio (plan.md §5). */
-export function conceptEmbeddingText(c: { title: string; thesis: string; principle: string | null; distilled?: boolean }): string {
+/**
+ * Con destilación se embebe principio + tesis; sin destilación, el texto limpio (plan.md §5).
+ * Una neurona que nació de una chispa (paso 88) embebe su título y su cuerpo.
+ */
+export interface EmbeddableConcept {
+  title: string;
+  thesis: string;
+  principle: string | null;
+  distilled?: boolean;
+  source_type?: string;
+}
+
+export function conceptEmbeddingText(c: EmbeddableConcept): string {
+  if (c.source_type === "spark") return cleanText(`${c.title}. ${c.thesis}`);
   if (c.principle) return cleanText(`${c.principle} ${c.thesis}`);
   return cleanText(c.thesis);
 }
@@ -66,7 +78,7 @@ export async function embedConcepts(admin: SupabaseClient, rows: Row[], userId: 
   let done = 0;
   for (let i = 0; i < rows.length; i += 64) {
     const chunk = rows.slice(i, i + 64);
-    const vectors = await ai.embed(chunk.map(conceptEmbeddingText), { feature: "embed", userId: userId ?? chunk[0]?.user_id ?? null });
+    const vectors = await ai.embed(chunk.map((c) => conceptEmbeddingText(c as EmbeddableConcept)), { feature: "embed", userId: userId ?? chunk[0]?.user_id ?? null });
     for (let j = 0; j < chunk.length; j++) {
       const { error } = await admin.from("concepts")
         .update({ embedding: toPgVector(vectors[j]), embedding_model: ai.embeddingModel })

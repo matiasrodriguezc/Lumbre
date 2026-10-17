@@ -30,7 +30,7 @@ struct ProjectDetailView: View {
                     LoadErrorView(error: loadError) { Task { await load() } }
                 } else if !isLoading && sparks.isEmpty {
                     ContentUnavailableView {
-                        Label("Todavía no hay ideas acá", systemImage: "bookmark")
+                        Label("Todavía no hay ideas en este circuito", systemImage: "bookmark")
                     } description: {
                         Text("Cuando guardes una chispa, elegí este circuito para sumarla.")
                     } actions: {

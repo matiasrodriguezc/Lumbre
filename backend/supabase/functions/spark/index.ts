@@ -3,6 +3,7 @@
 // - Descuenta `spark_extra` (free: las ganadas; pro: hasta 10 por día). Invitado: 403 account_required.
 // - Sin consentimiento para la IA (profiles.ai_consent_at): 403 ai_consent_required, antes de cobrar.
 // - pick (solo Pro): combina los dos conceptos elegidos, que tienen que ser suyos y de dominios (o categorías) distintos.
+//   Una neurona que nació de una chispa no se combina con sus dos padres (paso 88): 400 invalid_request.
 // - Si no hay par posible: devuelve el crédito y 409 not_enough_concepts. Si la IA falla: devuelve el crédito y 503.
 
 import { requireDeviceIntegrity } from "../_shared/attest/guard.ts";
@@ -26,7 +27,7 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 async function pickedPair(userId: string, ids: string[]): Promise<PickedPair | { existing: string }> {
   const { data, error } = await admin().from("concepts")
-    .select("id,domain,category_id,status,embedding_model")
+    .select("id,domain,category_id,status,embedding_model,origin_lo,origin_hi")
     .eq("user_id", userId)
     .in("id", ids);
   if (error) throw dbError(error);
@@ -35,6 +36,9 @@ async function pickedPair(userId: string, ids: string[]): Promise<PickedPair | {
   const worldA = a.domain ?? (a.category_id ? `cat:${a.category_id}` : null);
   const worldB = b.domain ?? (b.category_id ? `cat:${b.category_id}` : null);
   if (worldA && worldA === worldB) throw new ApiError("invalid_request");
+  if ([a.origin_lo, a.origin_hi].includes(b.id) || [b.origin_lo, b.origin_hi].includes(a.id)) {
+    throw new ApiError("invalid_request");
+  }
 
   const [lo, hi] = [a.id, b.id].sort();
   const { data: existing } = await admin().from("sparks").select("id")

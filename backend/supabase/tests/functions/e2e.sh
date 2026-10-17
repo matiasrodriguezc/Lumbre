@@ -205,6 +205,24 @@ disney "Todas las ciudades sincronizadas"
 check_true "planner disney: empuja a pensar más grande" "$(last_answer | grep -q 'más grande' && echo true || echo false)"
 disney "Pasemos al siguiente cuarto"
 check_true "planner disney: pasa al Realista" "$(last_answer | grep -q '^\[\[room:realist\]\]' && echo true || echo false)"
+# Lentes (planner_lens.v1): responden con su formato y no mueven el cuarto del método.
+lens() {
+  curl -sN -X POST "$FN/planner" -H "apikey: $ANON_KEY" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+    -d "{\"spark_id\": \"$DAILY_ID\", \"message\": \"$2\", \"mode\": \"quick\", \"method\": \"disney\", \"lens\": \"$1\"}" > /dev/null
+}
+lens business_model "Convertila en un modelo de negocio."
+check_true "planner lente: responde con el formato del modelo de negocio" \
+  "$(last_answer | grep -q '^\[\[lens:business_model\]\]' && last_answer | grep -q '^\*\*El experimento\*\*' && echo true || echo false)"
+lens plot "Convertila en una trama."
+check_true "planner lente: responde con el formato de la trama" \
+  "$(last_answer | grep -q '^\[\[lens:plot\]\]' && last_answer | grep -q '^\*\*Tres actos\*\*' && echo true || echo false)"
+lens post "Convertila en un post."
+check_true "planner lente: responde con el formato del post" \
+  "$(last_answer | grep -q '^\[\[lens:post\]\]' && last_answer | grep -q '^\*\*Otros dos ganchos\*\*' && echo true || echo false)"
+disney "Pasos, gente y plata"
+check_true "planner lente: el método sigue en el Realista" "$(last_answer | grep -q '^\[\[room:realist\]\]' && echo true || echo false)"
+call planner "{\"spark_id\": \"$DAILY_ID\", \"message\": \"Hola\", \"mode\": \"quick\", \"lens\": \"poema\"}"
+check "planner: una lente que no existe es invalid_request" "$STATUS|$(echo "$BODY" | jq -r .error)" "400|invalid_request"
 # Cocina (del principio) y Equipos (de 3b, todavía sin chispa): de dominios distintos y nunca combinados.
 by_category() { rest "concepts?select=id,category:categories!inner(name)&category.name=eq.$1&limit=1" | jq -r '.[0].id'; }
 call spark "{\"mode\": \"pick\", \"concept_ids\": [\"$(by_category Cocina)\", \"$(by_category Equipos)\"]}"
@@ -215,6 +233,8 @@ call spark '{"mode": "extra"}'
 check "spark: sin consentimiento no pide la chispa (403)" "$STATUS|$(echo "$BODY" | jq -r .error)" "403|ai_consent_required"
 call planner "{\"spark_id\": \"$DAILY_ID\", \"message\": \"Hola\", \"mode\": \"quick\"}"
 check "planner: sin consentimiento no responde (403)" "$STATUS|$(echo "$BODY" | jq -r .error)" "403|ai_consent_required"
+call planner "{\"spark_id\": \"$DAILY_ID\", \"message\": \"Convertila en un post.\", \"mode\": \"quick\", \"lens\": \"post\"}"
+check "planner lente: sin consentimiento no responde (403)" "$STATUS|$(echo "$BODY" | jq -r .error)" "403|ai_consent_required"
 DISTILL_LEFT="$(rest "rpc/credit_status" -X POST -d '{}' | jq -r '.[] | select(.kind == "distill") | .remaining')"
 capture "$LONG Y sin revisión, los errores llegan a producción." "Equipos" true
 check "capture: sin consentimiento guarda sin destilar" "$STATUS|$(echo "$BODY" | jq -r .distillation)|$(echo "$BODY" | jq -r '.concepts[0].distilled')" "200|consent_required|false"
@@ -224,16 +244,26 @@ check "capture: sin consentimiento no gasta la destilación" \
 echo "== 5. Lo que la app hace directo con su sesión"
 PROJECT_ID="$(rest "rpc/create_project" -X POST -d '{"p_name": "Mi primer proyecto"}' | jq -r .id)"
 check_true "create_project: crea el proyecto" "$([[ "$PROJECT_ID" =~ ^[0-9a-f-]{36}$ ]] && echo true || echo false)"
-rest "sparks?id=eq.$DAILY_ID" -X PATCH -d "{\"status\": \"saved\", \"project_id\": \"$PROJECT_ID\"}" >/dev/null
+# Paso 88: guardar con save_spark y el flag spark_neuron hace nacer una neurona de la chispa.
+EXTRA_AVAILABLE="$(rest "rpc/credit_status" -X POST -d '{}' | jq -r '.[] | select(.kind == "spark_extra") | .available')"
+NEURON_ID="$(rest "rpc/save_spark" -X POST -d "{\"p_spark\": \"$DAILY_ID\", \"p_project\": \"$PROJECT_ID\", \"p_as_neuron\": true}" | jq -r .)"
+check_true "save_spark: la chispa guardada nace como neurona" "$([[ "$NEURON_ID" =~ ^[0-9a-f-]{36}$ ]] && echo true || echo false)"
+check "save_spark: la neurona está en la Red y apunta a su chispa" \
+  "$(rest "concepts?id=eq.$NEURON_ID&select=source_type,origin_spark_id" | jq -r '.[0] | .source_type + "|" + .origin_spark_id')" "spark|$DAILY_ID"
+check "save_spark: la neurona de chispa no suma para la chispa extra" \
+  "$(rest "rpc/credit_status" -X POST -d '{}' | jq -r '.[] | select(.kind == "spark_extra") | .available')" "$EXTRA_AVAILABLE"
+call process '{}' "$SERVICE_ROLE_KEY"
+check "process: embebe la neurona de chispa y le da el dominio más cercano" \
+  "$(psql "$DB_URL" -tAXc "select embedding is not null and domain is not null from public.concepts where id = '$NEURON_ID'")" "t"
 call today
 check "today: la chispa guardada queda en el proyecto" "$(echo "$BODY" | jq -r '.spark.status + "|" + .spark.project_name')" "saved|Mi primer proyecto"
 check "register_push_token: registra el token" "$(rest "rpc/register_push_token" -X POST -o /dev/null -w '%{http_code}' -d '{"p_token": "e2e-token", "p_platform": "ios", "p_sandbox": true}')" "204"
 check "content_reports: reporta la chispa" "$(rest "content_reports" -X POST -o /dev/null -w '%{http_code}' -d "{\"spark_id\": \"$EXTRA_ID\", \"reason\": \"wrong\"}")" "201"
 EXPORT="$(rest "rpc/export_my_data" -X POST -d '{}')"
-check "export_my_data: trae los 9 conceptos" "$(echo "$EXPORT" | jq -r '.concepts | length')" "9"
-# Planificador: 2 turnos libres + 3 del método de los tres cuartos = 10 mensajes.
+check "export_my_data: trae los 10 conceptos (9 y la neurona de la chispa)" "$(echo "$EXPORT" | jq -r '.concepts | length')" "10"
+# Planificador: 2 turnos libres + 4 del método de los tres cuartos + 3 lentes = 18 mensajes.
 check_true "export_my_data: con chispas, proyecto y planificador" \
-  "$(echo "$EXPORT" | jq -r '(.sparks | length) >= 3 and (.projects | length) == 1 and (.planner[0].messages | length) == 10')"
+  "$(echo "$EXPORT" | jq -r '(.sparks | length) >= 3 and (.projects | length) == 1 and (.planner[0].messages | length) == 18')"
 check "export_my_data: incluye el consentimiento (revocado)" "$(echo "$EXPORT" | jq -r '.profile | has("ai_consent_at")')|$(echo "$EXPORT" | jq -r .profile.ai_consent_at)" "true|null"
 check_true "export_my_data: sin embeddings" "$(echo "$EXPORT" | jq -r '[.concepts[] | has("embedding")] | any | not')"
 check "delete_my_account: borra la cuenta" "$(rest "rpc/delete_my_account" -X POST -o /dev/null -w '%{http_code}' -d '{}')" "204"
