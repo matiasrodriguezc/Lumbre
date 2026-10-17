@@ -213,6 +213,13 @@ paths:
                   enum: [free, disney]
                   default: free
                   description: "disney: método de los tres cuartos (prompt planner.v2, flag planner_disney en la app)"
+                lens:
+                  type: string
+                  enum: [business_model, plot, post]
+                  description: |
+                    Lente (planner_lens.v1, flag planner_lenses en la app): la respuesta convierte la chispa en un modelo
+                    de negocio, una trama o un post, con su formato. Empieza con la marca `[[lens:…]]` y no avanza
+                    los cuartos del método. Sirve con los dos métodos.
       responses:
         '200':
           description: Stream de eventos

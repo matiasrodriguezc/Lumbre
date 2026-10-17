@@ -205,6 +205,18 @@ disney "Todas las ciudades sincronizadas"
 check_true "planner disney: empuja a pensar más grande" "$(last_answer | grep -q 'más grande' && echo true || echo false)"
 disney "Pasemos al siguiente cuarto"
 check_true "planner disney: pasa al Realista" "$(last_answer | grep -q '^\[\[room:realist\]\]' && echo true || echo false)"
+# Lentes (planner_lens.v1): responden con su formato y no mueven el cuarto del método.
+lens() {
+  curl -sN -X POST "$FN/planner" -H "apikey: $ANON_KEY" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+    -d "{\"spark_id\": \"$DAILY_ID\", \"message\": \"$2\", \"mode\": \"quick\", \"method\": \"disney\", \"lens\": \"$1\"}" > /dev/null
+}
+lens business_model "Convertila en un modelo de negocio."
+check_true "planner lente: responde con el formato del modelo de negocio" \
+  "$(last_answer | grep -q '^\[\[lens:business_model\]\]' && last_answer | grep -q '^\*\*El experimento\*\*' && echo true || echo false)"
+disney "Pasos, gente y plata"
+check_true "planner lente: el método sigue en el Realista" "$(last_answer | grep -q '^\[\[room:realist\]\]' && echo true || echo false)"
+call planner "{\"spark_id\": \"$DAILY_ID\", \"message\": \"Hola\", \"mode\": \"quick\", \"lens\": \"poema\"}"
+check "planner: una lente que no existe es invalid_request" "$STATUS|$(echo "$BODY" | jq -r .error)" "400|invalid_request"
 # Cocina (del principio) y Equipos (de 3b, todavía sin chispa): de dominios distintos y nunca combinados.
 by_category() { rest "concepts?select=id,category:categories!inner(name)&category.name=eq.$1&limit=1" | jq -r '.[0].id'; }
 call spark "{\"mode\": \"pick\", \"concept_ids\": [\"$(by_category Cocina)\", \"$(by_category Equipos)\"]}"
@@ -215,6 +227,8 @@ call spark '{"mode": "extra"}'
 check "spark: sin consentimiento no pide la chispa (403)" "$STATUS|$(echo "$BODY" | jq -r .error)" "403|ai_consent_required"
 call planner "{\"spark_id\": \"$DAILY_ID\", \"message\": \"Hola\", \"mode\": \"quick\"}"
 check "planner: sin consentimiento no responde (403)" "$STATUS|$(echo "$BODY" | jq -r .error)" "403|ai_consent_required"
+call planner "{\"spark_id\": \"$DAILY_ID\", \"message\": \"Convertila en un post.\", \"mode\": \"quick\", \"lens\": \"post\"}"
+check "planner lente: sin consentimiento no responde (403)" "$STATUS|$(echo "$BODY" | jq -r .error)" "403|ai_consent_required"
 DISTILL_LEFT="$(rest "rpc/credit_status" -X POST -d '{}' | jq -r '.[] | select(.kind == "distill") | .remaining')"
 capture "$LONG Y sin revisión, los errores llegan a producción." "Equipos" true
 check "capture: sin consentimiento guarda sin destilar" "$STATUS|$(echo "$BODY" | jq -r .distillation)|$(echo "$BODY" | jq -r '.concepts[0].distilled')" "200|consent_required|false"
@@ -231,9 +245,9 @@ check "register_push_token: registra el token" "$(rest "rpc/register_push_token"
 check "content_reports: reporta la chispa" "$(rest "content_reports" -X POST -o /dev/null -w '%{http_code}' -d "{\"spark_id\": \"$EXTRA_ID\", \"reason\": \"wrong\"}")" "201"
 EXPORT="$(rest "rpc/export_my_data" -X POST -d '{}')"
 check "export_my_data: trae los 9 conceptos" "$(echo "$EXPORT" | jq -r '.concepts | length')" "9"
-# Planificador: 2 turnos libres + 3 del método de los tres cuartos = 10 mensajes.
+# Planificador: 2 turnos libres + 4 del método de los tres cuartos + 1 lente = 14 mensajes.
 check_true "export_my_data: con chispas, proyecto y planificador" \
-  "$(echo "$EXPORT" | jq -r '(.sparks | length) >= 3 and (.projects | length) == 1 and (.planner[0].messages | length) == 10')"
+  "$(echo "$EXPORT" | jq -r '(.sparks | length) >= 3 and (.projects | length) == 1 and (.planner[0].messages | length) == 14')"
 check "export_my_data: incluye el consentimiento (revocado)" "$(echo "$EXPORT" | jq -r '.profile | has("ai_consent_at")')|$(echo "$EXPORT" | jq -r .profile.ai_consent_at)" "true|null"
 check_true "export_my_data: sin embeddings" "$(echo "$EXPORT" | jq -r '[.concepts[] | has("embedding")] | any | not')"
 check "delete_my_account: borra la cuenta" "$(rest "rpc/delete_my_account" -X POST -o /dev/null -w '%{http_code}' -d '{}')" "204"

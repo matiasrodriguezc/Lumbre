@@ -81,7 +81,8 @@ public protocol LumbreAPI: Sendable {
     func plannerMessages(sparkID: Spark.ID) async throws -> [PlannerMessage]
     /// Manda un mensaje al planificador y devuelve la respuesta a medida que llega.
     /// Con `.disney`, las respuestas empiezan con la marca del cuarto (`PlannerRoom.split`).
-    func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod) -> AsyncThrowingStream<String, Error>
+    /// Con una lente, la respuesta sigue su formato y empieza con `[[lens:…]]` (`PlannerLens.of`).
+    func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod, lens: PlannerLens?) -> AsyncThrowingStream<String, Error>
 
     // MARK: Desarrollo
 
@@ -161,6 +162,11 @@ public enum LumbreAPIError: LocalizedError, Equatable {
 extension LumbreAPI {
     /// Chat libre del planificador (planner.v1).
     public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode) -> AsyncThrowingStream<String, Error> {
-        sendPlannerMessage(sparkID: sparkID, text: text, mode: mode, method: .free)
+        sendPlannerMessage(sparkID: sparkID, text: text, mode: mode, method: .free, lens: nil)
+    }
+
+    /// Sin lente.
+    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod) -> AsyncThrowingStream<String, Error> {
+        sendPlannerMessage(sparkID: sparkID, text: text, mode: mode, method: method, lens: nil)
     }
 }

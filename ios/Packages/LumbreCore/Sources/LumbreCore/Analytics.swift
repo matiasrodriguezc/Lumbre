@@ -40,6 +40,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case conceptOpened(entry: String)
     // Planificador, proyectos y export
     case plannerOpened(entry: String)
+    case plannerLensUsed(lens: PlannerLens, mode: PlannerMode, method: PlannerMethod)
     case markdownExported(object: String)
     // Pro
     case paywallShown(trigger: String, variant: String)
@@ -83,6 +84,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .vaultFiltered: "vault_filtered"
         case .conceptOpened: "concept_opened"
         case .plannerOpened: "planner_opened"
+        case .plannerLensUsed: "planner_lens_used"
         case .markdownExported: "markdown_exported"
         case .paywallShown: "paywall_shown"
         case .paywallDismissed: "paywall_dismissed"
@@ -157,6 +159,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
             ["entry": .string(entry)]
         case let .plannerOpened(entry):
             ["entry": .string(entry)]
+        case let .plannerLensUsed(lens, mode, method):
+            ["lens": .string(lens.rawValue), "mode": .string(mode.rawValue), "method": .string(method.rawValue)]
         case let .markdownExported(object):
             ["object": .string(object)]
         case let .paywallShown(trigger, variant):
@@ -277,6 +281,8 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     case neuralIdentity = "neural_identity"
     /// Planificador con el método de los tres cuartos de Walt Disney (planner.v2).
     case disneyPlanner = "planner_disney"
+    /// Lentes del planificador: modelo de negocio, trama y post (planner_lens.v1).
+    case plannerLenses = "planner_lenses"
     /// Crear la cuenta o entrar con un código por email (en vez del aviso de "las cuentas llegan pronto").
     case emailAccount = "account_email"
     /// Share Extension: compartir texto, links, imágenes y PDFs desde otras apps.
