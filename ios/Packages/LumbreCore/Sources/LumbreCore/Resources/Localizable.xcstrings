@@ -177,13 +177,13 @@
         }
       }
     },
-    "Ya tenés 50 categorías. Usá una de las que tenés." : {
+    "Ya tenés 50 categorías, el máximo. Elegí una de las que tenés o borrá alguna desde Red › Categorías." : {
       "comment" : "[errores.api.too_many_categories]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You already have 50 categories. Use one of the ones you have."
+            "value" : "You already have 50 categories, the maximum. Pick one you have or delete one from Network › Categories."
           }
         }
       }

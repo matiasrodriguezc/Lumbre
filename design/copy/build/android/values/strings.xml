@@ -74,7 +74,7 @@
         <item quantity="other">%d ideas</item>
     </plurals>
     <string name="comun_no_neurons_title">Todavía no hay neuronas</string>
-    <string name="comun_no_neurons_body">Guardá una frase, un link o una nota de voz para tener material que combinar.</string>
+    <string name="comun_no_neurons_body">Guardá una frase, un link o una nota de voz para tener material que conectar.</string>
     <string name="comun_nothing_here">Nada por acá</string>
     <string name="comun_new_circuit">Nuevo circuito</string>
     <string name="comun_circuit_name">Nombre del circuito</string>
@@ -258,7 +258,7 @@
     <string name="hoy_runway_body">Guardá algunas neuronas más para que las chispas sigan sorprendiendo.</string>
     <string name="hoy_used_title">Ya usaste la chispa de hoy</string>
     <string name="hoy_used_discarded">Marcaste que esta no te sirve. Con eso elegimos mejor la de mañana.</string>
-    <string name="hoy_empty_no_material">Todavía no hay material para combinar</string>
+    <string name="hoy_empty_no_material">Todavía no hay material para conectar</string>
     <string name="hoy_empty_no_pair">Hoy no encontramos un buen par</string>
     <string name="hoy_empty_no_material_body">Guardá algunas neuronas de temas distintos: una frase, un link o una nota de voz. Con eso Lumbre enciende tu primera chispa.</string>
     <string name="hoy_empty_no_pair_body">Guardá neuronas de otros temas. Las conexiones entre mundos distintos dan las mejores chispas.</string>
@@ -303,6 +303,8 @@
     <string name="chispa_save_move_title">Mover idea</string>
     <string name="chispa_share_title">Tarjeta para compartir</string>
     <string name="chispa_share_image">Compartir imagen</string>
+    <!-- Etiqueta del selector historias / publicaciones (la lee VoiceOver). -->
+    <string name="chispa_share_format">Formato</string>
     <string name="chispa_share_failed">No pudimos armar la imagen. Probá de nuevo.</string>
     <!-- Nombre del archivo que se comparte. -->
     <string name="chispa_share_filename">Lumbre-chispa.png</string>
@@ -313,6 +315,8 @@
     <string name="planificador_intro">Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo o el stack que usarías.</string>
     <string name="planificador_copy">Copiar</string>
     <string name="planificador_input">Escribí o preguntá…</string>
+    <!-- Versión corta del campo con texto de accesibilidad, para que entre en una línea. -->
+    <string name="planificador_input_short">Preguntá…</string>
     <string name="planificador_stop">Detener respuesta</string>
     <string name="planificador_send">Enviar</string>
     <string name="planificador_mode_quick">Rápido</string>
@@ -385,7 +389,7 @@
     <string name="capturar_no_idea_found">No pudimos sacar una idea de esto. Escribí qué idea te deja y lo guardamos con tus palabras.</string>
     <string name="capturar_no_idea_found_short">No pudimos sacar una idea de esto. Escribí qué idea te deja.</string>
     <string name="capturar_offline_queued">Guardado sin conexión: lo mandamos cuando vuelva</string>
-    <string name="capturar_offline_failed">Sin conexión y no pudimos guardarlo en el teléfono. Probá de nuevo en un rato.</string>
+    <string name="capturar_offline_failed">No hay conexión y no pudimos guardarlo en el teléfono. Lo que escribiste sigue acá: probá de nuevo en un rato.</string>
     <string name="capturar_offline_retry">Sin conexión. Probá de nuevo cuando vuelva la red.</string>
     <string name="capturar_dictate_stop">Parar el dictado</string>
     <string name="capturar_dictate_start">Dictar</string>
@@ -419,7 +423,7 @@
     <string name="capturar_ocr_on_device">Texto sacado en el teléfono. La foto queda en tu galería.</string>
     <string name="capturar_image_failed">No pudimos abrir esa imagen. Probá con otra.</string>
     <string name="capturar_pdf_failed">No pudimos abrir ese PDF. Probá con otro.</string>
-    <string name="capturar_pdf_too_big">El PDF pesa más de 20 MB. Probá con uno más liviano.</string>
+    <string name="capturar_pdf_too_big">El PDF pesa más de 20 MB. Probá con uno más liviano o escaneá solo las páginas que te importan.</string>
     <string name="capturar_trials_checking">Revisando tus pruebas…</string>
     <string name="capturar_trials_what">Lumbre lee el contenido y saca de 1 a 3 neuronas.</string>
     <string name="capturar_trials_used">Usaste las pruebas de este mes. Escribí qué idea te deja esto y lo guardamos igual.</string>
@@ -460,7 +464,7 @@
     <string name="red_drafts_title">Borradores para confirmar</string>
     <string name="red_drafts_body">Lumbre no estaba del todo seguro de estas ideas. Abrilas y confirmalas o corregilas.</string>
     <string name="red_neurons">Neuronas</string>
-    <string name="red_empty_category">Nada en esta categoría</string>
+    <string name="red_empty_category">Esta categoría no tiene neuronas</string>
     <string name="red_empty_category_body">Elegí otra o mirá todas las neuronas.</string>
     <string name="red_no_results_semantic">Probá con otras palabras: la búsqueda entiende ideas, no solo coincidencias.</string>
     <string name="red_no_results_filtered">Probá con otras palabras o sacá el filtro de categoría.</string>
@@ -523,7 +527,7 @@
     <string name="circuitos_create">Crear circuito</string>
     <string name="circuitos_save_failed">No pudimos guardar el circuito</string>
     <string name="circuitos_rename_title">Renombrar circuito</string>
-    <string name="circuitos_detail_empty_title">Todavía no hay ideas acá</string>
+    <string name="circuitos_detail_empty_title">Todavía no hay ideas en este circuito</string>
     <string name="circuitos_detail_empty_body">Cuando guardes una chispa, elegí este circuito para sumarla.</string>
     <string name="circuitos_detail_go_today">Ir a Hoy</string>
     <!-- Va dentro del Markdown exportado. -->
@@ -620,7 +624,7 @@
     <string name="errores_load_failed">No se pudo cargar</string>
     <string name="errores_later">Algo salió mal. Probá de nuevo en un rato.</string>
     <string name="errores_api_quota">Llegaste al límite de hoy. Mañana podés seguir.</string>
-    <string name="errores_api_too_many_categories">Ya tenés 50 categorías. Usá una de las que tenés.</string>
+    <string name="errores_api_too_many_categories">Ya tenés 50 categorías, el máximo. Elegí una de las que tenés o borrá alguna desde Red › Categorías.</string>
     <string name="errores_api_invalid_thesis">La idea tiene que tener entre 1 y 600 caracteres.</string>
     <string name="errores_api_invalid_category">La categoría tiene que tener entre 1 y 40 caracteres.</string>
     <string name="errores_api_no_idea">No pudimos sacar una idea de esto. ¿Qué idea te deja?</string>
@@ -758,9 +762,9 @@
     <string name="widget_a11y_pending">Chispa por encender: %1$s, de %2$s, con %3$s, de %4$s. Tocá para encenderla.</string>
     <!-- Texto que acompaña la imagen al compartir (provisorio, espera el dominio). -->
     <string name="widget_share_text">Mi chispa de hoy en Lumbre: %s</string>
-    <!-- Formato de la tarjeta (propuesta). No usar "Historia" a secas: choca con la categoría Historia, que en inglés es History. -->
+    <!-- Selector de formato en la hoja de la tarjeta para compartir. No usar "Historia" a secas: choca con la categoría Historia, que en inglés es History. -->
     <string name="widget_share_story">Para historias</string>
-    <!-- Formato de la tarjeta (propuesta). -->
+    <!-- Selector de formato en la hoja de la tarjeta para compartir. -->
     <string name="widget_share_feed">Para publicaciones</string>
     <!-- Compartir hacia Lumbre (Share Extension) -->
     <string name="compartir_title">Guardar en Lumbre</string>

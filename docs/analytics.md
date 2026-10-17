@@ -145,7 +145,7 @@ Fuente: **A** = app (iOS y Android), **S** = servidor (Edge Functions o webhook)
 | `spark_feedback_given` | S | `mode`, `reason`: `obvious`, `irrelevant`, `already_had`; `distance_percentile`, `uses_library_concept` | "No me sirve" con motivo |
 | `spark_extra_requested` | A | `mode`, `source`: `earned`, `pro` | Pide una chispa más |
 | `spark_empty_state_shown` | A | `reason`: `used_today`, `no_candidates`, `few_concepts` | Hoy no tiene chispa para mostrar |
-| `share_card_created` | A | `mode` | Se genera la tarjeta para historias |
+| `share_card_created` | A | `mode`, `format`: `story`, `feed` | Se genera la tarjeta para compartir (historias o publicaciones) |
 | `spark_shared` | A | `activity_type` (el que devuelve la hoja del sistema, si lo da) | Termina de compartir |
 | `ai_content_reported` | A | `object`: `spark`, `planner_message`; `reason` | Reporta contenido generado (requisito de Google Play) |
 

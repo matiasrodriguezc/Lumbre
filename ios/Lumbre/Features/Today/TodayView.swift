@@ -307,7 +307,7 @@ struct TodayView: View {
     private func emptyState(_ today: TodayState) -> some View {
         let fewConcepts = today.conceptCount < 4
         ContentUnavailableView {
-            EmptyStateLabel(fewConcepts ? "Todavía no hay material para combinar" : "Hoy no encontramos un buen par", systemImage: "sparkles",
+            EmptyStateLabel(fewConcepts ? "Todavía no hay material para conectar" : "Hoy no encontramos un buen par", systemImage: "sparkles",
                             illustration: fewConcepts ? .emptyVault : .beforeSpark)
         } description: {
             if fewConcepts {
