@@ -243,6 +243,7 @@ Lo que la app hace **directo con su sesión** (PostgREST y RLS). Todo lo demás 
 | Mover un concepto de categoría | `rpc/move_concept(p_concept, p_category)`: la crea si no existe (límite de 50) y el concepto hereda su dominio |
 | Guardar texto sin pasar por la función | `rpc/capture_concept(...)` (sin embedding hasta que corre `/process`; la app usa `/capture`) |
 | Chispas | `sparks`: leer; cambiar `status` (`revealed`, `saved`, `discarded`), `feedback` (`obvious`, `irrelevant`, `already_had`) y `project_id`. El feedback mueve la banda del emparejamiento |
+| Guardar una chispa | `rpc/save_spark(p_spark, p_project, p_as_neuron)`: la guarda (con su circuito o `null`) y, con `p_as_neuron` (flag `spark_neuron` de la app) y `app_config.spark_neuron_enabled`, la primera vez crea su neurona (`source_type = 'spark'`, `origin_spark_id`, `origin_lo`, `origin_hi`). Devuelve el id de esa neurona o `null`. La neurona no gasta cupo de captura, no suma para la chispa extra y nunca se empareja con sus padres |
 | Proyectos | `projects`: leer, renombrar (`name`) y borrar; crear con `rpc/create_project(p_name)` (error `too_many_projects`) |
 | Planificador | `planner_messages` y `planner_threads`: leer (los mensajes los escribe `/planner`) |
 | Reportes de contenido IA | `content_reports`: insertar `spark_id` o `planner_message_id`, `reason` (`offensive`, `dangerous`, `wrong`, `other`) y `note` (≤ 500). El `user_id` lo pone la base |

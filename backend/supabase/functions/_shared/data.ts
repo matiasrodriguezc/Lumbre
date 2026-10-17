@@ -11,7 +11,7 @@ import { cleanText } from "./text.ts";
 // ---------------------------------------------------------------
 const DOMAIN_COLUMNS = "slug,name_es,name_en,symbol_ios";
 export const CONCEPT_COLUMNS =
-  `id,title,thesis,principle,status,distilled,confidence,source_type,source_url,source_title,excerpt,from_library,created_at,` +
+  `id,title,thesis,principle,status,distilled,confidence,source_type,source_url,source_title,excerpt,from_library,origin_spark_id,created_at,` +
   `category:categories(id,name,domain:domains(${DOMAIN_COLUMNS}))`;
 export const SPARK_COLUMNS =
   `id,title,body,mode,status,feedback,project_id,scheduled_for,created_at,project:projects(name),` +
@@ -54,8 +54,14 @@ export async function conceptBriefs(client: SupabaseClient, ids: string[]): Prom
 // ---------------------------------------------------------------
 // Embeddings de conceptos
 // ---------------------------------------------------------------
-/** Con destilación se embebe principio + tesis; sin destilación, el texto limpio (plan.md §5). */
-export function conceptEmbeddingText(c: { title: string; thesis: string; principle: string | null; distilled?: boolean }): string {
+/**
+ * Con destilación se embebe principio + tesis; sin destilación, el texto limpio (plan.md §5).
+ * Una neurona que nació de una chispa (paso 88) embebe su título y su cuerpo.
+ */
+export function conceptEmbeddingText(
+  c: { title: string; thesis: string; principle: string | null; distilled?: boolean; source_type?: string },
+): string {
+  if (c.source_type === "spark") return cleanText(`${c.title}. ${c.thesis}`);
   if (c.principle) return cleanText(`${c.principle} ${c.thesis}`);
   return cleanText(c.thesis);
 }

@@ -42,7 +42,7 @@ Deno.serve(handler("process", async (req) => {
 
   // 2. Conceptos pendientes, agrupados por usuario para registrar el costo de cada uno
   const { data: pending, error: pendingError } = await db.from("concepts")
-    .select("id,user_id,title,thesis,principle,distilled")
+    .select("id,user_id,title,thesis,principle,distilled,source_type")
     .or(`embedding.is.null,embedding_model.neq."${model}"`)
     .order("created_at")
     .limit(BATCH);
