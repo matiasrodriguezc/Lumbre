@@ -20,6 +20,24 @@ permissions:
   contents: read
 
 jobs:
+  unit:
+    name: Tests de las Edge Functions y contrato
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      # Gateway, links, adjuntos, App Attest y Play Integrity, contrato OpenAPI y set de evaluación. Sin base ni claves.
+      - name: deno test
+        run: deno test -A supabase/functions/_tests/ eval/
+
   database:
     name: Migraciones y tests de la base
     runs-on: ubuntu-latest
