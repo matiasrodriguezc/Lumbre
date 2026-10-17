@@ -86,36 +86,36 @@ Todo arranca en local con Supabase CLI y Docker; los entornos remotos se conecta
 - [ ] **22. Elegir el modelo de embeddings** · MAT-235
   Comparar 2 o 3 candidatos multilingües con un set chico de pares es/en; decisión documentada.
   Necesita: H1 (claves).
-- [ ] **23. Gateway de IA** · MAT-246, MAT-247 (parte 1)
+- [x] **23. Gateway de IA** · MAT-246, MAT-247 (parte 1) · ✅ 2026-10-16: gateway en `_shared/ai/` con reintentos, respaldo, topes en dólares y `llm_calls`. Con Anthropic falta probarlo con clave (H1).
   Módulo compartido de Edge Functions: reintentos, backoff, modelo de respaldo, tope diario en dólares y registro de cada llamada en `llm_calls`.
-- [ ] **24. Endpoint de captura** · MAT-236
+- [x] **24. Endpoint de captura** · MAT-236 · ✅ 2026-10-16: `/capture` completo (valida, cobra, destila si se pide, embebe y clasifica); voz y OCR llegan como texto. Sin consentimiento para IA guarda sin destilar.
   Texto, voz, selección y OCR; limpieza del texto; límite de 30 por día. Adelantado el 27/9: `capture_concept()` en la base ya guarda textos y links con la categoría y la cuota. Falta la Edge Function que suma embedding y destilación.
-- [ ] **25. Destilación** · MAT-237
+- [x] **25. Destilación** · MAT-237 · ✅ 2026-10-16: `distill.v1` con confianza alta/media/baja y devolución del cupo si falla. Con Haiku real falta H1.
   Haiku 4.5 con JSON estructurado y nivel de confianza (alta se guarda, media queda en borrador, baja cae a "¿Qué idea te deja esto?").
-- [ ] **26. Lectura de links** · MAT-238
+- [x] **26. Lectura de links** · MAT-238 · ✅ 2026-10-16: `_shared/links.ts` con SSRF cerrado también en los redirects y contenido externo delimitado como datos.
   Contenido más Open Graph, priorizando lo que llegó en la captura; el contenido externo se trata como datos.
-- [ ] **27. Clasificación de dominio por embedding** · MAT-240
+- [x] **27. Clasificación de dominio por embedding** · MAT-240 · ✅ 2026-10-16: categoría → dominio por embedding (60% nombre, 40% conceptos) y los conceptos lo heredan. La calidad final depende del paso 22.
   Clasifica cada categoría del usuario en un dominio (por el embedding de su nombre y sus conceptos), y el concepto lo hereda.
-- [ ] **28. Emparejamiento** · MAT-241
+- [x] **28. Emparejamiento** · MAT-241 · ✅ 2026-10-16: `pick_spark_pair` con banda por usuario, pares únicos, descanso de 3 días y top 20; tests con vectores sintéticos.
   Banda media por usuario, pares únicos, descanso de 3 días y elección entre los 20 mejores; tests con datos sintéticos.
-- [ ] **29. Set de evaluación y harness** · MAT-243 (parte 1)
+- [x] **29. Set de evaluación y harness** · MAT-243 (parte 1) · ✅ 2026-10-16: `backend/eval/`: 500 pares (100 por perfil), harness con el pedido de producción, planilla para puntuar y `score.ts`. Puntuar es el paso 30 (H6).
   100 pares por perfil, un script que genera las chispas y una planilla para puntuar "sorprende" y "sirve".
 - [ ] **30. Prompt de chispa** · MAT-243 (parte 2)
   Iterar el prompt con tus puntajes hasta un promedio de 3,5 o más; prompt versionado.
   Necesita: H6.
-- [ ] **31. Biblioteca de conceptos invitados** · MAT-242
-- [ ] **32. Batch nocturno y push** · MAT-244
+- [x] **31. Biblioteca de conceptos invitados** · MAT-242 · ✅ 2026-10-16: biblioteca ampliada a ~30 conceptos por perfil, de al menos 14 dominios y sin el mundo propio del perfil.
+- [ ] **32. Batch nocturno y push** · MAT-244 · Adelantado el 2026-10-16: `daily-sparks` por zona horaria (local o Batches API), cada minuto desde la prueba de carga, y `send-pushes` que sin claves registra. Faltan claves de APNs (H1), Anthropic real y FCM con Android. Usa `spark_jobs` en vez de pgmq (a confirmar).
   pg_cron por zona horaria, Batches API, pgmq, APNs y FCM.
   Necesita: H1 (claves de push).
-- [ ] **33. Moderación y reporte de contenido IA** · MAT-249
-- [ ] **34. Imágenes y PDFs** · MAT-239
-- [ ] **35. Planificador (backend)** · MAT-245
+- [ ] **33. Moderación y reporte de contenido IA** · MAT-249 · Adelantado el 2026-10-16: moderación heurística de entrada y salida y reportes en `content_reports`. Falta un clasificador real antes del lanzamiento.
+- [x] **34. Imágenes y PDFs** · MAT-239 · ✅ 2026-10-16: adjuntos en `capture-temp` (20 MB) con límites antes del modelo, borrado siempre y huérfanos a la hora.
+- [x] **35. Planificador (backend)** · MAT-245 · ✅ 2026-10-16: SSE, Haiku o Sonnet según el modo, prompt caching y resumen cada 10 mensajes; método Disney.
   Streaming, Haiku o Sonnet según el modo, prompt caching y resumen incremental del hilo.
-- [ ] **36. Webhook de RevenueCat** · MAT-248
-- [ ] **37. Exportar datos, borrar cuenta y job de borrado** · MAT-252, MAT-251
-- [ ] **38. Tablero de costos y alertas** · MAT-247 (parte 2)
-- [ ] **39. Contrato OpenAPI y clientes generados** · MAT-250
-- [ ] **40. App Attest y Play Integrity (verificación en el servidor)** · MAT-253 (parte 1)
+- [x] **36. Webhook de RevenueCat** · MAT-248 · ✅ 2026-10-16: idempotente por evento, solo entitlement pro, rechaza sin secreto. Falta configurarlo en RevenueCat (H1).
+- [x] **37. Exportar datos, borrar cuenta y job de borrado** · MAT-252, MAT-251 · ✅ 2026-10-16: `export_my_data()`, `delete_my_account()` y los jobs de retención (invitados, texto crudo, web).
+- [x] **38. Tablero de costos y alertas** · MAT-247 (parte 2) · ✅ 2026-10-16: vistas `llm_cost_dashboard`/`month`/`signals`, `cost_alerts` diario y `scripts/costos.sh`. Las alertas no salen por mail ni Slack.
+- [x] **39. Contrato OpenAPI y clientes generados** · MAT-250 · ✅ 2026-10-16: `openapi.yaml` al día, test de contrato en CI y `scripts/generate-clients.sh` (Swift y Kotlin). La app sigue con su cliente a mano.
+- [x] **40. App Attest y Play Integrity (verificación en el servidor)** · MAT-253 (parte 1) · ✅ 2026-10-16: App Attest (atestación y aserciones) y Play Integrity en `_shared/attest/`, detrás de `LUMBRE_ATTESTATION=off/report/enforce`. Falta probar con dispositivo y Play (H1).
 - [ ] **41. Entornos remotos y deploy a staging** · MAT-230 (parte 2) · Adelantado en parte el 2026-09-27: `lumbre-dev` (`udewtaksxfnnchuhydnr`) creado en São Paulo, con las 3 migraciones y datos de prueba; verificado por SQL y por la API pública. Faltan staging y prod.
   Conectar dev, staging y prod; deploy a staging; medir el costo real por chispa en `llm_calls`.
   Necesita: H1.
@@ -128,28 +128,28 @@ Adelantado: se hace con datos de prueba. Las pantallas llaman a `LumbreAPI`; hoy
 
 - [x] **42. Setup iOS** · MAT-255, MAT-272 (parte iOS) · ✅ 2026-09-27: proyecto con carpetas sincronizadas, LumbreDesign (tokens generados, tipografía, 5 componentes) y LumbreCore (modelos, `LumbreAPI`, mock, tests). Falta el archivo de Fraunces: usa New York como respaldo.
   Proyecto de Xcode, paquetes LumbreDesign y LumbreCore, generador de tokens a Swift, Fraunces incluida, String Catalog cargado con el copy del paso 10.
-- [ ] **43. LumbreCore** · MAT-322, MAT-253 (parte iOS) · Adelantado en parte el 2026-09-27: `SupabaseLumbreAPI` sobre supabase-swift, conectado a `lumbre-dev`, con sesión en Keychain, un solo login compartido y login de desarrollo en Debug. Faltan Apple, Google y email en la UI (con el onboarding), la caché en SwiftData, App Attest y el cliente de las Edge Functions.
+- [ ] **43. LumbreCore** · MAT-322, MAT-253 (parte iOS) · Adelantado en parte el 2026-09-27: `SupabaseLumbreAPI` sobre supabase-swift, conectado a `lumbre-dev`, con sesión en Keychain, un solo login compartido y login de desarrollo en Debug. Faltan Apple, Google y email en la UI (con el onboarding), la caché en SwiftData, App Attest y el cliente de las Edge Functions. · Ampliado el 2026-10-16: App Attest del lado de la app, cuenta con email, consentimiento en la cuenta y sesión en el Keychain compartido. Faltan Apple y Google (H1).
   Cliente de la API, auth (Apple, Google, email), sesión en Keychain, caché en SwiftData y App Attest.
 - [ ] **44. Analytics y crashes** · MAT-270
   PostHog y Sentry con los eventos del paso 2. Va antes de las pantallas para que cada una se instrumente al construirse.
 - [x] **45. TabView flotante y botón Capturar** · MAT-258 · ✅ 2026-09-27: Liquid Glass con Capturar separado a la derecha (lugar de la pestaña de búsqueda). Además quedaron versiones visuales con datos de prueba de Hoy, Bóveda, Perfil y la sheet de Capturar; sus pasos (47, 48, 51, 57) siguen abiertos para la funcionalidad completa.
-- [ ] **46. Onboarding** · MAT-256
+- [x] **46. Onboarding** · MAT-256 · ✅ 2026-10-16: cuenta con email (flag `account_email`), copy neuronal y consentimiento para IA en el recorrido. Apple y Google con el 20b.
   Perfil, semillas, hora de la chispa, permiso de push y registro del token; crear cuenta o entrar como invitado.
-- [ ] **47. Hoy con reveal y contador** · MAT-257
-- [ ] **48. Sheet de Capturar y cola offline** · MAT-259
-- [ ] **49. Share Extension** · MAT-260
-- [ ] **50. OCR con VisionKit** · MAT-261
-- [ ] **51. Bóveda con búsqueda y filtros** · MAT-262
-- [ ] **52. Detalle de chispa y de concepto** · MAT-263
+- [x] **47. Hoy con reveal y contador** · MAT-257 · ✅ 2026-10-16: reveal en modal con Reducir movimiento; sin consentimiento no pide la chispa. Ajustar a la coreografía del paso 12 queda pendiente.
+- [x] **48. Sheet de Capturar y cola offline** · MAT-259 · ✅ 2026-10-16: ya estaba completo; sin consentimiento no ofrece destilar y las animaciones respetan Reducir movimiento.
+- [ ] **49. Share Extension** · MAT-260 · Adelantado el 2026-10-16: Share Extension con texto, links, selección de Safari, imagen y PDF; manda con la sesión compartida o encola. Falta verla funcionando (en el simulador no respondía la hoja de compartir) y probarla en dispositivo (H1).
+- [x] **50. OCR con VisionKit** · MAT-261 · ✅ 2026-10-16: VisionKit y Vision ya estaban; revisado sin cambios.
+- [x] **51. Bóveda con búsqueda y filtros** · MAT-262 · ✅ 2026-10-16: búsqueda, filtros, borradores y estados ya estaban; revisado en AX5.
+- [x] **52. Detalle de chispa y de concepto** · MAT-263 · ✅ 2026-10-16: "No me sirve" con motivo ya estaba; la chispa elegida pide consentimiento y los títulos se apilan en AX5.
   Incluye el feedback "No me sirve" con motivo.
-- [ ] **53. Planificador** · MAT-264
+- [x] **53. Planificador** · MAT-264 · ✅ 2026-10-16: sin consentimiento no manda; `account_required` ofrece cuenta; scroll con Reducir movimiento.
 - [ ] **54. Paywall y RevenueCat** · MAT-265
   Necesita: H1 (RevenueCat y productos en App Store Connect).
-- [ ] **55. Widget y App Intents** · MAT-266, MAT-267
-- [ ] **56. Tarjeta para compartir** · MAT-268
-- [ ] **57. Perfil y ajustes** · MAT-269
+- [x] **55. Widget y App Intents** · MAT-266, MAT-267 · ✅ 2026-10-16: widget de la chispa de hoy y de captura (todos los tamaños, pantalla bloqueada y control de iOS 18), App Intents y atajos de Siri, links `lumbre://`. Falta probarlo en dispositivo.
+- [x] **56. Tarjeta para compartir** · MAT-268 · ✅ 2026-10-16: 1080×1920 con la chispa centrada. Las propuestas del paso 13 (margen de 340, formato feed) quedan sin aplicar.
+- [x] **57. Perfil y ajustes** · MAT-269 · ✅ 2026-10-16: "Crear cuenta" con email; cerrar sesión y borrar la cuenta limpian el consentimiento.
   Incluye exportar datos y borrar cuenta.
-- [ ] **58. Accesibilidad** · MAT-271
+- [ ] **58. Accesibilidad** · MAT-271 · Adelantado el 2026-10-16: AX5 revisado en Hoy, Red, Perfil y Capturar (dos cortes arreglados) y Reducir movimiento en Capturar, planificador y chispa. Falta recorrer detalle, planificador y paywall en AX5 y VoiceOver en dispositivo.
   VoiceOver, Dynamic Type al máximo y Reducir movimiento en todas las pantallas.
 - [ ] **59. fastlane y TestFlight interno** · MAT-254 (parte 2)
   Necesita: H1 (Apple Developer).
@@ -168,12 +168,12 @@ Adelantado: se hace con datos de prueba. Las pantallas llaman a `LumbreAPI`; hoy
 
 ## F. Endurecer (F6)
 
-- [ ] **62. Revisión de seguridad** · MAT-293
+- [x] **62. Revisión de seguridad** · MAT-293 · ✅ 2026-10-16: parte de backend e iOS en `backend/SECURITY-REVIEW.md`: 11 hallazgos arreglados (incluido el consentimiento para IA en el servidor) y 3 riesgos anotados. Suite completa en verde. La de Android va en el 86.
   RLS, claves, App Attest, rate limits y logs sin contenido de notas. La parte de Android se repite en el paso 86.
-- [ ] **63. Prueba de carga del batch (10x)** · MAT-294
+- [ ] **63. Prueba de carga del batch (10x)** · MAT-294 · Adelantado el 2026-10-16: con 1.000 usuarios, 1.000 chispas en 14 s; el cron pasó de 15 min a cada minuto (de ~800 a ~12.000 usuarios por hora). La corrida de 5.000 llenó el disco: repetirla con espacio. Ver `backend/LOAD-TEST.md`.
 - [x] **64. Borradores de términos, privacidad y consentimiento para IA** · MAT-295 · ✅ 2026-10-16: `docs/legal/`: borradores es/en de privacidad, términos y consentimiento para IA, coherentes con el backend. Esperan al abogado (H3).
   Para que los revise el abogado (H3).
-- [ ] **65. Privacy manifest, etiquetas de App Store y Data safety de Play** · MAT-296
+- [x] **65. Privacy manifest, etiquetas de App Store y Data safety de Play** · MAT-296 · ✅ 2026-10-16: `PrivacyInfo.xcprivacy` y las respuestas de App Privacy y Data safety en `docs/tiendas/`.
 - [ ] **66. Fichas de tienda es/en y capturas de iOS** · MAT-297 · Adelantado el 2026-10-16: fichas es/en y guion de 7 capturas en `docs/tiendas/`. Faltan las imágenes.
   Las capturas muestran el choque, no la lista. Las de Android se hacen en el paso 86.
 
