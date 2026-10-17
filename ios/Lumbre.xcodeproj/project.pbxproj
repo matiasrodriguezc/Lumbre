@@ -9,16 +9,71 @@
 /* Begin PBXBuildFile section */
 		4C0000000000000000000101 /* LumbreDesign in Frameworks */ = {isa = PBXBuildFile; productRef = 4C0000000000000000000301 /* LumbreDesign */; };
 		4C0000000000000000000102 /* LumbreCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C0000000000000000000302 /* LumbreCore */; };
+		4C0000000000000000001041 /* LumbreShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4C0000000000000000001001 /* LumbreShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4C0000000000000000001042 /* LumbreWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4C0000000000000000001002 /* LumbreWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4C0000000000000000001043 /* LumbreDesign in Frameworks */ = {isa = PBXBuildFile; productRef = 4C0000000000000000001051 /* LumbreDesign */; };
+		4C0000000000000000001044 /* LumbreCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C0000000000000000001052 /* LumbreCore */; };
+		4C0000000000000000001045 /* LumbreDesign in Frameworks */ = {isa = PBXBuildFile; productRef = 4C0000000000000000001053 /* LumbreDesign */; };
+		4C0000000000000000001046 /* LumbreCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C0000000000000000001054 /* LumbreCore */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4C0000000000000000001061 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C0000000000000000000901 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4C0000000000000000001021;
+			remoteInfo = LumbreShare;
+		};
+		4C0000000000000000001062 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4C0000000000000000000901 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4C0000000000000000001022;
+			remoteInfo = LumbreWidgets;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4C0000000000000000001037 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				4C0000000000000000001041 /* LumbreShare.appex in Embed Foundation Extensions */,
+				4C0000000000000000001042 /* LumbreWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4C0000000000000000000201 /* Lumbre.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lumbre.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C0000000000000000001001 /* LumbreShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LumbreShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C0000000000000000001002 /* LumbreWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LumbreWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		4C0000000000000000000401 /* Lumbre */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Lumbre;
+			sourceTree = "<group>";
+		};
+		4C0000000000000000001011 /* LumbreShare */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LumbreShare;
+			sourceTree = "<group>";
+		};
+		4C0000000000000000001012 /* LumbreWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LumbreWidgets;
+			sourceTree = "<group>";
+		};
+		4C0000000000000000001013 /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -33,6 +88,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4C0000000000000000001032 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C0000000000000000001043 /* LumbreDesign in Frameworks */,
+				4C0000000000000000001044 /* LumbreCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4C0000000000000000001035 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C0000000000000000001045 /* LumbreDesign in Frameworks */,
+				4C0000000000000000001046 /* LumbreCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -40,6 +113,9 @@
 			isa = PBXGroup;
 			children = (
 				4C0000000000000000000401 /* Lumbre */,
+				4C0000000000000000001011 /* LumbreShare */,
+				4C0000000000000000001012 /* LumbreWidgets */,
+				4C0000000000000000001013 /* Shared */,
 				4C0000000000000000000602 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,6 +124,8 @@
 			isa = PBXGroup;
 			children = (
 				4C0000000000000000000201 /* Lumbre.app */,
+				4C0000000000000000001001 /* LumbreShare.appex */,
+				4C0000000000000000001002 /* LumbreWidgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -62,13 +140,17 @@
 				4C0000000000000000000801 /* Sources */,
 				4C0000000000000000000501 /* Frameworks */,
 				4C0000000000000000000802 /* Resources */,
+				4C0000000000000000001037 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4C0000000000000000001063 /* PBXTargetDependency */,
+				4C0000000000000000001064 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				4C0000000000000000000401 /* Lumbre */,
+				4C0000000000000000001013 /* Shared */,
 			);
 			name = Lumbre;
 			packageProductDependencies = (
@@ -78,6 +160,55 @@
 			productName = Lumbre;
 			productReference = 4C0000000000000000000201 /* Lumbre.app */;
 			productType = "com.apple.product-type.application";
+		};
+		4C0000000000000000001021 /* LumbreShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4C0000000000000000001071 /* Build configuration list for PBXNativeTarget "LumbreShare" */;
+			buildPhases = (
+				4C0000000000000000001031 /* Sources */,
+				4C0000000000000000001032 /* Frameworks */,
+				4C0000000000000000001033 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				4C0000000000000000001011 /* LumbreShare */,
+			);
+			name = LumbreShare;
+			packageProductDependencies = (
+				4C0000000000000000001051 /* LumbreDesign */,
+				4C0000000000000000001052 /* LumbreCore */,
+			);
+			productName = LumbreShare;
+			productReference = 4C0000000000000000001001 /* LumbreShare.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		4C0000000000000000001022 /* LumbreWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4C0000000000000000001072 /* Build configuration list for PBXNativeTarget "LumbreWidgets" */;
+			buildPhases = (
+				4C0000000000000000001034 /* Sources */,
+				4C0000000000000000001035 /* Frameworks */,
+				4C0000000000000000001036 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				4C0000000000000000001012 /* LumbreWidgets */,
+				4C0000000000000000001013 /* Shared */,
+			);
+			name = LumbreWidgets;
+			packageProductDependencies = (
+				4C0000000000000000001053 /* LumbreDesign */,
+				4C0000000000000000001054 /* LumbreCore */,
+			);
+			productName = LumbreWidgets;
+			productReference = 4C0000000000000000001002 /* LumbreWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -90,6 +221,12 @@
 				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					4C0000000000000000000701 = {
+						CreatedOnToolsVersion = 26.3;
+					};
+					4C0000000000000000001021 = {
+						CreatedOnToolsVersion = 26.3;
+					};
+					4C0000000000000000001022 = {
 						CreatedOnToolsVersion = 26.3;
 					};
 				};
@@ -114,12 +251,28 @@
 			projectRoot = "";
 			targets = (
 				4C0000000000000000000701 /* Lumbre */,
+				4C0000000000000000001021 /* LumbreShare */,
+				4C0000000000000000001022 /* LumbreWidgets */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		4C0000000000000000000802 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4C0000000000000000001033 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4C0000000000000000001036 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -136,7 +289,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4C0000000000000000001031 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4C0000000000000000001034 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4C0000000000000000001063 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4C0000000000000000001021 /* LumbreShare */;
+			targetProxy = 4C0000000000000000001061 /* PBXContainerItemProxy */;
+		};
+		4C0000000000000000001064 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4C0000000000000000001022 /* LumbreWidgets */;
+			targetProxy = 4C0000000000000000001062 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		4C0000000000000000000C01 /* Debug */ = {
@@ -192,6 +372,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Config/Lumbre.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
@@ -226,10 +407,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Config/Lumbre.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/Release-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Lumbre;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Lumbre usa la cámara para escanear páginas y sacar el texto en el teléfono.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Lumbre usa el micrófono para que dictes tus ideas. El audio se transcribe y no se guarda.";
@@ -246,6 +429,118 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.matiasrodriguezc.lumbre;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		4C0000000000000000001081 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/LumbreShare.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/LumbreShare-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Lumbre;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matiasrodriguezc.lumbre.share;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		4C0000000000000000001082 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/LumbreShare.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/LumbreShare-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Lumbre;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matiasrodriguezc.lumbre.share;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		4C0000000000000000001083 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/LumbreWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/LumbreWidgets-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Lumbre;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matiasrodriguezc.lumbre.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		4C0000000000000000001084 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Config/LumbreWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/LumbreWidgets-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Lumbre;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matiasrodriguezc.lumbre.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -275,6 +570,24 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		4C0000000000000000001071 /* Build configuration list for PBXNativeTarget "LumbreShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4C0000000000000000001081 /* Debug */,
+				4C0000000000000000001082 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4C0000000000000000001072 /* Build configuration list for PBXNativeTarget "LumbreWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4C0000000000000000001083 /* Debug */,
+				4C0000000000000000001084 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
@@ -294,6 +607,22 @@
 			productName = LumbreDesign;
 		};
 		4C0000000000000000000302 /* LumbreCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LumbreCore;
+		};
+		4C0000000000000000001051 /* LumbreDesign */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LumbreDesign;
+		};
+		4C0000000000000000001052 /* LumbreCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LumbreCore;
+		};
+		4C0000000000000000001053 /* LumbreDesign */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LumbreDesign;
+		};
+		4C0000000000000000001054 /* LumbreCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LumbreCore;
 		};

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- App Group compartido por la app, la Share Extension y el widget: cola offline, snapshot de la chispa y,
+     usado como access group de Keychain, la sesion de Supabase. -->
+<plist version="1.0">
+<dict>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.com.matiasrodriguezc.lumbre</string>
+	</array>
+</dict>
+</plist>

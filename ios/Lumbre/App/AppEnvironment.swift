@@ -32,14 +32,10 @@ enum AppEnvironment {
     /// Argumentos de arranque (esquema → Run → Arguments, o `xcrun simctl launch … <arg>`):
     /// `-mock`, `-mockPro`, `-mockGuest`, `-remote`, `-resetSession` y `-seedUser` (ver `ios/README.md`).
     static func makeAPI(arguments: [String] = ProcessInfo.processInfo.arguments) -> any LumbreAPI {
-        if arguments.contains("-mockGuest") {
-            return MockLumbreAPI(onboarded: false)
-        }
-        if arguments.contains("-mockPro") {
-            return MockLumbreAPI(plan: .pro)
-        }
-        if arguments.contains("-mock") {
-            return MockLumbreAPI()
+        if let mock = makeMockAPI(arguments: arguments) {
+            // Sin backend, la Share Extension y los atajos solo encolan; el widget igual muestra la chispa de prueba.
+            LumbreShared.backend = nil
+            return CachedLumbreAPI(wrapping: mock, storage: .inMemory, sharesWithExtensions: true)
         }
         #if DEBUG
         let backend: Backend = arguments.contains("-remote") ? .remote : .local
@@ -53,13 +49,23 @@ enum AppEnvironment {
             url: backend.url,
             publishableKey: backend.publishableKey,
             devCredentials: devCredentials(for: backend, arguments: arguments),
-            resetSession: resetSession
+            resetSession: resetSession,
+            keychainAccessGroup: LumbreShared.keychainAccessGroup
         )
+        // Las extensiones mandan al mismo backend con la sesión que la app deja en el Keychain compartido.
+        LumbreShared.backend = .init(url: backend.url, publishableKey: backend.publishableKey)
         // La caché del backend local va aparte, para no mezclar usuarios de dos bases distintas.
         let storage: CachedLumbreAPI.Storage = backend == .local
             ? .file(LumbreShared.containerURL.appending(path: "Cache-local.store"))
             : .shared
         return CachedLumbreAPI(wrapping: api, storage: storage)
+    }
+
+    private static func makeMockAPI(arguments: [String]) -> MockLumbreAPI? {
+        if arguments.contains("-mockGuest") { return MockLumbreAPI(onboarded: false) }
+        if arguments.contains("-mockPro") { return MockLumbreAPI(plan: .pro) }
+        if arguments.contains("-mock") { return MockLumbreAPI() }
+        return nil
     }
 
     /// Login de desarrollo, solo en Debug. Sin credenciales, la app entra como invitado.

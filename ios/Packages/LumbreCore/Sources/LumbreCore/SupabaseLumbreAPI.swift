@@ -20,21 +20,39 @@ public struct SupabaseLumbreAPI: LumbreAPI {
     private let session: SessionGate
     private let functions: EdgeFunctions
 
-    /// - Parameter resetSession: cierra la sesión guardada antes del primer pedido (para probar el primer login).
-    public init(url: URL, publishableKey: String, devCredentials: DevCredentials? = nil, resetSession: Bool = false) {
-        self.init(url: url, publishableKey: publishableKey, devCredentials: devCredentials, resetSession: resetSession, authStorage: nil)
+    /// - Parameters:
+    ///   - resetSession: cierra la sesión guardada antes del primer pedido (para probar el primer login).
+    ///   - keychainAccessGroup: guarda la sesión en ese grupo de Keychain para que la usen la Share Extension y los
+    ///     App Intents (`LumbreShared.keychainAccessGroup`). Si el proceso no tiene el entitlement, queda en el Keychain propio.
+    public init(url: URL, publishableKey: String, devCredentials: DevCredentials? = nil, resetSession: Bool = false, keychainAccessGroup: String? = nil) {
+        var storage: (any AuthLocalStorage)?
+        if let keychainAccessGroup, SharedKeychain.isAvailable(group: keychainAccessGroup) {
+            SharedKeychain.migrateSession(key: SharedKeychain.storageKey(for: url), to: keychainAccessGroup)
+            storage = KeychainLocalStorage(accessGroup: keychainAccessGroup)
+        }
+        self.init(url: url, publishableKey: publishableKey, devCredentials: devCredentials, resetSession: resetSession, authStorage: storage)
+    }
+
+    /// Para la Share Extension y los App Intents: usa la sesión que guardó la app en el Keychain compartido, sin renovarla
+    /// ni abrir otra (la app es la única dueña del refresh token, que el servidor rota). Si no hay sesión o le quedan
+    /// menos de cinco minutos, cada pedido falla con `.offline` y el que llama encola la captura para que la mande la app.
+    public static func borrowingSharedSession(url: URL, publishableKey: String, keychainAccessGroup: String = LumbreShared.keychainAccessGroup) -> SupabaseLumbreAPI {
+        SupabaseLumbreAPI(url: url, publishableKey: publishableKey, devCredentials: nil, resetSession: false,
+                          authStorage: KeychainLocalStorage(accessGroup: keychainAccessGroup), mode: .borrowed)
     }
 
     /// - Parameter authStorage: dónde guarda Auth la sesión. nil = el Keychain (lo normal); los tests usan memoria.
-    init(url: URL, publishableKey: String, devCredentials: DevCredentials?, resetSession: Bool, authStorage: (any AuthLocalStorage)?) {
+    init(url: URL, publishableKey: String, devCredentials: DevCredentials?, resetSession: Bool, authStorage: (any AuthLocalStorage)?, mode: SessionMode = .owner) {
+        let storageKey = SharedKeychain.storageKey(for: url)
+        let autoRefresh = mode == .owner
         let auth: SupabaseClientOptions.AuthOptions = if let authStorage {
-            .init(storage: authStorage, emitLocalSessionAsInitialSession: true)
+            .init(storage: authStorage, storageKey: storageKey, autoRefreshToken: autoRefresh, emitLocalSessionAsInitialSession: true)
         } else {
-            .init(emitLocalSessionAsInitialSession: true)
+            .init(storageKey: storageKey, autoRefreshToken: autoRefresh, emitLocalSessionAsInitialSession: true)
         }
         let client = SupabaseClient(supabaseURL: url, supabaseKey: publishableKey, options: SupabaseClientOptions(auth: auth))
         self.client = client
-        session = SessionGate(devCredentials: devCredentials, resetFirst: resetSession)
+        session = SessionGate(devCredentials: devCredentials, resetFirst: resetSession, mode: mode)
         functions = EdgeFunctions(supabaseURL: url, publishableKey: publishableKey) {
             try await client.auth.session.accessToken
         }
@@ -502,22 +520,42 @@ public struct SupabaseLumbreAPI: LumbreAPI {
 
 // MARK: - Sesión
 
+/// Quién maneja la sesión.
+enum SessionMode: Sendable {
+    /// La app: entra, renueva el token y guarda la sesión.
+    case owner
+    /// Extensiones y atajos: usan la sesión guardada tal como está, sin renovarla ni crear otra.
+    case borrowed
+}
+
 /// Un solo inicio de sesión a la vez: varias pantallas cargan en paralelo y comparten el que está en curso.
 /// (El actor solo no alcanza: mientras un llamado espera el login, otros entran y abrirían más sesiones.)
 private actor SessionGate {
     private let devCredentials: SupabaseLumbreAPI.DevCredentials?
+    private let mode: SessionMode
     private var inFlight: Task<Void, Error>?
     private var resetFirst: Bool
     /// Después de cerrar sesión o borrar la cuenta, el próximo pedido entra como invitado nuevo, no con el login de desarrollo.
     private var useDevCredentials = true
 
-    init(devCredentials: SupabaseLumbreAPI.DevCredentials?, resetFirst: Bool) {
+    /// Margen mínimo de vigencia del access token para usar una sesión prestada: así nunca hace falta renovarla a mitad del pedido.
+    static let borrowedMargin: TimeInterval = 300
+
+    init(devCredentials: SupabaseLumbreAPI.DevCredentials?, resetFirst: Bool, mode: SessionMode = .owner) {
         self.devCredentials = devCredentials
         self.resetFirst = resetFirst
+        self.mode = mode
     }
 
     /// Usa la sesión guardada en el Keychain; si no hay, entra con el login de desarrollo o como invitado.
+    /// Con una sesión prestada, solo la usa si sigue vigente; si no, `.offline` (el que llama encola).
     func ensure(_ client: SupabaseClient) async throws {
+        if mode == .borrowed {
+            guard let current = client.auth.currentSession,
+                  Date(timeIntervalSince1970: current.expiresAt).timeIntervalSinceNow > Self.borrowedMargin
+            else { throw LumbreAPIError.offline }
+            return
+        }
         if let inFlight {
             return try await inFlight.value
         }
@@ -548,12 +586,14 @@ private actor SessionGate {
 
     /// Descarta la sesión guardada y entra de nuevo.
     func restart(_ client: SupabaseClient) async throws {
+        guard mode == .owner else { throw LumbreAPIError.offline }
         try? await client.auth.signOut(scope: .local)
         try await ensure(client)
     }
 
     /// Cierra la sesión en este dispositivo. No falla: si el servidor no responde, igual se borra la local.
     func signOut(_ client: SupabaseClient) async {
+        guard mode == .owner else { return }
         useDevCredentials = false
         try? await client.auth.signOut(scope: .local)
     }

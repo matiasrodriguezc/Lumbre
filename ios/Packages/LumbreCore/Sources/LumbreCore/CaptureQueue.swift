@@ -9,6 +9,8 @@ import os
 ///   si no está disponible, Application Support). Los adjuntos (imagen, PDF) van como archivos aparte.
 /// - Manda en orden. Un error de red frena el vaciado y reintenta con backoff; un error de validación descarta
 ///   esa captura y lo avisa en `updates()`.
+/// - Varios procesos comparten el archivo (la app, la Share Extension y los App Intents): cada cambio relee el disco
+///   y escribe con `NSFileCoordinator`, así una captura encolada desde otro proceso no se pisa.
 /// - Nunca escribe en el log el contenido de las capturas.
 public actor CaptureQueue {
     /// La cola de la app (y de la Share Extension).
@@ -80,12 +82,7 @@ public actor CaptureQueue {
         self.maxBackoff = maxBackoff
         self.maxFailures = maxFailures
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        let file = directory.appending(path: "queue.json")
-        if let data = try? Data(contentsOf: file), let saved = try? Self.decoder.decode([PendingCapture].self, from: data) {
-            items = saved
-        } else {
-            items = []
-        }
+        items = Self.coordinatedRead(directory.appending(path: "queue.json"))
     }
 
     /// App Group si está disponible; si no, Application Support.
@@ -95,12 +92,19 @@ public actor CaptureQueue {
 
     // MARK: - Estado
 
-    public var count: Int { items.count }
+    public var count: Int {
+        reload()
+        return items.count
+    }
 
-    public var pending: [PendingCapture] { items }
+    public var pending: [PendingCapture] {
+        reload()
+        return items
+    }
 
     /// Cambios de la cola. Arranca con la cantidad actual.
     public func updates() -> AsyncStream<Update> {
+        reload()
         let id = UUID()
         let (stream, continuation) = AsyncStream<Update>.makeStream(bufferingPolicy: .bufferingNewest(16))
         observers[id] = continuation
@@ -149,11 +153,9 @@ public actor CaptureQueue {
             excerpt: request.excerpt, localAssetID: request.localAssetID, distill: request.distill,
             attachmentFile: attachmentFile, failures: 0
         )
-        items.append(item)
         do {
-            try persist()
+            try mutate { $0.append(item) }
         } catch {
-            items.removeLast()
             if let attachmentFile { try? FileManager.default.removeItem(at: directory.appending(path: attachmentFile)) }
             throw error
         }
@@ -164,9 +166,9 @@ public actor CaptureQueue {
 
     /// Saca una captura de la cola sin mandarla.
     public func remove(id: PendingCapture.ID) {
-        guard let index = items.firstIndex(where: { $0.id == id }) else { return }
-        deleteAttachment(of: items.remove(at: index))
-        try? persist()
+        reload()
+        guard let item = items.first(where: { $0.id == id }) else { return }
+        drop(item)
         notify(.count(items.count))
     }
 
@@ -187,6 +189,8 @@ public actor CaptureQueue {
         }
         isFlushing = true
         defer { isFlushing = false }
+        // Otro proceso (la Share Extension, un atajo) pudo haber encolado algo.
+        reload()
 
         while let item = items.first {
             let request: CaptureRequest
@@ -214,15 +218,16 @@ public actor CaptureQueue {
                     logger.notice("discarded queued capture: \(apiError.analyticsCode, privacy: .public)")
                     continue
                 case .transient:
-                    if let index = items.firstIndex(where: { $0.id == item.id }) {
+                    let failures = try? mutate { items -> Int in
+                        guard let index = items.firstIndex(where: { $0.id == item.id }) else { return 0 }
                         items[index].failures += 1
-                        if items[index].failures >= maxFailures {
-                            drop(items[index])
-                            report.discarded.append(.unexpected)
-                            notify(.discarded(.unexpected))
-                            continue
-                        }
-                        try? persist()
+                        return items[index].failures
+                    }
+                    if let failures, failures >= maxFailures {
+                        drop(item)
+                        report.discarded.append(.unexpected)
+                        notify(.discarded(.unexpected))
+                        continue
                     }
                     report.shouldRetry = true
                 }
@@ -279,6 +284,7 @@ public actor CaptureQueue {
     }
 
     private func scheduleFlush(after delay: Duration) {
+        reload()
         guard sender != nil, !items.isEmpty else { return }
         retryTask?.cancel()
         retryTask = Task { [weak self] in
@@ -378,9 +384,11 @@ public actor CaptureQueue {
     }
 
     private func drop(_ item: PendingCapture) {
-        items.removeAll { $0.id == item.id }
+        if (try? mutate({ $0.removeAll { $0.id == item.id } })) == nil {
+            // No se pudo escribir: al menos que no se mande dos veces en este proceso.
+            items.removeAll { $0.id == item.id }
+        }
         deleteAttachment(of: item)
-        try? persist()
     }
 
     private func deleteAttachment(of item: PendingCapture) {
@@ -389,9 +397,45 @@ public actor CaptureQueue {
         }
     }
 
-    private func persist() throws {
-        let data = try Self.encoder.encode(items)
-        try data.write(to: directory.appending(path: "queue.json"), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+    private var fileURL: URL { directory.appending(path: "queue.json") }
+
+    /// Relee la cola del disco: otro proceso pudo haberla cambiado.
+    private func reload() {
+        items = Self.coordinatedRead(fileURL)
+    }
+
+    /// Lee lo último del disco, aplica el cambio y escribe, todo dentro de una escritura coordinada.
+    @discardableResult
+    private func mutate<T>(_ change: (inout [PendingCapture]) throws -> T) throws -> T {
+        var outcome: Result<([PendingCapture], T), Error> = .failure(CocoaError(.fileWriteUnknown))
+        var coordinationError: NSError?
+        NSFileCoordinator().coordinate(writingItemAt: fileURL, options: .forMerging, error: &coordinationError) { url in
+            var current = Self.read(url)
+            outcome = Result {
+                let value = try change(&current)
+                let data = try Self.encoder.encode(current)
+                try data.write(to: url, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+                return (current, value)
+            }
+        }
+        if let coordinationError { throw coordinationError }
+        let (saved, value) = try outcome.get()
+        items = saved
+        return value
+    }
+
+    private static func coordinatedRead(_ file: URL) -> [PendingCapture] {
+        var result: [PendingCapture] = []
+        var coordinationError: NSError?
+        NSFileCoordinator().coordinate(readingItemAt: file, options: [], error: &coordinationError) { url in
+            result = read(url)
+        }
+        return result
+    }
+
+    private static func read(_ url: URL) -> [PendingCapture] {
+        guard let data = try? Data(contentsOf: url) else { return [] }
+        return (try? decoder.decode([PendingCapture].self, from: data)) ?? []
     }
 
     private static let encoder: JSONEncoder = {
