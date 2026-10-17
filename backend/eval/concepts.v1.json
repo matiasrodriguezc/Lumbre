@@ -1,0 +1,976 @@
+{
+  "version": "concepts.v1",
+  "description": "Pool de conceptos realistas por perfil creativo para armar los pares del set de evaluación del prompt de la chispa (plan.md §5, Calidad).",
+  "profiles": {
+    "software": [
+      {
+        "id": "software-01",
+        "domain": "tecnologia",
+        "source_type": "link",
+        "title": "Ley de Conway",
+        "thesis": "Los sistemas que diseña una organización terminan copiando la estructura de comunicación de los equipos que los construyen.",
+        "principle": "La forma de lo que se construye refleja los canales por donde circula la información de quienes lo construyen."
+      },
+      {
+        "id": "software-02",
+        "domain": "tecnologia",
+        "source_type": "text",
+        "title": "Separar deploy de lanzamiento",
+        "thesis": "Con feature flags el código se sube apagado y después se prende de a poco para un porcentaje creciente de usuarios.",
+        "principle": "Separar el momento de preparar del momento de exponer reduce el riesgo de cada cambio."
+      },
+      {
+        "id": "software-03",
+        "domain": "tecnologia",
+        "source_type": "voice",
+        "title": "Debugging con patito de goma",
+        "thesis": "Explicarle el código línea por línea a un patito de goma suele revelar el error antes de terminar la explicación.",
+        "principle": "Verbalizar paso a paso un razonamiento obliga a llenar los huecos que la mente salteaba."
+      },
+      {
+        "id": "software-04",
+        "domain": "tecnologia",
+        "source_type": "selection",
+        "title": "Deuda técnica",
+        "thesis": "Ward Cunningham comparó los atajos en el código con una deuda: ahorran tiempo hoy y cobran intereses en cada cambio futuro.",
+        "principle": "Un atajo no elimina un costo, lo posterga y lo agranda mientras no se paga."
+      },
+      {
+        "id": "software-05",
+        "domain": "biologia",
+        "source_type": "link",
+        "title": "Quorum sensing bacteriano",
+        "thesis": "Algunas bacterias liberan moléculas señal y solo encienden ciertos genes, como los de la bioluminiscencia, cuando la concentración indica que son muchas.",
+        "principle": "Actuar solo cuando la señal colectiva supera un umbral evita gastar en acciones que de a uno no rinden."
+      },
+      {
+        "id": "software-06",
+        "domain": "biologia",
+        "source_type": "link",
+        "title": "Criptobiosis del tardígrado",
+        "thesis": "Ante la sequía, el tardígrado pierde casi toda su agua, frena el metabolismo y puede revivir años después al rehidratarse.",
+        "principle": "Ante condiciones extremas, apagar casi todo y conservar lo mínimo permite volver cuando el entorno mejora."
+      },
+      {
+        "id": "software-07",
+        "domain": "cocina",
+        "source_type": "link",
+        "title": "La brigada de Escoffier",
+        "thesis": "Auguste Escoffier organizó la cocina en partidas con un responsable cada una, para que las partes de un plato se preparen en paralelo.",
+        "principle": "Dividir el trabajo en estaciones especializadas con un único punto de ensamblaje permite paralelizar sin perder coherencia."
+      },
+      {
+        "id": "software-08",
+        "domain": "cocina",
+        "source_type": "voice",
+        "title": "Probar mientras se cocina",
+        "thesis": "Los cocineros prueban la comida durante toda la cocción y ajustan sal, ácido o fuego antes de servir, no después.",
+        "principle": "Medir durante el proceso, y no solo al final, permite corregir cuando todavía es barato."
+      },
+      {
+        "id": "software-09",
+        "domain": "salud",
+        "source_type": "pdf",
+        "title": "Checklist quirúrgica de la OMS",
+        "thesis": "La lista de verificación quirúrgica de la OMS, de 19 puntos, redujo complicaciones y muertes en un estudio de 2009 en ocho hospitales.",
+        "principle": "Externalizar los pasos críticos en una lista corta protege a los expertos de los olvidos que trae la rutina."
+      },
+      {
+        "id": "software-10",
+        "domain": "salud",
+        "source_type": "link",
+        "title": "El sueño consolida la memoria",
+        "thesis": "Durante el sueño el cerebro reactiva lo aprendido en el día y lo pasa a la memoria de largo plazo.",
+        "principle": "Los períodos sin entrada nueva son los que reorganizan y fijan lo que se incorporó."
+      },
+      {
+        "id": "software-11",
+        "domain": "psicologia",
+        "source_type": "text",
+        "title": "Estado de flujo",
+        "thesis": "Mihály Csíkszentmihályi describió el flujo como la concentración total que aparece cuando el desafío está a la altura de la habilidad.",
+        "principle": "El compromiso máximo aparece cuando la dificultad queda apenas por encima de la capacidad."
+      },
+      {
+        "id": "software-12",
+        "domain": "psicologia",
+        "source_type": "link",
+        "title": "Residuo de atención",
+        "thesis": "Sophie Leroy mostró que al saltar de una tarea a otra parte de la atención se queda pegada en la anterior y baja el rendimiento.",
+        "principle": "Cada cambio de contexto cobra un peaje invisible que se acumula con la frecuencia."
+      },
+      {
+        "id": "software-13",
+        "domain": "ingenieria",
+        "source_type": "link",
+        "title": "La cuerda andon de Toyota",
+        "thesis": "En las plantas de Toyota cualquier operario puede tirar de la cuerda andon y frenar la línea si detecta un problema.",
+        "principle": "Dar a quien está más cerca del problema el poder de detener todo hace que los defectos no viajen."
+      },
+      {
+        "id": "software-14",
+        "domain": "ingenieria",
+        "source_type": "text",
+        "title": "Factor de seguridad",
+        "thesis": "Los ingenieros calculan puentes y estructuras para soportar varias veces la carga que se espera que reciban.",
+        "principle": "Diseñar con holgura sobre lo esperado absorbe lo que el cálculo no pudo prever."
+      },
+      {
+        "id": "software-15",
+        "domain": "deporte",
+        "source_type": "link",
+        "title": "Ganancias marginales",
+        "thesis": "Dave Brailsford llevó al ciclismo británico a la cima buscando mejoras mínimas en todo, desde la aerodinámica hasta las almohadas.",
+        "principle": "Muchas mejoras mínimas en todos los frentes suman una ventaja que ninguna mejora grande logra sola."
+      },
+      {
+        "id": "software-16",
+        "domain": "deporte",
+        "source_type": "text",
+        "title": "Moneyball de los Athletics",
+        "thesis": "Los Oakland Athletics de 2002 compitieron con poco presupuesto fichando jugadores que se embasaban mucho y el mercado subvaluaba.",
+        "principle": "Cuando todos valoran con el mismo criterio, la ventaja está en medir lo que los demás ignoran."
+      },
+      {
+        "id": "software-17",
+        "domain": "juegos",
+        "source_type": "text",
+        "title": "Checkpoints antes del jefe",
+        "thesis": "Los videojuegos ubican puntos de guardado antes de las partes difíciles para que fallar no obligue a repetir todo.",
+        "principle": "Puntos de restauración frecuentes abaratan el error y animan a intentar."
+      },
+      {
+        "id": "software-18",
+        "domain": "juegos",
+        "source_type": "voice",
+        "title": "El nivel 1-1 de Mario",
+        "thesis": "El primer nivel de Super Mario Bros. enseña a saltar, esquivar y agarrar hongos sin una sola línea de texto.",
+        "principle": "Un primer tramo diseñado para que se aprenda haciendo reemplaza cualquier instrucción."
+      },
+      {
+        "id": "software-19",
+        "domain": "matematicas",
+        "source_type": "text",
+        "title": "Ley de Little",
+        "thesis": "En cualquier fila estable, la cantidad promedio de elementos es igual a la tasa de llegada por el tiempo promedio que pasa cada uno.",
+        "principle": "Para acortar la espera sin cambiar la demanda hay que reducir lo que está en curso a la vez."
+      },
+      {
+        "id": "software-20",
+        "domain": "matematicas",
+        "source_type": "link",
+        "title": "La regla del 37%",
+        "thesis": "Para elegir el mejor de una serie que se ve de a uno, conviene descartar el primer 37% y quedarse con el siguiente que supere a todos.",
+        "principle": "Un umbral calibrado con una muestra inicial convierte una elección incierta en una regla simple."
+      },
+      {
+        "id": "software-21",
+        "domain": "historia",
+        "source_type": "image",
+        "title": "Código Morse y frecuencia",
+        "thesis": "El código Morse asignó los códigos más cortos a las letras más usadas en inglés, como la E, que es un solo punto.",
+        "principle": "Asignar lo más corto a lo más frecuente ahorra más que acortar todo por igual."
+      },
+      {
+        "id": "software-22",
+        "domain": "economia",
+        "source_type": "selection",
+        "title": "Ley de Goodhart",
+        "thesis": "Cuando una medida se convierte en objetivo deja de ser una buena medida, porque la gente empieza a optimizar el número.",
+        "principle": "Premiar un indicador hace que se optimice el indicador y no lo que medía."
+      },
+      {
+        "id": "software-23",
+        "domain": "economia",
+        "source_type": "link",
+        "title": "Paradoja de Jevons",
+        "thesis": "William Jevons notó que las máquinas de vapor más eficientes no redujeron el consumo de carbón en Inglaterra: lo aumentaron.",
+        "principle": "Abaratar el uso de un recurso puede aumentar su consumo total en vez de reducirlo."
+      },
+      {
+        "id": "software-24",
+        "domain": "musica",
+        "source_type": "voice",
+        "title": "Practicar lento con metrónomo",
+        "thesis": "Los músicos estudian los pasajes difíciles a un tempo lento sin errores y suben la velocidad de a poco con el metrónomo.",
+        "principle": "Lo que se repite queda grabado tal cual, errores incluidos: la precisión se construye antes que la velocidad."
+      }
+    ],
+    "content": [
+      {
+        "id": "content-01",
+        "domain": "literatura",
+        "source_type": "selection",
+        "title": "La teoría del iceberg",
+        "thesis": "Hemingway sostenía que si el escritor conoce bien lo que omite, el lector siente esas partes como si estuvieran escritas.",
+        "principle": "La profundidad se transmite mejor sugerida que explicada, siempre que quien sugiere sepa lo que calla."
+      },
+      {
+        "id": "content-02",
+        "domain": "literatura",
+        "source_type": "selection",
+        "title": "Primeros borradores malos",
+        "thesis": "Anne Lamott defiende escribir primeros borradores malos a propósito, porque sin ellos no hay material para corregir.",
+        "principle": "Separar producir de juzgar destraba la cantidad que después permite la calidad."
+      },
+      {
+        "id": "content-03",
+        "domain": "marketing",
+        "source_type": "link",
+        "title": "La vaca púrpura",
+        "thesis": "Seth Godin plantea que en un mercado saturado lo seguro es invisible: solo se recomienda lo que es notable.",
+        "principle": "Cuando todo compite por atención, lo correcto pasa desapercibido y solo lo distinto se difunde."
+      },
+      {
+        "id": "content-04",
+        "domain": "cine",
+        "source_type": "link",
+        "title": "El Braintrust de Pixar",
+        "thesis": "En Pixar un grupo de directores critica con franqueza las películas en proceso, pero el director decide qué hacer con esas notas.",
+        "principle": "Separar a quien da la crítica de quien decide permite franqueza sin quitar autoría."
+      },
+      {
+        "id": "content-05",
+        "domain": "biologia",
+        "source_type": "text",
+        "title": "La cola del pavo real",
+        "thesis": "Según el principio del handicap, la cola del pavo real es tan costosa que solo un macho sano puede lucirla, y por eso es creíble.",
+        "principle": "Una señal es confiable cuando fingirla cuesta demasiado."
+      },
+      {
+        "id": "content-06",
+        "domain": "biologia",
+        "source_type": "link",
+        "title": "Especies pioneras",
+        "thesis": "Después de un incendio, las primeras plantas que crecen preparan el suelo y la sombra para las especies que las van a reemplazar.",
+        "principle": "Lo primero que ocupa un terreno vacío casi nunca es lo que queda, pero hace posible lo que viene."
+      },
+      {
+        "id": "content-07",
+        "domain": "psicologia",
+        "source_type": "link",
+        "title": "Efecto de mera exposición",
+        "thesis": "Robert Zajonc mostró que ver algo varias veces, aunque no se lo note, alcanza para que guste más.",
+        "principle": "La familiaridad, por sí sola, genera preferencia."
+      },
+      {
+        "id": "content-08",
+        "domain": "psicologia",
+        "source_type": "text",
+        "title": "Regla del pico y el final",
+        "thesis": "Kahneman encontró que juzgamos una experiencia por su momento más intenso y por cómo terminó, no por el promedio.",
+        "principle": "El recuerdo de una experiencia se arma con su momento más intenso y su cierre."
+      },
+      {
+        "id": "content-09",
+        "domain": "musica",
+        "source_type": "link",
+        "title": "Intros cada vez más cortas",
+        "thesis": "En las últimas décadas las intros de las canciones pop se acortaron y la voz entra antes, en parte porque saltear se volvió fácil.",
+        "principle": "Cuando abandonar cuesta un gesto, el valor tiene que aparecer antes de que llegue la duda."
+      },
+      {
+        "id": "content-10",
+        "domain": "musica",
+        "source_type": "image",
+        "title": "Estrategias oblicuas de Eno",
+        "thesis": "Brian Eno y Peter Schmidt crearon un mazo de cartas con consignas raras para sacar una sesión de grabación de un bloqueo.",
+        "principle": "Una restricción al azar que llega de afuera rompe el circuito de las opciones de siempre."
+      },
+      {
+        "id": "content-11",
+        "domain": "deporte",
+        "source_type": "voice",
+        "title": "Rutina antes del tiro libre",
+        "thesis": "Los basquetbolistas repiten la misma rutina antes de cada tiro libre para que la presión del partido no cambie el gesto.",
+        "principle": "Un ritual fijo antes de actuar baja la variabilidad que mete la presión."
+      },
+      {
+        "id": "content-12",
+        "domain": "historia",
+        "source_type": "pdf",
+        "title": "Las fórmulas homéricas",
+        "thesis": "Milman Parry mostró que los epítetos repetidos de Homero eran piezas listas que permitían a los aedos componer versos en vivo.",
+        "principle": "Un repertorio de piezas prearmadas libera la cabeza para improvisar el resto sin perder el ritmo."
+      },
+      {
+        "id": "content-13",
+        "domain": "educacion",
+        "source_type": "selection",
+        "title": "Franklin reescribe el Spectator",
+        "thesis": "Benjamin Franklin aprendió a escribir resumiendo ensayos del Spectator, reescribiéndolos días después y comparándolos con el original.",
+        "principle": "Reconstruir una obra ajena de memoria y compararla muestra exactamente dónde está la distancia."
+      },
+      {
+        "id": "content-14",
+        "domain": "educacion",
+        "source_type": "link",
+        "title": "Práctica de recuperación",
+        "thesis": "Estudiantes que se tomaron pruebas a sí mismos recordaron más días después que los que releyeron el mismo texto varias veces.",
+        "principle": "Sacar algo de la memoria lo fija más que volver a meterlo."
+      },
+      {
+        "id": "content-15",
+        "domain": "economia",
+        "source_type": "text",
+        "title": "Interés compuesto",
+        "thesis": "Con interés compuesto, los intereses de cada período se suman al capital y generan sus propios intereses.",
+        "principle": "Lo que rinde sobre lo ya acumulado crece lento al principio y explosivo después."
+      },
+      {
+        "id": "content-16",
+        "domain": "sociedad",
+        "source_type": "pdf",
+        "title": "El experimento MusicLab",
+        "thesis": "En MusicLab las mismas canciones tuvieron éxitos muy distintos en mundos paralelos donde la gente veía cuántas descargas tenía cada una.",
+        "principle": "Cuando la gente ve lo que eligen otros, pequeñas ventajas iniciales deciden ganadores casi al azar."
+      },
+      {
+        "id": "content-17",
+        "domain": "cocina",
+        "source_type": "voice",
+        "title": "Fermentación en frío",
+        "thesis": "Dejar la masa de pan en la heladera durante la noche hace la fermentación más lenta y le da más sabor.",
+        "principle": "Darle más tiempo a un proceso a menor intensidad desarrolla matices que el apuro no permite."
+      },
+      {
+        "id": "content-18",
+        "domain": "arte",
+        "source_type": "image",
+        "title": "Las series de Monet",
+        "thesis": "Monet pintó la misma catedral de Ruan y las mismas parvas de heno decenas de veces, a distintas horas y estaciones.",
+        "principle": "Repetir el mismo motivo bajo condiciones distintas vuelve visible lo que cambia."
+      },
+      {
+        "id": "content-19",
+        "domain": "filosofia",
+        "source_type": "text",
+        "title": "La navaja de Ockham",
+        "thesis": "Entre dos explicaciones que dan cuenta de lo mismo, conviene preferir la que necesita menos supuestos.",
+        "principle": "Entre explicaciones que funcionan igual, la más simple es la mejor apuesta."
+      },
+      {
+        "id": "content-20",
+        "domain": "matematicas",
+        "source_type": "text",
+        "title": "Regresión a la media",
+        "thesis": "Después de un resultado extremo, el siguiente suele quedar más cerca del promedio por puro azar, no porque algo haya cambiado.",
+        "principle": "Lo excepcional se explica en parte por la suerte, y la suerte no se repite a pedido."
+      },
+      {
+        "id": "content-21",
+        "domain": "fisica",
+        "source_type": "link",
+        "title": "Masa crítica",
+        "thesis": "Una reacción nuclear en cadena se sostiene sola solo si cada fisión provoca, en promedio, al menos otra fisión.",
+        "principle": "Un proceso se alimenta solo recién cuando cada evento dispara en promedio más de uno nuevo."
+      },
+      {
+        "id": "content-22",
+        "domain": "ambiente",
+        "source_type": "link",
+        "title": "Efecto borde",
+        "thesis": "Las zonas de transición entre dos ecosistemas, como un bosque y una pradera, suelen tener más especies que cada uno por separado.",
+        "principle": "Donde se tocan dos mundos aparece una diversidad que ninguno tiene por su cuenta."
+      },
+      {
+        "id": "content-23",
+        "domain": "salud",
+        "source_type": "link",
+        "title": "Caminar para pensar",
+        "thesis": "En un estudio de Stanford, las personas generaron más ideas originales mientras caminaban que sentadas.",
+        "principle": "Un movimiento automático del cuerpo libera a la mente para asociar con menos filtro."
+      },
+      {
+        "id": "content-24",
+        "domain": "arquitectura",
+        "source_type": "selection",
+        "title": "Ojos en la calle",
+        "thesis": "Jane Jacobs observó que las veredas con comercios y gente a toda hora son más seguras porque siempre hay alguien mirando.",
+        "principle": "La vigilancia repartida entre muchos presentes cuida mejor que un guardián central."
+      }
+    ],
+    "business": [
+      {
+        "id": "business-01",
+        "domain": "negocios",
+        "source_type": "link",
+        "title": "Memos de seis páginas",
+        "thesis": "En las reuniones directivas de Amazon no se usan diapositivas: se empieza leyendo en silencio un memo narrativo de seis páginas.",
+        "principle": "Empezar leyendo todos el mismo material pone al grupo en el mismo punto antes de opinar."
+      },
+      {
+        "id": "business-02",
+        "domain": "negocios",
+        "source_type": "link",
+        "title": "Hacer cosas que no escalan",
+        "thesis": "Paul Graham aconseja que una startup consiga sus primeros usuarios a mano, uno por uno, aunque no sea sostenible.",
+        "principle": "Al principio, el esfuerzo manual enseña lo que ninguna automatización puede enseñar."
+      },
+      {
+        "id": "business-03",
+        "domain": "negocios",
+        "source_type": "text",
+        "title": "El milkshake de Christensen",
+        "thesis": "Clayton Christensen descubrió que muchos compraban milkshakes a la mañana para hacer más llevadero el viaje al trabajo.",
+        "principle": "Lo que la gente compra se entiende por el trabajo que le encarga, no por las características del producto."
+      },
+      {
+        "id": "business-04",
+        "domain": "tecnologia",
+        "source_type": "link",
+        "title": "Cuarenta y un tonos de azul",
+        "thesis": "Google probó 41 tonos de azul para sus links y se quedó con el que generaba más clics, en vez de elegir por gusto.",
+        "principle": "Ante opciones parecidas, dejar que el comportamiento real decida le gana a la opinión del que manda."
+      },
+      {
+        "id": "business-05",
+        "domain": "economia",
+        "source_type": "text",
+        "title": "Ventaja comparativa",
+        "thesis": "David Ricardo mostró que a dos países les conviene comerciar aunque uno produzca todo mejor, si cada uno se especializa en lo que le cuesta menos.",
+        "principle": "Conviene delegar incluso lo que uno hace mejor si su tiempo rinde todavía más en otra cosa."
+      },
+      {
+        "id": "business-06",
+        "domain": "biologia",
+        "source_type": "text",
+        "title": "Estrategias r y K",
+        "thesis": "Algunas especies tienen muchísimas crías y casi no las cuidan; otras tienen pocas y las crían durante años.",
+        "principle": "Se puede ganar con muchos intentos baratos o con pocos intentos muy cuidados, y cada entorno premia uno."
+      },
+      {
+        "id": "business-07",
+        "domain": "biologia",
+        "source_type": "link",
+        "title": "La Reina Roja",
+        "thesis": "Según la hipótesis de la Reina Roja, las especies tienen que evolucionar sin parar solo para no perder terreno frente a rivales que también cambian.",
+        "principle": "En un entorno competitivo, mejorar no da ventaja si los demás mejoran igual: quedarse quieto es retroceder."
+      },
+      {
+        "id": "business-08",
+        "domain": "psicologia",
+        "source_type": "link",
+        "title": "El premortem de Gary Klein",
+        "thesis": "Gary Klein propone que, antes de arrancar un proyecto, el equipo imagine que ya fracasó y escriba por qué pasó.",
+        "principle": "Suponer el fracaso como un hecho ya ocurrido libera críticas que el optimismo del grupo tapaba."
+      },
+      {
+        "id": "business-09",
+        "domain": "psicologia",
+        "source_type": "selection",
+        "title": "Aversión a la pérdida",
+        "thesis": "Kahneman y Tversky mostraron que perder algo duele más o menos el doble de lo que alegra ganar algo del mismo valor.",
+        "principle": "Perder pesa más que ganar, así que proteger lo que alguien ya tiene mueve más que prometerle algo nuevo."
+      },
+      {
+        "id": "business-10",
+        "domain": "deporte",
+        "source_type": "selection",
+        "title": "Barrer el vestuario",
+        "thesis": "En los All Blacks, los propios jugadores, incluidas las estrellas, limpian el vestuario antes de irse.",
+        "principle": "Cuando los referentes hacen las tareas humildes, la responsabilidad se contagia hacia todo el grupo."
+      },
+      {
+        "id": "business-11",
+        "domain": "cocina",
+        "source_type": "voice",
+        "title": "La sal del chucrut",
+        "thesis": "En el chucrut la sal frena a las bacterias que pudren y deja crecer a las lácticas, que acidifican y conservan el repollo.",
+        "principle": "Más que eliminar lo dañino, conviene crear condiciones en las que lo útil le gane."
+      },
+      {
+        "id": "business-12",
+        "domain": "historia",
+        "source_type": "link",
+        "title": "Acciones de la VOC",
+        "thesis": "La Compañía Holandesa de las Indias Orientales fue de las primeras en vender acciones al público para financiar viajes muy riesgosos.",
+        "principle": "Dividir un riesgo enorme en partes chicas y transferibles permite que muchos lo financien."
+      },
+      {
+        "id": "business-13",
+        "domain": "historia",
+        "source_type": "pdf",
+        "title": "Contabilidad por partida doble",
+        "thesis": "La partida doble, que Luca Pacioli describió en 1494, registra cada movimiento dos veces para que los errores salten solos.",
+        "principle": "Registrar cada hecho desde dos lados crea una verificación automática que delata las inconsistencias."
+      },
+      {
+        "id": "business-14",
+        "domain": "ingenieria",
+        "source_type": "text",
+        "title": "Kanban de Toyota",
+        "thesis": "En el sistema kanban de Toyota una tarjeta autoriza producir una pieza solo cuando el proceso siguiente consumió la anterior.",
+        "principle": "Que la demanda real tire del trabajo, en vez de empujarlo por pronóstico, evita acumular lo que nadie pidió."
+      },
+      {
+        "id": "business-15",
+        "domain": "ingenieria",
+        "source_type": "selection",
+        "title": "Teoría de las restricciones",
+        "thesis": "Eliyahu Goldratt mostró en La meta que el rendimiento de una planta lo fija su máquina más lenta, no el resto.",
+        "principle": "Mejorar cualquier parte que no sea el punto más lento es esfuerzo perdido."
+      },
+      {
+        "id": "business-16",
+        "domain": "matematicas",
+        "source_type": "link",
+        "title": "Toma y daca de Axelrod",
+        "thesis": "En los torneos de dilema del prisionero de Robert Axelrod ganó la estrategia de cooperar primero y después copiar lo que hizo el otro.",
+        "principle": "Empezar cooperando y responder en espejo construye confianza sin dejarse explotar."
+      },
+      {
+        "id": "business-17",
+        "domain": "matematicas",
+        "source_type": "image",
+        "title": "Los aviones de Abraham Wald",
+        "thesis": "Abraham Wald recomendó blindar los aviones donde los que volvían no tenían agujeros, porque los heridos ahí no volvían.",
+        "principle": "Lo que no volvió para ser medido suele explicar más que lo que sí volvió."
+      },
+      {
+        "id": "business-18",
+        "domain": "arquitectura",
+        "source_type": "pdf",
+        "title": "Capas de un edificio",
+        "thesis": "Stewart Brand describe los edificios en capas que cambian a distinta velocidad: terreno, estructura, fachada, instalaciones, distribución y muebles.",
+        "principle": "Separar las capas según la velocidad a la que cambian deja renovar lo rápido sin tocar lo lento."
+      },
+      {
+        "id": "business-19",
+        "domain": "salud",
+        "source_type": "image",
+        "title": "El mapa de John Snow",
+        "thesis": "En 1854 John Snow ubicó en un mapa los casos de cólera de Londres y señaló como foco común una bomba de agua de Broad Street.",
+        "principle": "Ubicar los casos en un mapa revela un origen compartido que una lista nunca muestra."
+      },
+      {
+        "id": "business-20",
+        "domain": "ambiente",
+        "source_type": "link",
+        "title": "Hambruna irlandesa de la papa",
+        "thesis": "Irlanda dependía de casi una sola variedad de papa, y cuando llegó el tizón en 1845 la plaga arrasó con las cosechas del país.",
+        "principle": "Depender de una sola variedad hace que una sola amenaza alcance para tumbar todo."
+      },
+      {
+        "id": "business-21",
+        "domain": "musica",
+        "source_type": "link",
+        "title": "Orquesta sin director",
+        "thesis": "La Orquesta de Cámara Orpheus toca sin director: los músicos rotan quién lidera según la obra.",
+        "principle": "Rotar el liderazgo según la tarea pone al frente a quien más sabe de cada parte."
+      },
+      {
+        "id": "business-22",
+        "domain": "sociedad",
+        "source_type": "text",
+        "title": "Número de Dunbar",
+        "thesis": "Robin Dunbar estimó que una persona puede sostener unas 150 relaciones estables, y muchos grupos humanos se parten cerca de ese tamaño.",
+        "principle": "Los grupos tienen un tamaño a partir del cual la confianza personal ya no alcanza y hacen falta reglas."
+      },
+      {
+        "id": "business-23",
+        "domain": "filosofia",
+        "source_type": "selection",
+        "title": "Dicotomía del control",
+        "thesis": "Epicteto enseñaba a separar lo que depende de uno de lo que no, y ocuparse solo de lo primero.",
+        "principle": "Concentrar el esfuerzo en lo que depende de uno convierte la ansiedad en acción."
+      },
+      {
+        "id": "business-24",
+        "domain": "juegos",
+        "source_type": "voice",
+        "title": "Resultadismo en el póker",
+        "thesis": "Annie Duke, ex jugadora de póker profesional, advierte que juzgar una decisión por su resultado confunde la suerte con el criterio.",
+        "principle": "La calidad de una decisión se evalúa por la información y el razonamiento que tuvo, no por cómo salió."
+      }
+    ],
+    "design": [
+      {
+        "id": "design-01",
+        "domain": "diseno",
+        "source_type": "link",
+        "title": "Puertas de Norman",
+        "thesis": "Hay puertas con manijas que invitan a tirar cuando hay que empujar, y la gente se equivoca aunque haya un cartel.",
+        "principle": "Cuando la forma contradice la instrucción, gana la forma."
+      },
+      {
+        "id": "design-02",
+        "domain": "diseno",
+        "source_type": "selection",
+        "title": "Menos, pero mejor",
+        "thesis": "Dieter Rams sostenía que un buen producto es discreto como una herramienta y deja lugar a quien lo usa.",
+        "principle": "Lo que se usa todos los días tiene que callarse para que se luzca lo que la persona hace con él."
+      },
+      {
+        "id": "design-03",
+        "domain": "arte",
+        "source_type": "image",
+        "title": "Los recortes de Matisse",
+        "thesis": "Cuando la enfermedad le hizo difícil pintar, Matisse empezó a recortar papeles pintados con tijera y abrió una etapa nueva.",
+        "principle": "Una limitación física puede abrir un lenguaje nuevo en vez de cerrar el viejo."
+      },
+      {
+        "id": "design-04",
+        "domain": "arte",
+        "source_type": "image",
+        "title": "Kintsugi, la grieta dorada",
+        "thesis": "El kintsugi japonés repara la cerámica rota con laca y polvo de oro, y deja la grieta a la vista en vez de esconderla.",
+        "principle": "Mostrar la reparación como parte de la historia convierte el daño en valor."
+      },
+      {
+        "id": "design-05",
+        "domain": "ingenieria",
+        "source_type": "link",
+        "title": "Tren bala y martín pescador",
+        "thesis": "La nariz del Shinkansen serie 500 imita el pico del martín pescador para reducir el estruendo al salir de los túneles.",
+        "principle": "Buscar quién ya resolvió el mismo problema físico en otro mundo ahorra años de prueba."
+      },
+      {
+        "id": "design-06",
+        "domain": "biologia",
+        "source_type": "image",
+        "title": "Guías de néctar ultravioletas",
+        "thesis": "Muchas flores tienen dibujos que solo se ven en ultravioleta y que guían a las abejas hasta el néctar.",
+        "principle": "Una señal pensada para su usuario puede ser invisible para todos los demás."
+      },
+      {
+        "id": "design-07",
+        "domain": "biologia",
+        "source_type": "link",
+        "title": "El panal hexagonal",
+        "thesis": "Las celdas hexagonales del panal dividen el espacio usando la menor cantidad de cera, algo que Thomas Hales demostró en 1999.",
+        "principle": "La forma que mejor reparte un recurso escaso aparece sola cuando la presión es constante."
+      },
+      {
+        "id": "design-08",
+        "domain": "psicologia",
+        "source_type": "link",
+        "title": "Efecto estética-usabilidad",
+        "thesis": "En estudios de Kurosu y Kashimura, las interfaces más lindas se percibieron como más fáciles de usar aunque funcionaran igual.",
+        "principle": "Lo que agrada a primera vista recibe más paciencia ante sus fallas."
+      },
+      {
+        "id": "design-09",
+        "domain": "psicologia",
+        "source_type": "link",
+        "title": "El gorila invisible",
+        "thesis": "En el experimento de Simons y Chabris, cerca de la mitad de quienes contaban pases no vio a una persona disfrazada de gorila cruzar la escena.",
+        "principle": "Lo que la atención no busca no se ve, aunque esté en el centro."
+      },
+      {
+        "id": "design-10",
+        "domain": "psicologia",
+        "source_type": "text",
+        "title": "Efecto IKEA",
+        "thesis": "Las personas valoran más un mueble que armaron ellas mismas que uno idéntico que les dieron armado.",
+        "principle": "Participar en la construcción de algo hace que se lo valore más."
+      },
+      {
+        "id": "design-11",
+        "domain": "musica",
+        "source_type": "link",
+        "title": "La guerra del volumen",
+        "thesis": "Durante años cada disco se masterizó más fuerte que el anterior para destacarse, y la música perdió dinámica.",
+        "principle": "Una escalada de intensidad entre competidores borra el contraste que le daba sentido a la intensidad."
+      },
+      {
+        "id": "design-12",
+        "domain": "cine",
+        "source_type": "text",
+        "title": "Regla de los 180 grados",
+        "thesis": "En una escena de diálogo la cámara se queda de un lado de una línea imaginaria para que el público no pierda quién mira a quién.",
+        "principle": "Mantener un eje de referencia fijo permite orientarse sin darse cuenta."
+      },
+      {
+        "id": "design-13",
+        "domain": "cocina",
+        "source_type": "voice",
+        "title": "Una pizca de sal dulce",
+        "thesis": "Una pizca de sal en un postre baja el amargor y hace que lo dulce se sienta más claro.",
+        "principle": "Una dosis mínima de lo opuesto realza el carácter principal en vez de taparlo."
+      },
+      {
+        "id": "design-14",
+        "domain": "historia",
+        "source_type": "pdf",
+        "title": "Señales viales de Kinneir y Calvert",
+        "thesis": "Jock Kinneir y Margaret Calvert diseñaron las señales viales británicas con minúsculas porque la forma de la palabra se reconoce mejor a velocidad.",
+        "principle": "Lo que se lee en movimiento necesita formas reconocibles por su contorno, no solo letras correctas."
+      },
+      {
+        "id": "design-15",
+        "domain": "historia",
+        "source_type": "link",
+        "title": "Los talleres de la Bauhaus",
+        "thesis": "En la primera Bauhaus cada taller tenía dos maestros: un artista que enseñaba la forma y un artesano que enseñaba el oficio.",
+        "principle": "Juntar a quien imagina con quien fabrica acorta la distancia entre la idea y el objeto."
+      },
+      {
+        "id": "design-16",
+        "domain": "deporte",
+        "source_type": "text",
+        "title": "El salto Fosbury",
+        "thesis": "Dick Fosbury ganó el oro en 1968 saltando de espaldas, algo posible porque los colchones de goma espuma reemplazaron a la arena.",
+        "principle": "Un cambio en el entorno habilita técnicas que antes eran absurdas o peligrosas."
+      },
+      {
+        "id": "design-17",
+        "domain": "juegos",
+        "source_type": "voice",
+        "title": "Coyote time",
+        "thesis": "Muchos juegos de plataformas dejan saltar unos instantes después de haber salido del borde, y el jugador ni lo nota.",
+        "principle": "Perdonar en silencio un error mínimo hace que la persona se sienta más hábil de lo que fue."
+      },
+      {
+        "id": "design-18",
+        "domain": "matematicas",
+        "source_type": "image",
+        "title": "Teselado de Penrose",
+        "thesis": "Roger Penrose encontró dos piezas que cubren el plano sin huecos con un patrón que nunca se repite.",
+        "principle": "Dos piezas simples con reglas de encastre pueden generar un orden que nunca se repite."
+      },
+      {
+        "id": "design-19",
+        "domain": "salud",
+        "source_type": "pdf",
+        "title": "Una ventana con árboles",
+        "thesis": "Roger Ulrich encontró que los pacientes operados con vista a árboles se recuperaron antes y pidieron menos analgésicos que los que veían una pared.",
+        "principle": "El entorno que se ve influye en cómo se recupera quien lo mira."
+      },
+      {
+        "id": "design-20",
+        "domain": "filosofia",
+        "source_type": "text",
+        "title": "El velo de la ignorancia",
+        "thesis": "John Rawls propuso elegir las reglas de una sociedad sin saber qué lugar se va a ocupar en ella.",
+        "principle": "Diseñar sin saber qué lugar se va a ocupar empuja a reglas que cuidan al peor ubicado."
+      },
+      {
+        "id": "design-21",
+        "domain": "sociedad",
+        "source_type": "link",
+        "title": "El efecto rampa",
+        "thesis": "Las rampas en las esquinas se hicieron para sillas de ruedas y hoy las usan cochecitos, valijas, bicicletas y repartidores.",
+        "principle": "Resolver para el caso extremo suele mejorar la experiencia de todos."
+      },
+      {
+        "id": "design-22",
+        "domain": "literatura",
+        "source_type": "text",
+        "title": "La pirámide invertida",
+        "thesis": "En la noticia periodística clásica lo más importante va primero y los detalles después, en orden decreciente.",
+        "principle": "Ordenar de lo esencial a lo accesorio deja que cada uno corte donde quiera sin perder lo clave."
+      },
+      {
+        "id": "design-23",
+        "domain": "educacion",
+        "source_type": "link",
+        "title": "Control del error Montessori",
+        "thesis": "Los materiales Montessori están hechos para que el chico vea solo si se equivocó, por ejemplo un cilindro que no entra en su hueco.",
+        "principle": "Cuando el material mismo muestra el error, se aprende sin depender de que alguien corrija."
+      },
+      {
+        "id": "design-24",
+        "domain": "economia",
+        "source_type": "selection",
+        "title": "Efecto señuelo",
+        "thesis": "Dan Ariely mostró que agregar una suscripción que casi nadie elegiría cambiaba cuál de las otras opciones compraba la gente.",
+        "principle": "Agregar una opción que nadie elige cambia cuál de las otras parece la mejor."
+      }
+    ],
+    "curiosity": [
+      {
+        "id": "curiosity-01",
+        "domain": "fisica",
+        "source_type": "image",
+        "title": "Fluido no newtoniano",
+        "thesis": "Una mezcla de maicena y agua deja hundir la mano despacio, pero se pone dura como sólido si se la golpea.",
+        "principle": "Hay sistemas que ceden ante la presión lenta y se endurecen ante el golpe brusco."
+      },
+      {
+        "id": "curiosity-02",
+        "domain": "fisica",
+        "source_type": "text",
+        "title": "Los péndulos de Huygens",
+        "thesis": "En 1665 Christiaan Huygens notó que dos relojes de péndulo colgados de la misma viga terminaban oscilando sincronizados.",
+        "principle": "Dos ritmos que comparten un soporte terminan acoplándose a través de él."
+      },
+      {
+        "id": "curiosity-03",
+        "domain": "quimica",
+        "source_type": "link",
+        "title": "La lágrima de Batavia",
+        "thesis": "Una gota de vidrio templado en agua fría resiste martillazos en la cabeza, pero estalla entera si se le quiebra la cola.",
+        "principle": "La tensión interna que da fuerza también puede volver todo frágil ante un solo punto débil."
+      },
+      {
+        "id": "curiosity-04",
+        "domain": "quimica",
+        "source_type": "link",
+        "title": "Hormigón romano marino",
+        "thesis": "Los muelles romanos se volvieron más resistentes con los siglos porque el agua de mar hizo crecer cristales nuevos dentro del hormigón.",
+        "principle": "Un material que reacciona con su entorno puede fortalecerse con lo que debería desgastarlo."
+      },
+      {
+        "id": "curiosity-05",
+        "domain": "biologia",
+        "source_type": "image",
+        "title": "Neotenia del ajolote",
+        "thesis": "El ajolote conserva las branquias y el aspecto de larva toda su vida y aun así se reproduce.",
+        "principle": "Conservar rasgos de la etapa temprana puede ser una ventaja y no un atraso."
+      },
+      {
+        "id": "curiosity-06",
+        "domain": "biologia",
+        "source_type": "link",
+        "title": "Ecolocalización de murciélagos",
+        "thesis": "Los murciélagos emiten chillidos y, por el eco que vuelve, saben la distancia y la forma de lo que tienen adelante.",
+        "principle": "Emitir una señal y leer lo que vuelve permite ver donde no hay luz."
+      },
+      {
+        "id": "curiosity-07",
+        "domain": "historia",
+        "source_type": "pdf",
+        "title": "El cronómetro de Harrison",
+        "thesis": "El problema de medir la longitud en el mar lo resolvió John Harrison, un carpintero y relojero, mientras los astrónomos buscaban la respuesta en el cielo.",
+        "principle": "Un problema que los expertos encaran desde un lado puede resolverlo alguien que entra desde otro oficio."
+      },
+      {
+        "id": "curiosity-08",
+        "domain": "historia",
+        "source_type": "text",
+        "title": "Origen de la cuarentena",
+        "thesis": "La palabra cuarentena viene de los cuarenta días que Venecia hacía esperar a los barcos durante las epidemias de peste.",
+        "principle": "Aislar durante un tiempo fijo lo que llega de afuera da margen para que lo dañino se revele."
+      },
+      {
+        "id": "curiosity-09",
+        "domain": "matematicas",
+        "source_type": "link",
+        "title": "Paradoja de Braess",
+        "thesis": "Agregar una ruta nueva a una red de tránsito puede hacer que todos tarden más, porque cada conductor elige lo mejor para sí.",
+        "principle": "Agregar capacidad a una red puede empeorarla si cada uno elige solo lo mejor para sí."
+      },
+      {
+        "id": "curiosity-10",
+        "domain": "matematicas",
+        "source_type": "pdf",
+        "title": "Redes de mundo pequeño",
+        "thesis": "Watts y Strogatz mostraron que unos pocos enlaces al azar en una red ordenada acortan muchísimo la distancia entre cualquier par de nodos.",
+        "principle": "Unos pocos atajos al azar alcanzan para que una red enorme quede a pocos pasos de distancia."
+      },
+      {
+        "id": "curiosity-11",
+        "domain": "psicologia",
+        "source_type": "link",
+        "title": "Palomas supersticiosas de Skinner",
+        "thesis": "Skinner daba comida a palomas a intervalos fijos sin importar lo que hicieran, y cada una repetía el movimiento que hacía cuando llegó la comida.",
+        "principle": "Cuando la recompensa llega al azar, cualquier gesto que coincida con ella pasa a parecer la causa."
+      },
+      {
+        "id": "curiosity-12",
+        "domain": "psicologia",
+        "source_type": "text",
+        "title": "El verbo cambia el recuerdo",
+        "thesis": "En el experimento de Loftus y Palmer, preguntar a qué velocidad se 'estrellaron' los autos hizo recordar más rápido el choque que decir 'chocaron'.",
+        "principle": "La forma de una pregunta puede reescribir el recuerdo que intenta recuperar."
+      },
+      {
+        "id": "curiosity-13",
+        "domain": "musica",
+        "source_type": "voice",
+        "title": "La fundamental ausente",
+        "thesis": "Aunque un parlante chico no reproduzca la nota grave de un bajo, el oído la escucha igual a partir de sus armónicos.",
+        "principle": "La mente completa lo que falta si recibe el patrón que lo implica."
+      },
+      {
+        "id": "curiosity-14",
+        "domain": "cocina",
+        "source_type": "link",
+        "title": "Nixtamalización del maíz",
+        "thesis": "Cocinar el maíz con cal libera la niacina; cuando Europa adoptó el maíz sin esa técnica aparecieron epidemias de pelagra.",
+        "principle": "Trasplantar un elemento sin el proceso que lo acompañaba puede volver dañino lo que era beneficioso."
+      },
+      {
+        "id": "curiosity-15",
+        "domain": "cocina",
+        "source_type": "voice",
+        "title": "Ceviche sin fuego",
+        "thesis": "En el ceviche el jugo de limón cambia las proteínas del pescado y lo vuelve opaco y firme, como si se hubiera cocinado.",
+        "principle": "El mismo cambio puede lograrse por caminos distintos: lo que hace el calor también lo puede hacer el ácido."
+      },
+      {
+        "id": "curiosity-16",
+        "domain": "arte",
+        "source_type": "image",
+        "title": "Pentimentos bajo la pintura",
+        "thesis": "Las radiografías de cuadros antiguos muestran figuras borradas y posturas corregidas debajo de la pintura final.",
+        "principle": "Los cambios de rumbo quedan debajo de la obra terminada y cuentan cómo se llegó a ella."
+      },
+      {
+        "id": "curiosity-17",
+        "domain": "tecnologia",
+        "source_type": "link",
+        "title": "Paradoja de Moravec",
+        "thesis": "Para una computadora es más fácil ganarle al campeón de ajedrez que doblar una toalla o caminar por una casa desordenada.",
+        "principle": "Lo que parece fácil suele ser lo que más tiempo de evolución o práctica tiene detrás."
+      },
+      {
+        "id": "curiosity-18",
+        "domain": "filosofia",
+        "source_type": "text",
+        "title": "Principio de caridad",
+        "thesis": "El principio de caridad pide interpretar el argumento del otro en su versión más fuerte antes de discutirlo.",
+        "principle": "Discutir contra la mejor versión de una idea ajena enseña más que ganarle a la peor."
+      },
+      {
+        "id": "curiosity-19",
+        "domain": "sociedad",
+        "source_type": "link",
+        "title": "Los comunes de Ostrom",
+        "thesis": "Elinor Ostrom documentó pesquerías, bosques y sistemas de riego que las comunidades administran durante siglos sin agotarlos.",
+        "principle": "Las reglas que arman quienes las van a cumplir se respetan más que las impuestas desde afuera."
+      },
+      {
+        "id": "curiosity-20",
+        "domain": "ambiente",
+        "source_type": "link",
+        "title": "Protocolo de Montreal",
+        "thesis": "Después del Protocolo de Montreal de 1987 se dejaron de producir los gases que destruían el ozono y la capa se está recuperando.",
+        "principle": "Un acuerdo que ataca una causa concreta y medible puede revertir un daño global."
+      },
+      {
+        "id": "curiosity-21",
+        "domain": "deporte",
+        "source_type": "text",
+        "title": "El pelotón ciclista",
+        "thesis": "En el pelotón los ciclistas se turnan para ir adelante, porque los que van detrás gastan bastante menos energía contra el viento.",
+        "principle": "Turnarse al frente reparte el costo de abrir camino y deja que el grupo vaya más rápido que cualquiera solo."
+      },
+      {
+        "id": "curiosity-22",
+        "domain": "juegos",
+        "source_type": "link",
+        "title": "Comunidades de speedrun",
+        "thesis": "Los speedrunners comparten cada atajo y truco que encuentran, y los récords de juegos viejos siguen bajando décadas después.",
+        "principle": "Una comunidad que comparte cada descubrimiento mínimo empuja el límite más allá de lo que nadie lograría solo."
+      },
+      {
+        "id": "curiosity-23",
+        "domain": "literatura",
+        "source_type": "selection",
+        "title": "La biblioteca de Babel",
+        "thesis": "Borges imaginó una biblioteca con todos los libros posibles, donde encontrar uno con sentido es casi imposible.",
+        "principle": "Tenerlo todo sin un criterio para encontrar vale lo mismo que no tener nada."
+      },
+      {
+        "id": "curiosity-24",
+        "domain": "arquitectura",
+        "source_type": "image",
+        "title": "Torres de viento persas",
+        "thesis": "Las torres de viento de Irán captan la brisa en lo alto y la bajan a la casa, enfriándola sin gastar energía.",
+        "principle": "Aprovechar una diferencia que ya existe en el entorno resuelve sin gastar energía propia."
+      }
+    ]
+  }
+}

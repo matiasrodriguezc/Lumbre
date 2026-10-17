@@ -3,13 +3,16 @@
 // 1. Valida y, si hay adjunto, lo lee de capture-temp (y lo borra siempre, también si algo falla).
 // 2. Si se pidió destilar y hay con qué (link, archivo o texto de 30+ palabras), descuenta `distill` y destila.
 //    Confianza alta: ready; media: draft; baja o inaccesible: se guarda con la tesis de la persona o 422 needs_thesis.
-//    Si la IA falla, devuelve el crédito y guarda con la tesis.
+//    Si la IA falla, devuelve el crédito y guarda con la tesis. Sin consentimiento para la IA (profiles.ai_consent_at)
+//    no destila ni cobra: distillation = consent_required.
 // 3. Guarda cada concepto con capture_concept() y el JWT del usuario: valida, descuenta la captura y crea la
 //    categoría en una transacción, igual que si la app llamara directo.
 // 4. Embedding y dominio de la categoría. Si fallan, el concepto queda guardado y /process lo completa.
 
+import { requireDeviceIntegrity } from "../_shared/attest/guard.ts";
 import { Analytics } from "../_shared/analytics.ts";
 import { type Attachment, distill, type DistilledConcept } from "../_shared/ai/tasks.ts";
+import { checkAttachment, MAX_PDF_BYTES } from "../_shared/attachments.ts";
 import { toBase64 } from "../_shared/bytes.ts";
 import { CONCEPT_COLUMNS, classifyCategory, embedConcepts } from "../_shared/data.ts";
 import { ApiError, describeError, handler, json, readJson } from "../_shared/http.ts";
@@ -21,6 +24,7 @@ import {
   consumeCredit,
   dbError,
   effectivePlan,
+  hasAIConsent,
   refundCredit,
   requireUser,
   rpc,
@@ -30,9 +34,8 @@ import { cleanText, wordCount } from "../_shared/text.ts";
 
 const SOURCE_TYPES = ["text", "voice", "selection", "screenshot", "scan", "link", "image", "pdf"] as const;
 const MIME_TYPES = ["image/jpeg", "image/png", "application/pdf"] as const;
-const MAX_AI_BYTES = 20 * 1024 * 1024;
 
-type Outcome = "none" | "high" | "medium" | "quota_exceeded" | "unavailable";
+type Outcome = "none" | "high" | "medium" | "quota_exceeded" | "unavailable" | "consent_required";
 
 interface CaptureBody {
   thesis?: unknown;
@@ -94,11 +97,21 @@ function parse(body: CaptureBody, userId: string) {
 
 type Input = ReturnType<typeof parse>;
 
+/** Lee el adjunto. Null si se pasa de los límites para el modelo (paso 34): se guarda con la idea de la persona. */
 async function readAttachment(path: string, mimeType: Attachment["mimeType"]): Promise<Attachment | null> {
   const { data, error } = await admin().storage.from("capture-temp").download(path);
   if (error || !data) throw new ApiError("invalid_source");
-  if (data.size > MAX_AI_BYTES) return null; // demasiado grande para mandarlo al modelo: se guarda con la tesis
-  return { mimeType, base64: toBase64(new Uint8Array(await data.arrayBuffer())) };
+  if (data.size > MAX_PDF_BYTES) {
+    console.log(JSON.stringify({ fn: "capture", attachment: "skipped", reason: "too_large", mime: mimeType }));
+    return null;
+  }
+  const bytes = new Uint8Array(await data.arrayBuffer());
+  const check = checkAttachment(bytes, mimeType);
+  if (!check.ok) {
+    console.log(JSON.stringify({ fn: "capture", attachment: "skipped", reason: check.reason, mime: mimeType, pages: check.pages ?? null }));
+    return null;
+  }
+  return { mimeType, base64: toBase64(bytes) };
 }
 
 async function saveConcept(user: UserContext, input: Input, thesis: string) {
@@ -125,6 +138,7 @@ async function savedToday(userId: string): Promise<number> {
 
 Deno.serve(handler("capture", async (req) => {
   const user = await requireUser(req);
+  await requireDeviceIntegrity(req, "capture", user.id);
   const input = parse(await readJson<CaptureBody>(req), user.id);
   const analytics = new Analytics();
 
@@ -140,7 +154,10 @@ Deno.serve(handler("capture", async (req) => {
     let confidence: "high" | "medium" | null = null;
     let distillCharged = false;
 
-    if (input.distill && hasSource) {
+    if (input.distill && hasSource && !(await hasAIConsent(user.id))) {
+      // Sin el "Acepto" no sale nada hacia la IA: se guarda con la idea de la persona (o 422 needs_thesis).
+      outcome = "consent_required";
+    } else if (input.distill && hasSource) {
       const inputCheck = await moderate([input.thesis, input.excerpt].filter(Boolean).join(" "));
       logModeration("capture", "input", inputCheck);
       if (inputCheck.flagged) {
@@ -176,11 +193,15 @@ Deno.serve(handler("capture", async (req) => {
       }
     }
 
-    // Sin destilación útil, hace falta la idea de la persona.
+    // Sin destilación útil (confianza baja o contenido inaccesible) no se cobra: la persona no recibió nada.
+    if (distilled.length === 0 && distillCharged) {
+      await refundCredit(user.id, "distill");
+      distillCharged = false;
+    }
+    // Y hace falta su idea.
     if (distilled.length === 0 && !input.thesis) {
-      if (distillCharged) await refundCredit(user.id, "distill");
       if (outcome === "unavailable") throw new ApiError("ai_unavailable");
-      if (hasSource || input.distill) throw new ApiError("needs_thesis");
+      if (hasSource || input.distill || input.attachment) throw new ApiError("needs_thesis");
       throw new ApiError("invalid_thesis");
     }
 

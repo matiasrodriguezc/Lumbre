@@ -62,3 +62,11 @@ export function fnv1a(input: string, seed = 0x811c9dc5): number {
   }
   return hash >>> 0;
 }
+
+/**
+ * Contenido externo o de la persona que va dentro de un prompt delimitado con etiquetas (<contenido_externo>,
+ * <concepto_a>…): se cambian < y > por ‹ y › para que el texto no pueda cerrar el bloque y "salir" a instrucciones.
+ */
+export function asPromptData(text: string): string {
+  return text.replace(/</g, "‹").replace(/>/g, "›");
+}

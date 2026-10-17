@@ -4,6 +4,7 @@
 // 2. Embebe los conceptos pendientes (sin vector, o con el de otro modelo: re-embebido gradual si se cambia de modelo).
 // 3. Clasifica en un dominio las categorías que todavía no tienen y se lo pasa a sus conceptos.
 // 4. Manda los eventos de la bandeja de analytics (los que dejan los triggers de la base).
+// 5. Borra los adjuntos de capture-temp de más de una hora (subidos sin captura): nada queda guardado (plan.md §6).
 // Procesa por tandas: lo que no entra en una corrida queda para la siguiente.
 
 import { Analytics } from "../_shared/analytics.ts";
@@ -11,7 +12,7 @@ import { gateway } from "../_shared/ai/gateway.ts";
 import { toPgVector } from "../_shared/ai/embeddings.ts";
 import { classifyCategory, conceptEmbeddingText, domainVectors, embedConcepts } from "../_shared/data.ts";
 import { describeError, handler, json } from "../_shared/http.ts";
-import { admin, dbError, requireService } from "../_shared/supabase.ts";
+import { admin, dbError, requireService, rpc } from "../_shared/supabase.ts";
 
 const BATCH = 200;
 
@@ -20,7 +21,7 @@ Deno.serve(handler("process", async (req) => {
   const db = admin();
   const ai = gateway();
   const model = ai.embeddingModel;
-  const result = { domains: 0, library: 0, concepts: 0, categories: 0, events: 0, errors: 0 };
+  const result = { domains: 0, library: 0, concepts: 0, categories: 0, events: 0, stale_uploads: 0, errors: 0 };
 
   // 1. Dominios y biblioteca
   result.domains = (await domainVectors(db)).length;
@@ -85,6 +86,19 @@ Deno.serve(handler("process", async (req) => {
       if (error) throw dbError(error);
       result.events = sent;
     }
+  }
+
+  // 5. Adjuntos temporales huérfanos
+  try {
+    const stale = await rpc<string[]>(db, "stale_capture_uploads", {});
+    if (stale.length) {
+      const { error } = await db.storage.from("capture-temp").remove(stale);
+      if (error) throw new Error(error.message);
+      result.stale_uploads = stale.length;
+    }
+  } catch (error) {
+    result.errors++;
+    console.error(JSON.stringify({ fn: "process", level: "error", step: "stale_uploads", error: describeError(error) }));
   }
 
   console.log(JSON.stringify({ fn: "process", ...result }));

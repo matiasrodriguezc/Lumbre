@@ -82,7 +82,7 @@ function textOf(message: any): string {
 function translate(Anthropic: AnthropicModule, error: unknown): AIError {
   if (error instanceof AIError) return error;
   if (error instanceof Anthropic.RateLimitError || error instanceof Anthropic.InternalServerError) {
-    return new AIError("retryable", `anthropic ${error.status}`);
+    return new AIError("retryable", `anthropic ${(error as { status?: number }).status}`);
   }
   if (error instanceof Anthropic.APIConnectionError) return new AIError("retryable", "anthropic connection");
   if (error instanceof Anthropic.APIError) {

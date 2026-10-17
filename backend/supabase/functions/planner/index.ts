@@ -1,12 +1,14 @@
 // POST /planner — mensaje al planificador (Pro), con la respuesta en streaming (SSE: delta, done, error).
 //
 // - Descuenta `planner` (rápido) o `planner_deep` (plan profundo). Invitado: 403 account_required; free: 402 pro_required.
+//   Sin consentimiento para la IA (profiles.ai_consent_at): 403 ai_consent_required, antes de cobrar.
 // - Contexto fijo del hilo (perfil, chispa, conceptos y proyecto) con prompt caching; después el resumen
 //   incremental y los últimos mensajes. Cada 10 mensajes nuevos se resume lo viejo.
 // - Si la IA falla antes de responder, devuelve el crédito. Los mensajes no se loguean.
 // - `method: "disney"` (flag planner_disney en la app) usa planner.v2: los tres cuartos de Walt Disney. El estado del
 //   método (cuarto actual y respuestas por cuarto) sale de las marcas [[room:…]] de todo el hilo y va en cada turno.
 
+import { requireDeviceIntegrity } from "../_shared/attest/guard.ts";
 import { Analytics } from "../_shared/analytics.ts";
 import { gateway } from "../_shared/ai/gateway.ts";
 import {
@@ -29,6 +31,7 @@ import { loadSpark } from "../_shared/data.ts";
 import { ApiError, describeError, handler, readJson, sseResponse } from "../_shared/http.ts";
 import { logModeration, moderate } from "../_shared/moderation.ts";
 import { creativeProfiles } from "../_shared/sparks.ts";
+import { asPromptData } from "../_shared/text.ts";
 import {
   admin,
   background,
@@ -37,6 +40,7 @@ import {
   effectivePlan,
   planHasKind,
   refundCredit,
+  requireAIConsent,
   requireUser,
 } from "../_shared/supabase.ts";
 
@@ -81,6 +85,7 @@ async function maybeSummarize(threadId: string, userId: string, method: "free" |
 
 Deno.serve(handler("planner", async (req) => {
   const user = await requireUser(req);
+  await requireDeviceIntegrity(req, "planner", user.id);
   const body = await readJson<{ spark_id?: unknown; message?: unknown; mode?: unknown; method?: unknown }>(req);
   if (typeof body.spark_id !== "string" || !UUID.test(body.spark_id)) throw new ApiError("invalid_request");
   if (typeof body.message !== "string" || !body.message.trim() || body.message.length > 2000) throw new ApiError("invalid_request");
@@ -94,6 +99,8 @@ Deno.serve(handler("planner", async (req) => {
   const plan = await effectivePlan(user.id);
   if (plan === "guest") throw new ApiError("account_required");
   if (!(await planHasKind(plan, kind))) throw new ApiError("pro_required");
+  // El mensaje, la chispa y el hilo van al modelo: sin el "Acepto", nada (403 ai_consent_required).
+  await requireAIConsent(user.id);
 
   // Con el cliente del usuario: si la chispa no es suya, RLS no la devuelve.
   const spark = await loadSpark(user.client, body.spark_id);
@@ -145,14 +152,17 @@ Deno.serve(handler("planner", async (req) => {
   }
 
   const preset = detectPreset(message);
-  const a = { id: spark.concept_a.id, title: spark.concept_a.title, thesis: spark.concept_a.thesis, principle: spark.concept_a.principle };
-  const b = { id: spark.concept_b.id, title: spark.concept_b.title, thesis: spark.concept_b.thesis, principle: spark.concept_b.principle };
+  // Todo lo que viene de la bóveda va al bloque <contexto_fijo>: sin < ni > para que no pueda cerrarlo.
+  // deno-lint-ignore no-explicit-any
+  const brief = (c: any) => ({ id: c.id, title: asPromptData(c.title), thesis: asPromptData(c.thesis), principle: c.principle ? asPromptData(c.principle) : null });
+  const a = brief(spark.concept_a);
+  const b = brief(spark.concept_b);
   const context = {
     profiles: await creativeProfiles(user.id),
-    spark: { title: spark.title ?? "", body: spark.body ?? "" },
+    spark: { title: asPromptData(spark.title ?? ""), body: asPromptData(spark.body ?? "") },
     a,
     b,
-    project: spark.project_name,
+    project: spark.project_name ? asPromptData(spark.project_name) : null,
   };
   const system: CompletionRequest["system"] = disney
     ? [

@@ -13,13 +13,20 @@ Supabase: Postgres 17 + pgvector, RLS, Auth, Edge Functions, pg_cron y pgmq. Tod
 | `supabase/tests/functions/e2e.sh` | Las Edge Functions de punta a punta, como las usa la app. |
 | `supabase/functions/` | Edge Functions (Deno). Una carpeta por función; lo compartido en `_shared/`. |
 | `supabase/functions/_shared/ai/` | Gateway de IA: proveedores (local y Anthropic), embeddings, precios y prompts versionados. |
+| `supabase/functions/_shared/attest/` | App Attest y Play Integrity del lado del servidor (paso 40). |
+| `supabase/functions/_tests/` | Tests unitarios de Deno (gateway, links, adjuntos, integridad, contrato OpenAPI). No es una función. |
+| `supabase/tests/load/` | Prueba de carga del batch nocturno (paso 63). Resultados en `LOAD-TEST.md`. |
+| `eval/` | Set de evaluación de la chispa y su harness (paso 29). |
+| `scripts/` | `costos.sh` (tablero de costos) y `generate-clients.sh` (clientes desde el contrato). |
+| `SECURITY-REVIEW.md` | Revisión de seguridad del backend (paso 62). |
 | `supabase/seed.sql` | Datos de prueba solo para local: usuarios A y B, conceptos y chispas iguales a los de la app de iOS, y los secretos de Vault para los crons locales. |
 | `openapi.yaml` | El contrato de las Edge Functions. |
 
 ## CI
 
-`.github/workflows/backend.yml` corre en cada PR y en cada push a `main` que toque `backend/`, con dos jobs:
+`.github/workflows/backend.yml` corre en cada PR y en cada push a `main` que toque `backend/`, con tres jobs:
 
+- **unit:** `deno test` de las Edge Functions, el contrato OpenAPI y el set de evaluación (sin base).
 - **database:** levanta Postgres con las migraciones desde cero y el seed, pasa el lint, corre los tests de pgTAP y la prueba de concurrencia.
 - **auth:** levanta Auth, REST y Mailpit y corre `tests/auth/e2e.sh`.
 
@@ -81,6 +88,27 @@ Probar las Edge Functions de punta a punta (invitado → captura → Hoy → cue
 backend/supabase/tests/functions/e2e.sh
 ```
 
+Tests unitarios de las Edge Functions, el contrato y el set de evaluación (Deno 2; en macOS `brew install deno`; no necesitan el stack):
+
+```bash
+cd backend && deno test -A supabase/functions/_tests/ eval/
+```
+
+`supabase functions serve` corre las funciones con el Deno que trae su contenedor; el de Homebrew es solo para estos tests y los scripts de `eval/`.
+
+Prueba de carga del batch nocturno (con `supabase functions serve`; ver `LOAD-TEST.md`):
+
+```bash
+backend/supabase/tests/load/daily_batch.sh             # 5.000 usuarios × 20 conceptos
+USERS=500 backend/supabase/tests/load/daily_batch.sh   # más chica
+```
+
+Tablero de costos (local o, con `DB_URL`, el remoto):
+
+```bash
+backend/scripts/costos.sh 14
+```
+
 Revisar el esquema:
 
 ```bash
@@ -123,7 +151,7 @@ Supabase da permisos completos sobre las tablas a `anon` y `authenticated`. Por 
 
 | Tabla | El usuario puede | Solo el servidor (service role) |
 |---|---|---|
-| `profiles` | Leer el suyo; editar perfiles creativos, hora, zona horaria, idioma y `onboarded_at` | Crear, cambiar `plan` y `target_distance` (lo mueve el feedback con un trigger) |
+| `profiles` | Leer el suyo; editar perfiles creativos, hora, zona horaria, idioma, `onboarded_at` y `ai_consent_at` (la fecha la pone un trigger) | Crear, cambiar `plan` y `target_distance` (lo mueve el feedback con un trigger) |
 | `categories` | Leer, renombrar y borrar las suyas | Crear (pasa por `capture_concept()`), asignar el dominio |
 | `concepts` | Leer, corregir título, tesis, dominio y estado, y borrar los suyos; crear con `capture_concept()`; mover de categoría con `move_concept()` | Escribir el embedding y la destilación |
 | `sparks` | Leer las suyas; cambiar `status`, `feedback` y `project_id` | Crear y escribir el contenido, `notified_at` |
@@ -137,10 +165,12 @@ Supabase da permisos completos sobre las tablas a `anon` y `authenticated`. Por 
 | `library_concepts` | Leer (con sesión) | Escribir |
 | `llm_calls`, `app_config`, `cost_alerts`, `llm_cost_daily` (vista) | Nada | Todo |
 | `spark_jobs`, `subscription_events`, `analytics_outbox` | Nada | Todo |
+| `attest_keys`, `rate_limits` | Nada | Todo |
+| `waitlist`, `demo_sparks`, `web_rate_limits` (web pública, ver `web/README.md`) | Nada | Todo |
 
 `consume_credit()` solo la puede ejecutar el service role: si la app pudiera llamarla, alguien podría gastar la cuota de otro usuario. Lo mismo el emparejamiento (`pick_spark_pair`, `create_spark`, `spark_runway_days`), `llm_spend_today`, `invoke_edge_function` y los demás helpers del servidor.
 
-`tests/database/01_rls.sql` verifica cada fila de esta tabla. Incluye una guarda que falla si se crea una tabla en `public` sin RLS. **Toda tabla nueva lleva sus tests de acceso en el mismo cambio.**
+`tests/database/01_rls.sql` verifica cada fila de esta tabla. Incluye una guarda que falla si se crea una tabla en `public` sin RLS, y otra que falla si aparece una función `security definer` nueva que la app pueda llamar (la lista cerrada está en el test; todas usan `auth.uid()`). **Toda tabla nueva lleva sus tests de acceso en el mismo cambio.**
 
 ## Cuotas
 
@@ -207,6 +237,7 @@ Lo que la app hace **directo con su sesión** (PostgREST y RLS). Todo lo demás 
 | Qué | Cómo |
 |---|---|
 | Perfil | `profiles`: leer el suyo; editar `creative_profiles`, `spark_hour`, `timezone`, `locale` y `onboarded_at` (fin del onboarding) |
+| Consentimiento para la IA | `profiles.ai_consent_at`: al "Acepto", cualquier fecha no nula (el trigger guarda la hora del servidor y conserva la primera si ya había aceptado); al "No acepto" o al revocar, `null`. Sin fecha, `/capture` guarda sin destilar (`distillation: consent_required`), `/spark` y `/planner` responden 403 `ai_consent_required` (antes de cobrar), `/today` no genera la diaria y el batch nocturno la saltea |
 | Cupos | `rpc/credit_status`: un registro por cupo (`kind`, `period`, `max_count`, `available`, `used`, `remaining`), incluido `projects` (`period = 'total'`) |
 | Bóveda | `concepts` y `categories`: leer (con `category:categories(id,name,domain:domains(slug,name_es,name_en,symbol_ios))`); editar `title`, `thesis`, `status` (confirmar un borrador); borrar. Renombrar y borrar categorías |
 | Mover un concepto de categoría | `rpc/move_concept(p_concept, p_category)`: la crea si no existe (límite de 50) y el concepto hereda su dominio |
@@ -218,7 +249,7 @@ Lo que la app hace **directo con su sesión** (PostgREST y RLS). Todo lo demás 
 | Push | `rpc/register_push_token(p_token, p_platform, p_sandbox)` |
 | Cuenta | `rpc/export_my_data()` (JSON con todo, sin embeddings) y `rpc/delete_my_account()` (borra el usuario de auth y todo lo suyo) |
 | Biblioteca y dominios | `library_concepts` y `domains`: leer |
-| Adjuntos | Storage, bucket privado `capture-temp`: subir a `<user_id>/<uuid>.<ext>` (JPEG, PNG o PDF, hasta 50 MB) y pasar la ruta a `/capture`, que lo borra siempre |
+| Adjuntos | Storage, bucket privado `capture-temp`: subir a `<user_id>/<uuid>.<ext>` (JPEG, PNG o PDF, hasta 20 MB) y pasar la ruta a `/capture`, que lo borra siempre |
 
 Errores de las RPC (en el mensaje): `not_authenticated`, `invalid_thesis`, `invalid_category`, `invalid_source`, `invalid_request`, `quota_exceeded`, `too_many_categories`, `too_many_projects`, `not_found`.
 
@@ -226,8 +257,8 @@ Errores de las RPC (en el mensaje): `not_authenticated`, `invalid_thesis`, `inva
 
 | Función | Quién la llama | Qué hace |
 |---|---|---|
-| `capture` | App | Guarda (con `capture_concept()` y el JWT del usuario), destila si se pide (cupo `distill`, se devuelve si falla), embebe y clasifica la categoría. Lee y borra el adjunto de `capture-temp` |
-| `today` | App | Chispa diaria del día local (la genera si falta), cupo, extras de hoy, días de pares y cantidad de conceptos |
+| `capture` | App | Guarda (con `capture_concept()` y el JWT del usuario), destila si se pide y hay consentimiento (cupo `distill`, se devuelve si falla), embebe y clasifica la categoría. Lee y borra el adjunto de `capture-temp` |
+| `today` | App | Chispa diaria del día local (la genera si falta y hay consentimiento), cupo, extras de hoy, días de pares y cantidad de conceptos |
 | `spark` | App | Chispa extra (`spark_extra`) o elegida (`pick`, Pro). Devuelve el crédito si no hay par o falla la IA |
 | `search` | App | Embebe la consulta y busca con `match_concepts()` (RLS filtra) |
 | `planner` | App | Mensaje al planificador (Pro) con respuesta SSE: `delta`, `done`, `error` |
@@ -236,12 +267,32 @@ Errores de las RPC (en el mensaje): `not_authenticated`, `invalid_thesis`, `inva
 | `process` | pg_cron | Embeddings pendientes (conceptos, dominios, biblioteca), dominio de las categorías y la bandeja de analytics |
 | `daily-sparks` | pg_cron | Chispas diarias de quien ya empezó su día; con Anthropic, por la Batches API (`{collect: true}` levanta resultados) |
 | `send-pushes` | pg_cron | Push a quien le llegó la hora (APNs); sin claves, loguea y marca `notified_at` |
+| `waitlist` | Web pública | Fila con referidos: `join` (anota y manda el mail de confirmación), `status` (puesto; con el token del mail, confirma) y `leave`. Sin sesión (`verify_jwt = false`), con límites por IP y email (ver `web/README.md`) |
+| `demo-spark` | Web pública | Dos ideas → una chispa por el gateway de IA, una por email y por día; el email entra a la fila. No guarda ni loguea las ideas (ver `web/README.md`) |
 
 - Las de la app tienen `verify_jwt = true`; las internas y el webhook validan su propio secreto (clave de servicio o `REVENUECAT_WEBHOOK_SECRET`).
 - Variables de entorno: `supabase/.env.example` (bloque de Edge Functions). En local van en `supabase/functions/.env`, que no va al repo; en remoto, `supabase secrets set --env-file supabase/functions/.env`.
 - **Invitados:** sin IA de pago. La chispa diaria se les genera igual (es el loop principal) y no consume cupos; con el proveedor local no cuesta nada, con Anthropic cuenta para el tope diario en dólares. `/spark` y `/planner` responden `403 account_required`.
 - Eventos de servidor (`docs/analytics.md`, fuente S): `_shared/analytics.ts`. Sin `POSTHOG_API_KEY` se escriben en el log. Los que nacen de escrituras directas de la app (`spark_saved`, `spark_feedback_given`, `concept_deleted`, `project_created`, `data_exported`, `account_deleted`) los deja un trigger en `analytics_outbox` y los manda `/process`. Nunca llevan contenido del usuario.
 - Logs: una línea JSON por evento, sin texto de las notas, búsquedas ni mensajes.
+- **Límites anti-abuso** (además de los cupos de `plan_limits`): `/search` 120 por hora y `/today` 300 por hora por usuario, con `hit_rate_limit()` (429 `rate_limited`; provisorios, `LUMBRE_SEARCH_PER_HOUR` y `LUMBRE_TODAY_PER_HOUR`).
+- **Adjuntos** (paso 34): el bucket `capture-temp` acepta hasta 20 MB. `/capture` no manda al modelo imágenes de más de 5 MB o 8.000 px de lado ni PDFs de más de 20 MB o 30 páginas (`LUMBRE_MAX_PDF_PAGES`): los guarda con la idea de la persona sin gastar destilación. El archivo se borra siempre; lo que se subió sin captura lo borra `/process` a la hora.
+- **Consentimiento para la IA** (`profiles.ai_consent_at`, plan.md §10): lo que manda contenido del usuario a un modelo (destilación, chispas extra y elegidas, planificador, la diaria de `/today` y del batch) lo exige. Se pide también con el proveedor local, así dev se comporta como producción. La búsqueda y los embeddings no lo piden: hoy son locales (si se pasa a Voyage, revisar).
+- **Destilación:** si no sale nada útil (confianza baja o un archivo que no se pudo leer) se devuelve el cupo `distill`, aunque la persona haya escrito su idea.
+
+### Integridad del dispositivo (paso 40)
+
+`capture`, `today`, `spark`, `search` y `planner` pasan por `requireDeviceIntegrity()` (`_shared/attest/guard.ts`), con el protocolo de headers de la app de iOS (`ios/Packages/LumbreCore/Sources/LumbreCore/AppAttest.swift`): `X-Lumbre-Attest-Key`, `X-Lumbre-Attest-Time` y `X-Lumbre-Attestation` (la primera vez) o `X-Lumbre-Assertion`; el mensaje firmado es `"<función>\n<segundos Unix>\n<cuerpo>"`. Android (paso 70) manda `X-Lumbre-Integrity-Token` con `requestHash` = SHA-256 en hex del mismo mensaje.
+
+| `LUMBRE_ATTESTATION` | Qué hace |
+|---|---|
+| `off` (default; local y dev) | Nada |
+| `report` | Verifica y loguea `{fn: "attest", ok, reason}`; nunca bloquea |
+| `enforce` | Sin firma válida: 403 `attestation_failed` (la app descarta la clave y crea otra) |
+
+- **App Attest:** cadena x5c hasta la raíz de Apple (embebida; se puede pisar con `APPLE_APP_ATTEST_ROOT_PEM`), nonce de la extensión `1.2.840.113635.100.8.2`, keyId, App ID (`APP_ATTEST_APP_ID` o `APNS_TEAM_ID.APNS_BUNDLE_ID`), contador y entorno (`APP_ATTEST_ALLOW_DEVELOPMENT`). La clave pública y el contador quedan en `attest_keys`; cada aserción tiene que subir el contador (una repetida no pasa). Tiempo: ±5 minutos.
+- **Play Integrity:** `decodeIntegrityToken` con una cuenta de servicio (`PLAY_INTEGRITY_SERVICE_ACCOUNT`, `ANDROID_PACKAGE_NAME`); exige paquete, `requestHash`, menos de 5 minutos, `PLAY_RECOGNIZED` y `MEETS_DEVICE_INTEGRITY` (o básica con `PLAY_INTEGRITY_ALLOW_BASIC=true`).
+- Tests en `_tests/attest.test.ts` con una cadena de certificados de prueba (Apple no publica atestaciones de ejemplo) y un test que verifica la autofirma de la raíz real.
 
 ## IA
 
@@ -286,6 +337,8 @@ SQL, sin LLM (`20261009130000_emparejamiento.sql`). `pick_spark_pair(user, exclu
 |---|---|---|
 | `limpiar-invitados` | 06:17 UTC | Borra invitados abandonados |
 | `vencer-texto-crudo` | 06:27 UTC | `raw_text` vencido (30 días) a null |
+| `limpiar-limites` | 06:37 UTC | Borra las ventanas viejas de `rate_limits` |
+| `limpiar-web` | 06:37 UTC | Web pública: ventanas de `web_rate_limits` de más de 2 días, chispas de la demo de más de 30 y emails sin confirmar de más de 30 |
 | `alertas-de-costo` | 03:05 UTC | Guarda en `cost_alerts` los usuarios del día anterior por encima de su tope y el global si pasó el 80% |
 | `procesar-pendientes` | cada 5 min | `/process` |
 | `chispas-diarias` | cada 15 min | `/daily-sparks` |
@@ -306,4 +359,34 @@ Sin esos secretos, los jobs no fallan: avisan con un notice y no hacen nada.
 - `app_config`: topes diarios en dólares (`user_daily_usd_cap` 0,05 y `global_daily_usd_cap` 20). El gateway corta antes de llamar al modelo si se pasaron.
 - `llm_cost_daily` (vista): día, función, modelo, llamadas, tokens, costo y latencia promedio.
 - `llm_cost_alerts(día)`: usuarios por encima del tope y el total global; el job diario los guarda en `cost_alerts`.
-- Todo es solo service role (para el tablero: SQL Editor o Studio).
+- `llm_cost_dashboard(días)`: por día, total, llamadas, errores, batch, usuarios con IA, costo por usuario y costo promedio por chispa, destilación y mensaje del planificador.
+- `llm_cost_month()`: el mes contra el objetivo de costo por usuario activo (`active_user_month_target_usd`, US$ 0,15).
+- `llm_cost_signals(día)`: topes superados, chispa más cara que `spark_target_usd` (US$ 0,005, compuerta F2), más de `error_rate_alert` (10%) de llamadas fallidas y modelos de pago sin precio en `pricing.ts`.
+- **`scripts/costos.sh [días]`** imprime todo eso, el gasto por función y modelo, los que más gastaron hoy, las alertas guardadas y los topes; sale con 1 si hay señales (sirve para un cron o un CI). Contra el remoto: `DB_URL=<cadena del session pooler> backend/scripts/costos.sh`.
+- Todo es solo service role (también se puede consultar desde el SQL Editor o Studio con las mismas funciones).
+
+## Set de evaluación de la chispa (paso 29)
+
+Plan.md §5: 100 pares por perfil, puntuados a mano en "sorprende" y "sirve" (1 a 5); objetivo 3,5 de promedio. Todo en `eval/`:
+
+| Archivo | Qué es |
+|---|---|
+| `concepts.v1.json` | 24 conceptos por perfil (`software`, `content`, `business`, `design`, `curiosity`), de 10 a 19 dominios cada uno, como los que guardaría alguien de ese perfil |
+| `set.v1.json` | Los 500 pares (100 por perfil, siempre de dominios distintos), congelados con el texto de los dos conceptos. Lo arma `build-set.ts` (determinístico) |
+| `run.ts` | Genera las chispas con el mismo pedido que producción (`sparkRequest` + `checkSparkJson`) y deja la planilla en `runs/<fecha>_<prompt>_<modelo>.csv` (más un `.meta.json` con tokens, costo y fallas). No toca la base |
+| `score.ts` | Lee la planilla puntuada (CSV con coma o punto y coma) y da el promedio por perfil y total, las 10 más flojas y si llega a 3,5 |
+
+```bash
+cd backend
+ANTHROPIC_API_KEY=… deno run -A eval/run.ts                 # las 500 (menos de US$ 1 con Haiku 4.5)
+deno run -A eval/run.ts --profile software --limit 20       # una pasada chica
+deno run --allow-read eval/score.ts eval/runs/<corrida>.csv
+```
+
+Sin clave usa el proveedor local (sirve para probar el circuito, no para puntuar). Cada cambio de prompt es `spark.vN` y se corre contra el mismo set; si cambian los conceptos, `concepts.v2` y `set.v2`. Puntuar es la tarea H6; iterar el prompt, el paso 30.
+
+## Contrato y clientes (paso 39)
+
+- `openapi.yaml` es el contrato de las Edge Functions de la app. `_tests/contract.test.ts` comprueba que coincide con el código: una función por path, los códigos de error de `_shared/http.ts` (con su status, en `x-error-codes`), que cada error que puede lanzar una función esté documentado, `verify_jwt` contra la seguridad de cada path y los campos que lee cada función del cuerpo.
+- `tests/functions/e2e.sh` valida además las respuestas reales contra los schemas (`_tests/validate-response.ts`, con Ajv).
+- `scripts/generate-clients.sh [swift|kotlin]` genera los clientes en `backend/build/clients/` (no va al repo): Swift con swift-openapi-generator de Apple y Kotlin con openapi-generator (Retrofit + kotlinx.serialization). El cliente Swift iría como un target `LumbreAPIClient` en `ios/Packages/LumbreCore`; hoy la app usa `EdgeFunctions.swift`, escrito a mano con el mismo contrato.

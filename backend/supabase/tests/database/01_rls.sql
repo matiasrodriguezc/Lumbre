@@ -2,7 +2,7 @@
 -- Crea sus propios datos dentro de la transacción y la revierte al final: no depende del seed.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(35);
+select plan(43);
 
 -- ---------------------------------------------------------------
 -- Datos: X y Y, cada uno con su perfil, dos conceptos, una chispa y uso.
@@ -45,6 +45,38 @@ select is(
   null,
   'todas las tablas de public tienen RLS activado'
 );
+
+-- Guarda para funciones futuras (paso 62): una función security definer salta RLS, así que las que puede llamar
+-- la app son una lista cerrada, y todas usan auth.uid() en vez de recibir el usuario por parámetro.
+-- Si agregás una, revisá que no acepte un user id ajeno y sumala acá.
+select is(
+  (select array_agg(p.proname::text order by p.proname)
+     from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname = 'public' and p.prosecdef
+      and (has_function_privilege('anon', p.oid, 'execute') or has_function_privilege('authenticated', p.oid, 'execute'))),
+  array['capture_concept', 'create_project', 'credit_status', 'delete_my_account', 'export_my_data', 'move_concept',
+        'register_push_token'],
+  'solo estas funciones security definer las puede llamar la app'
+);
+select is(
+  (select array_agg(p.proname::text order by p.proname)
+     from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname = 'public' and p.prosecdef
+      and has_function_privilege('anon', p.oid, 'execute')),
+  null,
+  'ninguna función security definer se puede llamar sin sesión'
+);
+select is(
+  (select array_agg(p.proname::text) from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname = 'public' and p.prosecdef
+      and not exists (select 1 from unnest(coalesce(p.proconfig, '{}')) c where c like 'search_path=%')),
+  null,
+  'toda función security definer fija su search_path'
+);
+
+insert into public.attest_keys (key_id, user_id, public_key, environment)
+values ('clave-de-x', 'aaaaaaaa-0000-4000-8000-000000000001', 'MFkw', 'development');
+insert into public.rate_limits (key, window_start, hits) values ('search:aaaaaaaa-0000-4000-8000-000000000001', now(), 1);
 
 -- ---------------------------------------------------------------
 -- Con la sesión de X
@@ -105,6 +137,11 @@ select throws_ok($$ insert into public.domains (slug, name_es, name_en, descript
   'domains: X no puede crear dominios');
 select throws_ok($$ update public.plan_limits set max_count = 9999 $$, '42501', null,
   'plan_limits: X no puede cambiar los límites');
+select throws_ok($$ select * from public.attest_keys $$, '42501', null, 'attest_keys: X no lee las claves de App Attest');
+select throws_ok($$ update public.attest_keys set sign_count = 0 $$, '42501', null, 'attest_keys: X no puede resetear el contador');
+select throws_ok($$ select * from public.rate_limits $$, '42501', null, 'rate_limits: X no lee los límites de frecuencia');
+select throws_ok($$ select public.hit_rate_limit('search:otro', 1000, 60) $$, '42501', null, 'hit_rate_limit: X no puede llamarla');
+select throws_ok($$ select * from public.llm_cost_dashboard(7) $$, '42501', null, 'llm_cost_dashboard: X no ve el tablero de costos');
 
 -- Los datos de Y: los intentos no fallan, pero no afectan ninguna fila
 select lives_ok($$ update public.concepts set title = 'hackeado' where user_id = 'bbbbbbbb-0000-4000-8000-000000000002' $$,

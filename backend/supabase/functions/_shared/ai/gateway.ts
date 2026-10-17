@@ -51,13 +51,52 @@ function chooseProvider(): ChatProvider {
   return new AnthropicProvider(key);
 }
 
-function sleep(ms: number) {
+function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /** Backoff exponencial con jitter completo: entre 0 y base·2^intento. */
 export function backoffMs(attempt: number, base = BASE_DELAY_MS): number {
   return Math.round(Math.random() * base * 2 ** attempt);
+}
+
+/** Dónde guarda y consulta el gateway: llm_calls en la base. Los tests y el set de evaluación usan otro. */
+export interface GatewayStore {
+  logCall(row: LlmCallRow): Promise<void>;
+  spendToday(userId: string | null): Promise<{ user_usd: number; global_usd: number; user_cap: number | null; global_cap: number | null } | null>;
+}
+
+export interface LlmCallRow {
+  user_id: string | null;
+  feature: string;
+  model: string;
+  prompt_version: string | null;
+  input_tokens: number;
+  cached_tokens: number;
+  output_tokens: number;
+  cost_usd: number;
+  latency_ms: number;
+  batch: boolean;
+}
+
+/** El de producción: llm_calls y llm_spend_today() con service role. */
+export const databaseStore: GatewayStore = {
+  async logCall(row) {
+    const { error } = await admin().from("llm_calls").insert(row);
+    if (error) console.error(JSON.stringify({ fn: "gateway", level: "error", log_failed: error.message }));
+  },
+  async spendToday(userId) {
+    const { data, error } = await admin().rpc("llm_spend_today", { p_user: userId });
+    if (error) throw new AIError("retryable", `caps: ${error.message}`);
+    return (data as Array<{ user_usd: number; global_usd: number; user_cap: number | null; global_cap: number | null }>)[0] ?? null;
+  },
+};
+
+export interface GatewayOptions {
+  store?: GatewayStore;
+  /** Pausa entre reintentos (los tests la anulan). */
+  sleep?: (ms: number) => Promise<void>;
+  models?: Partial<Models>;
 }
 
 interface CallLog {
@@ -75,11 +114,15 @@ export class AIGateway {
   readonly provider: ChatProvider;
   readonly models: Models;
   private embeddings: EmbeddingProvider;
+  private store: GatewayStore;
+  private pause: (ms: number) => Promise<void>;
 
-  constructor(provider?: ChatProvider, embeddings?: EmbeddingProvider) {
+  constructor(provider?: ChatProvider, embeddings?: EmbeddingProvider, options: GatewayOptions = {}) {
     this.provider = provider ?? chooseProvider();
     this.embeddings = embeddings ?? embeddingProvider();
-    this.models = configuredModels();
+    this.models = { ...configuredModels(), ...options.models };
+    this.store = options.store ?? databaseStore;
+    this.pause = options.sleep ?? sleep;
   }
 
   get isLocal(): boolean {
@@ -99,9 +142,7 @@ export class AIGateway {
   // ---------------------------------------------------------------
   async checkCaps(userId: string | null): Promise<void> {
     if (this.isLocal) return; // el proveedor local cuesta 0
-    const { data, error } = await admin().rpc("llm_spend_today", { p_user: userId });
-    if (error) throw new AIError("retryable", `caps: ${error.message}`);
-    const row = (data as Array<{ user_usd: number; global_usd: number; user_cap: number | null; global_cap: number | null }>)[0];
+    const row = await this.store.spendToday(userId);
     if (!row) return;
     if (row.global_cap !== null && Number(row.global_usd) >= Number(row.global_cap)) throw new AIError("global_cap", "global_cap");
     if (userId && row.user_cap !== null && Number(row.user_usd) >= Number(row.user_cap)) throw new AIError("user_cap", "user_cap");
@@ -111,7 +152,7 @@ export class AIGateway {
   // Registro
   // ---------------------------------------------------------------
   private async log(entry: CallLog): Promise<void> {
-    const { error } = await admin().from("llm_calls").insert({
+    await this.store.logCall({
       user_id: entry.userId,
       feature: entry.ok ? entry.feature : `${entry.feature}:error`,
       model: entry.model,
@@ -123,7 +164,6 @@ export class AIGateway {
       latency_ms: Math.round(entry.latencyMs),
       batch: entry.batch,
     });
-    if (error) console.error(JSON.stringify({ fn: "gateway", level: "error", log_failed: error.message }));
   }
 
   /** Corre `call` con reintentos sobre el modelo principal y después sobre el de respaldo. */
@@ -150,7 +190,7 @@ export class AIGateway {
           console.warn(JSON.stringify({ fn: "gateway", level: "warn", feature: req.feature, model, attempt, kind: lastError.kind, error: lastError.message }));
           // Un error que no se arregla reintentando pasa directo al modelo de respaldo.
           if (lastError.kind !== "retryable") break;
-          if (attempt + 1 < attempts) await sleep(backoffMs(attempt));
+          if (attempt + 1 < attempts) await this.pause(backoffMs(attempt));
         }
       }
     }
@@ -206,7 +246,7 @@ export class AIGateway {
           await this.log({ feature: req.feature, userId: req.userId, model, promptVersion: req.promptVersion, usage: { inputTokens: 0, outputTokens: 0, cachedTokens: 0, cacheWriteTokens: 0 }, latencyMs: performance.now() - started, batch: false, ok: false });
           if (emitted) throw lastError;
           if (lastError.kind !== "retryable") break;
-          if (attempt + 1 < MAX_ATTEMPTS) await sleep(backoffMs(attempt));
+          if (attempt + 1 < MAX_ATTEMPTS) await this.pause(backoffMs(attempt));
         }
       }
     }
@@ -267,7 +307,7 @@ export class AIGateway {
         const aiError = error instanceof AIError ? error : new AIError("retryable", String(error).slice(0, 200));
         await this.log({ feature: opts.feature, userId: opts.userId, model, promptVersion: null, usage: { inputTokens: 0, outputTokens: 0, cachedTokens: 0, cacheWriteTokens: 0 }, latencyMs: performance.now() - started, batch: false, ok: false });
         if (aiError.kind !== "retryable" || attempt + 1 === MAX_ATTEMPTS) throw aiError;
-        await sleep(backoffMs(attempt));
+        await this.pause(backoffMs(attempt));
       }
     }
     throw new AIError("fatal", "embed");

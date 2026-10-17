@@ -21,11 +21,17 @@ export interface LinkContent {
 const TIMEOUT_MS = 8000;
 const MAX_BYTES = 1_500_000;
 const MAX_WORDS = 2500;
+const MAX_REDIRECTS = 4;
 
-function isPrivateHost(hostname: string): boolean {
+export function isPrivateHost(hostname: string): boolean {
   const host = hostname.toLowerCase().replace(/^\[|\]$/g, "");
   if (host === "localhost" || host.endsWith(".localhost") || host.endsWith(".local") || host.endsWith(".internal")) return true;
-  if (host === "::1" || host.startsWith("fc") || host.startsWith("fd") || host.startsWith("fe80")) return true;
+  if (host.includes(":")) {
+    // IPv6: loopback, sin especificar, únicas locales (fc00::/7) y de enlace (fe80::/10). IPv4 dentro de IPv6 (::ffff:a.b.c.d).
+    const mapped = host.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/);
+    if (mapped) return isPrivateHost(mapped[1]);
+    return host === "::1" || host === "::" || /^(fc|fd|fe8|fe9|fea|feb)[0-9a-f]*:/.test(host);
+  }
   const ipv4 = host.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
   if (ipv4) {
     const [a, b] = [Number(ipv4[1]), Number(ipv4[2])];
@@ -63,7 +69,18 @@ export async function isFetchableUrl(raw: string): Promise<boolean> {
   return !(await resolvesToPrivate(url.hostname));
 }
 
-const ENTITIES: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " " };
+const ENTITIES: Record<string, string> = {
+  amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " ", iexcl: "¡", iquest: "¿", laquo: "«", raquo: "»",
+  ldquo: "“", rdquo: "”", lsquo: "‘", rsquo: "’", mdash: "—", ndash: "–", hellip: "…", middot: "·", deg: "°",
+};
+// Vocales con tilde, diéresis, eñe y cedilla (&aacute; &Ntilde; &uuml; …).
+for (const [base, marks] of Object.entries({ a: "\u0301\u0300\u0308\u0302", e: "\u0301\u0300\u0308\u0302", i: "\u0301\u0300\u0308\u0302", o: "\u0301\u0300\u0308\u0302", u: "\u0301\u0300\u0308\u0302", n: "\u0303", c: "\u0327" })) {
+  const names: Record<string, string> = { "\u0301": "acute", "\u0300": "grave", "\u0308": "uml", "\u0302": "circ", "\u0303": "tilde", "\u0327": "cedil" };
+  for (const mark of marks) {
+    ENTITIES[`${base}${names[mark]}`] = `${base}${mark}`.normalize("NFC");
+    ENTITIES[`${base.toUpperCase()}${names[mark]}`] = `${base.toUpperCase()}${mark}`.normalize("NFC");
+  }
+}
 
 function decodeEntities(text: string): string {
   return text.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (whole, entity: string) => {
@@ -71,7 +88,7 @@ function decodeEntities(text: string): string {
       const code = entity[1].toLowerCase() === "x" ? parseInt(entity.slice(2), 16) : parseInt(entity.slice(1), 10);
       return Number.isFinite(code) && code > 0 && code < 0x110000 ? String.fromCodePoint(code) : " ";
     }
-    return ENTITIES[entity.toLowerCase()] ?? whole;
+    return ENTITIES[entity] ?? ENTITIES[entity.toLowerCase()] ?? whole;
   });
 }
 
@@ -98,7 +115,7 @@ export function extractMainText(html: string): string {
       .replace(/<(br|\/p|\/div|\/li|\/h[1-6]|\/section)\b[^>]*>/gi, "\n")
       .replace(/<[^>]+>/g, " "),
   );
-  return text.replace(/[ \t]+/g, " ").replace(/\n\s*\n+/g, "\n").trim();
+  return text.replace(/[ \t]+/g, " ").replace(/ ?\n ?/g, "\n").replace(/\n\s*\n+/g, "\n").trim();
 }
 
 export async function readLink(rawUrl: string): Promise<LinkContent> {
@@ -108,17 +125,29 @@ export async function readLink(rawUrl: string): Promise<LinkContent> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
-    const response = await fetch(rawUrl, {
-      signal: controller.signal,
-      redirect: "follow",
-      headers: {
-        "User-Agent": "LumbreBot/1.0 (+https://lumbre.app/bot)",
-        "Accept": "text/html,application/xhtml+xml;q=0.9,text/plain;q=0.8",
-        "Accept-Language": "es,en;q=0.8",
-      },
-    });
-    // Un redirect a una red privada también se corta.
-    if (response.url && !(await isFetchableUrl(response.url))) return empty;
+    // Los redirects se siguen a mano: cada salto se revisa antes de pedirlo, así un redirect a una red privada
+    // nunca llega a hacerse (con redirect: "follow" el pedido ya habría salido).
+    let current = rawUrl;
+    let response: Response | null = null;
+    for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
+      if (hop > 0 && !(await isFetchableUrl(current))) return empty;
+      response = await fetch(current, {
+        signal: controller.signal,
+        redirect: "manual",
+        headers: {
+          "User-Agent": "LumbreBot/1.0 (+https://lumbre.app/bot)",
+          "Accept": "text/html,application/xhtml+xml;q=0.9,text/plain;q=0.8",
+          "Accept-Language": "es,en;q=0.8",
+        },
+      });
+      if (response.status < 300 || response.status >= 400) break;
+      const location = response.headers.get("location");
+      await response.body?.cancel();
+      if (!location) return empty;
+      current = new URL(location, current).toString();
+      response = null;
+    }
+    if (!response) return empty;
     const type = response.headers.get("content-type") ?? "";
     if (!response.ok || !/text\/html|application\/xhtml|text\/plain/i.test(type)) {
       await response.body?.cancel();

@@ -47,7 +47,7 @@ Sacado de `backend/README.md` y de las migraciones de `backend/supabase/migratio
 | Eventos de uso, sin contenido | PostHog (UE), `analytics_outbox` | Métricas de producto | PostHog: hasta borrar la cuenta (se borra la persona); la bandeja local queda sin contenido |
 | Diagnóstico de errores y cuelgues | Sentry | Arreglar errores | Según el plan de Sentry (90 días por defecto) |
 | Compras | Apple, Google y RevenueCat | Cobrar y validar Pro | Lo maneja cada uno |
-| Consentimiento para IA | En el teléfono (`aiConsent`) | Saber si se puede mandar contenido a la IA | Hasta cambiarlo o borrar la cuenta |
+| Consentimiento para IA | En la cuenta (`profiles.ai_consent_at`, con la hora del servidor) y en el teléfono | Saber si se puede mandar contenido a la IA | Hasta cambiarlo o borrar la cuenta |
 | Waitlist: email, código de referido, quién te invitó, idioma, origen, UTM, confirmación | `waitlist` | Avisar del lanzamiento y la fila | Hasta el lanzamiento + [plazo a definir] o hasta que pida la baja |
 | Demo web: las dos ideas | No se guardan | Generar la chispa de la demo | Solo durante la llamada |
 | IP (en forma de hash) | `web_rate_limits` | Límite anti-abuso de la web | [plazo a definir; ventana de 1 día] |
@@ -75,4 +75,4 @@ Sacado de `backend/README.md` y de las migraciones de `backend/supabase/migratio
 2. **Ley y jurisdicción:** Argentina, tribunales ordinarios de la Ciudad de Buenos Aires, sin perjuicio de los derechos del consumidor.
 3. **Anthropic:** se afirma que, según sus términos comerciales, no usa los datos de la API para entrenar. Verificar el texto vigente de sus términos antes de publicar, y evaluar pedir retención cero.
 4. **Waitlist:** se borra [6 meses] después del lanzamiento si la persona no crea cuenta. El plazo es una propuesta.
-5. **El consentimiento para IA hoy vive solo en el teléfono.** Para poder demostrarlo (GDPR, art. 7.1) convendría guardarlo también en el servidor con fecha y versión del texto. Es un cambio de backend y app, no de estos documentos.
+5. **El consentimiento para IA se guarda en el servidor** (`profiles.ai_consent_at`, desde el 2026-10-16) y las Edge Functions lo respetan: sin él no se destila, no se generan chispas y el planificador no responde. Para demostrarlo (GDPR, art. 7.1) falta guardar también la versión del texto aceptado.

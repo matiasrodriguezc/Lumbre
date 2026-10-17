@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Lumbre API
-  version: 0.1.0
+  version: 0.2.0
   description: |
     Contrato de las Edge Functions de Lumbre. Lo que la app lee y edita directo (tablas con RLS y RPCs de la base)
     está en `backend/README.md`, sección "Qué usa la app".
@@ -11,6 +11,16 @@ info:
     - Los errores siempre son `{ "error": "<código>" }`. La app traduce el código; nunca muestra el texto del servidor.
     - JSON en snake_case. Fechas en ISO 8601; días (`scheduled_for`) como `YYYY-MM-DD` en la zona del usuario.
     - Ninguna clave de IA vive en la app: toda llamada a un modelo pasa por acá y por `consume_credit()`.
+    - Integridad del dispositivo (paso 40): `capture`, `today`, `spark`, `search` y `planner` aceptan los headers
+      de App Attest (`X-Lumbre-Attest-Key`, `X-Lumbre-Attest-Time` y `X-Lumbre-Attestation` la primera vez o
+      `X-Lumbre-Assertion` después) o de Play Integrity (`X-Lumbre-Integrity-Token` y `X-Lumbre-Attest-Time`).
+      El mensaje firmado es `"<función>\n<segundos Unix>\n<cuerpo>"`. Con `LUMBRE_ATTESTATION=enforce`, un pedido
+      sin firma válida responde 403 `attestation_failed` (la app descarta la clave y crea otra).
+    - Consentimiento para la IA (`profiles.ai_consent_at`, lo edita la app): sin él, `spark` y `planner` responden
+      403 `ai_consent_required` antes de cobrar, `capture` guarda sin destilar (`distillation: consent_required`)
+      y `today` no genera la diaria.
+    - Las funciones de la web pública (`waitlist`, `demo-spark`) no son de la app y no están en este contrato.
+    - `backend/supabase/functions/_tests/contract.test.ts` comprueba que este archivo coincide con las funciones.
 
 servers:
   - url: http://127.0.0.1:55521/functions/v1
@@ -75,19 +85,22 @@ paths:
                     items: { $ref: '#/components/schemas/Concept' }
                   distillation:
                     type: string
-                    enum: [none, high, medium, quota_exceeded, unavailable]
+                    enum: [none, high, medium, quota_exceeded, unavailable, consent_required]
         '400': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
         '422':
           description: No se pudo sacar una idea y no hay `thesis` (`needs_thesis`)
           content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
         '429': { $ref: '#/components/responses/Error' }
+        '503': { $ref: '#/components/responses/Error' }
 
   /today:
     post:
       summary: Todo lo que muestra Hoy
       description: |
         Devuelve la chispa diaria de hoy (en la zona del usuario). Si el batch nocturno no la generó,
-        la genera en el momento. Si el usuario no tiene material, `spark` es null.
+        la genera en el momento. Si el usuario no tiene material, `spark` es null. Sin consentimiento para la IA
+        (`profiles.ai_consent_at` null) no la genera: devuelve la que ya hubiera o null.
       requestBody:
         content:
           application/json:
@@ -98,6 +111,11 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/Today' }
+        '400': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '429':
+          description: Más de 300 pedidos por hora (`rate_limited`; provisorio, LUMBRE_TODAY_PER_HOUR)
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
 
   /spark:
     post:
@@ -129,7 +147,10 @@ paths:
                 required: [spark]
                 properties:
                   spark: { $ref: '#/components/schemas/Spark' }
+        '400': { $ref: '#/components/responses/Error' }
         '402': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
         '409': { $ref: '#/components/responses/Error' }
         '429': { $ref: '#/components/responses/Error' }
         '503': { $ref: '#/components/responses/Error' }
@@ -159,6 +180,11 @@ paths:
                   concepts:
                     type: array
                     items: { $ref: '#/components/schemas/Concept' }
+        '400': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '429':
+          description: Más de 120 búsquedas por hora (`rate_limited`; provisorio, LUMBRE_SEARCH_PER_HOUR)
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
 
   /planner:
     post:
@@ -182,13 +208,21 @@ paths:
                 spark_id: { type: string, format: uuid }
                 message: { type: string, minLength: 1, maxLength: 2000 }
                 mode: { type: string, enum: [quick, deep] }
+                method:
+                  type: string
+                  enum: [free, disney]
+                  default: free
+                  description: "disney: método de los tres cuartos (prompt planner.v2, flag planner_disney en la app)"
       responses:
         '200':
           description: Stream de eventos
           content:
             text/event-stream:
               schema: { type: string }
+        '400': { $ref: '#/components/responses/Error' }
         '402': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
         '429': { $ref: '#/components/responses/Error' }
 
   /dev-plan:
@@ -206,6 +240,9 @@ paths:
                 plan: { type: string, enum: [free, pro] }
       responses:
         '200': { description: Plan cambiado }
+        '400': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
 
   /revenuecat-webhook:
     post:
@@ -233,11 +270,13 @@ paths:
                     expiration_at_ms: { type: integer }
       responses:
         '200': { description: Procesado (o ignorado) }
+        '400': { $ref: '#/components/responses/Error' }
         '401': { description: Secreto inválido }
 
   /process:
     post:
       summary: Interna — procesa conceptos pendientes (embedding y dominio) y embebe dominios y biblioteca
+      description: También manda la bandeja de analytics y borra los adjuntos de `capture-temp` de más de una hora.
       security:
         - serviceKey: []
       responses:
@@ -260,6 +299,7 @@ paths:
                 collect: { type: boolean, description: "true: solo levanta los resultados de batches pendientes" }
       responses:
         '200': { description: Resumen del batch }
+        '400': { $ref: '#/components/responses/Error' }
 
   /send-pushes:
     post:
@@ -300,9 +340,29 @@ components:
           type: string
           description: |
             not_authenticated (401) · invalid_thesis · invalid_category · invalid_source · invalid_request (400) ·
-            pro_required (402) · account_required (403) · not_found (404) · not_enough_concepts (409) ·
-            needs_thesis (422) · quota_exceeded · too_many_categories · too_many_projects (429) ·
-            ai_unavailable (503) · internal (500)
+            pro_required (402) · account_required · attestation_failed · ai_consent_required (403) · not_found (404) ·
+            not_enough_concepts (409) · needs_thesis (422) · quota_exceeded · too_many_categories ·
+            too_many_projects · rate_limited (429) · ai_unavailable (503) · internal (500).
+            Es un string abierto (la app trata un código desconocido como error genérico).
+      x-error-codes:
+        not_authenticated: 401
+        invalid_thesis: 400
+        invalid_category: 400
+        invalid_source: 400
+        invalid_request: 400
+        pro_required: 402
+        account_required: 403
+        attestation_failed: 403
+        ai_consent_required: 403
+        not_found: 404
+        not_enough_concepts: 409
+        needs_thesis: 422
+        quota_exceeded: 429
+        too_many_categories: 429
+        too_many_projects: 429
+        rate_limited: 429
+        ai_unavailable: 503
+        internal: 500
 
     Domain:
       type: object
@@ -335,7 +395,7 @@ components:
         status: { type: string, enum: [draft, ready] }
         distilled: { type: boolean }
         confidence: { type: [string, 'null'], enum: [high, medium, low, null] }
-        source_type: { type: string }
+        source_type: { type: string, enum: [text, voice, selection, screenshot, scan, link, image, pdf] }
         source_url: { type: [string, 'null'] }
         source_title: { type: [string, 'null'] }
         excerpt: { type: [string, 'null'] }

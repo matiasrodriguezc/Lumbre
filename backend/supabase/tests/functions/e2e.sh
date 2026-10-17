@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Edge Functions de punta a punta contra el stack local, como las usa la app (contrato en backend/openapi.yaml):
-#   1. Un invitado guarda 6 conceptos de categorías distintas (/capture) y Hoy le da su chispa diaria (/today).
+#   1. Un invitado guarda 6 conceptos de categorías distintas (/capture) y, cuando acepta la IA, Hoy le da su chispa diaria.
 #   2. Como invitado no puede pedir chispas extra; crea su cuenta (email de Mailpit) y pasa a free.
 #   3. Con 6 conceptos guardados hoy ganó extras: pide una (/spark). Busca en su bóveda (/search).
-#   4. Pasa a Pro con /dev-plan y usa el planificador en streaming (/planner).
+#   4. Pasa a Pro con /dev-plan y usa el planificador en streaming (/planner). Revoca el consentimiento: nada va a la IA.
 #   5. Proyecto, push, reporte, export de sus datos y borrado de la cuenta (RPCs con su sesión).
 #   6. Ana (seed) después de /process: Hoy, búsqueda y extra.
 #   7. Funciones internas y webhook: sin clave no entran; con la clave de servicio responden.
@@ -36,6 +36,21 @@ call() {
 capture() {
   call capture "$(jq -nc --arg t "$1" --arg c "$2" --argjson d "${3:-false}" '{thesis: $t, category: $c, source_type: "text", distill: $d}')"
 }
+# La respuesta cumple el contrato (backend/openapi.yaml) para ese path y status.
+valid() {
+  if echo "$BODY" | deno run -A --quiet supabase/functions/_tests/validate-response.ts "$1" "${2:-200}" >/tmp/lumbre-contract.$$ 2>&1; then
+    echo "ok   contrato: $1 $STATUS cumple el schema"
+  else
+    echo "FALLÓ contrato: $1 $STATUS no cumple el schema"; cat /tmp/lumbre-contract.$$; FAILED=1
+  fi
+  rm -f /tmp/lumbre-contract.$$
+}
+# Sube un archivo a capture-temp con la sesión del usuario (como la app). Deja el status en $STATUS.
+upload() {
+  STATUS="$(curl -s -o /dev/null -w '%{http_code}' -X POST "$API_URL/storage/v1/object/capture-temp/$1" -H "apikey: $ANON_KEY" \
+    -H "Authorization: Bearer $TOKEN" -H "Content-Type: $2" --data-binary "@$3")"
+}
+in_storage() { psql "$DB_URL" -tAXc "select count(*) from storage.objects where bucket_id = 'capture-temp' and name = '$1'"; }
 mail_link() {
   local id=""
   for _ in $(seq 1 20); do
@@ -66,10 +81,18 @@ check "capture: sin destilar" "$(echo "$BODY" | jq -r .distillation)" "none"
 check "capture: devuelve el concepto con la forma del contrato" \
   "$(echo "$BODY" | jq -r '.concepts[0] | [has("id"), has("title"), has("status"), has("from_library"), has("category")] | all')" "true"
 check_true "capture: la categoría quedó clasificada en un dominio" "$(echo "$BODY" | jq -r '.concepts[0].category.domain.slug != null')"
+check "capture: la categoría Cocina cae en el dominio cocina (embedding)" "$(echo "$BODY" | jq -r '.concepts[0].category.domain.slug')" "cocina"
+valid /capture
 capture "Un flujo en espiral separa partículas por fuerza centrífuga, sin necesidad de filtro." "Ingeniería"
 capture "Los silencios marcan el ritmo de una canción tanto como las notas que suenan." "Música"
 capture "Pequeñas ganancias que se reinvierten crecen de forma exponencial con el paso del tiempo." "Finanzas"
 capture "Los hongos conectan las raíces de un bosque y reparten nutrientes entre árboles distintos." "Naturaleza"
+# Consentimiento para la IA (profiles.ai_consent_at): sin el "Acepto", Hoy no genera la diaria.
+call today
+check "today: sin consentimiento para la IA no genera la diaria" "$STATUS|$(echo "$BODY" | jq -r .spark)" "200|null"
+rest "profiles?id=eq.$USER_ID" -X PATCH -d '{"ai_consent_at": "2001-01-01T00:00:00Z"}' >/dev/null
+check "profiles: la app guarda el Acepto y la fecha la pone el servidor" \
+  "$(rest "profiles?select=ai_consent_at&id=eq.$USER_ID" | jq -r '.[0].ai_consent_at[0:4]')" "$(date -u +%Y)"
 LONG="Revisar los cambios de código en pares reduce errores y reparte el conocimiento del sistema entre todo el equipo. Cuando dos personas leen el mismo cambio aparecen preguntas que el autor no se hizo, y esas preguntas suelen esconder los errores más caros. Además, quien revisa aprende cómo funciona una parte que no conocía, así que el conocimiento deja de estar en una sola cabeza."
 capture "$LONG" "Software" true
 check "capture: el sexto concepto se guarda" "$STATUS" "200"
@@ -78,9 +101,11 @@ call capture '{"category": "Links", "source_type": "link", "source_url": "https:
 check "capture: un link sin idea y sin destilación pide la tesis (422)" "$STATUS|$(echo "$BODY" | jq -r .error)" "422|needs_thesis"
 call capture '{"thesis": "x", "category": "", "source_type": "text"}'
 check "capture: sin categoría da invalid_category (400)" "$STATUS|$(echo "$BODY" | jq -r .error)" "400|invalid_category"
+valid /capture 400
 
 call today
 check "today: responde" "$STATUS" "200"
+valid /today
 check "today: hay chispa diaria" "$(echo "$BODY" | jq -r '.spark.mode')" "daily"
 check "today: la chispa está sin abrir" "$(echo "$BODY" | jq -r '.spark.status')" "pending"
 check_true "today: la chispa tiene título y cuerpo" "$(echo "$BODY" | jq -r '(.spark.title | length) > 0 and (.spark.body | length) > 0')"
@@ -110,6 +135,7 @@ check "today: con 6 conceptos de hoy ganó 2 extras" "$(echo "$BODY" | jq -r '.q
 check "today: no le falta nada para la próxima extra (llegó al tope)" "$(echo "$BODY" | jq -r '.quota.concepts_until_extra')" "0"
 call spark '{"mode": "extra"}'
 check "spark: pide una extra" "$STATUS" "200"
+valid /spark
 check "spark: es extra y está sin abrir" "$(echo "$BODY" | jq -r '.spark.mode + "|" + .spark.status')" "extra|pending"
 EXTRA_ID="$(echo "$BODY" | jq -r .spark.id)"
 call spark "{\"mode\": \"pick\", \"concept_ids\": [\"$(echo "$BODY" | jq -r .spark.concept_a.id)\", \"$(echo "$BODY" | jq -r .spark.concept_b.id)\"]}"
@@ -120,6 +146,36 @@ check "today: queda una extra" "$(echo "$BODY" | jq -r '.quota.extra_remaining')
 call search '{"query": "fermentación de ingredientes y sabores"}'
 check "search: responde" "$STATUS" "200"
 check "search: lo más cercano es el de cocina" "$(echo "$BODY" | jq -r '.concepts[0].category.name')" "Cocina"
+valid /search
+
+echo "== 3b. Destilación, imágenes y PDFs (pasos 25 y 34)"
+capture "$LONG Por eso conviene que cada cambio tenga al menos una persona que lo lea antes de llegar a producción." "Equipos" true
+check "capture: un texto de 30+ palabras se destila (free tiene cupo)" "$STATUS|$(echo "$BODY" | jq -r .distillation)" "200|medium"
+check "capture: confianza media queda como borrador destilado" "$(echo "$BODY" | jq -r '.concepts[0] | "\(.status)|\(.distilled)|\(.confidence)"')" "draft|true|medium"
+FIXTURES="$(mktemp -d)"
+printf '%s' 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==' | base64 -d > "$FIXTURES/punto.png"
+printf '%%PDF-1.4\n1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj\n2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj\n3 0 obj << /Type /Page /Parent 2 0 R >> endobj\ntrailer << /Root 1 0 R >>\n%%%%EOF\n' > "$FIXTURES/nota.pdf"
+IMG="$USER_ID/$(uuidgen | tr 'A-Z' 'a-z').png"
+upload "$IMG" image/png "$FIXTURES/punto.png"
+check "storage: la app sube la imagen a su carpeta de capture-temp" "$STATUS" "200"
+call capture "$(jq -nc --arg p "$IMG" '{thesis: "Una foto de una pizarra con un diagrama de flujo", category: "Fotos", source_type: "image", attachment: {path: $p, mime_type: "image/png"}, distill: true}')"
+check "capture: imagen con su idea (el proveedor local no lee imágenes: confianza baja)" "$STATUS|$(echo "$BODY" | jq -r '.concepts[0].source_type')" "200|image"
+check "capture: la imagen ya no está en Storage" "$(in_storage "$IMG")" "0"
+check "capture: sin destilación útil no gasta el cupo de destilación (quedan 5 - 1)" \
+  "$(rest "rpc/credit_status" -X POST -d '{}' | jq -r '.[] | select(.kind == "distill") | .remaining')" "4"
+PDF="$USER_ID/$(uuidgen | tr 'A-Z' 'a-z').pdf"
+upload "$PDF" application/pdf "$FIXTURES/nota.pdf"
+call capture "$(jq -nc --arg p "$PDF" '{category: "Lecturas", source_type: "pdf", attachment: {path: $p, mime_type: "application/pdf"}, distill: true}')"
+check "capture: un PDF sin idea que no se pudo destilar pide la tesis (422)" "$STATUS|$(echo "$BODY" | jq -r .error)" "422|needs_thesis"
+check "capture: el PDF se borra también cuando falla" "$(in_storage "$PDF")" "0"
+call capture "$(jq -nc '{thesis: "x", category: "Fotos", source_type: "image", attachment: {path: "22222222-2222-2222-2222-222222222222/ajena.png", mime_type: "image/png"}}')"
+check "capture: no puede usar un archivo de la carpeta de otro (400)" "$STATUS|$(echo "$BODY" | jq -r .error)" "400|invalid_source"
+ORPHAN="$USER_ID/$(uuidgen | tr 'A-Z' 'a-z').png"
+upload "$ORPHAN" image/png "$FIXTURES/punto.png"
+psql "$DB_URL" -qXc "update storage.objects set created_at = now() - interval '2 hours' where name = '$ORPHAN'" >/dev/null
+call process '{}' "$SERVICE_ROLE_KEY"
+check "process: borra los adjuntos huérfanos de más de una hora" "$STATUS|$(in_storage "$ORPHAN")|$(echo "$BODY" | jq -r '.stale_uploads >= 1')" "200|0|true"
+rm -rf "$FIXTURES"
 call search '{"query": ""}'
 check "search: una consulta vacía es invalid_request" "$STATUS|$(echo "$BODY" | jq -r .error)" "400|invalid_request"
 
@@ -149,8 +205,21 @@ disney "Todas las ciudades sincronizadas"
 check_true "planner disney: empuja a pensar más grande" "$(last_answer | grep -q 'más grande' && echo true || echo false)"
 disney "Pasemos al siguiente cuarto"
 check_true "planner disney: pasa al Realista" "$(last_answer | grep -q '^\[\[room:realist\]\]' && echo true || echo false)"
-call spark "{\"mode\": \"pick\", \"concept_ids\": [\"$(rest "concepts?select=id&order=created_at&limit=1" | jq -r '.[0].id')\", \"$(rest "concepts?select=id&order=created_at.desc&limit=1" | jq -r '.[0].id')\"]}"
+# Cocina (del principio) y Equipos (de 3b, todavía sin chispa): de dominios distintos y nunca combinados.
+by_category() { rest "concepts?select=id,category:categories!inner(name)&category.name=eq.$1&limit=1" | jq -r '.[0].id'; }
+call spark "{\"mode\": \"pick\", \"concept_ids\": [\"$(by_category Cocina)\", \"$(by_category Equipos)\"]}"
 check "spark: Pro elige dos conceptos" "$STATUS|$(echo "$BODY" | jq -r .spark.mode)" "200|pick"
+# Revoca el consentimiento desde la app: nada más sale hacia la IA.
+rest "profiles?id=eq.$USER_ID" -X PATCH -d '{"ai_consent_at": null}' >/dev/null
+call spark '{"mode": "extra"}'
+check "spark: sin consentimiento no pide la chispa (403)" "$STATUS|$(echo "$BODY" | jq -r .error)" "403|ai_consent_required"
+call planner "{\"spark_id\": \"$DAILY_ID\", \"message\": \"Hola\", \"mode\": \"quick\"}"
+check "planner: sin consentimiento no responde (403)" "$STATUS|$(echo "$BODY" | jq -r .error)" "403|ai_consent_required"
+DISTILL_LEFT="$(rest "rpc/credit_status" -X POST -d '{}' | jq -r '.[] | select(.kind == "distill") | .remaining')"
+capture "$LONG Y sin revisión, los errores llegan a producción." "Equipos" true
+check "capture: sin consentimiento guarda sin destilar" "$STATUS|$(echo "$BODY" | jq -r .distillation)|$(echo "$BODY" | jq -r '.concepts[0].distilled')" "200|consent_required|false"
+check "capture: sin consentimiento no gasta la destilación" \
+  "$(rest "rpc/credit_status" -X POST -d '{}' | jq -r '.[] | select(.kind == "distill") | .remaining')" "$DISTILL_LEFT"
 
 echo "== 5. Lo que la app hace directo con su sesión"
 PROJECT_ID="$(rest "rpc/create_project" -X POST -d '{"p_name": "Mi primer proyecto"}' | jq -r .id)"
@@ -161,10 +230,11 @@ check "today: la chispa guardada queda en el proyecto" "$(echo "$BODY" | jq -r '
 check "register_push_token: registra el token" "$(rest "rpc/register_push_token" -X POST -o /dev/null -w '%{http_code}' -d '{"p_token": "e2e-token", "p_platform": "ios", "p_sandbox": true}')" "204"
 check "content_reports: reporta la chispa" "$(rest "content_reports" -X POST -o /dev/null -w '%{http_code}' -d "{\"spark_id\": \"$EXTRA_ID\", \"reason\": \"wrong\"}")" "201"
 EXPORT="$(rest "rpc/export_my_data" -X POST -d '{}')"
-check "export_my_data: trae los 6 conceptos" "$(echo "$EXPORT" | jq -r '.concepts | length')" "6"
+check "export_my_data: trae los 9 conceptos" "$(echo "$EXPORT" | jq -r '.concepts | length')" "9"
 # Planificador: 2 turnos libres + 3 del método de los tres cuartos = 10 mensajes.
 check_true "export_my_data: con chispas, proyecto y planificador" \
   "$(echo "$EXPORT" | jq -r '(.sparks | length) >= 3 and (.projects | length) == 1 and (.planner[0].messages | length) == 10')"
+check "export_my_data: incluye el consentimiento (revocado)" "$(echo "$EXPORT" | jq -r '.profile | has("ai_consent_at")')|$(echo "$EXPORT" | jq -r .profile.ai_consent_at)" "true|null"
 check_true "export_my_data: sin embeddings" "$(echo "$EXPORT" | jq -r '[.concepts[] | has("embedding")] | any | not')"
 check "delete_my_account: borra la cuenta" "$(rest "rpc/delete_my_account" -X POST -o /dev/null -w '%{http_code}' -d '{}')" "204"
 check "delete_my_account: no queda nada del usuario" \

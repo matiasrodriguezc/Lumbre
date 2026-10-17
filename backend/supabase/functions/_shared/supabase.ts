@@ -140,6 +140,21 @@ export async function effectivePlan(userId: string): Promise<"guest" | "free" | 
   return await rpc<"guest" | "free" | "pro">(admin(), "effective_plan", { p_user: userId });
 }
 
+/**
+ * ¿Aceptó que su contenido pase por una IA de terceros? (`profiles.ai_consent_at`, plan.md §10).
+ * Se pide siempre, también con el proveedor local: así dev se comporta igual que producción.
+ */
+export async function hasAIConsent(userId: string): Promise<boolean> {
+  const { data, error } = await admin().from("profiles").select("ai_consent_at").eq("id", userId).maybeSingle();
+  if (error) throw dbError(error);
+  return !!data?.ai_consent_at;
+}
+
+/** Sin consentimiento: 403 ai_consent_required. Va antes de cobrar cupos y de llamar a la IA. */
+export async function requireAIConsent(userId: string): Promise<void> {
+  if (!(await hasAIConsent(userId))) throw new ApiError("ai_consent_required");
+}
+
 /** consume_credit() con service role. */
 export async function consumeCredit(userId: string, kind: string): Promise<boolean> {
   return await rpc<boolean>(admin(), "consume_credit", { p_user: userId, p_kind: kind });

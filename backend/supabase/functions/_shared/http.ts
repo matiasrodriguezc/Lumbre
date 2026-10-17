@@ -2,7 +2,7 @@
 
 export const corsHeaders: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-lumbre-entry",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-lumbre-entry, x-lumbre-attest-key, x-lumbre-attest-time, x-lumbre-attestation, x-lumbre-assertion, x-lumbre-integrity-token",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
@@ -15,12 +15,15 @@ export const errorStatus = {
   invalid_request: 400,
   pro_required: 402,
   account_required: 403,
+  attestation_failed: 403,
+  ai_consent_required: 403,
   not_found: 404,
   not_enough_concepts: 409,
   needs_thesis: 422,
   quota_exceeded: 429,
   too_many_categories: 429,
   too_many_projects: 429,
+  rate_limited: 429,
   ai_unavailable: 503,
   internal: 500,
 } as const;

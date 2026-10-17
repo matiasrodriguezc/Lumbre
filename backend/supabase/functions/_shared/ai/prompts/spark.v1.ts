@@ -1,5 +1,6 @@
 // Prompt de la chispa, versión 1 (pasos 29 y 30). Se itera contra el set de evaluación ("sorprende" y "sirve").
 
+import { asPromptData } from "../../text.ts";
 import type { ConceptBrief } from "../types.ts";
 
 export const SPARK_VERSION = "spark.v1";
@@ -34,9 +35,9 @@ export const SPARK_SCHEMA = {
 function describe(label: string, concept: ConceptBrief): string {
   return [
     `<concepto_${label}>`,
-    `Título: ${concept.title}`,
-    `Tesis: ${concept.thesis}`,
-    concept.principle ? `Principio: ${concept.principle}` : "",
+    `Título: ${asPromptData(concept.title)}`,
+    `Tesis: ${asPromptData(concept.thesis)}`,
+    concept.principle ? `Principio: ${asPromptData(concept.principle)}` : "",
     `</concepto_${label}>`,
   ].filter(Boolean).join("\n");
 }

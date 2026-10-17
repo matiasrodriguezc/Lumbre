@@ -1,9 +1,11 @@
 // POST /spark — chispa extra en tiempo real (contrato: { mode: extra | pick, concept_ids? }).
 //
 // - Descuenta `spark_extra` (free: las ganadas; pro: hasta 10 por día). Invitado: 403 account_required.
+// - Sin consentimiento para la IA (profiles.ai_consent_at): 403 ai_consent_required, antes de cobrar.
 // - pick (solo Pro): combina los dos conceptos elegidos, que tienen que ser suyos y de dominios (o categorías) distintos.
 // - Si no hay par posible: devuelve el crédito y 409 not_enough_concepts. Si la IA falla: devuelve el crédito y 503.
 
+import { requireDeviceIntegrity } from "../_shared/attest/guard.ts";
 import { Analytics } from "../_shared/analytics.ts";
 import { loadSpark } from "../_shared/data.ts";
 import { ApiError, describeError, handler, json, readJson } from "../_shared/http.ts";
@@ -16,6 +18,7 @@ import {
   effectivePlan,
   planHasKind,
   refundCredit,
+  requireAIConsent,
   requireUser,
 } from "../_shared/supabase.ts";
 
@@ -42,6 +45,7 @@ async function pickedPair(userId: string, ids: string[]): Promise<PickedPair | {
 
 Deno.serve(handler("spark", async (req) => {
   const user = await requireUser(req);
+  await requireDeviceIntegrity(req, "spark", user.id);
   const body = await readJson<{ mode?: unknown; concept_ids?: unknown }>(req);
   const mode = body.mode;
   if (mode !== "extra" && mode !== "pick") throw new ApiError("invalid_request");
@@ -58,6 +62,8 @@ Deno.serve(handler("spark", async (req) => {
   if (plan === "guest") throw new ApiError("account_required");
   if (mode === "pick" && plan !== "pro") throw new ApiError("pro_required");
   if (!(await planHasKind(plan, "spark_extra"))) throw new ApiError("pro_required");
+  // Los dos conceptos van al modelo: sin el "Acepto", nada (403 ai_consent_required).
+  await requireAIConsent(user.id);
 
   // Elegir el par antes de cobrar: un pick inválido no gasta nada.
   const picked = mode === "pick" ? await pickedPair(user.id, ids) : null;

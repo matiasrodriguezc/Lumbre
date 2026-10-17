@@ -6,6 +6,7 @@
 // Con { collect: true } (cada 10 minutos) levanta los resultados de los batches terminados y crea las chispas.
 // Si un resultado falla, usa la plantilla local: Hoy nunca queda vacía.
 // Los invitados también reciben su diaria: no consume cupos (tampoco de IA del usuario).
+// Quien no aceptó mandar su contenido a la IA (profiles.ai_consent_at null) no entra: lo filtra users_needing_daily_spark().
 
 import { Analytics } from "../_shared/analytics.ts";
 import { gateway } from "../_shared/ai/gateway.ts";

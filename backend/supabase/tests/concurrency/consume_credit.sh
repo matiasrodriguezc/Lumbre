@@ -14,7 +14,8 @@ trap cleanup EXIT
 psql "$DB_URL" -qX -v ON_ERROR_STOP=1 >/dev/null <<SQL
 insert into auth.users (id, email, aud, role)
 values ('$USER_ID', 'concurrencia-$USER_ID@cuotas.test', 'authenticated', 'authenticated');
-insert into public.profiles (id, plan) values ('$USER_ID', 'pro');
+-- El trigger on_auth_user_created ya creó el perfil (paso 20a): solo se pasa a Pro.
+insert into public.profiles (id, plan) values ('$USER_ID', 'pro') on conflict (id) do update set plan = 'pro';
 SQL
 
 LIMIT="$(psql "$DB_URL" -tAXc "select max_count from public.plan_limits where plan = 'pro' and kind = 'spark_extra' and period = 'day'")"

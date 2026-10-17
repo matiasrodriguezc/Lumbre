@@ -3,14 +3,16 @@
 // - La chispa diaria del día local del usuario. Si el batch nocturno no la generó, se genera en el momento
 //   (par por SQL + texto). La diaria no gasta cupos: tampoco la del invitado, que es el loop principal.
 //   Con el proveedor local no cuesta nada; con Anthropic cuenta para el tope diario en dólares.
+//   Sin consentimiento para la IA (profiles.ai_consent_at) no se genera: spark queda null.
 // - Cupo: la diaria cuenta como disponible mientras está pending o revealed, más las extra que quedan.
 // - refills_at: la próxima hora de la chispa en su zona. concepts_until_extra: lo que falta hoy para ganar una extra (free).
 
+import { requireDeviceIntegrity } from "../_shared/attest/guard.ts";
 import { Analytics } from "../_shared/analytics.ts";
 import { loadSpark, loadSparks } from "../_shared/data.ts";
-import { describeError, handler, json } from "../_shared/http.ts";
+import { ApiError, describeError, handler, json } from "../_shared/http.ts";
 import { generateSpark } from "../_shared/sparks.ts";
-import { admin, background, dbError, requireUser, rpc } from "../_shared/supabase.ts";
+import { admin, background, dbError, hasAIConsent, requireUser, rpc } from "../_shared/supabase.ts";
 
 interface Clock {
   local_date: string;
@@ -30,8 +32,15 @@ interface Credit {
   remaining: number;
 }
 
+const TODAY_PER_HOUR = Number(Deno.env.get("LUMBRE_TODAY_PER_HOUR") ?? 300);
+
 Deno.serve(handler("today", async (req) => {
   const user = await requireUser(req);
+  await requireDeviceIntegrity(req, "today", user.id);
+  // Hoy se abre muchas veces por día y puede generar la chispa: tope anti-abuso generoso (provisorio, 300 por hora).
+  if (!(await rpc<boolean>(admin(), "hit_rate_limit", { p_key: `today:${user.id}`, p_max: TODAY_PER_HOUR, p_window_seconds: 3600 }))) {
+    throw new ApiError("rate_limited");
+  }
   const analytics = new Analytics();
   const [clock] = await rpc<Clock[]>(admin(), "user_clock", { p_user: user.id });
   if (!clock) throw dbError({ message: "perfil inexistente" });
@@ -40,7 +49,8 @@ Deno.serve(handler("today", async (req) => {
     (await loadSparks(admin(), (q) => q.eq("user_id", user.id).eq("mode", "daily").eq("scheduled_for", clock.local_date).limit(1)))[0] ?? null;
 
   let spark = await findDaily();
-  if (!spark) {
+  // Sin el "Acepto" no se genera (los conceptos irían al modelo): Hoy muestra lo que ya hubiera.
+  if (!spark && await hasAIConsent(user.id)) {
     try {
       const created = await generateSpark(user.id, "daily", analytics, { scheduledFor: clock.local_date });
       // Si otra llamada la creó a la vez, se usa esa.
