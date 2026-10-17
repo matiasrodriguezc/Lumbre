@@ -527,6 +527,8 @@ private struct SynapseRevealModal: View {
                 Button { close(then: onClose) } label: {
                     Image(systemName: "xmark")
                         .font(.footnote.weight(.bold))
+                        // El círculo es fijo: con texto de accesibilidad la cruz no puede crecer más que él.
+                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                         .foregroundStyle(Palette.ink)
                         .frame(width: 32, height: 32)
                         .background(Palette.surfaceAlt, in: Circle())

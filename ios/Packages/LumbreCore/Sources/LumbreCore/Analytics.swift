@@ -294,8 +294,9 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     public var defaultValue: Bool { true }
 
     public var isEnabled: Bool {
-        if let override = UserDefaults.standard.object(forKey: "flag.\(rawValue)") as? Bool {
-            return override
+        // `-flag.<nombre> NO` llega como el texto "NO": `bool(forKey:)` lo entiende, `as? Bool` no.
+        if UserDefaults.standard.object(forKey: "flag.\(rawValue)") != nil {
+            return UserDefaults.standard.bool(forKey: "flag.\(rawValue)")
         }
         return FeatureFlags.remote(self) ?? FeatureFlags.shared(self) ?? defaultValue
     }
