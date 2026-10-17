@@ -198,6 +198,57 @@ function localSummary(task: Extract<CompletionRequest["local"], { kind: "summary
 }
 
 // ---------------------------------------------------------------
+// Temas puente
+// ---------------------------------------------------------------
+type Topic = { title: string; why: string };
+
+// Unos cruces conocidos, por par de slugs ordenado. Para el resto, plantillas con los nombres de los dominios.
+const BRIDGES: Record<string, { es: Topic[]; en: Topic[] }> = {
+  "arte|biologia": {
+    es: [
+      { title: "Bioarte", why: "Obras hechas con materia viva: cultivos, bacterias y tejidos como material de artista." },
+      { title: "Biomimética", why: "Diseñar copiando soluciones de la naturaleza, entre la forma y la función." },
+      { title: "Ilustración científica", why: "Dibujar seres vivos con el rigor de la biología y el oficio del arte." },
+    ],
+    en: [
+      { title: "Bioart", why: "Artworks made with living matter: cultures, bacteria and tissue as an artist's material." },
+      { title: "Biomimicry", why: "Design that copies nature's solutions, between form and function." },
+      { title: "Scientific illustration", why: "Drawing living things with biology's rigor and an artist's craft." },
+    ],
+  },
+  "biologia|tecnologia": {
+    es: [
+      { title: "Algoritmos evolutivos", why: "Programas que mejoran por selección y mutación, como las especies." },
+      { title: "Bioinformática", why: "Software y datos para leer genomas y proteínas." },
+      { title: "Computación con ADN", why: "Usar moléculas de ADN para guardar datos y hacer cálculos." },
+    ],
+    en: [
+      { title: "Evolutionary algorithms", why: "Programs that improve through selection and mutation, like species do." },
+      { title: "Bioinformatics", why: "Software and data to read genomes and proteins." },
+      { title: "DNA computing", why: "Using DNA molecules to store data and run computations." },
+    ],
+  },
+};
+
+export function localBridge(task: Extract<CompletionRequest["local"], { kind: "bridge" }>): { topics: Topic[] } {
+  const known = BRIDGES[[task.a.slug, task.b.slug].sort().join("|")];
+  if (known) return { topics: known[task.locale] };
+  const a = task.a.name;
+  const b = task.b.name;
+  return {
+    topics: task.locale === "en"
+      ? [
+        { title: clip(`History of ${a} and ${b}`, 40), why: `How ${a.toLowerCase()} and ${b.toLowerCase()} shaped each other over time.` },
+        { title: clip(`${a} methods in ${b}`, 40), why: `Tools from ${a.toLowerCase()} applied to problems of ${b.toLowerCase()}.` },
+      ]
+      : [
+        { title: clip(`Historia de ${a.toLowerCase()} y ${b.toLowerCase()}`, 40), why: `Cómo se influyeron ${a.toLowerCase()} y ${b.toLowerCase()} a lo largo del tiempo.` },
+        { title: clip(`Métodos de ${a.toLowerCase()} en ${b.toLowerCase()}`, 40), why: `Herramientas de ${a.toLowerCase()} aplicadas a problemas de ${b.toLowerCase()}.` },
+      ],
+  };
+}
+
+// ---------------------------------------------------------------
 // Proveedor
 // ---------------------------------------------------------------
 function respond(req: CompletionRequest): string {
@@ -211,6 +262,8 @@ function respond(req: CompletionRequest): string {
       return localPlanner(task);
     case "summary":
       return localSummary(task);
+    case "bridge":
+      return JSON.stringify(localBridge(task));
   }
 }
 

@@ -2,7 +2,7 @@
 -- Crea sus propios datos dentro de la transacción y la revierte al final: no depende del seed.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(43);
+select plan(45);
 
 -- ---------------------------------------------------------------
 -- Datos: X y Y, cada uno con su perfil, dos conceptos, una chispa y uso.
@@ -97,6 +97,8 @@ select is((select array_agg(used) from public.usage_ledger), array[3],
 select ok((select count(*) from public.domains) >= 1, 'domains: X puede leer los dominios');
 select ok((select count(*) from public.plan_limits) >= 1, 'plan_limits: X puede leer los límites');
 select throws_ok($$ select * from public.llm_calls $$, '42501', null, 'llm_calls: X no puede leer los costos');
+select throws_ok($$ select * from public.bridge_topics $$, '42501', null, 'bridge_topics: X no puede leer las sugerencias (solo el servidor)');
+select throws_ok($$ select * from public.bridge_domain_pair(auth.uid()) $$, '42501', null, 'bridge_domain_pair: la app no puede llamarla');
 
 -- Perfil: solo las columnas propias del usuario
 select lives_ok($$ update public.profiles set spark_hour = '07:30' where id = auth.uid() $$,

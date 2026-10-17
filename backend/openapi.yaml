@@ -11,14 +11,14 @@ info:
     - Los errores siempre son `{ "error": "<código>" }`. La app traduce el código; nunca muestra el texto del servidor.
     - JSON en snake_case. Fechas en ISO 8601; días (`scheduled_for`) como `YYYY-MM-DD` en la zona del usuario.
     - Ninguna clave de IA vive en la app: toda llamada a un modelo pasa por acá y por `consume_credit()`.
-    - Integridad del dispositivo (paso 40): `capture`, `today`, `spark`, `search` y `planner` aceptan los headers
+    - Integridad del dispositivo (paso 40): `capture`, `today`, `spark`, `search`, `planner` y `bridge-topics` aceptan los headers
       de App Attest (`X-Lumbre-Attest-Key`, `X-Lumbre-Attest-Time` y `X-Lumbre-Attestation` la primera vez o
       `X-Lumbre-Assertion` después) o de Play Integrity (`X-Lumbre-Integrity-Token` y `X-Lumbre-Attest-Time`).
       El mensaje firmado es `"<función>\n<segundos Unix>\n<cuerpo>"`. Con `LUMBRE_ATTESTATION=enforce`, un pedido
       sin firma válida responde 403 `attestation_failed` (la app descarta la clave y crea otra).
     - Consentimiento para la IA (`profiles.ai_consent_at`, lo edita la app): sin él, `spark` y `planner` responden
       403 `ai_consent_required` antes de cobrar, `capture` guarda sin destilar (`distillation: consent_required`)
-      y `today` no genera la diaria.
+      y `today` no genera la diaria. `bridge-topics` responde `{ "bridge": null }`.
     - Las funciones de la web pública (`waitlist`, `demo-spark`) no son de la app y no están en este contrato.
     - `backend/supabase/functions/_tests/contract.test.ts` comprueba que este archivo coincide con las funciones.
 
@@ -224,6 +224,39 @@ paths:
         '403': { $ref: '#/components/responses/Error' }
         '404': { $ref: '#/components/responses/Error' }
         '429': { $ref: '#/components/responses/Error' }
+
+  /bridge-topics:
+    post:
+      summary: Temas puente de la semana (flag bridge_topics)
+      description: |
+        Si la Red tiene mucho de dos dominios que casi no se cruzaron en sus chispas (`bridge_domain_pair()`),
+        sugiere 2 o 3 temas para leer que los unan. Solo temas: nunca obras, autores ni links (se validan en la salida).
+        Descuenta `bridge_topics` (1 por semana, free y Pro): la sugerencia de la semana queda guardada y se devuelve
+        sin volver a llamar a la IA. Si la IA falla antes de responder, devuelve el cupo.
+        `bridge` es null para el invitado, sin consentimiento para la IA, sin dos dominios fuertes y poco cruzados,
+        con el cupo de la semana ya usado o si la IA falló.
+      requestBody:
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200':
+          description: La sugerencia de la semana, o null
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [bridge]
+                properties:
+                  bridge:
+                    oneOf:
+                      - $ref: '#/components/schemas/BridgeTopics'
+                      - type: 'null'
+        '400': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '429':
+          description: Más de 60 pedidos por hora (`rate_limited`; provisorio, LUMBRE_BRIDGE_PER_HOUR)
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
 
   /dev-plan:
     post:
@@ -448,3 +481,25 @@ components:
           items: { $ref: '#/components/schemas/Spark' }
         runway_days: { type: integer, description: "Días de pares buenos que quedan; con menos de 7 la app pide capturar más" }
         concept_count: { type: integer }
+
+    BridgeTopics:
+      type: object
+      required: [id, domains, topics, created_at]
+      properties:
+        id: { type: string, format: uuid }
+        domains:
+          type: array
+          minItems: 2
+          maxItems: 2
+          items: { $ref: '#/components/schemas/Domain' }
+        topics:
+          type: array
+          minItems: 2
+          maxItems: 3
+          items:
+            type: object
+            required: [title, why]
+            properties:
+              title: { type: string, maxLength: 40, description: "Nombre del tema, sin links ni obras" }
+              why: { type: string, maxLength: 160, description: "Qué tiene de cada uno de los dos dominios" }
+        created_at: { type: string, format: date-time }

@@ -419,6 +419,9 @@ verify_jwt = true
 [functions.planner]
 verify_jwt = true
 
+[functions.bridge-topics]
+verify_jwt = true
+
 [functions.dev-plan]
 verify_jwt = true
 

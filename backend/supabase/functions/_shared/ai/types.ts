@@ -10,7 +10,8 @@ export type Feature =
   | "planner_summary"
   | "embed"
   | "search"
-  | "classify";
+  | "classify"
+  | "bridge_topics";
 
 export type ContentPart =
   | { type: "text"; text: string; cache?: boolean }
@@ -48,7 +49,9 @@ export type LocalTask =
     /** Método de los tres cuartos (planner.v2): estado del hilo antes de este mensaje. */
     disney?: { current: "dreamer" | "realist" | "critic" | "plan" | null; userTurns: Record<"dreamer" | "realist" | "critic" | "plan", number> };
   }
-  | { kind: "summary"; previous: string | null; messages: Array<{ role: string; content: string }> };
+  | { kind: "summary"; previous: string | null; messages: Array<{ role: string; content: string }> }
+  /** Temas puente (bridge.v1): los dos dominios por slug y nombre. */
+  | { kind: "bridge"; a: { slug: string; name: string }; b: { slug: string; name: string }; locale: "es" | "en" };
 
 export type PlannerPreset = "backlog" | "devils_advocate" | "stack";
 

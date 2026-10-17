@@ -1,11 +1,13 @@
-// Tareas de IA de Lumbre sobre el gateway: destilar, escribir la chispa y resumir el hilo del planificador.
+// Tareas de IA de Lumbre sobre el gateway: destilar, escribir la chispa, resumir el hilo del planificador
+// y sugerir temas puente.
 // Arman el pedido con el prompt versionado y la tarea para el proveedor local.
 
 import { moderate, logModeration } from "../moderation.ts";
-import { clip } from "../text.ts";
-import { gateway } from "./gateway.ts";
+import { clip, foldText } from "../text.ts";
+import { type AIGateway, gateway } from "./gateway.ts";
 import { localSpark } from "./providers/local.ts";
 import { DISTILL_SCHEMA, DISTILL_SYSTEM, DISTILL_VERSION, DOMAIN_SLUGS, type DistillInput, distillUserText } from "./prompts/distill.v1.ts";
+import { BRIDGE_SCHEMA, BRIDGE_SYSTEM, BRIDGE_VERSION, type BridgeInput, bridgeUserText } from "./prompts/bridge.v1.ts";
 import { SPARK_SCHEMA, SPARK_SYSTEM, SPARK_VERSION, sparkUserText } from "./prompts/spark.v1.ts";
 import { SUMMARY_SYSTEM, SUMMARY_VERSION } from "./prompts/planner.v1.ts";
 import { SUMMARY_DISNEY_SYSTEM, SUMMARY_DISNEY_VERSION } from "./prompts/planner.v2.ts";
@@ -163,4 +165,68 @@ export async function summarizeThread(
     local: { kind: "summary", previous, messages },
   });
   return clip(result.text, 3000);
+}
+
+// ---------------------------------------------------------------
+// Temas puente
+// ---------------------------------------------------------------
+export interface BridgeTopic {
+  title: string;
+  why: string;
+}
+
+export interface BridgeSuggestion {
+  topics: BridgeTopic[];
+  model: string;
+  promptVersion: string;
+}
+
+// Un link, un dominio web, un mail o una referencia bibliográfica: nunca se muestra (plan.md §4, temas puente).
+const LINK = /(?:https?:\/\/|www\.|\b[a-z0-9-]+\.(?:com|org|net|io|edu|gov|info|co|ar|es|uk|ai|dev|app|me)\b|@|\bdoi\b|\bisbn\b)/i;
+// Forma de obra y no de tema: subtítulo con dos puntos, un año, o las palabras libro, artículo, paper, autor, curso.
+const WORK = /:|\b(1[5-9]|20)\d\d\b|\b(libro|book|articulo|article|paper|autor|author|curso|course|podcast|documental|documentary)s?\b/;
+
+/**
+ * Valida y limpia la respuesta del modelo: solo temas, de 2 a 3. Descarta los que traen links u obras,
+ * los repetidos, los que son solo uno de los dos dominios y los moderados. Si no quedan 2, lanza.
+ */
+export async function checkBridgeTopics(json: unknown, domainNames: string[]): Promise<BridgeTopic[]> {
+  const raw = (json as { topics?: Array<{ title?: unknown; why?: unknown }> } | null)?.topics;
+  const domains = new Set(domainNames.map(foldText));
+  const seen = new Set<string>();
+  const topics: BridgeTopic[] = [];
+  for (const item of Array.isArray(raw) ? raw : []) {
+    if (topics.length === 3) break;
+    if (typeof item?.title !== "string" || typeof item?.why !== "string") continue;
+    const title = item.title.replace(/\s+/g, " ").trim().replace(/^["'«“‘]+|["'»”’.]+$/gu, "").trim();
+    const why = clip(item.why, 160);
+    if (!title || title.length > 60 || !why) continue;
+    if (LINK.test(title) || LINK.test(why) || WORK.test(foldText(title))) continue;
+    const key = foldText(title);
+    if (seen.has(key) || domains.has(key)) continue;
+    const check = await moderate(`${title} ${why}`);
+    logModeration("bridge_topics", "output", check);
+    if (check.flagged) continue;
+    seen.add(key);
+    topics.push({ title: clip(title, 40), why });
+  }
+  if (topics.length < 2) throw new AIError("fatal", "bridge_topics_invalid");
+  return topics;
+}
+
+/** Pide los temas puente (bridge.v1) y los valida. Los errores suben: la función devuelve el cupo si corresponde. */
+export async function suggestBridgeTopics(input: BridgeInput, userId: string, ai: AIGateway = gateway()): Promise<BridgeSuggestion> {
+  const result = await ai.complete({
+    feature: "bridge_topics",
+    userId,
+    tier: "fast",
+    promptVersion: BRIDGE_VERSION,
+    system: [{ text: BRIDGE_SYSTEM, cache: true }],
+    messages: [{ role: "user", content: bridgeUserText(input) }],
+    maxTokens: 500,
+    jsonSchema: BRIDGE_SCHEMA as unknown as Record<string, unknown>,
+    local: { kind: "bridge", a: { slug: input.a.slug, name: input.a.name }, b: { slug: input.b.slug, name: input.b.name }, locale: input.locale },
+  });
+  const topics = await checkBridgeTopics(result.json, [input.a.name, input.b.name]);
+  return { topics, model: result.model, promptVersion: BRIDGE_VERSION };
 }

@@ -21,7 +21,7 @@ const config = await Deno.readTextFile(new URL("supabase/config.toml", backendDi
 /** Funciones de la web pública (landing y demo): tienen su propio contrato informal en web/, no son de la app. */
 const WEB_FUNCTIONS = new Set(["waitlist", "demo-spark"]);
 /** Las que usan requireDeviceIntegrity (paso 40). */
-const ATTESTED = new Set(["capture", "today", "spark", "search", "planner"]);
+const ATTESTED = new Set(["capture", "today", "spark", "search", "planner", "bridge-topics"]);
 /** Errores que vienen de la base (RPCs con el JWT del usuario) y no aparecen como ApiError en el código. */
 const DB_ERRORS: Record<string, string[]> = {
   capture: ["quota_exceeded", "too_many_categories", "invalid_thesis", "invalid_category", "invalid_source"],
@@ -83,9 +83,9 @@ Deno.test("la guarda de integridad está en las funciones de IA de la app", () =
 });
 
 Deno.test("las funciones que mandan contenido del usuario a la IA piden su consentimiento", () => {
-  // spark y planner cortan con 403; capture guarda sin destilar y today no genera la diaria.
+  // spark y planner cortan con 403; capture guarda sin destilar, today no genera la diaria y bridge-topics no sugiere.
   for (const fn of ["spark", "planner"]) assert(sources[fn].includes("await requireAIConsent(user.id)"), `/${fn}`);
-  for (const fn of ["capture", "today"]) assert(sources[fn].includes("hasAIConsent(user.id)"), `/${fn}`);
+  for (const fn of ["capture", "today", "bridge-topics"]) assert(sources[fn].includes("hasAIConsent(user.id)"), `/${fn}`);
 });
 
 Deno.test("verify_jwt de config.toml coincide con la seguridad del contrato", () => {
