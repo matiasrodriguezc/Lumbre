@@ -11,6 +11,7 @@ struct ProjectsView: View {
     @Environment(\.api) private var api
     @Environment(AppModel.self) private var appModel
     @Environment(\.dataVersion) private var dataVersion
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var path = NavigationPath()
     @State private var projects: [Project] = []
     @State private var isLoading = true
@@ -138,7 +139,7 @@ struct ProjectsView: View {
         Task {
             do {
                 try await api.deleteProject(id: project.id)
-                withAnimation { projects.removeAll { $0.id == project.id } }
+                withAnimation(reduceMotion ? nil : .default) { projects.removeAll { $0.id == project.id } }
                 actionError = nil
                 appModel.dataChanged()
             } catch {

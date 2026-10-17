@@ -183,6 +183,7 @@ struct ConceptDetailView: View {
         }
         .font(.footnote)
         .foregroundStyle(Palette.inkMuted)
+        .labelStyle(MetadataLabelStyle())
     }
 
     private var draftBanner: some View {
@@ -384,6 +385,20 @@ struct ConceptDetailView: View {
                 errorMessage = error.localizedDescription
                 isWorking = false
             }
+        }
+    }
+}
+
+/// Con tamaños de accesibilidad, los datos van sin ícono: al lado, "Conceptualizado" se corta por sílabas.
+private struct MetadataLabelStyle: LabelStyle {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    @ViewBuilder
+    func makeBody(configuration: Configuration) -> some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            configuration.title
+        } else {
+            Label(configuration)
         }
     }
 }

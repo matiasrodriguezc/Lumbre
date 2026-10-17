@@ -13,6 +13,8 @@ enum AppRoute: Hashable {
     case today
     /// `entry` llega hasta `spark_revealed`: `app`, `push` o `widget`.
     case spark(Spark.ID, entry: String = "app")
+    /// El planificador de una chispa, apilado sobre su detalle.
+    case planner(Spark.ID)
     case concept(Concept.ID)
     case capture(entry: String)
     case paywall(trigger: String)
@@ -122,7 +124,7 @@ final class AppModel {
 
     func open(_ route: AppRoute) {
         switch route {
-        case .today, .spark:
+        case .today, .spark, .planner:
             selectedTab = .today
             pendingRoute = route
         case .concept:

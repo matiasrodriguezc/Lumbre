@@ -393,7 +393,8 @@ struct TodayView: View {
         self.today = TodayState(spark: daily, quota: today.quota, extras: extras, runwayDays: today.runwayDays, conceptCount: today.conceptCount)
     }
 
-    /// Links profundos, pushes y el widget: `.today` vuelve a la raíz; `.spark(id)` abre esa chispa.
+    /// Links profundos, pushes y el widget: `.today` vuelve a la raíz; `.spark(id)` abre esa chispa;
+    /// `.planner(id)`, su planificador.
     /// Si es la chispa protagonista de hoy, se queda en Hoy para hacer el reveal.
     private func consumeRoute() {
         switch appModel.pendingRoute {
@@ -411,6 +412,9 @@ struct TodayView: View {
             } else {
                 path = [.detail(id)]
             }
+        case .planner(let id):
+            appModel.pendingRoute = nil
+            path = [.detail(id), .planner(id, entry: "spark_detail")]
         default:
             break
         }

@@ -86,7 +86,10 @@ struct SeedsStepView: View {
 private struct SeedCard: View {
     let index: Int
     @Environment(OnboardingModel.self) private var model
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @FocusState private var isFocused: Bool
+
+    private var isLargeText: Bool { dynamicTypeSize.isAccessibilitySize }
 
     var body: some View {
         @Bindable var model = model
@@ -110,8 +113,16 @@ private struct SeedCard: View {
                     .foregroundStyle(Palette.ink)
                 LumbreChip(seed.trimmedCategory, systemImage: "tag")
             } else {
-                TextField(model.placeholder(forSeedAt: index), text: $model.seeds[index].text, axis: .vertical)
-                    .lineLimit(2...6)
+                // Con tamaños de accesibilidad, el ejemplo va arriba y más chico: como placeholder no pasaba de las
+                // líneas mínimas y terminaba en "autoorgani-zan sin un je…".
+                if isLargeText {
+                    Text(model.placeholder(forSeedAt: index))
+                        .font(.footnote)
+                        .foregroundStyle(Palette.inkMuted)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                TextField(isLargeText ? "" : model.placeholder(forSeedAt: index), text: $model.seeds[index].text, axis: .vertical)
+                    .lineLimit(isLargeText ? 3...8 : 2...6)
                     .font(.body)
                     .focused($isFocused)
                     .padding(Space.s3)
@@ -195,6 +206,9 @@ struct PushStepView: View {
     @Environment(\.api) private var api
     @State private var isRequesting = false
     @State private var finishError: String?
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    /// El recuadro del ícono crece con el texto: fijo en 36, con texto grande la campana lo desbordaba.
+    @ScaledMetric(relativeTo: .title3) private var iconBox: CGFloat = 36
 
     var body: some View {
         OnboardingScaffold(step: .push, title: "Te avisamos cuando esté lista", subtitle: "Un aviso por día, a la hora que elegiste. Nada más.") {
@@ -238,17 +252,30 @@ struct PushStepView: View {
 
     /// Cómo se va a ver el aviso, para que se entienda qué se acepta.
     private var notificationPreview: some View {
-        HStack(alignment: .top, spacing: Space.s3) {
+        // Con tamaños de accesibilidad, todo en una columna: al lado del ícono y de la hora, "Lumbre" se cortaba
+        // por sílabas.
+        let isLargeText = dynamicTypeSize.isAccessibilitySize
+        let layout = isLargeText
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: Space.s2))
+            : AnyLayout(HStackLayout(alignment: .top, spacing: Space.s3))
+        let header = isLargeText
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 0))
+            : AnyLayout(HStackLayout())
+        return layout {
             Image(systemName: "bell.badge")
                 .font(.title3)
                 .foregroundStyle(Palette.infoText)
-                .frame(width: 36, height: 36)
+                .frame(width: iconBox, height: iconBox)
                 .background(Palette.surfaceAlt, in: RoundedRectangle(cornerRadius: Radius.sm, style: .continuous))
+                // Encabeza lo que lee VoiceOver; el resto del aviso se lee entero.
+                .accessibilityLabel(Text("Ejemplo de aviso"))
             VStack(alignment: .leading, spacing: 2) {
-                HStack {
+                header {
                     Text(verbatim: "Lumbre")
                         .font(.subheadline.weight(.semibold))
-                    Spacer()
+                    if !isLargeText {
+                        Spacer()
+                    }
                     Text(model.sparkTime, format: .dateTime.hour().minute())
                         .font(.footnote)
                         .foregroundStyle(Palette.inkMuted)
@@ -265,7 +292,6 @@ struct PushStepView: View {
         .background(Palette.surface, in: RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: Radius.md, style: .continuous).strokeBorder(Palette.border, lineWidth: 1))
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(Text("Ejemplo de aviso"))
     }
 
     private func allow() async {

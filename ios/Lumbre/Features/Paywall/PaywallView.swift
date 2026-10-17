@@ -15,6 +15,7 @@ struct PaywallView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     @State private var offers: [PlanOffer] = []
     @State private var loadError: Error?
@@ -37,6 +38,9 @@ struct PaywallView: View {
                         alreadyPro
                     } else {
                         plans
+                        if isLargeText, loadError == nil {
+                            purchaseButton
+                        }
                         finePrint
                     }
                     footerLinks
@@ -45,7 +49,7 @@ struct PaywallView: View {
                 .padding(.bottom, Space.s6)
             }
             .safeAreaInset(edge: .bottom) {
-                if !appModel.isPro, loadError == nil {
+                if !appModel.isPro, loadError == nil, !isLargeText {
                     purchaseBar
                 }
             }
@@ -96,6 +100,8 @@ struct PaywallView: View {
             benefit("Planificador para bajar cada idea a tareas")
             benefit("Circuitos ilimitados")
         }
+        // "Conceptualización" sola ya no entra en una línea desde AX3 y se cortaba por sílabas.
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 
     private func benefit(_ text: LocalizedStringKey) -> some View {
@@ -222,7 +228,19 @@ struct PaywallView: View {
         Button("Privacidad") { openURL(LegalLinks.privacy) }
     }
 
+    /// Con tamaños de accesibilidad, la compra va debajo de los planes y no fija abajo: fija, ocupaba media pantalla y
+    /// dejaba los planes y la letra chica en una franja.
+    private var isLargeText: Bool { dynamicTypeSize.isAccessibilitySize }
+
     private var purchaseBar: some View {
+        purchaseButton
+            .padding(.horizontal, Space.s4)
+            .padding(.top, Space.s3)
+            .padding(.bottom, Space.s2)
+            .background(Palette.bg)
+    }
+
+    private var purchaseButton: some View {
         VStack(spacing: Space.s2) {
             Button {
                 Task { await buy() }
@@ -245,10 +263,6 @@ struct PaywallView: View {
                     .multilineTextAlignment(.center)
             }
         }
-        .padding(.horizontal, Space.s4)
-        .padding(.top, Space.s3)
-        .padding(.bottom, Space.s2)
-        .background(Palette.bg)
     }
 
     private var ctaTitle: Text {

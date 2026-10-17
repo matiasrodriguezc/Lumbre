@@ -138,9 +138,16 @@ struct ShareCardSheet: View {
                         .frame(width: size.width * scale, height: size.height * scale)
                         .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: Radius.md, style: .continuous).strokeBorder(Palette.border, lineWidth: 1))
+                        .accessibilityHidden(true)
+                        // VoiceOver la lee como una imagen. El elemento va encima y no en la tarjeta achicada: con
+                        // `scaleEffect`, el recuadro del foco quedaba del tamaño real y corrido hacia arriba.
+                        .overlay {
+                            Color.clear
+                                .accessibilityElement()
+                                .accessibilityLabel(Text(spark.accessibilitySummary))
+                                .accessibilityAddTraits(.isImage)
+                        }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .accessibilityElement(children: .ignore)
-                        .accessibilityLabel(Text(spark.accessibilitySummary))
                 }
 
                 if let png, let image {
