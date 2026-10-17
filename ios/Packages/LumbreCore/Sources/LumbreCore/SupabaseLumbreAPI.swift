@@ -200,6 +200,13 @@ public struct SupabaseLumbreAPI: LumbreAPI {
         }
     }
 
+    public func bridgeTopics() async throws -> BridgeTopics? {
+        try await perform {
+            let envelope: BridgeEnvelopeDTO = try await functions.call("bridge-topics", body: EmptyBody(), timeout: 60)
+            return envelope.bridge?.model
+        }
+    }
+
     public func revealSpark(id: Spark.ID) async throws {
         try await perform {
             // Solo una pendiente pasa a vista: si ya se guardó o descartó, no se toca.

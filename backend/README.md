@@ -164,6 +164,7 @@ Supabase da permisos completos sobre las tablas a `anon` y `authenticated`. Por 
 | `content_reports` | Reportar una chispa o un mensaje propios y leer sus reportes | — |
 | `library_concepts` | Leer (con sesión) | Escribir |
 | `llm_calls`, `app_config`, `cost_alerts`, `llm_cost_daily` (vista) | Nada | Todo |
+| `bridge_topics` (temas puente, paso 92) | Nada (los recibe por `/bridge-topics`) | Todo |
 | `spark_jobs`, `subscription_events`, `analytics_outbox` | Nada | Todo |
 | `attest_keys`, `rate_limits` | Nada | Todo |
 | `waitlist`, `demo_sparks`, `web_rate_limits` (web pública, ver `web/README.md`) | Nada | Todo |
@@ -180,16 +181,17 @@ Toda operación que gasta IA pasa primero por `consume_credit(user, kind)`, desd
 - El plan efectivo sale de `effective_plan()`: `guest` si la sesión es anónima; si no, el `plan` del perfil.
 - Los períodos (día y mes) se cuentan en la zona horaria del usuario.
 - Si una fila tiene `earned_every`, el cupo se gana: 1 por cada N conceptos guardados en el período, con `max_count` como techo. Es el caso de las chispas extra en free (3 conceptos dan 1, hasta 2 por día).
+- **Temas puente** (paso 92, solo Pro): `/bridge-topics` detecta con `bridge_domain_pair()` dos dominios con al menos 5 neuronas propias que casi no se cruzaron en chispas (umbrales en `app_config`), descuenta `bridge_topics` (1 por semana, lunes a lunes en la zona del usuario) y guarda la sugerencia en `bridge_topics`; el resto de la semana devuelve esa misma sin llamar a la IA (`current_bridge_topics()`).
 - **Importar notas** (paso 89): `capture_concept()` con `p_import_source` (`markdown`, `apple_notes`) descuenta la captura del día como cualquier otra (`quota_exceeded`: la app la deja en la cola para mañana) y además, si el plan tiene fila `import` (free e invitado: 50 en `total`; Pro no tiene), una de ese cupo (`import_limit`). La neurona guarda `concepts.import_source`. `/capture` destila una nota larga desde `note_text` y devuelve el `import` de los conceptos de más.
 - El descuento es atómico: el `update ... where used < techo` bloquea la fila, así que llamadas simultáneas no pasan el límite.
 - Si la operación falla después de descontar, la Edge Function llama a `refund_credit(user, kind)`.
 - La app muestra lo que le queda con `credit_status()`, que devuelve solo los cupos del usuario de la sesión.
 
-| Plan | Captura | Destilación | Chispas extra | Planificador | Plan profundo | Proyectos |
-|---|---|---|---|---|---|---|
-| guest | 10 por día | — | — | — | — | 1 |
-| free | 30 por día | 5 por mes | 2 por día, ganadas | — | — | 1 |
-| pro | 200 por día | 300 por mes | 10 por día | 300 por mes | 60 por mes | 1000 ("ilimitados") |
+| Plan | Captura | Destilación | Chispas extra | Planificador | Plan profundo | Proyectos | Temas puente |
+|---|---|---|---|---|---|---|---|
+| guest | 10 por día | — | — | — | — | 1 | — |
+| free | 30 por día | 5 por mes | 2 por día, ganadas | — | — | 1 | — |
+| pro | 200 por día | 300 por mes | 10 por día | 300 por mes | 60 por mes | 1000 ("ilimitados") | 1 por semana |
 
 Los proyectos son un cupo `total`: no se renueva, se cuentan los que existen. `create_project()` lo respeta y `credit_status()` devuelve `remaining = máximo − proyectos actuales`.
 

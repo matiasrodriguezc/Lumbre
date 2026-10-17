@@ -62,9 +62,11 @@ enum AppEnvironment {
     }
 
     private static func makeMockAPI(arguments: [String]) -> MockLumbreAPI? {
+        // `-mockRunwayDays 3`: pocos pares buenos en Hoy (el aviso de capturar más y los temas puente).
+        let runway = arguments.firstIndex(of: "-mockRunwayDays").flatMap { arguments.indices.contains($0 + 1) ? Int(arguments[$0 + 1]) : nil }
         if arguments.contains("-mockGuest") { return MockLumbreAPI(onboarded: false) }
-        if arguments.contains("-mockPro") { return MockLumbreAPI(plan: .pro) }
-        if arguments.contains("-mock") { return MockLumbreAPI() }
+        if arguments.contains("-mockPro") { return MockLumbreAPI(plan: .pro, runwayDays: runway) }
+        if arguments.contains("-mock") { return MockLumbreAPI(runwayDays: runway) }
         return nil
     }
 

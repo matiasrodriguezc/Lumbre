@@ -60,7 +60,7 @@ struct BridgeTopicsDTO: Decodable, Sendable {
 // MARK: - Mock
 
 extension MockData {
-    /// Neuronas propias (listas, sin las de la biblioteca) que necesita cada dominio. Igual que el backend
+    /// Neuronas propias (listas, sin las de la biblioteca ni las que nacieron de una chispa) que necesita cada dominio. Igual que el backend
     /// (`bridge_topics_min_concepts` y `bridge_topics_max_crossings` de app_config).
     static let bridgeMinConcepts = 5
     static let bridgeMaxCrossings = 1
@@ -70,7 +70,7 @@ extension MockData {
     static func bridgeTopics(concepts: [Concept], sparks: [Spark]) -> BridgeTopics? {
         var counts: [String: Int] = [:]
         var domainsBySlug: [String: Domain] = [:]
-        for concept in concepts where concept.status == .ready && !concept.fromLibrary {
+        for concept in concepts where concept.status == .ready && !concept.fromLibrary && concept.sourceType != .spark {
             guard let domain = concept.category?.domain else { continue }
             counts[domain.slug, default: 0] += 1
             domainsBySlug[domain.slug] = domain

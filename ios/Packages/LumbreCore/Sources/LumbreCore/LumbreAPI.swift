@@ -45,6 +45,9 @@ public protocol LumbreAPI: Sendable {
     func sendFeedback(sparkID: Spark.ID, feedback: SparkFeedback) async throws
     /// Pide una chispa extra (cupo `spark_extra`). En Pro, `pick` combina dos conceptos elegidos.
     func requestSpark(pick: (Concept.ID, Concept.ID)?) async throws -> Spark
+    /// Temas puente de la semana (Pro, `POST /bridge-topics`): nil si no hay dos dominios fuertes y poco cruzados,
+    /// si no es Pro o si no aceptó la IA. Pide a la IA una vez por semana como mucho; después devuelve la misma.
+    func bridgeTopics() async throws -> BridgeTopics?
     /// Chispas anteriores, de la más nueva a la más vieja.
     func recentSparks() async throws -> [Spark]
     func spark(id: Spark.ID) async throws -> Spark
@@ -164,6 +167,9 @@ public enum LumbreAPIError: LocalizedError, Equatable {
 }
 
 extension LumbreAPI {
+    /// Por defecto no hay temas puente (dobles de los tests).
+    public func bridgeTopics() async throws -> BridgeTopics? { nil }
+
     /// Chat libre del planificador (planner.v1).
     public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode) -> AsyncThrowingStream<String, Error> {
         sendPlannerMessage(sparkID: sparkID, text: text, mode: mode, method: .free, lens: nil)

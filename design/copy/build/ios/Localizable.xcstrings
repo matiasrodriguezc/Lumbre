@@ -67,6 +67,17 @@
         }
       }
     },
+    "%lld archivos vacíos o muy grandes no se importan." : {
+      "comment" : "[importar.preview.skipped]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld empty or very large files won't be imported."
+          }
+        }
+      }
+    },
     "%lld capturas esperan conexión" : {
       "comment" : "[capturar.queue.many]",
       "localizations" : {
@@ -74,6 +85,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld captures waiting for a connection"
+          }
+        }
+      }
+    },
+    "%lld capturas siguen mañana: llegaste al tope de hoy" : {
+      "comment" : "[importar.queue.quota]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld captures go in tomorrow: you've hit today's limit"
           }
         }
       }
@@ -174,6 +196,28 @@
         }
       }
     },
+    "%lld notas no se pudieron importar." : {
+      "comment" : "[importar.sending.discarded]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld notes couldn't be imported."
+          }
+        }
+      }
+    },
+    "%lld notas para importar" : {
+      "comment" : "[importar.preview.count]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld notes to import"
+          }
+        }
+      }
+    },
     "%lld páginas escaneadas" : {
       "comment" : "[capturar.scanned_many]",
       "localizations" : {
@@ -196,6 +240,28 @@
         }
       }
     },
+    "%lld ya las importaste antes: quedaron sin elegir." : {
+      "comment" : "[importar.preview.already]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You already imported %lld before: they're unselected."
+          }
+        }
+      }
+    },
+    "1 archivo vacío o muy grande no se importa." : {
+      "comment" : "[importar.preview.skipped_one]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 empty or very large file won't be imported."
+          }
+        }
+      }
+    },
     "1 captura espera conexión" : {
       "comment" : "[capturar.queue.one]",
       "localizations" : {
@@ -203,6 +269,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "1 capture waiting for a connection"
+          }
+        }
+      }
+    },
+    "1 captura sigue mañana: llegaste al tope de hoy" : {
+      "comment" : "[importar.queue.quota_one]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 capture goes in tomorrow: you've hit today's limit"
           }
         }
       }
@@ -229,6 +306,72 @@
         }
       }
     },
+    "1 nota no se pudo importar." : {
+      "comment" : "[importar.sending.discarded_one]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 note couldn't be imported."
+          }
+        }
+      }
+    },
+    "1 nota para importar" : {
+      "comment" : "[importar.preview.count_one]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 note to import"
+          }
+        }
+      }
+    },
+    "1 ya la importaste antes: quedó sin elegir." : {
+      "comment" : "[importar.preview.already_one]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You already imported 1 before: it's unselected."
+          }
+        }
+      }
+    },
+    "1. Agregá la acción “Buscar notas” y elegí la carpeta o el filtro que quieras." : {
+      "comment" : "[importar.source.step1]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Add the “Find Notes” action and pick the folder or filter you want."
+          }
+        }
+      }
+    },
+    "2. Agregá “Importar notas a Lumbre” y pasale las notas." : {
+      "comment" : "[importar.source.step2]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. Add “Import notes to Lumbre” and pass it the notes."
+          }
+        }
+      }
+    },
+    "3. Corré el atajo: Lumbre se abre con la vista previa." : {
+      "comment" : "[importar.source.step3]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. Run the shortcut: Lumbre opens with the preview."
+          }
+        }
+      }
+    },
     "Abogado del diablo" : {
       "comment" : "[planificador.shortcut.devil]",
       "localizations" : {
@@ -247,6 +390,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opens Capture to add a neuron to your Network."
+          }
+        }
+      }
+    },
+    "Abre Lumbre con estas notas para elegir cuáles suman neuronas a tu Red." : {
+      "comment" : "[importar.intent.description]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens Lumbre with these notes so you can pick which ones become neurons in your network."
           }
         }
       }
@@ -335,6 +489,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open Settings"
+          }
+        }
+      }
+    },
+    "Abrir Atajos" : {
+      "comment" : "[importar.source.open_shortcuts]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Shortcuts"
           }
         }
       }
@@ -603,6 +768,28 @@
         }
       }
     },
+    "Apple Notes" : {
+      "comment" : "[importar.source.apple_notes]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Notes"
+          }
+        }
+      }
+    },
+    "Archivos Markdown" : {
+      "comment" : "[importar.source.markdown]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Markdown files"
+          }
+        }
+      }
+    },
     "Armá un backlog" : {
       "comment" : "[planificador.shortcut.backlog]",
       "localizations" : {
@@ -823,6 +1010,28 @@
         }
       }
     },
+    "Buscar el tema en la web o copiarlo" : {
+      "comment" : "[red.bridge.hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search the topic on the web or copy it"
+          }
+        }
+      }
+    },
+    "Buscar en la web" : {
+      "comment" : "[red.bridge.search]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search the web"
+          }
+        }
+      }
+    },
     "Buscar ideas, no palabras" : {
       "comment" : "[red.search]",
       "localizations" : {
@@ -841,6 +1050,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Every 3 neurons you save today earn you an extra spark, up to 2 a day."
+          }
+        }
+      }
+    },
+    "Cada nota entra como una neurona. Las largas las conceptualiza Lumbre si le diste el permiso y te quedan conceptualizaciones; las demás entran con su primera línea, que podés editar antes." : {
+      "comment" : "[importar.source.footer]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Each note becomes a neuron. Lumbre conceptualizes the long ones if you gave permission and have conceptualizations left; the rest go in with their first line, which you can edit first."
           }
         }
       }
@@ -874,6 +1094,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Change email"
+          }
+        }
+      }
+    },
+    "Cambiar la categoría" : {
+      "comment" : "[importar.preview.change_category]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change category"
           }
         }
       }
@@ -1329,6 +1560,17 @@
         }
       }
     },
+    "Con el plan gratis te quedan %lld notas para importar. Sacá algunas o elegí las primeras." : {
+      "comment" : "[importar.preview.free_limit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On the free plan you have %lld notes left to import. Leave some out or pick the first ones."
+          }
+        }
+      }
+    },
     "Con el plan gratis tenés un circuito. Con Pro, todos los que quieras." : {
       "comment" : "[comun.free_one_circuit]",
       "localizations" : {
@@ -1439,6 +1681,17 @@
         }
       }
     },
+    "Conceptualizar las notas largas" : {
+      "comment" : "[importar.preview.distill_toggle]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conceptualize long notes"
+          }
+        }
+      }
+    },
     "Conceptualizar lee links, fotos y PDFs y saca las neuronas por vos. Con una cuenta gratis tenés pruebas todos los meses." : {
       "comment" : "[cuenta.gate.distill]",
       "localizations" : {
@@ -1512,6 +1765,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continue with Google"
+          }
+        }
+      }
+    },
+    "Convertí esta chispa en un modelo de negocio." : {
+      "comment" : "Mensaje que manda la lente; el formato lo pide el servidor. [planificador.lens.business_model_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn this spark into a business model."
+          }
+        }
+      }
+    },
+    "Convertí esta chispa en un post." : {
+      "comment" : "[planificador.lens.post_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn this spark into a post."
+          }
+        }
+      }
+    },
+    "Convertí esta chispa en una trama." : {
+      "comment" : "[planificador.lens.plot_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn this spark into a plot."
+          }
+        }
+      }
+    },
+    "Copiado" : {
+      "comment" : "[red.bridge.copied]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copied"
           }
         }
       }
@@ -1901,6 +2198,17 @@
         }
       }
     },
+    "Editar la tesis" : {
+      "comment" : "[importar.preview.edit_thesis]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit thesis"
+          }
+        }
+      }
+    },
     "Editar neurona" : {
       "comment" : "[neurona.edit_title]",
       "localizations" : {
@@ -2216,6 +2524,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choose photo"
+          }
+        }
+      }
+    },
+    "Elegir las primeras %lld" : {
+      "comment" : "[importar.preview.pick_first]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick the first %lld"
+          }
+        }
+      }
+    },
+    "Elegir todas" : {
+      "comment" : "[importar.preview.select_group]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select all"
+          }
+        }
+      }
+    },
+    "Elegí en Lumbre cuáles de las %lld notas importás." : {
+      "comment" : "[importar.intent.many]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose in Lumbre which of the %lld notes to import."
+          }
+        }
+      }
+    },
+    "Elegí en Lumbre si importás la nota." : {
+      "comment" : "[importar.intent.one]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose in Lumbre whether to import the note."
           }
         }
       }
@@ -3056,6 +3408,17 @@
         }
       }
     },
+    "Guardaste mucho de %@ y de %@, pero casi nunca se cruzaron. Para leer y unirlos:" : {
+      "comment" : "[red.bridge.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've saved a lot about %@ and %@, but they rarely cross. Topics to read that connect them:"
+          }
+        }
+      }
+    },
     "Guardá %lld neuronas para ganar 1 extra" : {
       "comment" : "[hoy.meter.earn]",
       "localizations" : {
@@ -3273,6 +3636,17 @@
         }
       }
     },
+    "Hoy te quedan %lld capturas: entran %lld notas y las otras %lld siguen mañana." : {
+      "comment" : "[importar.preview.today_split]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have %1$lld captures left today: %2$lld notes go in now and the other %3$lld tomorrow."
+          }
+        }
+      }
+    },
     "Hoy usás Lumbre como invitado. Con una cuenta, tus ideas quedan a salvo si cambiás o perdés el teléfono." : {
       "comment" : "[cuenta.banner.body]",
       "localizations" : {
@@ -3280,6 +3654,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You're using Lumbre as a guest. With an account, your ideas stay safe if you change or lose your phone."
+          }
+        }
+      }
+    },
+    "Hoy ya usaste tus capturas: las notas entran mañana." : {
+      "comment" : "[importar.preview.today_none]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've used today's captures: the notes go in tomorrow."
           }
         }
       }
@@ -3350,6 +3735,72 @@
         }
       }
     },
+    "Importando %lld de %lld…" : {
+      "comment" : "[importar.sending.progress]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importing %1$lld of %2$lld…"
+          }
+        }
+      }
+    },
+    "Importar ${notes} a Lumbre" : {
+      "comment" : "[importar.intent.summary]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import ${notes} to Lumbre"
+          }
+        }
+      }
+    },
+    "Importar %lld notas" : {
+      "comment" : "[importar.submit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import %lld notes"
+          }
+        }
+      }
+    },
+    "Importar 1 nota" : {
+      "comment" : "[importar.submit_one]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import 1 note"
+          }
+        }
+      }
+    },
+    "Importar notas" : {
+      "comment" : "[importar.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import notes"
+          }
+        }
+      }
+    },
+    "Importar notas a Lumbre" : {
+      "comment" : "[importar.intent.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import notes to Lumbre"
+          }
+        }
+      }
+    },
     "Intenta mandarlas ahora" : {
       "comment" : "Hint de accesibilidad de Reintentar. [capturar.queue.retry_hint]",
       "localizations" : {
@@ -3401,6 +3852,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Go to Today"
+          }
+        }
+      }
+    },
+    "La bóveda entera, con sus subcarpetas. Cada carpeta sugiere una categoría." : {
+      "comment" : "[importar.source.obsidian_detail]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The whole vault, with its subfolders. Each folder suggests a category."
+          }
+        }
+      }
+    },
+    "La carpeta tiene más de %lld notas: se leyeron las primeras." : {
+      "comment" : "[importar.preview.truncated]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The folder has more than %lld notes: we read the first ones."
           }
         }
       }
@@ -3493,6 +3966,17 @@
         }
       }
     },
+    "La nota que falta queda guardada en el teléfono y se suma a tu Red mañana." : {
+      "comment" : "[importar.sending.quota_one]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The remaining note stays on your phone and joins your network tomorrow."
+          }
+        }
+      }
+    },
     "La próxima, mañana a las %@" : {
       "comment" : "El código usa \"La próxima, mañana a las 08:00\" fijo en el preview del componente. [hoy.next.tomorrow]",
       "localizations" : {
@@ -3570,6 +4054,17 @@
         }
       }
     },
+    "Las %lld notas que faltan quedan guardadas en el teléfono y se suman a tu Red mañana." : {
+      "comment" : "[importar.sending.quota]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The %lld remaining notes stay on your phone and join your network tomorrow."
+          }
+        }
+      }
+    },
     "Las chispas extra se ganan guardando neuronas, y se guardan en tu cuenta. Creala gratis: lo que ya guardaste pasa con vos." : {
       "comment" : "[cuenta.gate.spark_extra]",
       "localizations" : {
@@ -3636,6 +4131,28 @@
         }
       }
     },
+    "Las notas de este grupo entran en esta categoría. Si no existe, se crea." : {
+      "comment" : "[importar.preview.change_category_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The notes in this group go into this category. If it doesn't exist, it's created."
+          }
+        }
+      }
+    },
+    "Las notas que encontró “Buscar notas”, o cualquier texto." : {
+      "comment" : "[importar.intent.notes_description]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The notes “Find Notes” found, or any text."
+          }
+        }
+      }
+    },
     "Leer la política de privacidad" : {
       "comment" : "[onboarding.consent.read_policy]",
       "localizations" : {
@@ -3647,6 +4164,17 @@
         }
       }
     },
+    "Lente: %@" : {
+      "comment" : "Sobre la respuesta de una lente y en la etiqueta de VoiceOver del atajo. [planificador.lens.label]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lens: %@"
+          }
+        }
+      }
+    },
     "Leyendo el texto…" : {
       "comment" : "[capturar.reading_text]",
       "localizations" : {
@@ -3654,6 +4182,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reading the text…"
+          }
+        }
+      }
+    },
+    "Leyendo tus notas…" : {
+      "comment" : "[importar.reading]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reading your notes…"
           }
         }
       }
@@ -3742,6 +4281,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You've hit today's limit. You can keep going tomorrow."
+          }
+        }
+      }
+    },
+    "Llegaste al tope de capturas de hoy" : {
+      "comment" : "[importar.sending.quota_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've hit today's capture limit"
           }
         }
       }
@@ -3856,6 +4406,17 @@
         }
       }
     },
+    "Lumbre la conceptualiza" : {
+      "comment" : "[importar.preview.distilled_badge]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumbre conceptualizes it"
+          }
+        }
+      }
+    },
     "Lumbre lee el contenido y saca de 1 a 3 neuronas." : {
       "comment" : "[capturar.trials.what]",
       "localizations" : {
@@ -3918,6 +4479,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lumbre doesn't read Word, PowerPoint or video files. Save a PDF or the link, or write what idea it leaves you with."
+          }
+        }
+      }
+    },
+    "Lumbre saca la idea de las notas de 30 palabras o más." : {
+      "comment" : "[importar.preview.distill_detail]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lumbre pulls the idea out of notes with 30 words or more."
           }
         }
       }
@@ -4072,6 +4644,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Meanwhile, you're using Lumbre as a guest. Everything you save stays in this session and moves to your account when you create it."
+          }
+        }
+      }
+    },
+    "Modelo de negocio" : {
+      "comment" : "[planificador.lens.business_model]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Business model"
           }
         }
       }
@@ -4307,6 +4890,17 @@
         }
       }
     },
+    "Ninguna" : {
+      "comment" : "[importar.preview.none]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "None"
+          }
+        }
+      }
+    },
     "No acepto" : {
       "comment" : "[onboarding.consent.decline]",
       "localizations" : {
@@ -4314,6 +4908,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "I don't agree"
+          }
+        }
+      }
+    },
+    "No encontramos notas con texto en lo que elegiste. Probá con archivos .md." : {
+      "comment" : "[importar.nothing_found]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We didn't find notes with text in what you picked. Try .md files."
           }
         }
       }
@@ -4369,6 +4974,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "There's no connection and we couldn't save it on your phone. What you wrote is still here: try again in a bit."
+          }
+        }
+      }
+    },
+    "No importar ninguna" : {
+      "comment" : "[importar.preview.deselect_group]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import none"
+          }
+        }
+      }
+    },
+    "No llegó ninguna nota con texto. Revisá que “Buscar notas” encuentre algo." : {
+      "comment" : "[importar.intent.no_notes]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No notes with text came through. Check that “Find Notes” finds something."
           }
         }
       }
@@ -4483,6 +5110,17 @@
         }
       }
     },
+    "No pudimos guardar las notas en el teléfono. Probá de nuevo." : {
+      "comment" : "[importar.save_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't save the notes on your phone. Try again."
+          }
+        }
+      }
+    },
     "No pudimos guardar tu perfil" : {
       "comment" : "[onboarding.save_failed]",
       "localizations" : {
@@ -4523,6 +5161,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "We couldn't save it. Try again."
+          }
+        }
+      }
+    },
+    "No pudimos leer las notas" : {
+      "comment" : "[importar.read_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't read the notes"
           }
         }
       }
@@ -4681,6 +5330,17 @@
         }
       }
     },
+    "No te quedan conceptualizaciones este mes: las notas largas entran con su primera línea." : {
+      "comment" : "[importar.preview.no_distill]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have no conceptualizations left this month: long notes go in with their first line."
+          }
+        }
+      }
+    },
     "No tiene neuronas." : {
       "comment" : "[red.cat.delete_empty]",
       "localizations" : {
@@ -4736,6 +5396,50 @@
         }
       }
     },
+    "Notas" : {
+      "comment" : "[importar.intent.notes]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notes"
+          }
+        }
+      }
+    },
+    "Notas importadas" : {
+      "comment" : "[importar.default_category]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imported notes"
+          }
+        }
+      }
+    },
+    "Notas largas" : {
+      "comment" : "[importar.preview.long_header]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Long notes"
+          }
+        }
+      }
+    },
+    "Notas para importar" : {
+      "comment" : "[importar.credit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notes to import"
+          }
+        }
+      }
+    },
     "Nueva neurona" : {
       "comment" : "[capturar.title]",
       "localizations" : {
@@ -4769,6 +5473,17 @@
         }
       }
     },
+    "O mirala con una lente" : {
+      "comment" : "[planificador.lens.intro_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Or look at it through a lens"
+          }
+        }
+      }
+    },
     "Onda verde de semáforos" : {
       "comment" : "[onboarding.welcome.example_a]",
       "localizations" : {
@@ -4776,6 +5491,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Green-wave traffic lights"
+          }
+        }
+      }
+    },
+    "Opcional. Si no, entran en “Notas importadas” y la cambiás en la vista previa." : {
+      "comment" : "[importar.intent.category_description]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optional. Otherwise they go to “Imported notes” and you can change it in the preview."
           }
         }
       }
@@ -5187,6 +5913,28 @@
         }
       }
     },
+    "Podés cerrar esto: siguen entrando aunque no tengas conexión." : {
+      "comment" : "[importar.sending.background]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can close this: they keep going in even if you're offline."
+          }
+        }
+      }
+    },
+    "Podés importar hasta %lld notas por vez." : {
+      "comment" : "[importar.preview.pro_limit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can import up to %lld notes at a time."
+          }
+        }
+      }
+    },
     "Política de privacidad" : {
       "comment" : "[perfil.privacy_policy]",
       "localizations" : {
@@ -5209,6 +5957,17 @@
         }
       }
     },
+    "Post" : {
+      "comment" : "[planificador.lens.post]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Post"
+          }
+        }
+      }
+    },
     "Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo o el stack que usarías." : {
       "comment" : "[planificador.intro]",
       "localizations" : {
@@ -5216,6 +5975,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ask anything about this idea or pick a shortcut: a backlog to get started, a devil's advocate or the stack you'd use."
+          }
+        }
+      }
+    },
+    "Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo, el stack que usarías o una lente para verla como modelo de negocio, trama o post." : {
+      "comment" : "Con el flag planner_lenses. [planificador.intro_lenses]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask anything about this idea or pick a shortcut: a backlog to get started, a devil's advocate, the stack you'd use or a lens to see it as a business model, a plot or a post."
           }
         }
       }
@@ -5858,6 +6628,17 @@
         }
       }
     },
+    "Si Lumbre no conceptualiza la nota, entra con esta frase. Después la podés cambiar en la Red." : {
+      "comment" : "[importar.preview.edit_thesis_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If Lumbre doesn't conceptualize the note, it goes in with this sentence. You can change it later in your network."
+          }
+        }
+      }
+    },
     "Si entrás con esa cuenta, lo que guardaste como invitado en este teléfono no pasa a ella." : {
       "comment" : "[cuenta.email_in_use]",
       "localizations" : {
@@ -5964,6 +6745,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Not set"
+          }
+        }
+      }
+    },
+    "Sin tu permiso para usar IA, las notas largas entran con su primera línea." : {
+      "comment" : "[importar.preview.no_consent]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Without your permission to use AI, long notes go in with their first line."
           }
         }
       }
@@ -6221,6 +7013,28 @@
         }
       }
     },
+    "Te quedan %lld conceptualizaciones este mes: %lld notas largas entran con su primera línea." : {
+      "comment" : "[importar.preview.distill_short]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have %1$lld conceptualizations left this month: %2$lld long notes go in with their first line."
+          }
+        }
+      }
+    },
+    "Te quedan %lld conceptualizaciones este mes: 1 nota larga entra con su primera línea." : {
+      "comment" : "[importar.preview.distill_short_one]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have %lld conceptualizations left this month: 1 long note goes in with its first line."
+          }
+        }
+      }
+    },
     "Te quedan %lld de %lld" : {
       "comment" : "[perfil.quota_a11y]",
       "localizations" : {
@@ -6283,6 +7097,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Theme"
+          }
+        }
+      }
+    },
+    "Temas puente" : {
+      "comment" : "[red.bridge.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bridge topics"
           }
         }
       }
@@ -6375,6 +7200,28 @@
         }
       }
     },
+    "Tocá para importarla" : {
+      "comment" : "[importar.preview.tap_include]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to import it"
+          }
+        }
+      }
+    },
+    "Tocá para no importarla" : {
+      "comment" : "[importar.preview.tap_exclude]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to leave it out"
+          }
+        }
+      }
+    },
     "Tocá para seguir dictando" : {
       "comment" : "[capturar.dictate.tap_to_continue]",
       "localizations" : {
@@ -6386,6 +7233,17 @@
         }
       }
     },
+    "Tocá una nota para sacarla o volver a sumarla. Mantenela apretada para editar su tesis." : {
+      "comment" : "[importar.preview.hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap a note to leave it out or add it back. Touch and hold to edit its thesis."
+          }
+        }
+      }
+    },
     "Tocá y decí tu idea" : {
       "comment" : "[capturar.dictate.tap_to_speak]",
       "localizations" : {
@@ -6393,6 +7251,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tap and say your idea"
+          }
+        }
+      }
+    },
+    "Todas" : {
+      "comment" : "[importar.preview.all]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All"
           }
         }
       }
@@ -6514,6 +7383,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Every day at this time, two of your neurons connect and a spark flies."
+          }
+        }
+      }
+    },
+    "Trama" : {
+      "comment" : "[planificador.lens.plot]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plot"
           }
         }
       }
@@ -6727,6 +7607,17 @@
         }
       }
     },
+    "Tus notas ya están en la Red" : {
+      "comment" : "[importar.sending.done]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your notes are in your network"
+          }
+        }
+      }
+    },
     "Tus primeras neuronas" : {
       "comment" : "[onboarding.seeds.title]",
       "localizations" : {
@@ -6804,6 +7695,17 @@
         }
       }
     },
+    "Un modelo de negocio, una trama o un post, cada uno con su formato." : {
+      "comment" : "[planificador.lens.intro_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A business model, a plot or a post, each in its own format."
+          }
+        }
+      }
+    },
     "Una captura que guardaste sin conexión no se pudo mandar y la sacamos de la cola. %@" : {
       "comment" : "%@ es el motivo (otro texto de error). [capturar.queue.failed_body]",
       "localizations" : {
@@ -6811,6 +7713,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A capture you saved offline couldn't be sent, so we took it out of the queue. %@"
+          }
+        }
+      }
+    },
+    "Una carpeta de Obsidian" : {
+      "comment" : "[importar.source.obsidian]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An Obsidian folder"
+          }
+        }
+      }
+    },
+    "Uno o varios archivos .md desde Archivos." : {
+      "comment" : "[importar.source.markdown_detail]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One or more .md files from Files."
           }
         }
       }
@@ -6899,6 +7823,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "See Lumbre Pro"
+          }
+        }
+      }
+    },
+    "Ver Pro" : {
+      "comment" : "[importar.preview.see_pro]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See Pro"
+          }
+        }
+      }
+    },
+    "Ver la Red" : {
+      "comment" : "[importar.sending.see_network]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See your network"
           }
         }
       }
@@ -7013,6 +7959,28 @@
         }
       }
     },
+    "Ya importada" : {
+      "comment" : "[importar.preview.already_badge]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Already imported"
+          }
+        }
+      }
+    },
+    "Ya importaste las 50 notas del plan gratis. Con Pro importás todas las que quieras." : {
+      "comment" : "[importar.error.import_limit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've imported the 50 notes the free plan allows. With Pro you can import as many as you want."
+          }
+        }
+      }
+    },
     "Ya la había tenido" : {
       "comment" : "[chispa.feedback.already_had]",
       "localizations" : {
@@ -7119,6 +8087,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "_(Response stopped)_"
+          }
+        }
+      }
+    },
+    "iOS no deja leer las notas desde otra app. Armá un atajo en Atajos:" : {
+      "comment" : "[importar.source.apple_notes_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS doesn't let other apps read your notes. Build a shortcut in Shortcuts:"
           }
         }
       }

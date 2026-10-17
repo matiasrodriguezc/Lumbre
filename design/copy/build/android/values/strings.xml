@@ -361,6 +361,19 @@
     <string name="planificador_shortcut_stack_msg">¿Qué stack usarías para construir esto?</string>
     <string name="planificador_room_current">Cuarto actual: %s</string>
     <string name="planificador_not_started">El método todavía no arrancó</string>
+    <!-- Con el flag planner_lenses. -->
+    <string name="planificador_intro_lenses">Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo, el stack que usarías o una lente para verla como modelo de negocio, trama o post.</string>
+    <string name="planificador_lens_business_model">Modelo de negocio</string>
+    <string name="planificador_lens_plot">Trama</string>
+    <string name="planificador_lens_post">Post</string>
+    <!-- Mensaje que manda la lente; el formato lo pide el servidor. -->
+    <string name="planificador_lens_business_model_msg">Convertí esta chispa en un modelo de negocio.</string>
+    <string name="planificador_lens_plot_msg">Convertí esta chispa en una trama.</string>
+    <string name="planificador_lens_post_msg">Convertí esta chispa en un post.</string>
+    <!-- Sobre la respuesta de una lente y en la etiqueta de VoiceOver del atajo. -->
+    <string name="planificador_lens_label">Lente: %s</string>
+    <string name="planificador_lens_intro_title">O mirala con una lente</string>
+    <string name="planificador_lens_intro_body">Un modelo de negocio, una trama o un post, cada uno con su formato.</string>
     <!-- Capturar -->
     <string name="capturar_title">Nueva neurona</string>
     <string name="capturar_type">Tipo</string>
@@ -464,6 +477,11 @@
     <string name="red_drafts_title">Borradores para confirmar</string>
     <string name="red_drafts_body">Lumbre no estaba del todo seguro de estas ideas. Abrilas y confirmalas o corregilas.</string>
     <string name="red_neurons">Neuronas</string>
+    <string name="red_bridge_title">Temas puente</string>
+    <string name="red_bridge_body">Guardaste mucho de %1$s y de %2$s, pero casi nunca se cruzaron. Para leer y unirlos:</string>
+    <string name="red_bridge_search">Buscar en la web</string>
+    <string name="red_bridge_copied">Copiado</string>
+    <string name="red_bridge_hint">Buscar el tema en la web o copiarlo</string>
     <string name="red_empty_category">Esta categoría no tiene neuronas</string>
     <string name="red_empty_category_body">Elegí otra o mirá todas las neuronas.</string>
     <string name="red_no_results_semantic">Probá con otras palabras: la búsqueda entiende ideas, no solo coincidencias.</string>
@@ -786,4 +804,79 @@
     <!-- Export a Markdown -->
     <!-- Quién habla en el planificador exportado. -->
     <string name="markdown_me">Yo</string>
+    <!-- Importar notas (paso 89) -->
+    <string name="importar_title">Importar notas</string>
+    <string name="importar_intent_title">Importar notas a Lumbre</string>
+    <string name="importar_intent_description">Abre Lumbre con estas notas para elegir cuáles suman neuronas a tu Red.</string>
+    <string name="importar_intent_notes">Notas</string>
+    <string name="importar_intent_notes_description">Las notas que encontró “Buscar notas”, o cualquier texto.</string>
+    <string name="importar_intent_category_description">Opcional. Si no, entran en “Notas importadas” y la cambiás en la vista previa.</string>
+    <string name="importar_intent_summary">Importar ${notes} a Lumbre</string>
+    <string name="importar_intent_one">Elegí en Lumbre si importás la nota.</string>
+    <string name="importar_intent_many">Elegí en Lumbre cuáles de las %d notas importás.</string>
+    <string name="importar_intent_no_notes">No llegó ninguna nota con texto. Revisá que “Buscar notas” encuentre algo.</string>
+    <string name="importar_source_markdown">Archivos Markdown</string>
+    <string name="importar_source_markdown_detail">Uno o varios archivos .md desde Archivos.</string>
+    <string name="importar_source_obsidian">Una carpeta de Obsidian</string>
+    <string name="importar_source_obsidian_detail">La bóveda entera, con sus subcarpetas. Cada carpeta sugiere una categoría.</string>
+    <string name="importar_source_footer">Cada nota entra como una neurona. Las largas las conceptualiza Lumbre si le diste el permiso y te quedan conceptualizaciones; las demás entran con su primera línea, que podés editar antes.</string>
+    <string name="importar_source_apple_notes">Apple Notes</string>
+    <string name="importar_source_apple_notes_body">iOS no deja leer las notas desde otra app. Armá un atajo en Atajos:</string>
+    <string name="importar_source_step1">1. Agregá la acción “Buscar notas” y elegí la carpeta o el filtro que quieras.</string>
+    <string name="importar_source_step2">2. Agregá “Importar notas a Lumbre” y pasale las notas.</string>
+    <string name="importar_source_step3">3. Corré el atajo: Lumbre se abre con la vista previa.</string>
+    <string name="importar_source_open_shortcuts">Abrir Atajos</string>
+    <string name="importar_reading">Leyendo tus notas…</string>
+    <string name="importar_preview_count_one">1 nota para importar</string>
+    <string name="importar_preview_count">%d notas para importar</string>
+    <string name="importar_preview_hint">Tocá una nota para sacarla o volver a sumarla. Mantenela apretada para editar su tesis.</string>
+    <string name="importar_preview_already_one">1 ya la importaste antes: quedó sin elegir.</string>
+    <string name="importar_preview_already">%d ya las importaste antes: quedaron sin elegir.</string>
+    <string name="importar_preview_skipped_one">1 archivo vacío o muy grande no se importa.</string>
+    <string name="importar_preview_skipped">%d archivos vacíos o muy grandes no se importan.</string>
+    <string name="importar_preview_truncated">La carpeta tiene más de %d notas: se leyeron las primeras.</string>
+    <string name="importar_preview_long_header">Notas largas</string>
+    <string name="importar_preview_no_consent">Sin tu permiso para usar IA, las notas largas entran con su primera línea.</string>
+    <string name="importar_preview_no_distill">No te quedan conceptualizaciones este mes: las notas largas entran con su primera línea.</string>
+    <string name="importar_preview_distill_toggle">Conceptualizar las notas largas</string>
+    <string name="importar_preview_distill_detail">Lumbre saca la idea de las notas de 30 palabras o más.</string>
+    <string name="importar_preview_distill_short_one">Te quedan %d conceptualizaciones este mes: 1 nota larga entra con su primera línea.</string>
+    <string name="importar_preview_distill_short">Te quedan %1$d conceptualizaciones este mes: %2$d notas largas entran con su primera línea.</string>
+    <string name="importar_preview_change_category">Cambiar la categoría</string>
+    <string name="importar_preview_change_category_body">Las notas de este grupo entran en esta categoría. Si no existe, se crea.</string>
+    <string name="importar_preview_select_group">Elegir todas</string>
+    <string name="importar_preview_deselect_group">No importar ninguna</string>
+    <string name="importar_preview_all">Todas</string>
+    <string name="importar_preview_none">Ninguna</string>
+    <string name="importar_preview_distilled_badge">Lumbre la conceptualiza</string>
+    <string name="importar_preview_already_badge">Ya importada</string>
+    <string name="importar_preview_tap_exclude">Tocá para no importarla</string>
+    <string name="importar_preview_tap_include">Tocá para importarla</string>
+    <string name="importar_preview_edit_thesis">Editar la tesis</string>
+    <string name="importar_preview_edit_thesis_body">Si Lumbre no conceptualiza la nota, entra con esta frase. Después la podés cambiar en la Red.</string>
+    <string name="importar_preview_pro_limit">Podés importar hasta %d notas por vez.</string>
+    <string name="importar_preview_free_limit">Con el plan gratis te quedan %d notas para importar. Sacá algunas o elegí las primeras.</string>
+    <string name="importar_preview_pick_first">Elegir las primeras %d</string>
+    <string name="importar_preview_see_pro">Ver Pro</string>
+    <string name="importar_preview_today_none">Hoy ya usaste tus capturas: las notas entran mañana.</string>
+    <string name="importar_preview_today_split">Hoy te quedan %1$d capturas: entran %2$d notas y las otras %3$d siguen mañana.</string>
+    <string name="importar_submit_one">Importar 1 nota</string>
+    <string name="importar_submit">Importar %d notas</string>
+    <string name="importar_read_failed">No pudimos leer las notas</string>
+    <string name="importar_nothing_found">No encontramos notas con texto en lo que elegiste. Probá con archivos .md.</string>
+    <string name="importar_save_failed">No pudimos guardar las notas en el teléfono. Probá de nuevo.</string>
+    <string name="importar_default_category">Notas importadas</string>
+    <string name="importar_sending_progress">Importando %1$d de %2$d…</string>
+    <string name="importar_sending_background">Podés cerrar esto: siguen entrando aunque no tengas conexión.</string>
+    <string name="importar_sending_quota_title">Llegaste al tope de capturas de hoy</string>
+    <string name="importar_sending_quota_one">La nota que falta queda guardada en el teléfono y se suma a tu Red mañana.</string>
+    <string name="importar_sending_quota">Las %d notas que faltan quedan guardadas en el teléfono y se suman a tu Red mañana.</string>
+    <string name="importar_sending_done">Tus notas ya están en la Red</string>
+    <string name="importar_sending_discarded_one">1 nota no se pudo importar.</string>
+    <string name="importar_sending_discarded">%d notas no se pudieron importar.</string>
+    <string name="importar_sending_see_network">Ver la Red</string>
+    <string name="importar_queue_quota_one">1 captura sigue mañana: llegaste al tope de hoy</string>
+    <string name="importar_queue_quota">%d capturas siguen mañana: llegaste al tope de hoy</string>
+    <string name="importar_credit">Notas para importar</string>
+    <string name="importar_error_import_limit">Ya importaste las 50 notas del plan gratis. Con Pro importás todas las que quieras.</string>
 </resources>

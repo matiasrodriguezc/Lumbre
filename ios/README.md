@@ -52,11 +52,12 @@ Esquema → Run → Arguments, o `xcrun simctl launch booted com.matiasrodriguez
 | `-mock` | `MockLumbreAPI`: datos de prueba, sin red, plan free |
 | `-mockPro` | Lo mismo, en Pro (planificador, chispas elegidas, conceptualización) |
 | `-mockGuest` | Lo mismo, como invitado nuevo: arranca en el onboarding |
+| `-mockRunwayDays <n>` | Con `-mock` o `-mockPro`: pisa los días de pares buenos de Hoy (con menos de 7, el aviso de capturar más y, en Pro, los temas puente) |
 | `-remote` | Solo Debug: `lumbre-dev` en vez del Supabase local |
 | `-seedUser` | Solo Debug y local: entra como Ana, la usuaria de `backend/supabase/seed.sql` |
 | `-resetSession` | Solo Debug: cierra la sesión guardada y prueba el primer login |
 | `-flag.<nombre> YES\|NO` | Solo Debug: pisa un feature flag (`-flag.account_email NO`) |
-| `-open <pantalla>` | Solo Debug, con `-mock` o `-mockPro`: abre `spark` (detalle), `planner`, `concept`, `draft` (neurona en borrador), `paywall`, `share` (tarjeta para compartir) `consent` o `import` (importar notas); con `-mockGuest`, un paso del onboarding (`profile`, `seeds`, `spark_hour`, `push`) |
+| `-open <pantalla>` | Solo Debug, con `-mock` o `-mockPro`: abre `vault` (la Red), `revealed` (Hoy con la chispa del día ya encendida), `spark` (detalle), `planner`, `concept`, `draft` (neurona en borrador), `paywall`, `share` (tarjeta para compartir) `consent` o `import` (importar notas); con `-mockGuest`, un paso del onboarding (`profile`, `seeds`, `spark_hour`, `push`) |
 | `-revealAt <ms>` | Solo Debug: congela el reveal (flag `reveal_synapse`) en ese instante desde el toque (`-revealAt 450`) |
 | `-importPath <ruta>` | Solo Debug: abre la vista previa de importar con una carpeta (como bóveda de Obsidian) o un `.md`, sin pasar por Archivos |
 | `-importAutoSubmit YES` | Solo Debug: la vista previa importa sola lo elegido y vuelve a la Red |

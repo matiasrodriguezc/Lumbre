@@ -27,6 +27,9 @@ struct VaultView: View {
     @State private var pendingCaptures = 0
     @State private var capturesWaitForQuota = false
     @State private var showCategories = false
+    /// Temas puente de la semana (Pro, flag `bridge_topics`).
+    @State private var bridge: BridgeTopics?
+    @State private var trackedBridge: BridgeTopics.ID?
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -62,6 +65,7 @@ struct VaultView: View {
                 }
         }
         .task(id: dataVersion) { await load() }
+        .onChange(of: appModel.isPro) { Task { await loadBridge() } }
         .task(id: query) { await search() }
         .onAppear { Analytics.screen("vault") }
         .onChange(of: appModel.pendingRoute, initial: true) { _, route in
@@ -112,6 +116,10 @@ struct VaultView: View {
         } else if concepts.isEmpty && loadError == nil {
             emptyVault
         } else {
+            if let bridge, selectedCategoryID == nil {
+                BridgeTopicsCard(bridge: bridge, screen: "vault")
+                    .onAppear { BridgeTopicsCard.trackShown(bridge, screen: "vault", alreadyTracked: &trackedBridge) }
+            }
             let filtered = filter(concepts)
             let drafts = filtered.filter(\.isDraft)
             let ready = filtered.filter { !$0.isDraft }
@@ -269,6 +277,23 @@ struct VaultView: View {
         }
         isLoading = false
         if isSearchActive { await search(debounce: false) }
+        await loadBridge()
+    }
+
+    /// Una vez por semana el servidor le pide los temas a la IA; las demás devuelve la misma sugerencia.
+    /// Si falla, la Red no muestra la tarjeta: no es un error para la persona.
+    private func loadBridge() async {
+        guard FeatureFlag.bridgeTopics.isEnabled, appModel.isPro, AIConsent.isGranted else {
+            bridge = nil
+            return
+        }
+        do {
+            bridge = try await api.bridgeTopics()
+        } catch is CancellationError {
+            return
+        } catch {
+            bridge = nil
+        }
     }
 
     /// Búsqueda semántica con debounce: un pedido (y un `vault_searched`) por búsqueda, no por tecla.

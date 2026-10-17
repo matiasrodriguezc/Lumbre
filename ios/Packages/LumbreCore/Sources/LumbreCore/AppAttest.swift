@@ -22,7 +22,7 @@ public actor AppAttestor {
     }
 
     /// Las Edge Functions que gastan IA (o pueden generarla, como `today`).
-    public static let protectedFunctions: Set<String> = ["capture", "today", "spark", "search", "planner"]
+    public static let protectedFunctions: Set<String> = ["capture", "today", "spark", "search", "planner", "bridge-topics"]
 
     public static let shared = AppAttestor(service: SystemAppAttestService(), store: UserDefaultsAttestKeyStore())
 

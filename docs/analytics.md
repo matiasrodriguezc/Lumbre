@@ -162,6 +162,8 @@ Fuente: **A** = app (iOS y Android), **S** = servidor (Edge Functions o webhook)
 | `concept_deleted` | S | `source_type`, `age_days_bucket` | Borra un concepto |
 | `spark_neuron_created` | S | `mode` (el de la chispa), `parent_is_spark_neuron` | Al guardar una chispa nace su neurona (`save_spark`, flag `spark_neuron`). No cuenta como `concept_saved`: no es información nueva que agregó la persona |
 | `spark_origin_opened` | A | — | Desde una neurona que nació de una chispa, abre la chispa original (flag `spark_neuron`) |
+| `bridge_topics_shown` | A | `screen`: `vault`, `today`; `topics_count`: 2 o 3; `domain_a`, `domain_b` (slugs de la lista cerrada) | Se ve la tarjeta de temas puente (Pro, flag `bridge_topics`): en la Red, o en Hoy cuando quedan pocos pares buenos. Una vez por sugerencia y pantalla. Nunca los temas |
+| `bridge_topic_tapped` | A | `screen`: `vault`, `today`; `index`: 1 a 3; `action`: `search` (buscar en la web), `copy` | Toca un tema puente y elige qué hacer con él |
 
 ### Planificador, proyectos y export
 

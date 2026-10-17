@@ -991,6 +991,28 @@
         }
       }
     },
+    "Buscar el tema en la web o copiarlo" : {
+      "comment" : "[red.bridge.hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search the topic on the web or copy it"
+          }
+        }
+      }
+    },
+    "Buscar en la web" : {
+      "comment" : "[red.bridge.search]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search the web"
+          }
+        }
+      }
+    },
     "Buscar ideas, no palabras" : {
       "comment" : "[red.search]",
       "localizations" : {
@@ -1697,6 +1719,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Turn this spark into a plot."
+          }
+        }
+      }
+    },
+    "Copiado" : {
+      "comment" : "[red.bridge.copied]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copied"
           }
         }
       }
@@ -2973,6 +3006,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Save an idea in Lumbre"
+          }
+        }
+      }
+    },
+    "Guardaste mucho de %@ y de %@, pero casi nunca se cruzaron. Para leer y unirlos:" : {
+      "comment" : "[red.bridge.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've saved a lot about %@ and %@, but they rarely cross. Topics to read that connect them:"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Guardaste mucho de %1$@ y de %2$@, pero casi nunca se cruzaron. Para leer y unirlos:"
           }
         }
       }
@@ -6213,6 +6263,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Theme"
+          }
+        }
+      }
+    },
+    "Temas puente" : {
+      "comment" : "[red.bridge.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bridge topics"
           }
         }
       }

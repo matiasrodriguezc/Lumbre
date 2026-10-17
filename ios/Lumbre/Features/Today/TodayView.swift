@@ -22,6 +22,9 @@ struct TodayView: View {
     @State private var isRequestingExtra = false
     @State private var extraError: String?
     @State private var trackedEmptyReason: String?
+    /// Temas puente (Pro, flag `bridge_topics`): solo cuando quedan pocos pares buenos.
+    @State private var bridge: BridgeTopics?
+    @State private var trackedBridge: BridgeTopics.ID?
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -68,6 +71,7 @@ struct TodayView: View {
                 if today.needsMoreConcepts {
                     // Si el contador ya ofrece Capturar, el aviso no repite el botón.
                     needsMoreNotice(showsCapture: !earnsExtras(today.quota))
+                    bridgeCard
                 }
                 if FeatureFlag.extraSparks.isEnabled {
                     extraSection(today.quota)
@@ -75,6 +79,9 @@ struct TodayView: View {
             }
         } else {
             emptyState(today)
+            if today.conceptCount >= 4 {
+                bridgeCard
+            }
         }
 
         let others = otherSparksToday(in: today)
@@ -261,6 +268,34 @@ struct TodayView: View {
 
     // MARK: Avisos y vacíos
 
+    @ViewBuilder
+    private var bridgeCard: some View {
+        if let bridge {
+            BridgeTopicsCard(bridge: bridge, screen: "today")
+                .onAppear { BridgeTopicsCard.trackShown(bridge, screen: "today", alreadyTracked: &trackedBridge) }
+        }
+    }
+
+    /// Pocos pares buenos: la diaria no salió con material suficiente o quedan menos de 7 días de pares.
+    private static func fewGoodPairs(_ today: TodayState) -> Bool {
+        today.needsMoreConcepts || (today.spark == nil && today.conceptCount >= 4)
+    }
+
+    /// Los temas puente solo se piden cuando hacen falta; el servidor llama a la IA una vez por semana como mucho.
+    private func loadBridge(_ today: TodayState) async {
+        guard FeatureFlag.bridgeTopics.isEnabled, appModel.isPro, Self.fewGoodPairs(today) else {
+            bridge = nil
+            return
+        }
+        do {
+            bridge = try await api.bridgeTopics()
+        } catch is CancellationError {
+            return
+        } catch {
+            bridge = nil
+        }
+    }
+
     private func needsMoreNotice(showsCapture: Bool) -> some View {
         HStack(alignment: .top, spacing: Space.s3) {
             Image(systemName: "tray.and.arrow.down")
@@ -379,6 +414,7 @@ struct TodayView: View {
             today = loaded
             recent = previous
             loadError = nil
+            await loadBridge(loaded)
         } catch {
             loadError = error
         }

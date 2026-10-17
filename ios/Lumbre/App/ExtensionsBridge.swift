@@ -84,6 +84,13 @@ struct ExtensionsBridge: ViewModifier {
         case "share": debugShareSpark = spark
         case "consent": appModel.presentAIConsent()
         case "import": appModel.presentImport()
+        case "vault": appModel.selectedTab = .vault
+        // Hoy con la chispa del día ya encendida (el aviso de pocos pares y los temas puente van debajo).
+        case "revealed":
+            Task {
+                if let id = try? await api.today().spark?.id { try? await api.revealSpark(id: id) }
+                appModel.dataChanged()
+            }
         default: break
         }
     }

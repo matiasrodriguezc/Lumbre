@@ -46,6 +46,10 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case conceptOpened(entry: String)
     /// Desde una neurona que nació de una chispa, abre la chispa original (flag `spark_neuron`).
     case sparkOriginOpened
+    /// Temas puente (flag `bridge_topics`): la tarjeta se vio en `vault` o `today`. Los dominios son slugs de la lista cerrada.
+    case bridgeTopicsShown(screen: String, topicsCount: Int, domainA: String, domainB: String)
+    /// Tocó un tema: `search` (buscar en la web) o `copy`. `index` empieza en 1.
+    case bridgeTopicTapped(screen: String, index: Int, action: String)
     // Planificador, proyectos y export
     case plannerOpened(entry: String)
     case plannerLensUsed(lens: PlannerLens, mode: PlannerMode, method: PlannerMethod)
@@ -93,6 +97,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .aiContentReported: "ai_content_reported"
         case .vaultSearched: "vault_searched"
         case .vaultFiltered: "vault_filtered"
+        case .bridgeTopicsShown: "bridge_topics_shown"
+        case .bridgeTopicTapped: "bridge_topic_tapped"
         case .conceptOpened: "concept_opened"
         case .sparkOriginOpened: "spark_origin_opened"
         case .plannerOpened: "planner_opened"
@@ -171,6 +177,10 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case let .vaultSearched(words, results):
             ["query_length_bucket": .string(words <= 2 ? "1-2" : words <= 5 ? "3-5" : "6+"),
              "results_bucket": .string(results == 0 ? "0" : results <= 5 ? "1-5" : "6+")]
+        case let .bridgeTopicsShown(screen, count, domainA, domainB):
+            ["screen": .string(screen), "topics_count": .int(count), "domain_a": .string(domainA), "domain_b": .string(domainB)]
+        case let .bridgeTopicTapped(screen, index, action):
+            ["screen": .string(screen), "index": .int(index), "action": .string(action)]
         case let .vaultFiltered(domain):
             ["domain": .string(domain)]
         case let .conceptOpened(entry):
@@ -334,6 +344,9 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     case revealSwipe = "reveal_swipe"
     /// Importar notas (paso 89): Markdown y carpetas de Obsidian desde Archivos, y Apple Notes con un atajo.
     case importNotes = "import_notes"
+    /// Temas puente (paso 92, solo Pro): 2 o 3 temas para leer que unen dos dominios fuertes y poco cruzados de la Red.
+    /// En la Red, y en Hoy cuando quedan pocos pares buenos.
+    case bridgeTopics = "bridge_topics"
 
     public var defaultValue: Bool { true }
 

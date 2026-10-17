@@ -128,6 +128,7 @@ public struct CachedLumbreAPI: LumbreAPI {
     public func exportData() async throws -> Data { try await base.exportData() }
     public func registerPushToken(_ token: String, sandbox: Bool) async throws { try await base.registerPushToken(token, sandbox: sandbox) }
     public func revealSpark(id: Spark.ID) async throws { try await base.revealSpark(id: id) }
+    public func bridgeTopics() async throws -> BridgeTopics? { try await base.bridgeTopics() }
     public func saveSpark(id: Spark.ID, projectID: Project.ID?) async throws { try await base.saveSpark(id: id, projectID: projectID) }
     public func sendFeedback(sparkID: Spark.ID, feedback: SparkFeedback) async throws { try await base.sendFeedback(sparkID: sparkID, feedback: feedback) }
     public func requestSpark(pick: (Concept.ID, Concept.ID)?) async throws -> Spark { try await base.requestSpark(pick: pick) }

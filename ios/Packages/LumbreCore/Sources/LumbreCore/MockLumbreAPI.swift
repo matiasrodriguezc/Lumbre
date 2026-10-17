@@ -8,9 +8,10 @@ public final class MockLumbreAPI: LumbreAPI {
 
     /// - Parameter onboarded: false arranca como un invitado nuevo, sin bóveda, para probar el onboarding.
     /// `plan` pisa el plan del perfil de prueba (por ejemplo, `.pro` para probar el planificador).
-    public init(latency: Duration = .milliseconds(350), onboarded: Bool = true, plan: Plan? = nil) {
+    /// `runwayDays` pisa los días de pares buenos de Hoy (por ejemplo, 3 para ver el aviso de pocas combinaciones).
+    public init(latency: Duration = .milliseconds(350), onboarded: Bool = true, plan: Plan? = nil, runwayDays: Int? = nil) {
         self.latency = latency
-        store = MockStore(onboarded: onboarded, plan: plan)
+        store = MockStore(onboarded: onboarded, plan: plan, runwayDays: runwayDays)
     }
 
     // MARK: Sesión y perfil
@@ -108,6 +109,11 @@ public final class MockLumbreAPI: LumbreAPI {
     public func requestSpark(pick: (Concept.ID, Concept.ID)?) async throws -> Spark {
         try await Task.sleep(for: latency * 3)
         return try await store.extraSpark(pick: pick)
+    }
+
+    public func bridgeTopics() async throws -> BridgeTopics? {
+        try await wait()
+        return await store.bridgeTopics()
     }
 
     public func recentSparks() async throws -> [Spark] {
@@ -279,10 +285,18 @@ private actor MockStore {
     /// Notas importadas (cupo `import`: 50 en total en free e invitado; Pro no tiene tope).
     var importsUsed = 0
     var aiConsent: Bool?
+    let runwayOverride: Int?
 
     func setAIConsent(_ granted: Bool) { aiConsent = granted }
 
-    init(onboarded: Bool, plan: Plan? = nil) {
+    /// Solo Pro y con la IA aceptada, como `/bridge-topics`.
+    func bridgeTopics() -> BridgeTopics? {
+        guard profile.plan == .pro, aiConsent != false else { return nil }
+        return MockData.bridgeTopics(concepts: concepts, sparks: sparks)
+    }
+
+    init(onboarded: Bool, plan: Plan? = nil, runwayDays: Int? = nil) {
+        runwayOverride = runwayDays
         let state = Self.initialState(onboarded: onboarded)
         (profile, categories, concepts, sparks, projects, messages) = state
         if let plan { profile = Self.profile(state.0, with: plan) }
@@ -382,7 +396,7 @@ private actor MockStore {
             extraRemaining: extraRemaining
         )
         let pairs = concepts.count * (concepts.count - 1) / 2
-        return TodayState(spark: daily, quota: quota, extras: extras, runwayDays: max(0, pairs / 3 - sparks.count), conceptCount: concepts.count)
+        return TodayState(spark: daily, quota: quota, extras: extras, runwayDays: runwayOverride ?? max(0, pairs / 3 - sparks.count), conceptCount: concepts.count)
     }
 
     func recent() -> [Spark] {
@@ -593,11 +607,11 @@ public enum MockData {
         isOnboarded: true
     )
 
-    private static func category(_ slug: String) -> Category {
+    static func category(_ slug: String) -> Category {
         categories.first { $0.domain?.slug == slug }!
     }
 
-    private static func daysAgo(_ days: Double) -> Date {
+    static func daysAgo(_ days: Double) -> Date {
         Date.now.addingTimeInterval(-days * 86_400)
     }
 
@@ -634,7 +648,7 @@ public enum MockData {
                 thesis: "Los hongos conectan las raíces de un bosque y reparten nutrientes entre árboles.",
                 status: .draft, distilled: true, confidence: .medium,
                 sourceType: .pdf, sourceTitle: "Redes subterráneas.pdf", createdAt: daysAgo(20)),
-    ]
+    ] + bridgeConcepts
 
     public static let todaySpark = Spark(
         conceptA: concepts[1],
