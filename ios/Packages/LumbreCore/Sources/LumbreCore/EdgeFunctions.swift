@@ -8,11 +8,15 @@ struct EdgeFunctions: Sendable {
     let urlSession: URLSession
     /// Access token vigente de la sesión (Auth lo renueva si venció).
     let accessToken: @Sendable () async throws -> String
+    /// Firma de App Attest para las funciones de IA. nil = sin firma (tests, previews).
+    let attestor: AppAttestor?
 
-    init(supabaseURL: URL, publishableKey: String, urlSession: URLSession = .shared, accessToken: @escaping @Sendable () async throws -> String) {
+    init(supabaseURL: URL, publishableKey: String, urlSession: URLSession = .shared, attestor: AppAttestor? = nil,
+         accessToken: @escaping @Sendable () async throws -> String) {
         baseURL = supabaseURL.appending(path: "functions/v1")
         self.publishableKey = publishableKey
         self.urlSession = urlSession
+        self.attestor = attestor
         self.accessToken = accessToken
     }
 
@@ -27,25 +31,44 @@ struct EdgeFunctions: Sendable {
         _ = try await callRaw(name, body: body, timeout: 30)
     }
 
-    func callRaw(_ name: String, body: some Encodable, timeout: TimeInterval) async throws -> Data {
+    func callRaw(_ name: String, body: some Encodable, timeout: TimeInterval, retryingAttestation: Bool = true) async throws -> Data {
         let request = try await makeRequest(name, body: body, timeout: timeout, accept: "application/json")
         let (data, response) = try await urlSession.data(for: request)
         let status = (response as? HTTPURLResponse)?.statusCode ?? 0
         guard (200..<300).contains(status) else {
+            if retryingAttestation, await discardKeyIfRejected(status: status, body: data) {
+                return try await callRaw(name, body: body, timeout: timeout, retryingAttestation: false)
+            }
             throw Self.error(status: status, body: data)
         }
         return data
     }
 
+    /// Con `LUMBRE_ATTESTATION=enforce`, el servidor responde `403 attestation_failed` si no reconoce la firma
+    /// (clave nunca registrada, contador viejo, restauraron el teléfono). Se descarta la clave y se reintenta una vez
+    /// con una nueva.
+    private func discardKeyIfRejected(status: Int, body: Data) async -> Bool {
+        guard status == 403, let attestor,
+              (try? JSONDecoder().decode(ErrorDTO.self, from: body))?.error == Self.attestationFailed
+        else { return false }
+        await attestor.resetKey()
+        return true
+    }
+
+    static let attestationFailed = "attestation_failed"
+
     /// Llama a una función que responde `text/event-stream` y entrega cada evento a `onEvent`.
     /// Termina cuando el servidor cierra el stream, cuando `onEvent` devuelve false o cuando se cancela la tarea.
-    func events(_ name: String, body: some Encodable, onEvent: (SSEEvent) throws -> Bool) async throws {
+    func events(_ name: String, body: some Encodable, retryingAttestation: Bool = true, onEvent: (SSEEvent) throws -> Bool) async throws {
         let request = try await makeRequest(name, body: body, timeout: 120, accept: "text/event-stream")
         let (bytes, response) = try await urlSession.bytes(for: request)
         let status = (response as? HTTPURLResponse)?.statusCode ?? 0
         guard (200..<300).contains(status) else {
             var data = Data()
             for try await byte in bytes { data.append(byte) }
+            if retryingAttestation, await discardKeyIfRejected(status: status, body: data) {
+                return try await events(name, body: body, retryingAttestation: false, onEvent: onEvent)
+            }
             throw Self.error(status: status, body: data)
         }
 
@@ -72,7 +95,13 @@ struct EdgeFunctions: Sendable {
         request.setValue(accept, forHTTPHeaderField: "Accept")
         request.setValue(publishableKey, forHTTPHeaderField: "apikey")
         request.setValue("Bearer \(try await accessToken())", forHTTPHeaderField: "Authorization")
-        request.httpBody = try LumbreJSON.encoder().encode(body)
+        let data = try LumbreJSON.encoder().encode(body)
+        request.httpBody = data
+        if let attestor {
+            for (field, value) in await attestor.headers(function: name, body: data) {
+                request.setValue(value, forHTTPHeaderField: field)
+            }
+        }
         return request
     }
 
@@ -81,6 +110,9 @@ struct EdgeFunctions: Sendable {
         if let code = try? JSONDecoder().decode(ErrorDTO.self, from: body).error,
            let error = LumbreAPIError(serverMessage: code) {
             return error
+        }
+        if (try? JSONDecoder().decode(ErrorDTO.self, from: body))?.error == attestationFailed {
+            return .unexpected
         }
         return switch status {
         case 402: .proRequired

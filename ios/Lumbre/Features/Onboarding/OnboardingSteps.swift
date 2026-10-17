@@ -29,9 +29,9 @@ struct SeedsStepView: View {
     @State private var saveError: String?
 
     var body: some View {
-        OnboardingScaffold(step: .seeds, title: "Tus primeras ideas", subtitle: "Algo que leíste, viste o pensaste. Con estas ideas sale tu primera chispa.") {
+        OnboardingScaffold(step: .seeds, title: "Tus primeras neuronas", subtitle: "Algo que leíste, viste o pensaste. Cada idea que guardás es una neurona, y con estas sale tu primera chispa.") {
             VStack(alignment: .leading, spacing: Space.s4) {
-                Label("Mejor si son de temas distintos: así chocan. Podés dictarlas con el micrófono del teclado.", systemImage: "lightbulb")
+                Label("Mejor si son de temas distintos: así se conectan mundos lejanos. Podés dictarlas con el micrófono del teclado.", systemImage: "lightbulb")
                     .font(.callout)
                     .foregroundStyle(Palette.inkMuted)
                 ForEach(model.seeds.indices, id: \.self) { index in
@@ -70,7 +70,7 @@ struct SeedsStepView: View {
     private var buttonTitle: LocalizedStringKey {
         let pending = model.seeds.filter { $0.isFilled && !$0.isSaved }.count
         if pending == 0 { return "Continuar" }
-        return pending == 1 ? "Guardar idea y seguir" : "Guardar \(pending) ideas y seguir"
+        return pending == 1 ? "Guardar neurona y seguir" : "Guardar \(pending) neuronas y seguir"
     }
 
     private func saveAndContinue() async {
@@ -93,7 +93,7 @@ private struct SeedCard: View {
         let seed = model.seeds[index]
         VStack(alignment: .leading, spacing: Space.s3) {
             HStack {
-                Text("Idea \(index + 1)")
+                Text("Neurona \(index + 1)")
                     .font(.headline)
                     .foregroundStyle(Palette.ink)
                 Spacer()
@@ -117,7 +117,7 @@ private struct SeedCard: View {
                     .padding(Space.s3)
                     .background(Palette.surfaceAlt, in: RoundedRectangle(cornerRadius: Radius.sm, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: Radius.sm, style: .continuous).strokeBorder(isFocused ? Palette.focusRing : Palette.borderStrong, lineWidth: isFocused ? 2 : 1))
-                    .accessibilityLabel(Text("Idea \(index + 1)"))
+                    .accessibilityLabel(Text("Neurona \(index + 1)"))
 
                 VStack(alignment: .leading, spacing: Space.s2) {
                     Text("Categoría")
@@ -132,7 +132,7 @@ private struct SeedCard: View {
                     .padding(Space.s3)
                     .background(Palette.surfaceAlt, in: RoundedRectangle(cornerRadius: Radius.sm, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: Radius.sm, style: .continuous).strokeBorder(Palette.borderStrong, lineWidth: 1))
-                    .accessibilityLabel(Text("Categoría de la idea \(index + 1)"))
+                    .accessibilityLabel(Text("Categoría de la neurona \(index + 1)"))
 
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: Space.s2) {
@@ -166,7 +166,7 @@ struct SparkHourStepView: View {
 
     var body: some View {
         @Bindable var model = model
-        OnboardingScaffold(step: .sparkHour, title: "¿A qué hora querés tu chispa?", subtitle: "Todos los días, a esta hora, dos de tus ideas chocan y aparece una nueva.") {
+        OnboardingScaffold(step: .sparkHour, title: "¿A qué hora querés tu chispa?", subtitle: "Todos los días, a esta hora, dos de tus neuronas se conectan y salta una chispa.") {
             DatePicker("Hora de la chispa", selection: $model.sparkTime, displayedComponents: .hourAndMinute)
                 .datePickerStyle(.wheel)
                 .labelsHidden()

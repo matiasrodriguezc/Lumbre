@@ -8,6 +8,9 @@ struct TodayView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.dataVersion) private var dataVersion
     @Environment(\.neuralIdentity) private var neuralIdentity
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    /// Sin un "Acepto" no se pide `/today`: generaría la chispa con IA.
+    @AppStorage(AIConsent.storageKey) private var aiConsent: Bool?
     @State private var path: [SparkRoute] = []
     @State private var today: TodayState?
     @State private var recent: [Spark] = []
@@ -22,7 +25,9 @@ struct TodayView: View {
         NavigationStack(path: $path) {
             ScrollView {
                 VStack(alignment: .leading, spacing: Space.s6) {
-                    if let loadError, today == nil {
+                    if aiConsent != true {
+                        consentNeeded
+                    } else if let loadError, today == nil {
                         LoadErrorView(error: loadError) { Task { await load() } }
                     } else if let today {
                         content(today)
@@ -36,7 +41,7 @@ struct TodayView: View {
             .neuralBackground()
             .navigationTitle("Hoy")
             .sparkDestinations()
-            .task(id: dataVersion) { await load() }
+            .task(id: "\(dataVersion)-\(aiConsent.map { String($0) } ?? "nil")") { await load() }
             .refreshable { await load() }
             .onAppear { Analytics.screen("today") }
             .onChange(of: appModel.pendingRoute, initial: true) { consumeRoute() }
@@ -80,6 +85,16 @@ struct TodayView: View {
         }
     }
 
+    /// Sin permiso para IA: el aviso para revisarlo y las chispas que ya tenía.
+    @ViewBuilder
+    private var consentNeeded: some View {
+        AIConsentNeededView()
+            .onAppear { trackEmpty("no_ai_consent") }
+        if !recent.isEmpty {
+            sparkList(title: "Anteriores", sparks: recent)
+        }
+    }
+
     private var placeholder: some View {
         VStack(alignment: .leading, spacing: Space.s6) {
             SparkMeter(available: 1, total: 1, status: Text("1 chispa para encender"), detail: Text("Se recarga mañana a las 8:00"))
@@ -110,7 +125,11 @@ struct TodayView: View {
                 goal: Self.neuronsPerExtra
             )
             if showsEarn {
-                HStack(spacing: Space.s3) {
+                // Con tamaños de accesibilidad, el botón va abajo: al lado, "Capturar" se corta por sílabas.
+                let layout = dynamicTypeSize.isAccessibilitySize
+                    ? AnyLayout(VStackLayout(alignment: .leading, spacing: Space.s3))
+                    : AnyLayout(HStackLayout(spacing: Space.s3))
+                layout {
                     Group {
                         if quota.available > 0 {
                             earnText(quota.conceptsUntilExtra)
@@ -210,6 +229,10 @@ struct TodayView: View {
 
     private func requestExtra() {
         guard !isRequestingExtra else { return }
+        guard AIConsent.isGranted else {
+            appModel.presentAIConsent()
+            return
+        }
         isRequestingExtra = true
         extraError = nil
         Analytics.track(.sparkExtraRequested(mode: .extra, source: appModel.isPro ? "pro" : "earned"))
@@ -224,6 +247,8 @@ struct TodayView: View {
                 appModel.dataChanged()
             } catch LumbreAPIError.proRequired {
                 appModel.presentPaywall(trigger: "extra_sparks")
+            } catch LumbreAPIError.accountRequired {
+                appModel.presentAccount(trigger: "extra_sparks")
             } catch {
                 extraError = error.localizedDescription
             }
@@ -338,6 +363,11 @@ struct TodayView: View {
     // MARK: Datos
 
     private func load() async {
+        guard aiConsent == true else {
+            today = nil
+            recent = (try? await api.recentSparks()) ?? recent
+            return
+        }
         do {
             async let state = api.today()
             async let recentSparks = api.recentSparks()

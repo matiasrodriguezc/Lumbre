@@ -5,9 +5,13 @@ import SwiftUI
 /// Paso 1: la propuesta en una línea, "Empezar" y "Ya tengo cuenta". Antes de seguir pide el consentimiento para IA.
 struct WelcomeStepView: View {
     @Environment(OnboardingModel.self) private var model
+    @Environment(AppModel.self) private var appModel
+    @Environment(\.api) private var api
     @AppStorage("aiConsent") private var aiConsent: Bool?
     @State private var isShowingAccount = false
     @State private var isAskingConsent = false
+    /// Entró a una cuenta ya configurada y falta el consentimiento para IA en este teléfono.
+    @State private var signedInProfile: Profile?
 
     var body: some View {
         ScrollView {
@@ -56,22 +60,54 @@ struct WelcomeStepView: View {
             model.trackStartIfNeeded()
         }
         .sheet(isPresented: $isShowingAccount) {
-            AccountComingSoonSheet {
-                Analytics.track(.guestEntered)
-                // Deja que se cierre la sheet antes de abrir la del consentimiento.
-                Task {
-                    try? await Task.sleep(for: .milliseconds(450))
-                    continueAfterConsent()
+            if FeatureFlag.emailAccount.isEnabled {
+                AccountSheet(purpose: .signIn, continueAsGuestTitle: "Seguir como invitado", onContinueAsGuest: continueAsGuest) { profile, purpose in
+                    afterSheetCloses { signedIn(profile, purpose: purpose) }
                 }
+            } else {
+                AccountComingSoonSheet(onContinue: continueAsGuest)
             }
         }
         .sheet(isPresented: $isAskingConsent) {
             AIConsentSheet { granted in
-                aiConsent = granted
-                Analytics.track(.aiConsentResponded(granted: granted))
+                AIConsent.record(granted, api: api)
                 isAskingConsent = false
-                model.complete(.welcome)
+                if let profile = signedInProfile {
+                    signedInProfile = nil
+                    appModel.accountChanged(to: profile, purpose: .signIn)
+                } else {
+                    model.complete(.welcome)
+                }
             }
+        }
+    }
+
+    private func continueAsGuest() {
+        Analytics.track(.guestEntered)
+        afterSheetCloses { continueAfterConsent() }
+    }
+
+    /// Deja que se cierre la sheet antes de abrir otra.
+    private func afterSheetCloses(_ action: @escaping @MainActor () -> Void) {
+        Task {
+            try? await Task.sleep(for: .milliseconds(450))
+            action()
+        }
+    }
+
+    /// Entró a su cuenta: si ya estaba configurada va directo a Hoy (antes, el consentimiento si en este teléfono
+    /// todavía no lo dio); si es nueva, sigue el onboarding.
+    private func signedIn(_ profile: Profile, purpose: EmailCodePurpose) {
+        if profile.isOnboarded {
+            if aiConsent == nil {
+                signedInProfile = profile
+                isAskingConsent = true
+            } else {
+                appModel.accountChanged(to: profile, purpose: purpose)
+            }
+        } else {
+            appModel.setProfile(profile)
+            continueAfterConsent()
         }
     }
 
@@ -205,6 +241,7 @@ struct AIConsentSheet: View {
         WelcomeStepView()
     }
     .environment(OnboardingModel(profile: nil))
+    .environment(AppModel())
     .preferredColorScheme(.light)
 }
 

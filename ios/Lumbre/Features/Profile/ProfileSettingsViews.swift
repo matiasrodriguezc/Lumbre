@@ -79,13 +79,10 @@ struct PrivacyView: View {
             Section {
                 Toggle("Chispas y destilación con IA", isOn: Binding(
                     get: { aiConsent ?? false },
-                    set: { granted in
-                        aiConsent = granted
-                        Analytics.track(.aiConsentResponded(granted: granted))
-                    }
+                    set: { granted in AIConsent.record(granted, api: api) }
                 ))
             } footer: {
-                Text("Para destilar tus ideas y encender las chispas, Lumbre manda el texto de tus ideas y tu perfil creativo a Claude, una IA de Anthropic. Sin este permiso podés guardar ideas, pero no se generan chispas.")
+                Text("Para destilar tus ideas y encender las chispas, Lumbre manda el texto de tus ideas y tu perfil creativo a Claude, una IA de Anthropic. Sin este permiso podés guardar neuronas, pero no se destilan ni se encienden chispas, y el planificador no responde.")
             }
             .listRowBackground(Palette.surface)
 
@@ -291,7 +288,7 @@ struct DeleteAccountSheet: View {
             try await api.deleteAccount()
             SparkReminder.cancel()
             Analytics.reset()
-            aiConsent = nil
+            AIConsent.clear()
             dismiss()
             appModel.reset()
         } catch {

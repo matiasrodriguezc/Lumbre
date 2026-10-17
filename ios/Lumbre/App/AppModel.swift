@@ -34,6 +34,10 @@ final class AppModel {
     var paywallTrigger: String?
     /// Sheet de Capturar abierta, con el `entry` de `capture_opened`.
     var captureEntry: String?
+    /// Sheet de crear cuenta abierta, con el `trigger` de `account_prompt_shown` (`extra_sparks`, `planner`…).
+    var accountTrigger: String?
+    /// Sheet "Tus ideas y la IA" abierta (cuando algo que usa IA no tiene permiso).
+    var isAskingAIConsent = false
 
     /// Cambia cada vez que se guarda algo, para que las pantallas vuelvan a cargar.
     private(set) var dataVersion = 0
@@ -86,6 +90,31 @@ final class AppModel {
         paywallTrigger = trigger
     }
 
+    /// Le pide la cuenta a un invitado (por ejemplo, cuando el servidor responde `account_required`).
+    func presentAccount(trigger: String) {
+        guard isGuest else { return }
+        Analytics.track(.accountPromptShown(trigger: trigger))
+        accountTrigger = trigger
+    }
+
+    /// Vuelve a mostrar el pedido de consentimiento para IA.
+    func presentAIConsent() {
+        isAskingAIConsent = true
+    }
+
+    /// Después de crear la cuenta o entrar a otra: el perfil nuevo y las pantallas vuelven a cargar.
+    /// Si entró a otra cuenta ya configurada, cae en Hoy sin pasar por el onboarding.
+    func accountChanged(to profile: Profile, purpose: EmailCodePurpose) {
+        self.profile = profile
+        profileError = nil
+        if purpose == .signIn {
+            selectedTab = .today
+            pendingRoute = nil
+            isReplayingOnboarding = false
+        }
+        dataVersion += 1
+    }
+
     func presentCapture(entry: String = "fab") {
         captureEntry = entry
     }
@@ -113,6 +142,8 @@ final class AppModel {
         pendingRoute = nil
         paywallTrigger = nil
         captureEntry = nil
+        accountTrigger = nil
+        isAskingAIConsent = false
         isReplayingOnboarding = false
         dataVersion += 1
         sessionVersion += 1

@@ -1,7 +1,1754 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "" : {
 
+    },
+    " ▍" : {
+
+    },
+    "%@" : {
+
+    },
+    "%@ por año. Cancelás cuando quieras." : {
+
+    },
+    "%@ por mes" : {
+
+    },
+    "%@ por mes · %lld días gratis" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ por mes · %2$lld días gratis"
+          }
+        }
+      }
+    },
+    "%@ por mes. Cancelás cuando quieras." : {
+
+    },
+    "%@ · %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "%@ × %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ × %2$@"
+          }
+        }
+      }
+    },
+    "%lld capturas esperan conexión" : {
+
+    },
+    "%lld chispas para encender" : {
+
+    },
+    "%lld de %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld de %2$lld"
+          }
+        }
+      }
+    },
+    "%lld de %lld neuronas para la próxima chispa extra" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld de %2$lld neuronas para la próxima chispa extra"
+          }
+        }
+      }
+    },
+    "%lld de 600 caracteres" : {
+
+    },
+    "%lld neuronas" : {
+
+    },
+    "%lld páginas escaneadas" : {
+
+    },
+    "%lld páginas. El archivo no se guarda: solo la idea." : {
+
+    },
+    "%lld/%lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld/%2$lld"
+          }
+        }
+      }
+    },
+    "1 captura espera conexión" : {
+
+    },
+    "1 chispa para encender" : {
+
+    },
+    "1 neurona" : {
+
+    },
+    "Abogado del diablo" : {
+
+    },
+    "Abre el link en Safari" : {
+
+    },
+    "Abre la chispa" : {
+
+    },
+    "Abre la neurona" : {
+
+    },
+    "Abre la neurona en tu red" : {
+
+    },
+    "Abrir Ajustes" : {
+
+    },
+    "Aceptar" : {
+
+    },
+    "Acepto" : {
+
+    },
+    "Activados" : {
+
+    },
+    "Activalos en Ajustes" : {
+
+    },
+    "Activar" : {
+
+    },
+    "Adjuntar un PDF" : {
+
+    },
+    "Administrar suscripción" : {
+
+    },
+    "Ahora no" : {
+
+    },
+    "Ahorrás %lld%%" : {
+
+    },
+    "Ahorrás 40%" : {
+
+    },
+    "Algo que leíste, viste o pensaste" : {
+
+    },
+    "Algo que leíste, viste o pensaste. Cada idea que guardás es una neurona, y con estas sale tu primera chispa." : {
+
+    },
+    "Algo salió mal" : {
+
+    },
+    "Algo salió mal." : {
+
+    },
+    "Algo salió mal. Probá de nuevo en un rato." : {
+
+    },
+    "Algo salió mal. Probá de nuevo." : {
+
+    },
+    "Anteriores" : {
+
+    },
+    "Anual" : {
+
+    },
+    "Apariencia" : {
+
+    },
+    "Armá un backlog" : {
+
+    },
+    "Armá un backlog de 5 tareas para arrancar con esta idea." : {
+
+    },
+    "Audio" : {
+
+    },
+    "Avisame" : {
+
+    },
+    "Avisos" : {
+
+    },
+    "BORRAR" : {
+
+    },
+    "Bajá cada idea a un plan con el método de los tres cuartos de Walt Disney: soñarla en grande, hacerla real y buscarle los agujeros." : {
+
+    },
+    "Bajá cada idea a un plan: un backlog para arrancar, un abogado del diablo y el stack que usarías." : {
+
+    },
+    "Borra tu cuenta y todo lo que guardaste. No se puede deshacer." : {
+
+    },
+    "Borrador · " : {
+
+    },
+    "Borrador. Lumbre no estaba del todo seguro de esta idea: confirmala o corregila." : {
+
+    },
+    "Borradores para confirmar" : {
+
+    },
+    "Borrar" : {
+
+    },
+    "Borrar categoría" : {
+
+    },
+    "Borrar circuito" : {
+
+    },
+    "Borrar cuenta" : {
+
+    },
+    "Borrar la cuenta no cancela tu suscripción a Pro. Cancelala en Ajustes > tu nombre > Suscripciones." : {
+
+    },
+    "Borrar mi cuenta" : {
+
+    },
+    "Borrar neurona" : {
+
+    },
+    "Buscando ideas parecidas…" : {
+
+    },
+    "Buscar ideas, no palabras" : {
+
+    },
+    "Cada 3 neuronas que guardás hoy ganás una chispa extra, hasta 2 por día." : {
+
+    },
+    "Cada respuesta usa una consulta del planificador." : {
+
+    },
+    "Cambiar categoría" : {
+
+    },
+    "Cambiar el email" : {
+
+    },
+    "Cancelala cuando quieras desde Ajustes > tu nombre > Suscripciones." : {
+
+    },
+    "Cancelar" : {
+
+    },
+    "Cancelás cuando quieras" : {
+
+    },
+    "Captura de pantalla" : {
+
+    },
+    "Capturar" : {
+
+    },
+    "Capturar neuronas" : {
+
+    },
+    "Capturar una idea" : {
+
+    },
+    "Capturas de hoy" : {
+
+    },
+    "Cargando los precios" : {
+
+    },
+    "Categoría" : {
+
+    },
+    "Categoría de la neurona %lld" : {
+
+    },
+    "Categoría: %@" : {
+
+    },
+    "Categorías" : {
+
+    },
+    "Categorías sugeridas" : {
+
+    },
+    "Cerrar" : {
+
+    },
+    "Cerrar sesión" : {
+
+    },
+    "Chispa" : {
+
+    },
+    "Chispa de hoy encendida" : {
+
+    },
+    "Chispa por encender" : {
+
+    },
+    "Chispa: %@. %@ Combina %@, de %@, con %@, de %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Chispa: %1$@. %2$@ Combina %3$@, de %4$@, con %5$@, de %6$@."
+          }
+        }
+      }
+    },
+    "Chispas donde aparece" : {
+
+    },
+    "Chispas extra de hoy" : {
+
+    },
+    "Chispas y destilación con IA" : {
+
+    },
+    "Ciencia" : {
+
+    },
+    "Circuito: %@" : {
+
+    },
+    "Circuitos" : {
+
+    },
+    "Circuitos ilimitados" : {
+
+    },
+    "Code review" : {
+
+    },
+    "Combinar con…" : {
+
+    },
+    "Como el sistema" : {
+
+    },
+    "Compartir" : {
+
+    },
+    "Compartir imagen" : {
+
+    },
+    "Compra pendiente" : {
+
+    },
+    "Comprando" : {
+
+    },
+    "Con Lumbre Pro elegís qué neuronas se conectan." : {
+
+    },
+    "Con Pro" : {
+
+    },
+    "Con Pro, hasta 10 por día" : {
+
+    },
+    "Con el plan gratis tenés un circuito. Con Pro, todos los que quieras." : {
+
+    },
+    "Con esto elegimos mejor las próximas chispas." : {
+
+    },
+    "Con tres la primera chispa sale mejor, pero podés seguir y sumar más después." : {
+
+    },
+    "Confirmar" : {
+
+    },
+    "Conocé Lumbre Pro" : {
+
+    },
+    "Contenido y escritura" : {
+
+    },
+    "Continuar" : {
+
+    },
+    "Copiar" : {
+
+    },
+    "Crear" : {
+
+    },
+    "Crear circuito" : {
+
+    },
+    "Crear cuenta" : {
+
+    },
+    "Crear otro circuito" : {
+
+    },
+    "Creá tu cuenta" : {
+
+    },
+    "Creá tu cuenta para ganar chispas extra guardando neuronas." : {
+
+    },
+    "Creá tu cuenta para no perder tus ideas" : {
+
+    },
+    "Creá tu cuenta para usar esto." : {
+
+    },
+    "Crítico" : {
+
+    },
+    "Cuando guardes una chispa, elegí este circuito para sumarla." : {
+
+    },
+    "Cuarto actual: %@" : {
+
+    },
+    "Cuenta" : {
+
+    },
+    "Curiosidad libre" : {
+
+    },
+    "Código" : {
+
+    },
+    "Código de 6 dígitos" : {
+
+    },
+    "Cómo se ve si funciona por completo, sin presupuesto ni reglas. Y después, más grande." : {
+
+    },
+    "De la biblioteca de Lumbre" : {
+
+    },
+    "De un link" : {
+
+    },
+    "Dejá solo la parte que te importa" : {
+
+    },
+    "Descartar" : {
+
+    },
+    "Después, %@ por año. Cancelás cuando quieras." : {
+
+    },
+    "Destilaciones del mes" : {
+
+    },
+    "Destilación automática de links, fotos y PDFs" : {
+
+    },
+    "Destilado por Lumbre" : {
+
+    },
+    "Destilando…" : {
+
+    },
+    "Destilar automáticamente" : {
+
+    },
+    "Destilar el PDF" : {
+
+    },
+    "Destilar la imagen" : {
+
+    },
+    "Detener respuesta" : {
+
+    },
+    "Dice algo falso" : {
+
+    },
+    "Dictar" : {
+
+    },
+    "Diseño" : {
+
+    },
+    "Donde se encienden las ideas" : {
+
+    },
+    "Dos neuronas de tu red se conectaron. Entrá a ver qué chispa salió." : {
+
+    },
+    "Dos neuronas tuyas de mundos distintos están por conectarse." : {
+
+    },
+    "Dónde la guardás" : {
+
+    },
+    "Editar" : {
+
+    },
+    "Editar neurona" : {
+
+    },
+    "Ej.: Cobrar por suscripción cambia quién te elige" : {
+
+    },
+    "Ej.: La gente usa lo que ve primero, no lo que es mejor" : {
+
+    },
+    "Ej.: Las hormigas encuentran el camino más corto dejando rastros" : {
+
+    },
+    "Ej.: Las rutas comerciales movían ideas, no solo cosas" : {
+
+    },
+    "Ej.: Limitar la oferta sube el valor percibido" : {
+
+    },
+    "Ej.: Lo que se ve primero es lo que parece importar" : {
+
+    },
+    "Ej.: Los PR chicos se revisan más rápido y con menos errores" : {
+
+    },
+    "Ej.: Los sistemas complejos se autoorganizan sin un jefe" : {
+
+    },
+    "Ej.: Un buen default ahorra mil ajustes" : {
+
+    },
+    "Ej.: Un buen gancho deja una pregunta abierta" : {
+
+    },
+    "Ej.: Un personaje se define por lo que elige perder" : {
+
+    },
+    "Ej.: Urbanismo" : {
+
+    },
+    "Ejemplo de aviso" : {
+
+    },
+    "Ejemplo: onda verde de semáforos por code review" : {
+
+    },
+    "El PDF pesa más de 20 MB. Probá con uno más liviano." : {
+
+    },
+    "El audio no se guarda." : {
+
+    },
+    "El cambio se ve en todas sus neuronas." : {
+
+    },
+    "El código no es correcto o ya venció. Revisalo o pedí otro." : {
+
+    },
+    "El dictado no está disponible" : {
+
+    },
+    "El método todavía no arrancó" : {
+
+    },
+    "El planificador es parte de Lumbre Pro" : {
+
+    },
+    "El planificador está escribiendo" : {
+
+    },
+    "El principio lo saca la destilación y no se edita." : {
+
+    },
+    "El sueño en una frase, el plan en cinco pasos, los tres agujeros y el cuarto que salteás." : {
+
+    },
+    "Elegir foto" : {
+
+    },
+    "Elegí hasta dos. Lo podés cambiar cuando quieras." : {
+
+    },
+    "Elegí hasta dos. Son la lente con la que se eligen y escriben tus chispas." : {
+
+    },
+    "Elegí otra neurona y Lumbre enciende una chispa con las dos." : {
+
+    },
+    "Elegí otra o mirá todas las neuronas." : {
+
+    },
+    "Email" : {
+
+    },
+    "Empecemos por el Soñador." : {
+
+    },
+    "Empezar" : {
+
+    },
+    "En una línea, con tus palabras" : {
+
+    },
+    "Encender la chispa" : {
+
+    },
+    "Encendiendo…" : {
+
+    },
+    "Entendido" : {
+
+    },
+    "Entrar" : {
+
+    },
+    "Entrar al cuarto del Soñador" : {
+
+    },
+    "Entrar con ese email" : {
+
+    },
+    "Entrá a tu cuenta" : {
+
+    },
+    "Enviar" : {
+
+    },
+    "Es obvia" : {
+
+    },
+    "Es ofensiva" : {
+
+    },
+    "Es peligrosa" : {
+
+    },
+    "Escanear página" : {
+
+    },
+    "Escribí o preguntá…" : {
+
+    },
+    "Escritura" : {
+
+    },
+    "Escuchando" : {
+
+    },
+    "Escuchando…" : {
+
+    },
+    "Esperando" : {
+
+    },
+    "Esto es parte de Lumbre Pro." : {
+
+    },
+    "Esto no se puede deshacer" : {
+
+    },
+    "Exportar a Markdown" : {
+
+    },
+    "Exportar mis datos" : {
+
+    },
+    "Falta el permiso" : {
+
+    },
+    "Filtrar neuronas" : {
+
+    },
+    "Filtrar por categoría" : {
+
+    },
+    "Foto" : {
+
+    },
+    "Fragmento subrayado: %@" : {
+
+    },
+    "Fuente" : {
+
+    },
+    "Gracias por avisar. La vamos a revisar." : {
+
+    },
+    "Gracias por bancar Lumbre. Tu suscripción se administra desde tu cuenta de Apple." : {
+
+    },
+    "Gracias. Con esto elegimos mejor las próximas." : {
+
+    },
+    "Grafito" : {
+
+    },
+    "Gratis" : {
+
+    },
+    "Gris" : {
+
+    },
+    "Guardada" : {
+
+    },
+    "Guardada en “%@”" : {
+
+    },
+    "Guardado el %@" : {
+
+    },
+    "Guardado sin conexión: lo mandamos cuando vuelva" : {
+
+    },
+    "Guardamos %lld neuronas" : {
+
+    },
+    "Guardando" : {
+
+    },
+    "Guardar" : {
+
+    },
+    "Guardar %lld neuronas y seguir" : {
+
+    },
+    "Guardar cambios" : {
+
+    },
+    "Guardar idea" : {
+
+    },
+    "Guardar neurona" : {
+
+    },
+    "Guardar neurona y seguir" : {
+
+    },
+    "Guardá ^[%lld neurona](inflect: true) para ganar 1 extra" : {
+
+    },
+    "Guardá algunas neuronas de temas distintos: una frase, un link o una nota de voz. Con eso Lumbre enciende tu primera chispa." : {
+
+    },
+    "Guardá algunas neuronas más para que las chispas sigan sorprendiendo." : {
+
+    },
+    "Guardá lo que te inspira. Cada mañana, dos de tus neuronas se conectan y salta una chispa." : {
+
+    },
+    "Guardá neuronas de otros temas. Las conexiones entre mundos distintos dan las mejores chispas." : {
+
+    },
+    "Guardá un par de neuronas más para tener material que conectar." : {
+
+    },
+    "Guardá una frase, un link o una nota de voz para tener material que combinar." : {
+
+    },
+    "Guiones, hilos, ensayos y ficción" : {
+
+    },
+    "Hacé de abogado del diablo: ¿por qué podría fallar esta idea?" : {
+
+    },
+    "Hasta 10 chispas por día, destilación automática y el planificador" : {
+
+    },
+    "Hasta 10 chispas por día, y elegís qué neuronas se conectan" : {
+
+    },
+    "Historia" : {
+
+    },
+    "Hora de la chispa" : {
+
+    },
+    "Hoy" : {
+
+    },
+    "Hoy no encontramos un buen par" : {
+
+    },
+    "Hoy usás Lumbre como invitado. Con una cuenta, tus ideas quedan a salvo si cambiás o perdés el teléfono." : {
+
+    },
+    "Idea" : {
+
+    },
+    "Idea guardada" : {
+
+    },
+    "Ideas por el gusto de pensarlas" : {
+
+    },
+    "Idioma" : {
+
+    },
+    "Ilimitado en Pro" : {
+
+    },
+    "Imagen" : {
+
+    },
+    "Intenta mandarlas ahora" : {
+
+    },
+    "Interfaces" : {
+
+    },
+    "Interfaces, marca y producto físico" : {
+
+    },
+    "Invitado" : {
+
+    },
+    "Ir a Hoy" : {
+
+    },
+    "La categoría tiene que tener entre 1 y 40 caracteres." : {
+
+    },
+    "La chispa del día te espera a esta hora. El perfil creativo es la lente con la que se eligen las ideas." : {
+
+    },
+    "La compra espera una aprobación. Cuando se apruebe, Pro se activa solo." : {
+
+    },
+    "La destilación es con cuenta. Creala desde Perfil y probala gratis." : {
+
+    },
+    "La idea tiene que tener entre 1 y 600 caracteres." : {
+
+    },
+    "La mayoría la elige a la mañana, antes de arrancar el día. La podés cambiar en Perfil." : {
+
+    },
+    "La neurona no se guarda en tu red." : {
+
+    },
+    "La próxima, mañana a las 08:00" : {
+
+    },
+    "La revisamos y ajustamos lo que genera Lumbre." : {
+
+    },
+    "La suscripción se cobra en tu cuenta de Apple y se renueva sola al mismo precio, salvo que la canceles al menos 24 horas antes del fin del período." : {
+
+    },
+    "La tesis puede tener hasta 600 caracteres." : {
+
+    },
+    "La tienda no pudo verificar la compra. Probá de nuevo o tocá Restaurar compras." : {
+
+    },
+    "Las chispas necesitan tu permiso" : {
+
+    },
+    "Las chispas usan IA para conectar tus neuronas. Para encenderlas necesitamos tu permiso." : {
+
+    },
+    "Las cuentas llegan pronto" : {
+
+    },
+    "Las dos neuronas" : {
+
+    },
+    "Leer la política de privacidad" : {
+
+    },
+    "Leyendo el texto…" : {
+
+    },
+    "Link" : {
+
+    },
+    "Listo" : {
+
+    },
+    "Llegaste al límite de hoy. Mañana podés seguir." : {
+
+    },
+    "Llegaste al uso justo de plan profundo de este mes. Podés seguir en modo rápido." : {
+
+    },
+    "Llegaste al uso justo del planificador de este mes. Se renueva el mes que viene." : {
+
+    },
+    "Llevalo más grande todavía." : {
+
+    },
+    "Lo guardamos sin destilar" : {
+
+    },
+    "Lo que dictes aparece acá. Podés corregirlo." : {
+
+    },
+    "Lo que digas se transcribe en el teléfono" : {
+
+    },
+    "Los pasos, la gente, la plata y lo primero que tiene que pasar." : {
+
+    },
+    "Lumbre %@ (%@)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lumbre %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "Lumbre Pro" : {
+
+    },
+    "Lumbre lee el contenido y saca de 1 a 3 neuronas." : {
+
+    },
+    "Lumbre lee el contenido y saca las neuronas. Puede tardar unos segundos." : {
+
+    },
+    "Lumbre no estaba del todo seguro de estas ideas. Abrilas y confirmalas o corregilas." : {
+
+    },
+    "Lumbre no está del todo seguro de esta idea. Revisala antes de guardarla." : {
+
+    },
+    "Lumbre no está del todo seguro de estas ideas. Revisalas antes de guardarlas." : {
+
+    },
+    "Lumbre usa el idioma del teléfono. Lo cambiás en Ajustes > Lumbre > Idioma." : {
+
+    },
+    "Lumbre, cargando" : {
+
+    },
+    "Mandar otro código" : {
+
+    },
+    "Mandarme el código" : {
+
+    },
+    "Marcaste que esta no te sirve. Con eso elegimos mejor la de mañana." : {
+
+    },
+    "Marcaste que no te sirve" : {
+
+    },
+    "Marketing" : {
+
+    },
+    "Mejor si son de temas distintos: así se conectan mundos lejanos. Podés dictarlas con el micrófono del teclado." : {
+
+    },
+    "Mensual" : {
+
+    },
+    "Mientras tanto, podés seguir guardando neuronas." : {
+
+    },
+    "Mientras tanto, usás Lumbre como invitado. Todo lo que guardes queda en esta sesión y pasa a tu cuenta cuando la crees." : {
+
+    },
+    "Modelos, servicios y oportunidades" : {
+
+    },
+    "Mover" : {
+
+    },
+    "Mover a otro circuito" : {
+
+    },
+    "Mover idea" : {
+
+    },
+    "Muy pronto vas a poder entrar con Apple, Google o tu email y tener tus ideas en todos tus dispositivos." : {
+
+    },
+    "Más" : {
+
+    },
+    "Más acciones" : {
+
+    },
+    "Más chispas por día y un plan para cada idea." : {
+
+    },
+    "Más grande todavía" : {
+
+    },
+    "Música" : {
+
+    },
+    "Nada en esta categoría" : {
+
+    },
+    "Nada por acá" : {
+
+    },
+    "Narrativa" : {
+
+    },
+    "Naturaleza" : {
+
+    },
+    "Negocios" : {
+
+    },
+    "Neurona %lld" : {
+
+    },
+    "Neurona guardada" : {
+
+    },
+    "Neuronas" : {
+
+    },
+    "No acepto" : {
+
+    },
+    "No encontramos texto. Escribí qué idea te deja o destilá la imagen." : {
+
+    },
+    "No encontramos una suscripción a Lumbre Pro en esta cuenta de Apple." : {
+
+    },
+    "No hay compras para restaurar" : {
+
+    },
+    "No me sirve" : {
+
+    },
+    "No pudimos abrir esa imagen. Probá con otra." : {
+
+    },
+    "No pudimos abrir ese PDF. Probá con otro." : {
+
+    },
+    "No pudimos armar la imagen. Probá de nuevo." : {
+
+    },
+    "No pudimos cargar los planes. Revisá tu conexión y probá de nuevo." : {
+
+    },
+    "No pudimos cargar tus cupos. Tocá para reintentar." : {
+
+    },
+    "No pudimos entrar con el link" : {
+
+    },
+    "No pudimos guardar el circuito" : {
+
+    },
+    "No pudimos guardar tu perfil" : {
+
+    },
+    "No pudimos guardar una captura" : {
+
+    },
+    "No pudimos sacar una idea de esto. Escribí qué idea te deja y lo guardamos con tus palabras." : {
+
+    },
+    "No pudimos sacar una idea de esto. Escribí qué idea te deja." : {
+
+    },
+    "No pudimos sacar una idea de esto. ¿Qué idea te deja?" : {
+
+    },
+    "No se pudo borrar la cuenta" : {
+
+    },
+    "No se pudo cambiar" : {
+
+    },
+    "No se pudo cargar" : {
+
+    },
+    "No se pudo completar" : {
+
+    },
+    "No se pudo encender" : {
+
+    },
+    "No se pudo guardar" : {
+
+    },
+    "No se pudo mover" : {
+
+    },
+    "No sé cuánta plata" : {
+
+    },
+    "No tiene neuronas." : {
+
+    },
+    "No tiene que ver conmigo" : {
+
+    },
+    "Nombre" : {
+
+    },
+    "Nombre del circuito" : {
+
+    },
+    "Nota de voz" : {
+
+    },
+    "Nueva neurona" : {
+
+    },
+    "Nuevo circuito" : {
+
+    },
+    "O escribí una nueva" : {
+
+    },
+    "Onda verde de semáforos" : {
+
+    },
+    "Opcional: si la escribís, la destilación la usa" : {
+
+    },
+    "Opciones de %@" : {
+
+    },
+    "Otra chispa" : {
+
+    },
+    "Otra foto" : {
+
+    },
+    "Otro motivo" : {
+
+    },
+    "PDF" : {
+
+    },
+    "Palabra de confirmación" : {
+
+    },
+    "Para confirmar, escribí %@" : {
+
+    },
+    "Para destilar lo que guardás y encender las chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic." : {
+
+    },
+    "Para destilar tus ideas y encender las chispas, Lumbre manda el texto de tus ideas y tu perfil creativo a Claude, una IA de Anthropic. Sin este permiso podés guardar neuronas, pero no se destilan ni se encienden chispas, y el planificador no responde." : {
+
+    },
+    "Para dictar, Lumbre necesita el micrófono y el reconocimiento de voz. Activalos en Ajustes." : {
+
+    },
+    "Parar el dictado" : {
+
+    },
+    "Parece un link. Guardalo como link para que quede la fuente." : {
+
+    },
+    "Pasar a Link" : {
+
+    },
+    "Pasemos a la síntesis" : {
+
+    },
+    "Pasemos al Crítico" : {
+
+    },
+    "Pasemos al Realista" : {
+
+    },
+    "Pasemos al siguiente cuarto: el Crítico." : {
+
+    },
+    "Pasemos al siguiente cuarto: el Realista." : {
+
+    },
+    "Pasemos al siguiente cuarto: la síntesis." : {
+
+    },
+    "Paso %lld de %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Paso %1$lld de %2$lld"
+          }
+        }
+      }
+    },
+    "Pedir otra chispa" : {
+
+    },
+    "Perfil" : {
+
+    },
+    "Perfil creativo" : {
+
+    },
+    "Plan" : {
+
+    },
+    "Plan profundo" : {
+
+    },
+    "Planes profundos este mes" : {
+
+    },
+    "Planificador" : {
+
+    },
+    "Planificador este mes" : {
+
+    },
+    "Planificador para bajar cada idea a tareas" : {
+
+    },
+    "Planificar" : {
+
+    },
+    "Podés cambiar esto cuando quieras en Perfil > Privacidad." : {
+
+    },
+    "Política de privacidad" : {
+
+    },
+    "Por ejemplo: Marketing" : {
+
+    },
+    "Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo o el stack que usarías." : {
+
+    },
+    "Preparando el micrófono…" : {
+
+    },
+    "Principio" : {
+
+    },
+    "Privacidad" : {
+
+    },
+    "Privacidad y datos" : {
+
+    },
+    "Pro" : {
+
+    },
+    "Probar %lld días gratis" : {
+
+    },
+    "Probar 7 días gratis" : {
+
+    },
+    "Probá con otras palabras o sacá el filtro de categoría." : {
+
+    },
+    "Probá con otras palabras." : {
+
+    },
+    "Probá con otras palabras: la búsqueda entiende ideas, no solo coincidencias." : {
+
+    },
+    "Probá en un rato o escribí la idea en Texto." : {
+
+    },
+    "Producto" : {
+
+    },
+    "Productos, features y arquitectura" : {
+
+    },
+    "Pronto también con Apple y Google." : {
+
+    },
+    "Psicología" : {
+
+    },
+    "Página escaneada" : {
+
+    },
+    "Queda en tus ideas guardadas" : {
+
+    },
+    "Quitar adjunto" : {
+
+    },
+    "Qué falta, qué puede salir mal y quién lo odiaría." : {
+
+    },
+    "Realista" : {
+
+    },
+    "Red" : {
+
+    },
+    "Reintentar" : {
+
+    },
+    "Renombrar" : {
+
+    },
+    "Renombrar categoría" : {
+
+    },
+    "Renombrar circuito" : {
+
+    },
+    "Reportar" : {
+
+    },
+    "Reportar esta chispa" : {
+
+    },
+    "Reportar esta respuesta" : {
+
+    },
+    "Restaurar compras" : {
+
+    },
+    "Revela la chispa" : {
+
+    },
+    "Revisando tus pruebas…" : {
+
+    },
+    "Revisar el permiso" : {
+
+    },
+    "Revisá el email: no parece válido." : {
+
+    },
+    "Revisá el link: no parece válido." : {
+
+    },
+    "Revisá la neurona" : {
+
+    },
+    "Revisá tu conexión y probá de nuevo." : {
+
+    },
+    "Rápido" : {
+
+    },
+    "Sale de tu red y de las próximas chispas. No se puede deshacer." : {
+
+    },
+    "Salieron de lo que capturaste. Ya están en tu red." : {
+
+    },
+    "Se borran tu cuenta, tus neuronas, chispas, circuitos y conversaciones del planificador, en todos tus dispositivos." : {
+
+    },
+    "Se crea la categoría “%@”" : {
+
+    },
+    "Se crean a medida que guardás neuronas." : {
+
+    },
+    "Se recarga el %@ a las %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Se recarga el %1$@ a las %2$@"
+          }
+        }
+      }
+    },
+    "Se recarga hoy a las %@" : {
+
+    },
+    "Se recarga mañana a las %@" : {
+
+    },
+    "Se recarga mañana a las 08:00" : {
+
+    },
+    "Se recarga mañana a las 8:00" : {
+
+    },
+    "Se transcribe en el teléfono. El audio no se guarda." : {
+
+    },
+    "Seguir como invitado" : {
+
+    },
+    "Si entrás con esa cuenta, lo que guardaste como invitado en este teléfono no pasa a ella." : {
+
+    },
+    "Si no aceptás, podés guardar ideas igual, pero las chispas y la destilación necesitan este permiso." : {
+
+    },
+    "Si preferís sin avisos, la chispa te espera igual en Hoy." : {
+
+    },
+    "Si querés quedarte con una copia, exportá tus datos antes." : {
+
+    },
+    "Sin categoría" : {
+
+    },
+    "Sin circuito" : {
+
+    },
+    "Sin conexión" : {
+
+    },
+    "Sin conexión y no pudimos guardarlo en el teléfono. Probá de nuevo en un rato." : {
+
+    },
+    "Sin conexión. Lo guardamos y lo mandamos cuando vuelva." : {
+
+    },
+    "Sin conexión. Probá de nuevo cuando vuelva la red." : {
+
+    },
+    "Sin elegir" : {
+
+    },
+    "Software" : {
+
+    },
+    "Software y apps" : {
+
+    },
+    "Solo se manda lo necesario para cada chispa: tus ideas y tu perfil creativo." : {
+
+    },
+    "Soñador" : {
+
+    },
+    "Su neurona queda sin categoría. No se borra." : {
+
+    },
+    "Sus %lld neuronas quedan sin categoría. No se borran." : {
+
+    },
+    "Sus ideas quedan guardadas, sin circuito." : {
+
+    },
+    "Suscribirme por %@ al año" : {
+
+    },
+    "Suscribirme por %@ al mes" : {
+
+    },
+    "Suscripción" : {
+
+    },
+    "Síntesis" : {
+
+    },
+    "También hoy" : {
+
+    },
+    "Tarjeta para compartir" : {
+
+    },
+    "Te avisamos cuando esté lista" : {
+
+    },
+    "Te mandamos otro código." : {
+
+    },
+    "Te mandamos un código a tu email, sin contraseñas. Si todavía no tenés cuenta, la creamos con ese email." : {
+
+    },
+    "Te mandamos un código a tu email." : {
+
+    },
+    "Te mandamos un código de 6 dígitos a %@. Escribilo acá o tocá el link del mail en este teléfono." : {
+
+    },
+    "Te pasaste por %lld caracteres. Dejá solo la idea (hasta 600)." : {
+
+    },
+    "Te queda 1 chispa extra hoy." : {
+
+    },
+    "Te queda 1 prueba este mes." : {
+
+    },
+    "Te quedan %lld chispas extra hoy." : {
+
+    },
+    "Te quedan %lld de %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Te quedan %1$lld de %2$lld"
+          }
+        }
+      }
+    },
+    "Te quedan %lld este mes" : {
+
+    },
+    "Te quedan %lld profundos" : {
+
+    },
+    "Te quedan %lld pruebas este mes." : {
+
+    },
+    "Te quedan pocas combinaciones nuevas" : {
+
+    },
+    "Tema" : {
+
+    },
+    "Tenés %lld días gratis. Si cancelás antes de que terminen, no se te cobra nada." : {
+
+    },
+    "Tesis" : {
+
+    },
+    "Texto" : {
+
+    },
+    "Texto reconocido" : {
+
+    },
+    "Texto sacado en el teléfono. La foto queda en tu fototeca." : {
+
+    },
+    "Texto seleccionado" : {
+
+    },
+    "Tipo" : {
+
+    },
+    "Tocá para seguir dictando" : {
+
+    },
+    "Tocá y decí tu idea" : {
+
+    },
+    "Todavía no hay circuitos" : {
+
+    },
+    "Todavía no hay ideas acá" : {
+
+    },
+    "Todavía no hay ideas en este circuito." : {
+
+    },
+    "Todavía no hay material para combinar" : {
+
+    },
+    "Todavía no hay neuronas" : {
+
+    },
+    "Todavía no se conectó con otra neurona. Cuando aparezca en una chispa, la vas a ver acá." : {
+
+    },
+    "Todavía no sé cuánta plata haría falta." : {
+
+    },
+    "Todavía no tenés categorías" : {
+
+    },
+    "Todavía no tenés categorías: se crean a medida que guardás neuronas." : {
+
+    },
+    "Todos" : {
+
+    },
+    "Todos los días, a esta hora, dos de tus neuronas se conectan y salta una chispa." : {
+
+    },
+    "Transcripción" : {
+
+    },
+    "Tres cuartos, de a uno" : {
+
+    },
+    "Tu chispa" : {
+
+    },
+    "Tu chispa de hoy" : {
+
+    },
+    "Tu chispa de hoy está lista" : {
+
+    },
+    "Tu chispa extra" : {
+
+    },
+    "Tu chispa extra está lista" : {
+
+    },
+    "Tu email" : {
+
+    },
+    "Tu red queda a salvo aunque cambies o pierdas el teléfono. Todo lo que guardaste como invitado pasa a tu cuenta." : {
+
+    },
+    "Tus cupos" : {
+
+    },
+    "Tus ideas quedan guardadas en tu cuenta. Vas a poder volver a entrar cuando quieras." : {
+
+    },
+    "Tus ideas y la IA" : {
+
+    },
+    "Tus primeras neuronas" : {
+
+    },
+    "Términos" : {
+
+    },
+    "Términos y condiciones" : {
+
+    },
+    "Título" : {
+
+    },
+    "US$ 4,17 por mes · 7 días gratis" : {
+
+    },
+    "Un archivo JSON con tu perfil, categorías, neuronas, chispas, circuitos y conversaciones del planificador." : {
+
+    },
+    "Un aviso por día, a la hora que elegiste. Nada más." : {
+
+    },
+    "Un circuito junta las ideas que querés llevar adelante. Creá uno o guardá una chispa desde Hoy y elegí dónde sumarla." : {
+
+    },
+    "Una captura que guardaste sin conexión no se pudo mandar y la sacamos de la cola. %@" : {
+
+    },
+    "Urbanismo" : {
+
+    },
+    "Usaste las chispas de hoy" : {
+
+    },
+    "Usaste las pruebas de destilación de este mes. Con Lumbre Pro destilás links, fotos y PDFs sin límite." : {
+
+    },
+    "Usaste las pruebas de este mes. Escribí qué idea te deja esto y lo guardamos igual." : {
+
+    },
+    "Usás Lumbre como invitado: si cerrás sesión, perdés tus neuronas, chispas y circuitos." : {
+
+    },
+    "Vamos a pasar esta chispa por el método de Walt Disney. No se entra al cuarto siguiente hasta terminar el actual." : {
+
+    },
+    "Ver Lumbre Pro" : {
+
+    },
+    "Voz" : {
+
+    },
+    "Ya elegiste dos. Sacá uno para elegir este." : {
+
+    },
+    "Ya hay una cuenta con ese email. Entrá con esa cuenta." : {
+
+    },
+    "Ya la había tenido" : {
+
+    },
+    "Ya pediste todas las chispas de hoy. Mañana podés seguir." : {
+
+    },
+    "Ya tengo cuenta" : {
+
+    },
+    "Ya tenés 50 categorías. Usá una de las que tenés." : {
+
+    },
+    "Ya tenés Lumbre Pro" : {
+
+    },
+    "Ya usaste la chispa de hoy" : {
+
+    },
+    "Ya usaste las chispas extra de hoy. Mañana tenés más." : {
+
+    },
+    "Yo" : {
+
+    },
+    "^[%lld idea](inflect: true)" : {
+
+    },
+    "_(Respuesta detenida)_" : {
+
+    },
+    "https://" : {
+
+    },
+    "por año" : {
+
+    },
+    "por mes" : {
+
+    },
+    "¿A qué hora querés tu chispa?" : {
+
+    },
+    "¿Borrar esta neurona?" : {
+
+    },
+    "¿Borrar este circuito?" : {
+
+    },
+    "¿Borrar “%@”?" : {
+
+    },
+    "¿Cerrar sesión?" : {
+
+    },
+    "¿Descartar este borrador?" : {
+
+    },
+    "¿Por qué no te sirve?" : {
+
+    },
+    "¿Qué idea te deja esto?" : {
+
+    },
+    "¿Qué idea te quedó dando vueltas?" : {
+
+    },
+    "¿Qué querés crear?" : {
+
+    },
+    "¿Qué stack usarías para construir esto?" : {
+
+    },
+    "¿Qué stack usarías?" : {
+
+    },
+    "×" : {
+
+    }
   },
   "version" : "1.0"
 }

@@ -92,6 +92,27 @@ public struct CachedLumbreAPI: LumbreAPI {
         await clear()
     }
 
+    // MARK: Cuenta: entrar a otra cuenta descarta lo guardado del invitado
+
+    public func setAIConsent(_ granted: Bool) async throws { try await base.setAIConsent(granted) }
+
+    public func requestEmailCode(_ email: String, purpose: EmailCodePurpose) async throws {
+        try await base.requestEmailCode(email, purpose: purpose)
+    }
+
+    public func verifyEmailCode(_ code: String, email: String, purpose: EmailCodePurpose) async throws -> Profile {
+        let profile = try await base.verifyEmailCode(code, email: email, purpose: purpose)
+        if purpose == .signIn { await clear() }
+        return profile
+    }
+
+    public func completeEmailLink(_ url: URL) async throws -> Profile {
+        let profile = try await base.completeEmailLink(url)
+        // No se sabe si fue vincular o entrar a otra cuenta: se descarta la caché por las dudas.
+        await clear()
+        return profile
+    }
+
     private func clear() async {
         await cache?.clear()
         if writesWidgetSnapshot { LumbreShared.clearTodaySnapshot() }

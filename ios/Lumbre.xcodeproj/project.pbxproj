@@ -230,6 +230,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/Release-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Lumbre;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Lumbre usa la cámara para escanear páginas y sacar el texto en el teléfono.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Lumbre usa el micrófono para que dictes tus ideas. El audio se transcribe y no se guarda.";

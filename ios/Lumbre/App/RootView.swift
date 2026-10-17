@@ -9,6 +9,7 @@ struct RootView: View {
     @Environment(\.api) private var api
     @Environment(\.scenePhase) private var scenePhase
     @State private var hasLoadedOnce = false
+    @State private var linkError: String?
 
     var body: some View {
         @Bindable var appModel = appModel
@@ -26,6 +27,43 @@ struct RootView: View {
             )) {
                 PaywallView(trigger: appModel.paywallTrigger ?? "settings")
             }
+            .sheet(isPresented: Binding(
+                get: { appModel.accountTrigger != nil },
+                set: { if !$0 { appModel.accountTrigger = nil } }
+            )) {
+                CreateAccountSheet()
+            }
+            .sheet(isPresented: Binding(
+                get: { appModel.isAskingAIConsent },
+                set: { appModel.isAskingAIConsent = $0 }
+            )) {
+                AIConsentSheet { granted in
+                    AIConsent.record(granted, api: api)
+                    appModel.isAskingAIConsent = false
+                    appModel.dataChanged()
+                }
+            }
+            .onOpenURL { url in
+                guard EmailAccount.isCallback(url) else { return }
+                Task { await completeEmailLink(url) }
+            }
+            .alert("No pudimos entrar con el link", isPresented: Binding(get: { linkError != nil }, set: { if !$0 { linkError = nil } })) {
+                Button("Entendido", role: .cancel) {}
+            } message: {
+                Text(linkError ?? "")
+            }
+    }
+
+    /// El link del email (`lumbre://auth-callback`) abierto en este teléfono: crea la cuenta o entra.
+    private func completeEmailLink(_ url: URL) async {
+        guard FeatureFlag.emailAccount.isEnabled else { return }
+        do {
+            let profile = try await api.completeEmailLink(url)
+            appModel.accountTrigger = nil
+            appModel.accountChanged(to: profile, purpose: .signIn)
+        } catch {
+            linkError = (error as? LumbreAPIError)?.errorDescription ?? LumbreAPIError.unexpected.errorDescription
+        }
     }
 
     private enum Phase: Hashable {
@@ -62,6 +100,8 @@ struct RootView: View {
     private func load() async {
         await appModel.loadProfile(api: api)
         hasLoadedOnce = true
+        // Si la vez anterior no se pudo copiar el consentimiento a la cuenta (sin red), se reintenta.
+        Task { await AIConsent.sync(api: api) }
         if let profile = appModel.profile, profile.isOnboarded {
             // El aviso local depende de la hora guardada en el servidor: se reprograma en cada arranque.
             await SparkReminder.schedule(at: profile.sparkTime)

@@ -174,6 +174,11 @@ struct CombinePickerSheet: View {
     }
 
     private func combine(with other: Concept) {
+        guard AIConsent.isGranted else {
+            dismiss()
+            appModel.presentAIConsent()
+            return
+        }
         requesting = other.id
         Task {
             do {

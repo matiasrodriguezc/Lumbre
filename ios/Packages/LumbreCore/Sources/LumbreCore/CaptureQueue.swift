@@ -421,6 +421,9 @@ extension LumbreAPIError {
         case .notEnoughConcepts: "not_enough_concepts"
         case .tooManyProjects: "too_many_projects"
         case .accountRequired: "account_required"
+        case .invalidEmail: "invalid_email"
+        case .invalidCode: "invalid_code"
+        case .emailInUse: "email_in_use"
         case .offline: "offline"
         case .unexpected: "unexpected"
         }

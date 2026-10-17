@@ -48,6 +48,41 @@ public final class MockLumbreAPI: LumbreAPI {
 
     public func registerPushToken(_ token: String, sandbox: Bool) async throws {}
 
+    public func setAIConsent(_ granted: Bool) async throws {
+        try await wait()
+        await store.setAIConsent(granted)
+    }
+
+    /// Lo último que se guardó con `setAIConsent` (para tests).
+    public var aiConsent: Bool? {
+        get async { await store.aiConsent }
+    }
+
+    // MARK: Cuenta con email
+
+    /// Código que acepta el mock (en el simulador no llega ningún mail).
+    public static let emailCode = "123456"
+
+    public func requestEmailCode(_ email: String, purpose: EmailCodePurpose) async throws {
+        try await wait()
+        guard let email = EmailAccount.normalized(email) else { throw LumbreAPIError.invalidEmail }
+        // "ana@lumbre.test" ya tiene cuenta: sirve para probar el caso de un invitado que usa un email existente.
+        if purpose == .createAccount, email == MockData.existingAccountEmail { throw LumbreAPIError.emailInUse }
+    }
+
+    public func verifyEmailCode(_ code: String, email: String, purpose: EmailCodePurpose) async throws -> Profile {
+        try await wait()
+        guard let email = EmailAccount.normalized(email) else { throw LumbreAPIError.invalidEmail }
+        guard EmailAccount.normalizedCode(code) == Self.emailCode else { throw LumbreAPIError.invalidCode }
+        return await store.signIn(email: email, purpose: purpose)
+    }
+
+    public func completeEmailLink(_ url: URL) async throws -> Profile {
+        try await wait()
+        guard EmailAccount.isCallback(url) else { throw LumbreAPIError.unexpected }
+        return await store.signIn(email: MockData.existingAccountEmail, purpose: .signIn)
+    }
+
     // MARK: Hoy y chispas
 
     public func today() async throws -> TodayState {
@@ -237,6 +272,9 @@ private actor MockStore {
     var messages: [Spark.ID: [PlannerMessage]] = [:]
     var extrasUsedToday = 0
     var capturesToday = 0
+    var aiConsent: Bool?
+
+    func setAIConsent(_ granted: Bool) { aiConsent = granted }
 
     init(onboarded: Bool, plan: Plan? = nil) {
         let state = Self.initialState(onboarded: onboarded)
@@ -265,6 +303,20 @@ private actor MockStore {
         if let value = update.timezone { profile.timezone = value }
         if let value = update.locale { profile.locale = value }
         if update.completeOnboarding { profile.isOnboarded = true }
+        return profile
+    }
+
+    /// Crear cuenta: el mismo usuario pasa a free y conserva todo. Entrar: la cuenta de prueba (Ana), ya con su red.
+    func signIn(email: String, purpose: EmailCodePurpose) -> Profile {
+        switch purpose {
+        case .createAccount:
+            profile = Profile(creativeProfiles: profile.creativeProfiles, sparkTime: profile.sparkTime, timezone: profile.timezone,
+                              locale: profile.locale, plan: profile.plan == .guest ? .free : profile.plan, email: email, isOnboarded: profile.isOnboarded)
+        case .signIn:
+            reset(onboarded: true)
+            profile = Profile(creativeProfiles: profile.creativeProfiles, sparkTime: profile.sparkTime, timezone: profile.timezone,
+                              locale: profile.locale, plan: profile.plan, email: email, isOnboarded: true)
+        }
         return profile
     }
 
@@ -500,6 +552,9 @@ public enum MockData {
     )
     .map { slug, name in Category(name: name, domain: domains.first { $0.slug == slug }) }
     .sorted { $0.name < $1.name }
+
+    /// Email de la cuenta de prueba: ya existe, así que un invitado no lo puede usar para crear otra.
+    public static let existingAccountEmail = "ana@lumbre.test"
 
     public static let profile = Profile(
         creativeProfiles: [.software, .curiosity],

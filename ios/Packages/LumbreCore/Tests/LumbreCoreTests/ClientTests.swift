@@ -387,6 +387,24 @@ private enum Sample {
         await backend.setOffline(true)
         await #expect(throws: LumbreAPIError.offline) { try await api.recentSparks() }
     }
+
+    @Test func signingInToAnotherAccountClearsTheCache() async throws {
+        let backend = FlakyAPI()
+        let api = CachedLumbreAPI(wrapping: backend, storage: .inMemory)
+        _ = try await api.concepts()
+        _ = try await api.verifyEmailCode(MockLumbreAPI.emailCode, email: "otra@lumbre.test", purpose: .signIn)
+        await backend.setOffline(true)
+        await #expect(throws: LumbreAPIError.offline) { try await api.concepts() }
+    }
+
+    @Test func creatingTheAccountKeepsTheCache() async throws {
+        let backend = FlakyAPI()
+        let api = CachedLumbreAPI(wrapping: backend, storage: .inMemory)
+        let before = try await api.concepts()
+        _ = try await api.verifyEmailCode(MockLumbreAPI.emailCode, email: "nueva@lumbre.test", purpose: .createAccount)
+        await backend.setOffline(true)
+        #expect(try await api.concepts().map(\.id) == before.map(\.id))
+    }
 }
 
 /// `MockLumbreAPI` con un interruptor de red, para probar la caché.
@@ -413,6 +431,12 @@ private final class FlakyAPI: LumbreAPI {
     func deleteAccount() async throws { try await check() }
     func exportData() async throws -> Data { try await check(); return Data() }
     func registerPushToken(_ token: String, sandbox: Bool) async throws {}
+    func setAIConsent(_ granted: Bool) async throws { try await check() }
+    func requestEmailCode(_ email: String, purpose: EmailCodePurpose) async throws { try await check() }
+    func verifyEmailCode(_ code: String, email: String, purpose: EmailCodePurpose) async throws -> Profile {
+        try await check(); return try await mock.verifyEmailCode(code, email: email, purpose: purpose)
+    }
+    func completeEmailLink(_ url: URL) async throws -> Profile { try await check(); return try await mock.completeEmailLink(url) }
     func today() async throws -> TodayState { try await check(); return try await mock.today() }
     func revealSpark(id: Spark.ID) async throws {}
     func saveSpark(id: Spark.ID, projectID: Project.ID?) async throws {}

@@ -1,16 +1,18 @@
 # iOS
 
-App de Lumbre en SwiftUI (Swift 6, iOS 17 o más; Liquid Glass en iOS 26).
+App de Lumbre en SwiftUI (Swift 6, iOS 17 o más; Liquid Glass en iOS 26). La interfaz habla de neuronas, Red, Circuitos y chispas (`plan.md` §3); en el código siguen los nombres técnicos (`Concept`, `Vault`, `Project`).
 
 ## Estructura
 
 | Carpeta | Qué va |
 |---|---|
-| `Lumbre.xcodeproj` | Proyecto de Xcode con carpetas sincronizadas: los archivos nuevos dentro de `Lumbre/` entran solos. |
-| `Lumbre/App` | Punto de entrada y navegación (TabView flotante + Capturar). |
-| `Lumbre/Features` | Una carpeta por pantalla: Hoy, Bóveda, Proyectos, Perfil, Capturar. |
-| `Packages/LumbreDesign` | Tokens generados, tipografía y componentes (botones, chips, SparkCard, SparkMeter, ConceptCard). |
-| `Packages/LumbreCore` | Modelos, el contrato `LumbreAPI` y `MockLumbreAPI` con datos de prueba. |
+| `Lumbre.xcodeproj` | Proyecto de Xcode con carpetas sincronizadas: los archivos nuevos dentro de `Lumbre/` entran solos (también los recursos, como `PrivacyInfo.xcprivacy`). |
+| `Config/` | `Debug-Info.plist` y `Release-Info.plist`: lo que se suma al Info.plist generado (el esquema `lumbre://` y, solo en Debug, http con el Supabase local). |
+| `Lumbre/App` | Punto de entrada, estado global (`AppModel`), navegación (TabView flotante + Capturar), push y a qué backend se conecta (`AppEnvironment`). |
+| `Lumbre/Features` | Una carpeta por pantalla: Today (Hoy y el reveal), Vault (Red), Projects (Circuitos), Profile, Capture, Concept, Spark (detalle, guardar, tarjeta para compartir), Planner, Paywall, Onboarding, Account (crear cuenta o entrar con email) y Shared. |
+| `Lumbre/Resources` | Íconos, String Catalog (`Localizable.xcstrings`, base es), `Lumbre.storekit` y el privacy manifest. |
+| `Packages/LumbreDesign` | Tokens generados, tipografía (Fraunces empaquetada), identidad neuronal (neurona, sinapsis, red de fondo, pulso) y componentes. |
+| `Packages/LumbreCore` | Modelos, el contrato `LumbreAPI`, `SupabaseLumbreAPI`, `MockLumbreAPI`, la caché (`CachedLumbreAPI`, SwiftData), la cola offline, el cliente de las Edge Functions, App Attest, analytics tipado y feature flags. |
 | `scripts/generate_tokens.py` | Genera los colores y tokens de LumbreDesign desde `design/system/tokens.json`. |
 
 ## Comandos
@@ -27,35 +29,56 @@ Compilar para el simulador:
 xcodebuild -project ios/Lumbre.xcodeproj -scheme Lumbre -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -derivedDataPath ios/.build/DerivedData build
 ```
 
-Correr los tests de LumbreCore:
+Correr los tests de LumbreCore (Swift Testing; los de integración se saltean si no está el Supabase local):
 
 ```bash
-cd ios/Packages/LumbreCore && xcodebuild test -scheme LumbreCore -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
+cd ios/Packages/LumbreCore && xcodebuild test -scheme LumbreCore -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -derivedDataPath ../../.build/DerivedData
+```
+
+Llevar al String Catalog los textos nuevos del código (Xcode lo hace solo al compilar desde el IDE; con `xcodebuild`, después del build):
+
+```bash
+cd ios && bash -c 'args=(); while IFS= read -r f; do args+=(--stringsdata "$f"); done < <(find .build/DerivedData/Build/Intermediates.noindex/{Lumbre,LumbreCore,LumbreDesign}.build -name "*.stringsdata" -path "*arm64*"); xcrun xcstringstool sync Lumbre/Resources/Localizable.xcstrings "${args[@]}"'
 ```
 
 O abrir `ios/Lumbre.xcodeproj` en Xcode y correr el esquema **Lumbre** (arranca en español de Argentina).
 
-## Backend
+## Argumentos de arranque
 
-La app se conecta a `lumbre-dev` en Supabase (`App/AppEnvironment.swift`) con `SupabaseLumbreAPI` (paquete LumbreCore, sobre `supabase-swift`):
-
-- **Lectura:** con la sesión del usuario y RLS. Hoy, Bóveda y el contador de chispas leen del remoto; guardar una chispa y "No me sirve" escriben ahí.
-- **Sesión:** la guarda `supabase-swift` en el Keychain y se renueva sola. Las llamadas simultáneas comparten un solo login.
-- **Login de desarrollo (solo Debug):** si existe `Lumbre/Resources/DevCredentials.plist` (fuera del repo, con `email` y `password`), la app entra como Ana, la usuaria de prueba de dev. Sin el archivo, entra como invitado, lo que requiere los ajustes de H14 en el dashboard.
-- **Capturar** guarda textos y links con `capture_concept()`. La categoría se elige entre las del usuario o se escribe una nueva, y la sheet avisa cuando se va a crear. Voz y foto llegan con los pasos 48 y 50. Al guardar, Hoy y la Bóveda vuelven a cargar.
-
-Argumentos de arranque (esquema → Run → Arguments, o `xcrun simctl launch … <arg>`):
+Esquema → Run → Arguments, o `xcrun simctl launch booted com.matiasrodriguezc.lumbre <arg>`:
 
 | Argumento | Qué hace |
 |---|---|
-| `-mock` | Usa `MockLumbreAPI`, con los datos de prueba y sin red |
-| `-mockPro` | Lo mismo, con el perfil de prueba en Pro (para probar el planificador y lo Pro) |
+| `-mock` | `MockLumbreAPI`: datos de prueba, sin red, plan free |
+| `-mockPro` | Lo mismo, en Pro (planificador, chispas elegidas, destilación) |
+| `-mockGuest` | Lo mismo, como invitado nuevo: arranca en el onboarding |
+| `-remote` | Solo Debug: `lumbre-dev` en vez del Supabase local |
+| `-seedUser` | Solo Debug y local: entra como Ana, la usuaria de `backend/supabase/seed.sql` |
 | `-resetSession` | Solo Debug: cierra la sesión guardada y prueba el primer login |
+| `-flag.<nombre> YES\|NO` | Solo Debug: pisa un feature flag (`-flag.account_email NO`) |
 
-Las previews de SwiftUI siempre usan `MockLumbreAPI`.
+Las previews de SwiftUI siempre usan `MockLumbreAPI`. En el mock, el código del email es `123456` y `ana@lumbre.test` es una cuenta que ya existe.
+
+## Backend
+
+En Debug la app usa el Supabase local (`cd backend && supabase start`); con `-remote` o en Release, `lumbre-dev`. Todo pasa por `SupabaseLumbreAPI`, envuelto en `CachedLumbreAPI`:
+
+- **Lecturas y escrituras directas** con la sesión del usuario y RLS (`backend/README.md`, "Qué usa la app"). Lo que genera contenido o gasta IA va por las Edge Functions (`capture`, `today`, `spark`, `search`, `planner`) con `EdgeFunctions`, que también lee el stream del planificador (SSE).
+- **Sesión:** la guarda `supabase-swift` en el Keychain y se renueva sola. Sin sesión, entra como invitado (sesión anónima). Las llamadas simultáneas comparten un solo login.
+- **Cuenta con email:** `AccountSheet` manda un código de 6 dígitos. Un invitado que crea su cuenta vincula el email al mismo usuario (`updateUser`, verificación `email_change`) y no pierde nada; "Ya tengo cuenta" entra con `signInWithOTP` (si no existe, la crea). El link del mail vuelve por `lumbre://auth-callback` y lo toma `RootView`. Si el servidor responde `account_required` (chispas extra, planificador), la app le ofrece crear la cuenta. En remoto necesita los ajustes de Auth de H14.
+- **Caché offline:** `CachedLumbreAPI` guarda en SwiftData la última respuesta de perfil, Hoy, chispas, neuronas, categorías y circuitos, y la devuelve sin red. Se borra al cerrar sesión, al borrar la cuenta y al entrar a otra cuenta. También deja la chispa de hoy en el App Group para el widget.
+- **Cola offline:** una captura sin red queda en el teléfono y se manda sola cuando vuelve (`CaptureQueue`).
+- **App Attest:** `AppAttestor` firma los pedidos a las funciones de IA con headers `X-Lumbre-Attest-*` (protocolo en `AppAttest.swift`, lo verifica `backend/supabase/functions/_shared/attest/`). Donde no hay App Attest (simulador, o sin el entitlement de Apple Developer) el pedido sale sin firma. Si el servidor responde `attestation_failed`, descarta la clave y reintenta una vez.
+- **Consentimiento para IA:** "Tus ideas y la IA" se pide en el onboarding y se cambia en Perfil > Privacidad (`AIConsent`). Sin un "Acepto", la app no destila, no pide chispas (ni la del día: `/today` la generaría) y el planificador no responde; guardar neuronas sigue andando. La respuesta se copia a la cuenta con `setAIConsent` en `profiles.ai_consent_at` (fecha del "Acepto", null si no aceptó); si la columna todavía no existe, queda en `user_metadata.ai_consent` de Auth y se reintenta en el próximo arranque.
+
+## Privacidad
+
+`Lumbre/Resources/PrivacyInfo.xcprivacy`: sin tracking; API de razón requerida solo UserDefaults (CA92.1); datos vinculados a la cuenta para que la app funcione (email, ideas, fotos y PDFs que se mandan a destilar, id de usuario, compras) y la interacción para analytics. Si se suma un SDK (PostHog, Sentry, RevenueCat) o un dato nuevo, se actualiza junto con las etiquetas de App Store Connect.
 
 ## Pendientes conocidos
 
-- **Fraunces:** el archivo de la fuente no está en el repo todavía. Mientras tanto los estilos display usan New York, la serif del sistema. Para activarla, copiar el variable font como `Packages/LumbreDesign/Sources/LumbreDesign/Resources/Fraunces.ttf`: el código la detecta sola.
-- **Botón Capturar:** usa el lugar que iOS 26 le da a la pestaña de búsqueda, así que es de vidrio neutro y no magenta como en el componente NavBar. Un botón propio tintado no se puede fundir con la barra del sistema.
-- **Ícono de app:** llega con el paso 8.
+- **Apple y Google** para entrar: esperan sus credenciales (H1, paso 20b). La sheet de cuenta ya avisa que llegan.
+- **App Attest en un dispositivo real** necesita el entitlement `com.apple.developer.devicecheck.appattest-environment` (cuenta de Apple Developer, H1). Lo mismo el App Group (`group.com.matiasrodriguezc.lumbre`) y push.
+- **RevenueCat** (paso 54): hoy el paywall usa StoreKit 2 directo con `Lumbre.storekit`. Falta el SDK, pasar el id de usuario como `appAccountToken`/app user id y que el plan lo marque el webhook.
+- **PostHog y Sentry** (paso 44): los eventos y los flags ya están tipados (`Analytics`, `FeatureFlag`); hoy van al log del sistema y los flags usan sus valores por defecto.
+- **Botón Capturar:** usa el lugar que iOS 26 le da a la pestaña de búsqueda, así que es de vidrio neutro y no tintado como en el componente NavBar.

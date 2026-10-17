@@ -113,6 +113,7 @@ public struct SparkCard<Actions: View>: View {
 public struct SparkPairHeader: View {
     let a: SparkSide
     let b: SparkSide
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     public init(a: SparkSide, b: SparkSide) {
         self.a = a
@@ -120,11 +121,20 @@ public struct SparkPairHeader: View {
     }
 
     public var body: some View {
-        HStack(alignment: .top, spacing: Space.s4) {
-            label(a, alignment: .leading)
-            label(b, alignment: .trailing)
+        // Con tamaños de accesibilidad, una debajo de la otra: en dos columnas los títulos se cortan por sílabas.
+        if dynamicTypeSize.isAccessibilitySize {
+            VStack(alignment: .leading, spacing: Space.s3) {
+                label(a, alignment: .leading)
+                label(b, alignment: .leading)
+            }
+            .accessibilityElement(children: .combine)
+        } else {
+            HStack(alignment: .top, spacing: Space.s4) {
+                label(a, alignment: .leading)
+                label(b, alignment: .trailing)
+            }
+            .accessibilityElement(children: .combine)
         }
-        .accessibilityElement(children: .combine)
     }
 
     private func label(_ side: SparkSide, alignment: HorizontalAlignment) -> some View {

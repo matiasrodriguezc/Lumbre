@@ -157,8 +157,10 @@ enum DistillAccess: Equatable {
         }
     }
 
-    static func resolve(isPro: Bool, isGuest: Bool, credits: [Credit]?) -> DistillAccess {
-        guard FeatureFlag.distillation.isEnabled else { return .off }
+    /// - Parameter aiConsent: lo que respondió en "Tus ideas y la IA". Sin un "Acepto", no se ofrece destilar
+    ///   (el contenido no sale hacia la IA desde la captura).
+    static func resolve(isPro: Bool, isGuest: Bool, credits: [Credit]?, aiConsent: Bool?) -> DistillAccess {
+        guard FeatureFlag.distillation.isEnabled, aiConsent == true else { return .off }
         if isGuest { return .guest }
         if isPro { return .pro }
         guard let credits else { return .loading }

@@ -68,7 +68,7 @@ struct ProfileView: View {
             }
             .onChange(of: theme) { _, _ in Analytics.track(.settingsChanged(setting: "theme")) }
             .sheet(isPresented: $isShowingAccount) {
-                AccountComingSoonSheet(continueTitle: "Entendido")
+                CreateAccountSheet()
             }
             .manageSubscriptionsSheet(isPresented: $isManagingSubscription)
             .confirmationDialog("¿Cerrar sesión?", isPresented: $isConfirmingSignOut, titleVisibility: .visible) {
@@ -371,6 +371,7 @@ struct ProfileView: View {
             try await api.signOut()
             SparkReminder.cancel()
             Analytics.reset()
+            AIConsent.clear()
             appModel.reset()
         } catch {
             errorMessage = ErrorContent(error).message

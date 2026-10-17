@@ -13,6 +13,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case pushPermissionResponded(granted: Bool, systemPromptShown: Bool)
     case guestEntered
     case accountPromptShown(trigger: String)
+    /// Entra a una cuenta que ya existía (`account_linked`, cuando un invitado crea la suya, lo manda el servidor).
+    case signedIn(method: String)
     case aiConsentResponded(granted: Bool)
     case onboardingCompleted(durationSeconds: Int, profilesCount: Int, seedsCount: Int)
     // Captura
@@ -59,6 +61,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .pushPermissionResponded: "push_permission_responded"
         case .guestEntered: "guest_entered"
         case .accountPromptShown: "account_prompt_shown"
+        case .signedIn: "signed_in"
         case .aiConsentResponded: "ai_consent_responded"
         case .onboardingCompleted: "onboarding_completed"
         case .captureOpened: "capture_opened"
@@ -108,6 +111,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
             ["granted": .bool(granted), "system_prompt_shown": .bool(shown)]
         case let .accountPromptShown(trigger):
             ["trigger": .string(trigger)]
+        case let .signedIn(method):
+            ["method": .string(method)]
         case let .aiConsentResponded(granted):
             ["granted": .bool(granted)]
         case let .onboardingCompleted(duration, profiles, seeds):
@@ -272,6 +277,8 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     case neuralIdentity = "neural_identity"
     /// Planificador con el método de los tres cuartos de Walt Disney (planner.v2).
     case disneyPlanner = "planner_disney"
+    /// Crear la cuenta o entrar con un código por email (en vez del aviso de "las cuentas llegan pronto").
+    case emailAccount = "account_email"
 
     public var defaultValue: Bool { true }
 

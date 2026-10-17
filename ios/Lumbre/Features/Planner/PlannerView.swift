@@ -11,6 +11,7 @@ struct PlannerView: View {
 
     @Environment(\.api) private var api
     @Environment(AppModel.self) private var appModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var spark: Spark?
     @State private var messages: [PlannerMessage] = []
     @State private var credits: [Credit] = []
@@ -409,6 +410,10 @@ struct PlannerView: View {
     private func send(_ text: String) {
         let question = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !question.isEmpty, !isStreaming else { return }
+        guard AIConsent.isGranted else {
+            appModel.presentAIConsent()
+            return
+        }
         draft = ""
         inlineError = nil
         didReport = false
@@ -426,6 +431,10 @@ struct PlannerView: View {
                 pending = nil
                 draft = question
                 appModel.presentPaywall(trigger: "planner")
+            } catch LumbreAPIError.accountRequired {
+                pending = nil
+                draft = question
+                appModel.presentAccount(trigger: "planner")
             } catch LumbreAPIError.quotaExceeded {
                 pending = nil
                 draft = question
@@ -481,7 +490,7 @@ struct PlannerView: View {
 
     private func scrollToBottom(_ proxy: ScrollViewProxy, animated: Bool = true) {
         if animated {
-            withAnimation(.snappy) { proxy.scrollTo(Self.bottomID, anchor: .bottom) }
+            withAnimation(reduceMotion ? nil : .snappy) { proxy.scrollTo(Self.bottomID, anchor: .bottom) }
         } else {
             proxy.scrollTo(Self.bottomID, anchor: .bottom)
         }

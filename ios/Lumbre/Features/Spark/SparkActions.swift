@@ -15,6 +15,7 @@ struct SparkActions: View {
 
     @Environment(\.api) private var api
     @Environment(AppModel.self) private var appModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var isChoosingProject = false
     @State private var isAskingFeedback = false
     @State private var isAskingReport = false
@@ -54,8 +55,8 @@ struct SparkActions: View {
                 noticeView(notice)
             }
         }
-        .animation(.snappy, value: notice)
-        .animation(.snappy, value: spark.status)
+        .animation(reduceMotion ? nil : .snappy, value: notice)
+        .animation(reduceMotion ? nil : .snappy, value: spark.status)
         .confirmationDialog("¿Por qué no te sirve?", isPresented: $isAskingFeedback, titleVisibility: .visible) {
             ForEach(SparkFeedback.allCases, id: \.self) { reason in
                 Button(reason.label) { sendFeedback(reason) }

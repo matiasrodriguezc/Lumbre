@@ -19,6 +19,21 @@ public protocol LumbreAPI: Sendable {
     func exportData() async throws -> Data
     func registerPushToken(_ token: String, sandbox: Bool) async throws
 
+    /// Guarda en la cuenta lo que respondió en "Tus ideas y la IA" (plan.md §10), para que el servidor tampoco
+    /// mande nada a la IA sin permiso (`profiles.ai_consent_at`).
+    func setAIConsent(_ granted: Bool) async throws
+
+    // MARK: Cuenta con email
+
+    /// Manda al email un código de 6 dígitos (y un link que vuelve a `lumbre://auth-callback`).
+    /// Con `.createAccount`, el invitado de esta sesión vincula el email y no pierde nada.
+    /// Con `.signIn`, entra a la cuenta de ese email (si no existe, la crea).
+    func requestEmailCode(_ email: String, purpose: EmailCodePurpose) async throws
+    /// Verifica el código y devuelve el perfil de la cuenta con la que quedó la sesión.
+    func verifyEmailCode(_ code: String, email: String, purpose: EmailCodePurpose) async throws -> Profile
+    /// Termina el ingreso desde el link del email (`lumbre://auth-callback`).
+    func completeEmailLink(_ url: URL) async throws -> Profile
+
     // MARK: Hoy y chispas
 
     /// Chispa del día (se genera si todavía no existe), cupo y extras de hoy.
@@ -92,6 +107,12 @@ public enum LumbreAPIError: LocalizedError, Equatable {
     case notEnoughConcepts
     case tooManyProjects
     case accountRequired
+    /// El email no tiene forma de email.
+    case invalidEmail
+    /// El código del email no es el que mandamos o ya venció.
+    case invalidCode
+    /// Ya hay una cuenta con ese email: hay que entrar a esa cuenta en vez de crear una.
+    case emailInUse
     case offline
     case unexpected
 
@@ -108,6 +129,9 @@ public enum LumbreAPIError: LocalizedError, Equatable {
         case "not_enough_concepts": self = .notEnoughConcepts
         case "too_many_projects": self = .tooManyProjects
         case "account_required": self = .accountRequired
+        case "invalid_email": self = .invalidEmail
+        case "invalid_code": self = .invalidCode
+        case "email_in_use": self = .emailInUse
         default: return nil
         }
     }
@@ -124,6 +148,9 @@ public enum LumbreAPIError: LocalizedError, Equatable {
         case .notEnoughConcepts: String(localized: "Guardá un par de neuronas más para tener material que conectar.")
         case .tooManyProjects: String(localized: "Con el plan gratis tenés un circuito. Con Pro, todos los que quieras.")
         case .accountRequired: String(localized: "Creá tu cuenta para usar esto.")
+        case .invalidEmail: String(localized: "Revisá el email: no parece válido.")
+        case .invalidCode: String(localized: "El código no es correcto o ya venció. Revisalo o pedí otro.")
+        case .emailInUse: String(localized: "Ya hay una cuenta con ese email. Entrá con esa cuenta.")
         case .offline: String(localized: "Sin conexión. Lo guardamos y lo mandamos cuando vuelva.")
         case .unexpected: String(localized: "Algo salió mal. Probá de nuevo.")
         }

@@ -27,6 +27,7 @@ struct CaptureSheet: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.neuralIdentity) private var neuralIdentity
     @AppStorage("capture.lastCategory") private var lastCategory = ""
+    @AppStorage("aiConsent") private var aiConsent: Bool?
     @State private var form = CaptureForm()
     @State private var dictation = SpeechDictation()
     @State private var categories: [LumbreCore.Category] = []
@@ -40,7 +41,7 @@ struct CaptureSheet: View {
     @FocusState private var focus: Field?
 
     private var access: DistillAccess {
-        DistillAccess.resolve(isPro: appModel.isPro, isGuest: appModel.isGuest, credits: credits)
+        DistillAccess.resolve(isPro: appModel.isPro, isGuest: appModel.isGuest, credits: credits, aiConsent: aiConsent)
     }
 
     var body: some View {
@@ -214,7 +215,7 @@ struct CaptureSheet: View {
                 .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 0)
             Button("Pasar a Link") {
-                withAnimation(.snappy) { form.moveLinkFromThesis() }
+                withAnimation(reduceMotion ? nil : .snappy) { form.moveLinkFromThesis() }
             }
             .font(.footnote.weight(.semibold))
             .buttonStyle(.lumbre(.secondary))
@@ -370,7 +371,7 @@ struct CaptureSheet: View {
 
     private func showNeedsThesis() {
         Analytics.track(.distillFallbackShown(reason: "low_confidence"))
-        withAnimation(.snappy) {
+        withAnimation(reduceMotion ? nil : .snappy) {
             form.needsThesis = true
             form.distill = false
         }

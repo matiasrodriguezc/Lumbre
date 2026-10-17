@@ -35,7 +35,7 @@ public struct SupabaseLumbreAPI: LumbreAPI {
         let client = SupabaseClient(supabaseURL: url, supabaseKey: publishableKey, options: SupabaseClientOptions(auth: auth))
         self.client = client
         session = SessionGate(devCredentials: devCredentials, resetFirst: resetSession)
-        functions = EdgeFunctions(supabaseURL: url, publishableKey: publishableKey) {
+        functions = EdgeFunctions(supabaseURL: url, publishableKey: publishableKey, attestor: authStorage == nil ? .shared : nil) {
             try await client.auth.session.accessToken
         }
     }
@@ -109,6 +109,65 @@ public struct SupabaseLumbreAPI: LumbreAPI {
     public func registerPushToken(_ token: String, sandbox: Bool) async throws {
         try await perform {
             try await client.rpc("register_push_token", params: PushTokenParams(p_token: token, p_platform: "ios", p_sandbox: sandbox)).execute()
+        }
+    }
+
+    /// `profiles.ai_consent_at`: la fecha del "Acepto", o null si no aceptó o lo revocó (las Edge Functions no mandan
+    /// nada a la IA sin esa fecha). Mientras la columna no exista en la base (PGRST204), queda en los metadatos de Auth
+    /// (`user_metadata.ai_consent`) para no perder la respuesta, y falla para que `AIConsent.sync` reintente.
+    public func setAIConsent(_ granted: Bool) async throws {
+        try await perform {
+            let userID = try await client.auth.session.user.id
+            let value: AnyJSON = granted ? .string(LumbreJSON.timestamp(.now)) : .null
+            do {
+                try await client.from("profiles").update(["ai_consent_at": value]).eq("id", value: userID).execute()
+            } catch let error as PostgrestError where error.code == "PGRST204" {
+                try await client.auth.update(user: UserAttributes(data: [
+                    "ai_consent": .bool(granted),
+                    "ai_consent_at": value,
+                ]))
+                // Falla igual para que la app lo vuelva a intentar (y llegue a `profiles` cuando exista la columna).
+                throw LumbreAPIError.unexpected
+            }
+        }
+    }
+
+    // MARK: - Cuenta con email
+
+    public func requestEmailCode(_ email: String, purpose: EmailCodePurpose) async throws {
+        guard let email = EmailAccount.normalized(email) else { throw LumbreAPIError.invalidEmail }
+        try await perform {
+            switch purpose {
+            case .createAccount:
+                // El mismo usuario anónimo pasa a tener email: conserva sus neuronas, chispas y circuitos.
+                try await client.auth.update(user: UserAttributes(email: email), redirectTo: EmailAccount.callbackURL)
+            case .signIn:
+                try await client.auth.signInWithOTP(email: email, redirectTo: EmailAccount.callbackURL, shouldCreateUser: true, data: SessionGate.deviceMetadata)
+            }
+        }
+    }
+
+    public func verifyEmailCode(_ code: String, email: String, purpose: EmailCodePurpose) async throws -> Profile {
+        guard let email = EmailAccount.normalized(email) else { throw LumbreAPIError.invalidEmail }
+        guard let code = EmailAccount.normalizedCode(code) else { throw LumbreAPIError.invalidCode }
+        return try await perform {
+            switch purpose {
+            case .createAccount:
+                try await client.auth.verifyOTP(email: email, token: code, type: .emailChange)
+                // El token nuevo trae `is_anonymous = false`: con eso `effective_plan()` pasa de guest a free.
+                _ = try? await client.auth.refreshSession()
+            case .signIn:
+                try await client.auth.verifyOTP(email: email, token: code, type: .email)
+            }
+            return try await loadProfile()
+        }
+    }
+
+    public func completeEmailLink(_ url: URL) async throws -> Profile {
+        try await perform {
+            try await client.auth.session(from: url)
+            _ = try? await client.auth.refreshSession()
+            return try await loadProfile()
         }
     }
 
@@ -452,8 +511,15 @@ public struct SupabaseLumbreAPI: LumbreAPI {
             logger.error("PostgREST: \(error.code ?? "sin código", privacy: .public)")
             return LumbreAPIError.unexpected
         case let error as AuthError:
-            logger.error("Auth: \(error.errorCode.rawValue, privacy: .public)")
-            return LumbreAPIError.unexpected
+            switch error.errorCode {
+            case .emailExists, .userAlreadyExists: return LumbreAPIError.emailInUse
+            case .otpExpired: return LumbreAPIError.invalidCode
+            case .validationFailed: return LumbreAPIError.invalidEmail
+            case .overEmailSendRateLimit, .overRequestRateLimit: return LumbreAPIError.quotaExceeded
+            default:
+                logger.error("Auth: \(error.errorCode.rawValue, privacy: .public)")
+                return LumbreAPIError.unexpected
+            }
         case let error as StorageError:
             logger.error("Storage: \(error.statusCode ?? "sin estado", privacy: .public)")
             return LumbreAPIError.unexpected
@@ -562,11 +628,16 @@ private actor SessionGate {
         if let credentials {
             try await client.auth.signIn(email: credentials.email, password: credentials.password)
         } else {
-            try await client.auth.signInAnonymously(data: [
-                "timezone": .string(TimeZone.current.identifier),
-                "locale": .string(Locale.current.language.languageCode?.identifier == "en" ? "en" : "es"),
-            ])
+            try await client.auth.signInAnonymously(data: deviceMetadata)
         }
+    }
+
+    /// Zona horaria e idioma del teléfono: el trigger `on_auth_user_created` arma el perfil con esto.
+    static var deviceMetadata: [String: AnyJSON] {
+        [
+            "timezone": .string(TimeZone.current.identifier),
+            "locale": .string(Locale.current.language.languageCode?.identifier == "en" ? "en" : "es"),
+        ]
     }
 }
 
