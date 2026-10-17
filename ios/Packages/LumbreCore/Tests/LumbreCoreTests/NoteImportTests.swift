@@ -243,24 +243,96 @@ import Testing
         #expect(requests[0].excerpt == "cuerpo")
     }
 
-    @Test func importNeverRequestsDistillation() {
-        let request = CaptureRequest(thesis: "x", category: "y", source: .text, distill: true, importSource: .markdown)
-        #expect(!request.distill)
+    @Test func longNotesAreDistilledWithinTheAllowanceAndKeepTheirFullText() throws {
+        let long = Array(repeating: "palabra", count: 40).joined(separator: " ")
+        let notes = [
+            try #require(NoteImport.plainNote("Larga uno\n\(long)")),
+            try #require(NoteImport.plainNote("Corta\napenas")),
+            try #require(NoteImport.plainNote("Larga dos\n\(long)")),
+        ]
+        #expect(notes.map(\.isLong) == [true, false, true])
+        #expect(notes[0].text.hasPrefix("Larga uno\npalabra"))
+
+        var batch = ImportBatch(notes: notes, fallbackCategory: "Notas")
+        // Sin "Acepto" (o apagado) no se conceptualiza ninguna.
+        #expect(batch.requests().allSatisfy { !$0.distill })
+
+        batch.distillLongNotes = true
+        batch.distillAllowance = 1
+        var requests = batch.requests()
+        #expect(requests.map(\.distill) == [true, false, false])
+        #expect(batch.longNotesWithoutDistill == 1)
+        #expect(requests[0].noteText == notes[0].text)
+        #expect(requests[0].thesis == "Larga uno")
+
+        batch.distillAllowance = 5
+        batch.setThesis("  Mi   tesis  ", for: notes[2].id)
+        requests = batch.requests()
+        #expect(requests.map(\.distill) == [true, false, true])
+        #expect(requests[2].thesis == "Mi tesis")
+        batch.setThesis("   ", for: notes[2].id)
+        #expect(batch.thesis(for: notes[2]) == "Larga dos")
     }
 
     @Test func captureBodySendsTheImportSource() throws {
         let body = CaptureBody(NoteImport.request(for: ImportNote(source: .appleNotes, thesis: "Hola", excerpt: nil, folder: nil), category: "Notas"), attachment: nil)
         let json = try #require(try JSONSerialization.jsonObject(with: LumbreJSON.encoder().encode(body)) as? [String: Any])
         #expect(json["import_source"] as? String == "apple_notes")
+        #expect(json["note_text"] as? String == "Hola")
         #expect(json["distill"] as? Bool == false)
         let plain = CaptureBody(CaptureRequest(thesis: "Hola", category: "Notas", source: .text), attachment: nil)
         let plainJSON = try #require(try JSONSerialization.jsonObject(with: LumbreJSON.encoder().encode(plain)) as? [String: Any])
         #expect(plainJSON["import_source"] == nil || plainJSON["import_source"] is NSNull)
+        #expect(plainJSON["note_text"] == nil || plainJSON["note_text"] is NSNull)
+    }
+
+    @Test func quotaPausesTheQueueUntilTomorrow() async throws {
+        let directory = FileManager.default.temporaryDirectory.appending(path: "QuotaQueue-\(UUID().uuidString)")
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let clock = TestClock()
+        let queue = CaptureQueue(directory: directory, backoffBase: .milliseconds(10), now: { clock.now })
+        try await queue.enqueue(contentsOf: (1...3).map { CaptureRequest(thesis: "Nota \($0)", category: "Notas", source: .text, importSource: .markdown) })
+        let updates = await queue.updates()
+
+        // La segunda se pasa del tope de hoy: se frena y espera a mañana, sin descartar nada.
+        let report = await queue.flush(send: { request in
+            if request.thesis != "Nota 1" { throw LumbreAPIError.quotaExceeded }
+            return CaptureResult(conceptID: UUID(), categoryID: UUID(), categoryCreated: false)
+        })
+        #expect(report.sent.count == 1)
+        #expect(report.discarded.isEmpty)
+        #expect(report.remaining == 2)
+        #expect(report.shouldRetry)
+        let tomorrow = CaptureQueue.startOfNextDay(after: clock.now)
+        #expect(await queue.waitingForQuotaUntil == tomorrow)
+
+        var seen: [CaptureQueue.Update] = []
+        for await update in updates {
+            seen.append(update)
+            if update == .waitingForQuota(true) { break }
+        }
+        #expect(seen.contains(.waitingForQuota(true)))
+
+        // Al otro día manda lo que quedó y deja de esperar.
+        clock.now = tomorrow.addingTimeInterval(60)
+        #expect(await queue.waitingForQuotaUntil == nil)
+        let next = await queue.flush(send: { _ in CaptureResult(conceptID: UUID(), categoryID: UUID(), categoryCreated: false) })
+        #expect(next.sent.count == 2)
+        #expect(next.remaining == 0)
     }
 
     @Test func importLimitErrorIsTranslated() {
         #expect(LumbreAPIError(serverMessage: "import_limit") == .importLimitReached)
         #expect(CaptureQueue.classify(LumbreAPIError.importLimitReached) == .rejected(.importLimitReached))
+    }
+}
+
+private final class TestClock: @unchecked Sendable {
+    private let lock = NSLock()
+    private var value = Date(timeIntervalSince1970: 1_792_000_000)
+    var now: Date {
+        get { lock.withLock { value } }
+        set { lock.withLock { value = newValue } }
     }
 }
 

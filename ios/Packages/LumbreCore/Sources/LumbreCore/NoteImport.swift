@@ -2,8 +2,10 @@ import CryptoKit
 import Foundation
 
 // Importar notas (paso 89, flag `import_notes`): archivos Markdown sueltos, una carpeta de Obsidian o las notas
-// de Apple Notes que manda un atajo. Cada nota entra como una neurona por `/capture` y la cola offline, sin
-// conceptualizar: la tesis es el título o la primera línea no vacía, y el resto queda como fragmento.
+// de Apple Notes que manda un atajo. Cada nota entra como una neurona por `/capture` y la cola offline:
+// - Las largas (30 palabras o más) se conceptualizan con IA si hay cupo y "Acepto" (decidido el 2026-10-17).
+// - Si no, la tesis es el título o la primera línea no vacía (editable en la vista previa) y el resto queda como fragmento.
+// - Cuentan para el tope de capturas del día: lo que pasa del tope sigue mañana desde la cola.
 // El texto de las notas es contenido del usuario: se trata como datos y nunca va al log.
 
 /// De dónde viene una nota importada (`concepts.import_source`).
@@ -20,19 +22,29 @@ public struct ImportNote: Sendable, Identifiable, Hashable, Codable {
     public let thesis: String
     /// El resto de la nota, hasta 500 caracteres (va como fragmento).
     public let excerpt: String?
+    /// La nota entera en texto plano (título y cuerpo, hasta `NoteImport.noteTextLimit`), para conceptualizarla.
+    public let text: String
+    /// Palabras de la nota entera: con 30 o más se puede conceptualizar.
+    public let words: Int
     /// Carpeta de origen (la de primer nivel en Obsidian, o la que pasa el atajo). Sugiere la categoría.
     public let folder: String?
     /// Huella para reconocer una nota que ya se importó en este teléfono.
     public let fingerprint: String
 
-    public init(id: UUID = UUID(), source: ImportSource, thesis: String, excerpt: String?, folder: String?) {
+    public init(id: UUID = UUID(), source: ImportSource, thesis: String, excerpt: String?, folder: String?, text: String? = nil) {
         self.id = id
         self.source = source
         self.thesis = thesis
         self.excerpt = excerpt
         self.folder = folder
+        let text = text ?? [thesis, excerpt].compactMap { $0 }.joined(separator: "\n")
+        self.text = String(text.prefix(NoteImport.noteTextLimit))
+        words = text.split(whereSeparator: \.isWhitespace).count
         fingerprint = NoteImport.fingerprint(thesis: thesis, excerpt: excerpt)
     }
+
+    /// Larga: con conceptualización, Lumbre saca la idea de la nota entera (el mismo umbral que `/capture`).
+    public var isLong: Bool { words >= NoteImport.distillMinWords }
 }
 
 /// Lo que salió de leer archivos o una carpeta.
@@ -53,9 +65,14 @@ public enum NoteImport {
     public static let thesisLimit = SharedDraft.thesisLimit
     /// Tope del fragmento (el mismo de `capture_concept()`).
     public static let excerptLimit = 500
+    /// Lo que se manda de la nota entera para conceptualizar (`/capture` acepta hasta 20.000 y lee 2.500 palabras).
+    public static let noteTextLimit = 20_000
+    /// Desde cuántas palabras una nota se conceptualiza (igual que `/capture`).
+    public static let distillMinWords = 30
     /// Notas que se pueden importar en free y como invitado, en total (`plan_limits`, kind `import`).
     public static let freeLimit = 50
-    /// Tope técnico por tanda en Pro (provisorio: ver ios/README.md). El servidor además corta en 1.000 por día.
+    /// Tope técnico por tanda en Pro (provisorio: ver ios/README.md). Pro no tiene cupo de importación, pero cada
+    /// nota cuenta como captura (200 por día): una tanda de 500 tarda tres días en entrar.
     public static let proBatchLimit = 500
     /// Un archivo más grande que esto no es una nota: se saltea.
     public static let maxFileBytes = 1_000_000
@@ -113,8 +130,10 @@ public enum NoteImport {
     private static func makeNote(source: ImportSource, title: String, body: [String], folder: String?) -> ImportNote? {
         let thesis = truncate(collapseSpaces(title), to: thesisLimit)
         guard !thesis.isEmpty else { return nil }
-        let excerpt = nonEmpty(truncate(body.joined(separator: "\n"), to: excerptLimit))
-        return ImportNote(source: source, thesis: thesis, excerpt: excerpt, folder: folder.flatMap(categoryName))
+        let joined = body.joined(separator: "\n")
+        let excerpt = nonEmpty(truncate(joined, to: excerptLimit))
+        let text = joined.isEmpty ? collapseSpaces(title) : collapseSpaces(title) + "\n" + joined
+        return ImportNote(source: source, thesis: thesis, excerpt: excerpt, folder: folder.flatMap(categoryName), text: text)
     }
 
     // MARK: - Archivos y carpetas
@@ -182,9 +201,11 @@ public enum NoteImport {
         return String(name.prefix(40)).trimmingCharacters(in: .whitespaces)
     }
 
-    /// El pedido de `/capture` de una nota importada: texto, sin conceptualizar.
-    public static func request(for note: ImportNote, category: String) -> CaptureRequest {
-        CaptureRequest(thesis: note.thesis, category: category, source: .text, excerpt: note.excerpt, importSource: note.source)
+    /// El pedido de `/capture` de una nota importada. Con `distill`, el servidor saca la idea de la nota entera y,
+    /// si no puede (o no hay cupo), la guarda con `thesis`.
+    public static func request(for note: ImportNote, category: String, thesis: String? = nil, distill: Bool = false) -> CaptureRequest {
+        CaptureRequest(thesis: thesis ?? note.thesis, category: category, source: .text, excerpt: note.excerpt,
+                       distill: distill && note.isLong, importSource: note.source, noteText: note.text)
     }
 
     /// Cuántas notas se pueden importar en esta tanda: lo que queda del cupo (free e invitado) o el tope por tanda (Pro).
@@ -338,6 +359,12 @@ public struct ImportBatch: Sendable, Equatable {
     public var fallbackCategory: String
     /// Categoría elegida para cada grupo, si se cambió.
     public var categoryOverrides: [String: String] = [:]
+    /// Tesis editadas en la vista previa.
+    public var thesisOverrides: [ImportNote.ID: String] = [:]
+    /// Conceptualizar las notas largas (con el "Acepto"; se puede apagar para no gastar el cupo).
+    public var distillLongNotes = false
+    /// Cuántas conceptualizaciones quedan este mes: solo esas notas largas se mandan a conceptualizar.
+    public var distillAllowance = 0
 
     public init(notes: [ImportNote], fallbackCategory: String, history: Set<String> = []) {
         self.notes = notes
@@ -371,6 +398,28 @@ public struct ImportBatch: Sendable, Equatable {
 
     public var selectedNotes: [ImportNote] { notes.filter { selected.contains($0.id) } }
 
+    /// La tesis con la que entra la nota si no se conceptualiza.
+    public func thesis(for note: ImportNote) -> String {
+        thesisOverrides[note.id] ?? note.thesis
+    }
+
+    /// Edita la tesis (1 a 600 caracteres). Vacía, vuelve a la original.
+    public mutating func setThesis(_ text: String, for id: ImportNote.ID) {
+        let thesis = NoteImport.collapseSpaces(text)
+        thesisOverrides[id] = thesis.isEmpty ? nil : String(thesis.prefix(NoteImport.thesisLimit))
+    }
+
+    /// Las notas elegidas que se mandan a conceptualizar: las largas, en orden, hasta lo que queda del cupo.
+    public var distilledIDs: Set<ImportNote.ID> {
+        guard distillLongNotes else { return [] }
+        return Set(selectedNotes.filter(\.isLong).prefix(max(0, distillAllowance)).map(\.id))
+    }
+
+    /// Notas largas elegidas que no entran en el cupo de conceptualización: van con su primera línea.
+    public var longNotesWithoutDistill: Int {
+        selectedNotes.filter(\.isLong).count - distilledIDs.count
+    }
+
     public mutating func toggle(_ id: ImportNote.ID) {
         if selected.contains(id) { selected.remove(id) } else { selected.insert(id) }
     }
@@ -394,7 +443,10 @@ public struct ImportBatch: Sendable, Equatable {
 
     /// Los pedidos de `/capture`, en el orden de las notas.
     public func requests() -> [CaptureRequest] {
-        selectedNotes.map { NoteImport.request(for: $0, category: category(forGroup: $0.folder ?? "")) }
+        let distilled = distilledIDs
+        return selectedNotes.map {
+            NoteImport.request(for: $0, category: category(forGroup: $0.folder ?? ""), thesis: thesis(for: $0), distill: distilled.contains($0.id))
+        }
     }
 }
 
@@ -402,7 +454,7 @@ public struct ImportBatch: Sendable, Equatable {
 
 /// Huellas de las notas ya importadas en este teléfono, para no gastar el cupo dos veces en la misma nota.
 /// Solo guarda hashes, nunca el texto. Se borra al cerrar sesión.
-public struct ImportHistory: Sendable {
+public struct ImportHistory: @unchecked Sendable {
     private static let key = "importedNoteFingerprints"
     private static let limit = 5_000
     private let defaults: UserDefaults

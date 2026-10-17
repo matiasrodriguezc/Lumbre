@@ -761,6 +761,7 @@ struct CaptureBody: Encodable, Sendable {
     let distill: Bool
     /// `markdown` o `apple_notes` si viene de importar notas; si no, no va.
     let importSource: String?
+    let noteText: String?
 
     init(_ request: CaptureRequest, attachment: Attachment?) {
         thesis = request.thesis?.trimmingCharacters(in: .whitespacesAndNewlines).nilIfEmpty
@@ -777,6 +778,7 @@ struct CaptureBody: Encodable, Sendable {
         self.attachment = attachment
         distill = request.distill
         importSource = request.importSource?.rawValue
+        noteText = request.noteText.map { String($0.prefix(NoteImport.noteTextLimit)) }
     }
 }
 

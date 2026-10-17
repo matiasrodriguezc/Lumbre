@@ -8,7 +8,8 @@ import os
 /// - Persiste en JSON en `LumbreShared.containerURL` (el App Group, así la Share Extension puede encolar también;
 ///   si no está disponible, Application Support). Los adjuntos (imagen, PDF) van como archivos aparte.
 /// - Manda en orden. Un error de red frena el vaciado y reintenta con backoff; un error de validación descarta
-///   esa captura y lo avisa en `updates()`.
+///   esa captura y lo avisa en `updates()`. Si se acabó el cupo de capturas del día (por ejemplo, al importar muchas
+///   notas), espera al día siguiente y lo avisa con `.waitingForQuota`.
 /// - Varios procesos comparten el archivo (la app, la Share Extension y los App Intents): cada cambio relee el disco
 ///   y escribe con `NSFileCoordinator`, así una captura encolada desde otro proceso no se pisa.
 /// - Nunca escribe en el log el contenido de las capturas.
@@ -24,6 +25,8 @@ public actor CaptureQueue {
         case flushed(sent: Int)
         /// Una captura no pasó la validación del servidor y se descartó.
         case discarded(LumbreAPIError)
+        /// true: se acabó el cupo de capturas de hoy y lo que queda sigue mañana. false: volvió a mandar.
+        case waitingForQuota(Bool)
     }
 
     /// Resultado de un vaciado.
@@ -55,6 +58,8 @@ public actor CaptureQueue {
         public var failures: Int
         /// Viene de importar notas (paso 89). Falta en las capturas encoladas antes del paso.
         public var importSource: ImportSource? = nil
+        /// La nota importada entera, para conceptualizarla.
+        public var noteText: String? = nil
     }
 
     private let directory: URL
@@ -71,6 +76,9 @@ public actor CaptureQueue {
     private var isOnline = true
     private var retryTask: Task<Void, Never>?
     private var retryAttempt = 0
+    /// Se acabó el cupo de capturas: los vaciados automáticos esperan hasta acá (el comienzo de mañana).
+    private var quotaPausedUntil: Date?
+    private let now: @Sendable () -> Date
     private var observers: [UUID: AsyncStream<Update>.Continuation] = [:]
     private let logger = Logger(subsystem: "com.matiasrodriguezc.lumbre", category: "capture-queue")
 
@@ -78,8 +86,10 @@ public actor CaptureQueue {
     ///   - directory: carpeta donde vive la cola (se crea si no existe).
     ///   - backoffBase: primera espera antes de reintentar; se duplica en cada intento.
     ///   - maxFailures: después de tantos errores que no son de red, la captura se descarta.
-    public init(directory: URL, backoffBase: Duration = .seconds(2), maxBackoff: Duration = .seconds(300), maxFailures: Int = 5) {
+    public init(directory: URL, backoffBase: Duration = .seconds(2), maxBackoff: Duration = .seconds(300), maxFailures: Int = 5,
+                now: @escaping @Sendable () -> Date = { .now }) {
         self.directory = directory
+        self.now = now
         self.backoffBase = backoffBase
         self.maxBackoff = maxBackoff
         self.maxFailures = maxFailures
@@ -104,6 +114,12 @@ public actor CaptureQueue {
         return items
     }
 
+    /// Hasta cuándo espera porque se acabó el cupo de capturas de hoy (nil si no espera).
+    public var waitingForQuotaUntil: Date? {
+        guard let quotaPausedUntil, quotaPausedUntil > now() else { return nil }
+        return quotaPausedUntil
+    }
+
     /// Cambios de la cola. Arranca con la cantidad actual.
     public func updates() -> AsyncStream<Update> {
         reload()
@@ -111,6 +127,7 @@ public actor CaptureQueue {
         let (stream, continuation) = AsyncStream<Update>.makeStream(bufferingPolicy: .bufferingNewest(16))
         observers[id] = continuation
         continuation.yield(.count(items.count))
+        if waitingForQuotaUntil != nil { continuation.yield(.waitingForQuota(true)) }
         continuation.onTermination = { [weak self] _ in
             Task { await self?.removeObserver(id) }
         }
@@ -153,7 +170,7 @@ public actor CaptureQueue {
             id: id, createdAt: .now, thesis: request.thesis, category: request.category,
             sourceType: request.source.sourceType, sourceURL: sourceURL, sourceTitle: request.sourceTitle,
             excerpt: request.excerpt, localAssetID: request.localAssetID, distill: request.distill,
-            attachmentFile: attachmentFile, failures: 0, importSource: request.importSource
+            attachmentFile: attachmentFile, failures: 0, importSource: request.importSource, noteText: request.noteText
         )
         do {
             try mutate { $0.append(item) }
@@ -182,7 +199,7 @@ public actor CaptureQueue {
                 id: UUID(), createdAt: .now, thesis: request.thesis, category: request.category,
                 sourceType: request.source.sourceType, sourceURL: sourceURL, sourceTitle: request.sourceTitle,
                 excerpt: request.excerpt, localAssetID: request.localAssetID, distill: request.distill,
-                attachmentFile: nil, failures: 0, importSource: request.importSource
+                attachmentFile: nil, failures: 0, importSource: request.importSource, noteText: request.noteText
             )
         }
         guard !items.isEmpty else { return [] }
@@ -235,10 +252,22 @@ public actor CaptureQueue {
                 let result = try await send(request)
                 drop(item)
                 report.sent.append(result)
+                if quotaPausedUntil != nil {
+                    quotaPausedUntil = nil
+                    notify(.waitingForQuota(false))
+                }
             } catch {
                 switch Self.classify(error) {
-                case .connectivity, .retryLater:
+                case .connectivity:
                     report.shouldRetry = true
+                case .retryLater:
+                    report.shouldRetry = true
+                    let wasWaiting = waitingForQuotaUntil != nil
+                    quotaPausedUntil = Self.startOfNextDay(after: now())
+                    if !wasWaiting {
+                        notify(.waitingForQuota(true))
+                        logger.notice("capture quota reached, \(self.items.count, privacy: .public) wait for tomorrow")
+                    }
                 case .rejected(let apiError):
                     drop(item)
                     report.discarded.append(apiError)
@@ -314,6 +343,11 @@ public actor CaptureQueue {
     private func scheduleFlush(after delay: Duration) {
         reload()
         guard sender != nil, !items.isEmpty else { return }
+        var delay = delay
+        if let until = waitingForQuotaUntil {
+            // Sin cupo hoy: no tiene sentido preguntar antes de mañana.
+            delay = max(delay, .seconds(until.timeIntervalSince(now())))
+        }
         retryTask?.cancel()
         retryTask = Task { [weak self] in
             if delay > .zero {
@@ -329,10 +363,16 @@ public actor CaptureQueue {
         let report = await flush(send: sender)
         if report.shouldRetry && report.remaining > 0 {
             retryAttempt += 1
+            // Si esperaba cupo, scheduleFlush corre la espera hasta mañana.
             scheduleFlush(after: backoff(attempt: retryAttempt))
         } else {
             retryAttempt = 0
         }
+    }
+
+    /// El comienzo del día siguiente en la zona del teléfono (el cupo se renueva a la medianoche del usuario).
+    static func startOfNextDay(after date: Date, calendar: Calendar = .current) -> Date {
+        calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: date)) ?? date.addingTimeInterval(86_400)
     }
 
     /// base × 2^(intento − 1), con tope.
@@ -403,7 +443,7 @@ public actor CaptureQueue {
         return CaptureRequest(
             thesis: item.thesis, category: item.category, source: source, sourceTitle: item.sourceTitle,
             excerpt: item.excerpt, localAssetID: item.localAssetID, distill: item.distill,
-            importSource: item.importSource
+            importSource: item.importSource, noteText: item.noteText
         )
     }
 

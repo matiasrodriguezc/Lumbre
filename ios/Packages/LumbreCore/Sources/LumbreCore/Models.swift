@@ -265,18 +265,21 @@ public struct CaptureRequest: Sendable, Equatable {
     public var localAssetID: String?
     /// Pedir conceptualización automática (Pro, o las pruebas del mes en free).
     public var distill: Bool
-    /// Viene de importar notas (paso 89): gasta el cupo `import` en vez del de capturas y no se conceptualiza.
+    /// Viene de importar notas (paso 89): cuenta como captura y, en free, también para el cupo `import` de 50 notas.
     public var importSource: ImportSource?
+    /// La nota importada entera (hasta `NoteImport.noteTextLimit`): de ahí se conceptualiza. La tesis es su título.
+    public var noteText: String?
 
-    public init(thesis: String?, category: String, source: CaptureSource, sourceTitle: String? = nil, excerpt: String? = nil, localAssetID: String? = nil, distill: Bool = false, importSource: ImportSource? = nil) {
+    public init(thesis: String?, category: String, source: CaptureSource, sourceTitle: String? = nil, excerpt: String? = nil, localAssetID: String? = nil, distill: Bool = false, importSource: ImportSource? = nil, noteText: String? = nil) {
         self.thesis = thesis
         self.category = category
         self.source = source
         self.sourceTitle = sourceTitle
         self.excerpt = excerpt
         self.localAssetID = localAssetID
-        self.distill = importSource == nil && distill
+        self.distill = distill
         self.importSource = importSource
+        self.noteText = importSource == nil ? nil : noteText
     }
 }
 

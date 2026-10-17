@@ -126,12 +126,14 @@ Fuente: **A** = app (iOS y Android), **S** = servidor (Edge Functions o webhook)
 | `capture_failed` | A | `reason`: `rate_limited`, `network`, `unsupported_format`, `too_large`, `server_error` | La captura no se pudo guardar |
 | `ocr_completed` | A | `kind`: `screenshot`, `scan`, `success`, `length_bucket` | Termina el OCR local |
 | `offline_queue_flushed` | A | `count` | Se mandan capturas encoladas al volver la red |
-| `concept_saved` | S | `source_type`, `distilled`, `confidence`: `high`, `medium`, `low`, `null`; `domain`, `status`: `draft`, `ready`; `concepts_in_capture` (1–3), `is_seed`, `category_created` | Se escribe un concepto en la base |
+| `concept_saved` | S | `source_type`, `distilled`, `confidence`: `high`, `medium`, `low`, `null`; `domain`, `status`: `draft`, `ready`; `concepts_in_capture` (1–3), `is_seed`, `category_created`, `import_source`: `markdown`, `apple_notes`, `null` | Se escribe un concepto en la base |
 | `distill_fallback_shown` | A | `reason`: `low_confidence`, `inaccessible`, `free_quota` | Aparece "¿Qué idea te deja esto?" |
 | `concept_draft_resolved` | A | `action`: `confirmed`, `edited`, `discarded` | Resuelve un borrador de confianza media |
 | `concept_category_changed` | A | `context`: `review`, `detail` | Mueve un concepto a otra de sus categorías |
 | `category_created` | S | `categories_count` | Se crea una categoría nueva al guardar un concepto |
 | `extra_spark_earned` | S | `earned_today` (1 o 2) | Guardar 3 conceptos le dio una chispa extra |
+| `import_previewed` | A | `source`: `markdown_files`, `obsidian_folder`, `apple_notes`; `notes_bucket`: `1-10`, `11-50`, `51-200`, `201+`; `already_imported` | Se abre la vista previa de importar notas (paso 89) |
+| `import_submitted` | A | `source`, `selected`, `discarded` (las que se sacaron de la vista previa), `categories_count` | Toca Importar: las notas entran a la cola offline |
 
 ### Chispa
 

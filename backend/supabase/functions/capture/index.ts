@@ -9,8 +9,10 @@
 //    categoría en una transacción, igual que si la app llamara directo.
 // 4. Embedding y dominio de la categoría. Si fallan, el concepto queda guardado y /process lo completa.
 //
-// Importar notas (paso 89): con `import_source` (markdown o apple_notes) la nota se guarda como texto, sin destilar,
-// y capture_concept() descuenta el cupo 'import' (import_limit) en vez del de capturas por día.
+// Importar notas (paso 89): con `import_source` (markdown o apple_notes) la nota es texto. `thesis` es su título o su
+// primera línea y `note_text`, la nota entera: si se pide destilar y tiene 30 palabras o más, se destila de ahí (con el
+// cupo y el consentimiento de siempre); si no, queda la tesis. capture_concept() descuenta la captura del día y además
+// el cupo 'import' (import_limit), que cuenta notas: si una nota da varios conceptos, se devuelve lo de más.
 
 import { requireDeviceIntegrity } from "../_shared/attest/guard.ts";
 import { Analytics } from "../_shared/analytics.ts";
@@ -52,6 +54,7 @@ interface CaptureBody {
   attachment?: { path?: unknown; mime_type?: unknown } | null;
   distill?: unknown;
   import_source?: unknown;
+  note_text?: unknown;
 }
 
 function optionalString(value: unknown, max: number, code: "invalid_thesis" | "invalid_source" | "invalid_request"): string | null {
@@ -96,6 +99,8 @@ function parse(body: CaptureBody, userId: string) {
     }
     importSource = body.import_source as (typeof IMPORT_SOURCES)[number];
   }
+  // La nota completa solo llega al importar, y solo se usa para destilar (nunca se guarda entera).
+  const noteText = importSource && typeof body.note_text === "string" ? body.note_text.trim().slice(0, 20000) || null : null;
 
   return {
     thesis,
@@ -107,9 +112,9 @@ function parse(body: CaptureBody, userId: string) {
     excerpt: typeof body.excerpt === "string" ? body.excerpt.trim().slice(0, 500) || null : null,
     localAssetId: optionalString(body.local_asset_id, 200, "invalid_request"),
     attachment,
-    // Una nota importada nunca se destila: entra con su título o su primera línea como tesis.
-    distill: body.distill === true && !importSource,
+    distill: body.distill === true,
     importSource,
+    noteText,
   };
 }
 
@@ -166,7 +171,8 @@ Deno.serve(handler("capture", async (req) => {
     const attachment = input.attachment ? await readAttachment(input.attachment.path, input.attachment.mimeType) : null;
 
     // ¿Hay algo para destilar? Los textos de menos de 30 palabras nunca se destilan.
-    const longText = !input.sourceUrl && !input.attachment && wordCount(input.thesis) >= 30;
+    // Una nota importada se mide por su texto completo, no por la tesis (que es su título).
+    const longText = !input.sourceUrl && !input.attachment && wordCount(input.noteText ?? input.thesis) >= 30;
     const hasSource = input.sourceType === "link" || !!attachment || longText;
     let outcome: Outcome = "none";
     let distilled: DistilledConcept[] = [];
@@ -177,7 +183,7 @@ Deno.serve(handler("capture", async (req) => {
       // Sin el "Acepto" no sale nada hacia la IA: se guarda con la idea de la persona (o 422 needs_thesis).
       outcome = "consent_required";
     } else if (input.distill && hasSource) {
-      const inputCheck = await moderate([input.thesis, input.excerpt].filter(Boolean).join(" "));
+      const inputCheck = await moderate([input.thesis, input.excerpt, input.noteText].filter(Boolean).join(" "));
       logModeration("capture", "input", inputCheck);
       if (inputCheck.flagged) {
         outcome = "none";
@@ -189,13 +195,15 @@ Deno.serve(handler("capture", async (req) => {
         try {
           // Primero lo que llegó en la captura; la página completa solo completa.
           const link = input.sourceType === "link" && input.sourceUrl ? await readLink(input.sourceUrl) : null;
-          const sourceText = link?.text || (longText ? cleanText(input.thesis ?? "", 2500) : null);
+          const sourceText = link?.text || (longText ? cleanText(input.noteText ?? input.thesis ?? "", 2500) : null);
           const result = await distill({
             userThesis: longText ? null : input.thesis,
-            excerpt: input.excerpt,
+            // De una nota importada, el texto ya va completo: el fragmento lo repetiría.
+            excerpt: input.noteText ? null : input.excerpt,
             sourceType: input.sourceType,
             sourceUrl: input.sourceUrl,
-            sourceTitle: input.sourceTitle ?? link?.title ?? null,
+            // El título de la nota importada orienta como el de una página.
+            sourceTitle: input.sourceTitle ?? link?.title ?? (input.noteText ? input.thesis : null),
             sourceText: sourceText || link?.description || null,
           }, attachment, user.id);
           if (result.confidence !== "low" && result.concepts.length > 0) {
@@ -231,8 +239,20 @@ Deno.serve(handler("capture", async (req) => {
         saved.push(await saveConcept(user, input, input.thesis!));
       } else {
         for (const concept of distilled) {
-          const row = await saveConcept(user, input, concept.thesis);
+          let row;
+          try {
+            row = await saveConcept(user, input, concept.thesis);
+          } catch (error) {
+            // Se acabó el cupo a mitad de la captura: queda lo que ya se guardó. Si se respondiera el error, la app
+            // (o la cola) la reintentaría entera y duplicaría los conceptos ya guardados.
+            const partial = saved.length > 0 && error instanceof ApiError &&
+              (error.code === "quota_exceeded" || error.code === "import_limit");
+            if (partial) break;
+            throw error;
+          }
           saved.push(row);
+          // El cupo de importación cuenta notas, no conceptos.
+          if (input.importSource && saved.length > 1) await refundCredit(user.id, "import");
           const { error } = await admin().from("concepts").update({
             title: concept.title,
             principle: concept.principle || null,

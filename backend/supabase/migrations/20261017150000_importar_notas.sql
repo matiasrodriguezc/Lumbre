@@ -1,9 +1,9 @@
 -- Importar notas (paso 89, flag import_notes): archivos Markdown, carpetas de Obsidian y Apple Notes (vía Atajos).
--- Cada nota entra por /capture como cualquier captura, pero gasta su propio cupo ('import') en vez del tope de
--- capturas por día (decidido el 2026-10-17): importar 50 notas no deja al usuario sin poder capturar ese día.
---
--- free e invitado: 50 en total, no se renueva (plan.md §4). Pro: ilimitado, con 1.000 por día como techo técnico
--- contra el abuso (provisorio: ver ios/README.md). El invitado conserva lo que usó al crear la cuenta (mismo usuario).
+-- Cada nota entra por /capture como cualquier captura (decidido el 2026-10-17):
+--   - cuenta para el tope de capturas por día (30 en free): lo que pasa del tope responde quota_exceeded, queda
+--     en la cola de la app y sigue al día siguiente;
+--   - y además gasta el cupo 'import': 50 en total en free y como invitado (no se renueva; el invitado conserva lo
+--     usado al crear la cuenta, porque es el mismo usuario). Pro no tiene fila: importa sin tope (plan.md §4).
 -- Las importadas cuentan para la chispa extra igual que cualquier neurona nueva (el tope de 2 por día no cambia).
 
 -- ---------------------------------------------------------------
@@ -16,8 +16,7 @@ alter table public.plan_limits
 
 insert into public.plan_limits (plan, kind, period, max_count) values
   ('guest', 'import', 'total', 50),
-  ('free', 'import', 'total', 50),
-  ('pro', 'import', 'day', 1000);
+  ('free', 'import', 'total', 50);
 
 -- ---------------------------------------------------------------
 -- De dónde vino una neurona importada
@@ -32,7 +31,8 @@ comment on column public.concepts.import_source is
 -- capture_concept: con p_import_source
 -- ---------------------------------------------------------------
 -- Igual que antes; el parámetro nuevo va al final con default null, así las llamadas por nombre siguen andando.
--- Con p_import_source descuenta 'import' (y avisa import_limit) en vez de 'capture' (quota_exceeded).
+-- Con p_import_source, además de 'capture' descuenta 'import' si el plan tiene ese cupo (import_limit si no queda).
+-- Si falla cualquiera de los dos, la excepción revierte también el otro.
 -- Se borra la versión de 7 parámetros: con las dos, PostgREST no sabría a cuál llamar.
 drop function public.capture_concept(text, text, text, text, text, text, text);
 
@@ -90,11 +90,13 @@ begin
     raise exception 'invalid_source' using errcode = '22023';
   end if;
 
-  if v_import is null then
-    if not public.consume_credit(v_user, 'capture') then
-      raise exception 'quota_exceeded' using errcode = 'P0001';
-    end if;
-  elsif not public.consume_credit(v_user, 'import') then
+  if not public.consume_credit(v_user, 'capture') then
+    raise exception 'quota_exceeded' using errcode = 'P0001';
+  end if;
+  -- Pro no tiene fila de 'import': consume_credit() devolvería false, así que solo se descuenta si el plan la tiene.
+  if v_import is not null
+     and exists (select 1 from public.plan_limits l where l.plan = public.effective_plan(v_user) and l.kind = 'import')
+     and not public.consume_credit(v_user, 'import') then
     raise exception 'import_limit' using errcode = 'P0001';
   end if;
 

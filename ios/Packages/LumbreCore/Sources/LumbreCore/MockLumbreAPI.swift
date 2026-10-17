@@ -276,7 +276,7 @@ private actor MockStore {
     var messages: [Spark.ID: [PlannerMessage]] = [:]
     var extrasUsedToday = 0
     var capturesToday = 0
-    /// Notas importadas (cupo `import`: 50 en total en free e invitado, 1.000 por día en Pro).
+    /// Notas importadas (cupo `import`: 50 en total en free e invitado; Pro no tiene tope).
     var importsUsed = 0
     var aiConsent: Bool?
 
@@ -353,7 +353,6 @@ private actor MockStore {
                     Credit(kind: .sparkExtra, period: "day", max: 10, remaining: extraRemaining),
                     Credit(kind: .planner, period: "month", max: 300, remaining: 280),
                     Credit(kind: .plannerDeep, period: "month", max: 60, remaining: 58),
-                    Credit(kind: .importNotes, period: "day", max: importLimit, remaining: max(0, importLimit - importsUsed)),
                     Credit(kind: .projects, period: "total", max: 1000, remaining: 1000 - projects.count)]
         }
     }
@@ -479,14 +478,14 @@ private actor MockStore {
         return (category, true)
     }
 
-    var importLimit: Int { profile.plan == .pro ? 1000 : NoteImport.freeLimit }
+    var importLimit: Int { NoteImport.freeLimit }
 
     func capture(_ request: CaptureRequest) throws -> CaptureResult {
-        if request.importSource != nil {
+        // Importar cuenta como captura del día y, fuera de Pro, también para el cupo de 50 notas.
+        let limit = profile.plan == .guest ? 10 : profile.plan == .free ? 30 : 200
+        guard capturesToday < limit else { throw LumbreAPIError.quotaExceeded }
+        if request.importSource != nil && profile.plan != .pro {
             guard importsUsed < importLimit else { throw LumbreAPIError.importLimitReached }
-        } else {
-            let limit = profile.plan == .guest ? 10 : profile.plan == .free ? 30 : 200
-            guard capturesToday < limit else { throw LumbreAPIError.quotaExceeded }
         }
         let thesis = request.thesis?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let canDistill = request.distill && profile.plan != .guest
@@ -500,7 +499,8 @@ private actor MockStore {
         case .selection(let url): url
         default: nil
         }
-        let distilled = canDistill && (thesis.split(separator: " ").count >= 30 || thesis.isEmpty || request.source.sourceType == .link)
+        let words = (request.noteText ?? thesis).split(whereSeparator: \.isWhitespace).count
+        let distilled = canDistill && (words >= 30 || thesis.isEmpty || request.source.sourceType == .link)
         let finalThesis = thesis.isEmpty ? "Una idea sacada de \(request.sourceTitle ?? sourceURL?.host() ?? "lo que guardaste")." : thesis
         let concept = Concept(
             category: category,
@@ -517,7 +517,8 @@ private actor MockStore {
             createdAt: .now
         )
         concepts.insert(concept, at: 0)
-        if request.importSource != nil { importsUsed += 1 } else { capturesToday += 1 }
+        capturesToday += 1
+        if request.importSource != nil { importsUsed += 1 }
         return CaptureResult(
             conceptID: concept.id, categoryID: category.id, categoryCreated: created,
             concepts: [concept],

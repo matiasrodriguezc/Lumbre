@@ -41,6 +41,8 @@ final class AppModel {
     var accountTrigger: String?
     /// Sheet "Tus ideas y la IA" abierta (cuando algo que usa IA no tiene permiso).
     var isAskingAIConsent = false
+    /// Hoja de importar notas abierta (flag `import_notes`): vacía o con las notas que mandó el atajo.
+    var importRequest: ImportRequest?
 
     /// Cambia cada vez que se guarda algo, para que las pantallas vuelvan a cargar.
     private(set) var dataVersion = 0
@@ -118,6 +120,12 @@ final class AppModel {
         dataVersion += 1
     }
 
+    /// Abre la hoja de importar notas. Con `notes` (las del atajo de Apple Notes) va directo a la vista previa.
+    func presentImport(notes: [ImportNote]? = nil, origin: ImportOrigin? = nil) {
+        guard FeatureFlag.importNotes.isEnabled else { return }
+        importRequest = ImportRequest(notes: notes, origin: origin)
+    }
+
     func presentCapture(entry: String = "fab") {
         captureEntry = entry
     }
@@ -147,6 +155,9 @@ final class AppModel {
         captureEntry = nil
         accountTrigger = nil
         isAskingAIConsent = false
+        importRequest = nil
+        // Las huellas de lo importado son de esta cuenta.
+        ImportHistory().clear()
         isReplayingOnboarding = false
         dataVersion += 1
         sessionVersion += 1

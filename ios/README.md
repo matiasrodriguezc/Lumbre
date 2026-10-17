@@ -56,8 +56,11 @@ Esquema → Run → Arguments, o `xcrun simctl launch booted com.matiasrodriguez
 | `-seedUser` | Solo Debug y local: entra como Ana, la usuaria de `backend/supabase/seed.sql` |
 | `-resetSession` | Solo Debug: cierra la sesión guardada y prueba el primer login |
 | `-flag.<nombre> YES\|NO` | Solo Debug: pisa un feature flag (`-flag.account_email NO`) |
-| `-open <pantalla>` | Solo Debug, con `-mock` o `-mockPro`: abre `spark` (detalle), `planner`, `concept`, `draft` (neurona en borrador), `paywall`, `share` (tarjeta para compartir) o `consent`; con `-mockGuest`, un paso del onboarding (`profile`, `seeds`, `spark_hour`, `push`) |
+| `-open <pantalla>` | Solo Debug, con `-mock` o `-mockPro`: abre `spark` (detalle), `planner`, `concept`, `draft` (neurona en borrador), `paywall`, `share` (tarjeta para compartir) `consent` o `import` (importar notas); con `-mockGuest`, un paso del onboarding (`profile`, `seeds`, `spark_hour`, `push`) |
 | `-revealAt <ms>` | Solo Debug: congela el reveal (flag `reveal_synapse`) en ese instante desde el toque (`-revealAt 450`) |
+| `-importPath <ruta>` | Solo Debug: abre la vista previa de importar con una carpeta (como bóveda de Obsidian) o un `.md`, sin pasar por Archivos |
+| `-importAutoSubmit YES` | Solo Debug: la vista previa importa sola lo elegido y vuelve a la Red |
+| `-checkImportIntent <n>` | Solo Debug: corre `ImportNotesIntent` con n notas de prueba, como si llegaran del atajo de Apple Notes |
 
 Las previews de SwiftUI siempre usan `MockLumbreAPI`. En el mock, el código del email es `123456` y `ana@lumbre.test` es una cuenta que ya existe.
 
@@ -105,6 +108,29 @@ xcrun simctl launch booted com.matiasrodriguezc.lumbre -checkExternalCapture
 ```
 
 Provisorio (decisiones conservadoras, a confirmar): desde la Share Extension y Siri no se conceptualiza, siempre se escribe la idea; una imagen compartida queda en la otra app y se guarda solo la idea (como una foto en free); el widget de una chispa sin revelar muestra las dos neuronas pero no el título, para no arruinar el reveal. Con cuenta de Apple Developer (H1) hay que registrar el App Group para los tres bundle IDs.
+
+## Importar notas
+
+Paso 89, flag `import_notes`. Red › Más › Importar notas, o el atajo de Apple Notes. El parser y la tanda viven en `LumbreCore/NoteImport.swift`; la hoja, en `Features/Import/ImportNotesView.swift`; el intent, en `App/ImportNotesIntent.swift`.
+
+- **Markdown:** archivos `.md` sueltos o una carpeta entera (una bóveda de Obsidian, con subcarpetas) desde Archivos. Se saltean lo oculto (`.obsidian`, `.trash`), lo que no es Markdown, los vacíos y los de más de 1 MB. La tesis sale del `title` del front matter, de un título en la primera línea (`# …`), del nombre del archivo (si no es genérico, como "Untitled" o una fecha) o de la primera línea no vacía. Se saca la sintaxis (links, wikilinks, énfasis, callouts, comentarios `%% %%`). La carpeta de primer nivel sugiere la categoría; las sueltas van a "Notas importadas".
+- **Vista previa:** elegir y descartar notas (de a una o por grupo), cambiar la categoría de cada grupo y editar la tesis (mantener apretada la nota). Las que ya se importaron en este teléfono arrancan sin elegir (se guardan solo huellas SHA-256, se borran al cerrar sesión).
+- **Conceptualización:** las notas de 30 palabras o más se mandan a conceptualizar con la nota entera (`note_text`) si hay "Acepto" y cupo de conceptualización (las primeras, hasta lo que quede del mes; se puede apagar). Si no, o si la IA no saca nada, entran con su tesis.
+- **Cupos:** cada nota cuenta como captura del día (30 en free, 200 en Pro). Lo que pasa del tope queda en la cola offline y sigue al día siguiente: la cola deja de reintentar hasta la medianoche del teléfono y la Red lo avisa. En free y como invitado, además, 50 notas importadas en total (`plan_limits` kind `import`; si una nota da varios conceptos, cuenta una).
+- **Envío:** todo entra por `CaptureQueue` (`enqueue(contentsOf:)`, una sola escritura) y `/capture` con `import_source`, también sin red.
+
+### Atajo de Apple Notes
+
+iOS no deja que otra app lea Notas en bloque, así que el puente es Atajos:
+
+1. Abrí Atajos y creá un atajo nuevo.
+2. Agregá **Buscar notas** (Find Notes). Filtrá por carpeta, fecha o lo que quieras, y poné un límite si son muchas.
+3. Agregá **Importar notas a Lumbre** y en **Notas** elegí la variable **Notas** de la acción anterior. Opcional: **Categoría** (por ejemplo, el nombre de la carpeta); si no, entran en "Notas importadas".
+4. Corré el atajo. La primera vez Atajos pide permiso para leer Notas. Lumbre se abre con la vista previa.
+
+Atajos pasa cada nota como texto (el título es la primera línea). El intent acepta hasta 1.000 por vez y no manda nada solo: siempre pasa por la vista previa.
+
+Provisorio: en Pro, hasta 500 notas por tanda (tope técnico; tardan unos días en entrar por el tope de 200 capturas por día); las importadas cuentan para la chispa extra como cualquier neurona nueva (el tope de 2 por día no cambia); el invitado tiene el mismo cupo de 50 que free y lo conserva al crear la cuenta.
 
 ## Pendientes conocidos
 

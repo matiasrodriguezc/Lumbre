@@ -177,6 +177,17 @@
         }
       }
     },
+    "Ya importaste las 50 notas del plan gratis. Con Pro importás todas las que quieras." : {
+      "comment" : "[importar.error.import_limit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've imported the 50 notes the free plan allows. With Pro you can import as many as you want."
+          }
+        }
+      }
+    },
     "Ya tenés 50 categorías, el máximo. Elegí una de las que tenés o borrá alguna desde Red › Categorías." : {
       "comment" : "[errores.api.too_many_categories]",
       "localizations" : {
