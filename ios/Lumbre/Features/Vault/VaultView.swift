@@ -25,6 +25,7 @@ struct VaultView: View {
     @State private var isLoading = true
     @State private var loadError: Error?
     @State private var pendingCaptures = 0
+    @State private var capturesWaitForQuota = false
     @State private var showCategories = false
 
     var body: some View {
@@ -40,6 +41,13 @@ struct VaultView: View {
                                 showCategories = true
                             } label: {
                                 Label("Categorías", systemImage: "tag")
+                            }
+                            if FeatureFlag.importNotes.isEnabled {
+                                Button {
+                                    appModel.presentImport()
+                                } label: {
+                                    Label("Importar notas", systemImage: "square.and.arrow.down")
+                                }
                             }
                         } label: {
                             Label("Más", systemImage: "ellipsis")
@@ -61,7 +69,7 @@ struct VaultView: View {
             appModel.pendingRoute = nil
             path = [.concept(id, preview: concepts.first { $0.id == id }, entry: "spark_detail")]
         }
-        .captureQueueMonitoring(pendingCount: $pendingCaptures)
+        .captureQueueMonitoring(pendingCount: $pendingCaptures, isWaitingForQuota: $capturesWaitForQuota)
         .sheet(isPresented: $showCategories) {
             CategoryManagerView(concepts: concepts)
         }
@@ -73,7 +81,7 @@ struct VaultView: View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: Space.s3) {
                 if pendingCaptures > 0 {
-                    PendingCapturesBanner(count: pendingCaptures)
+                    PendingCapturesBanner(count: pendingCaptures, isWaitingForQuota: capturesWaitForQuota)
                 }
                 if let loadError {
                     LoadErrorView(error: loadError) { Task { await load() } }

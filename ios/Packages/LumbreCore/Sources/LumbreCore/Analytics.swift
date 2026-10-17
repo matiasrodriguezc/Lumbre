@@ -26,6 +26,9 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case distillFallbackShown(reason: String)
     case conceptDraftResolved(action: String)
     case conceptCategoryChanged(context: String)
+    // Importar notas (paso 89). `source`: `markdown_files`, `obsidian_folder`, `apple_notes`.
+    case importPreviewed(source: String, notes: Int, alreadyImported: Int)
+    case importSubmitted(source: String, selected: Int, discarded: Int, categories: Int)
     // Chispa
     case notificationOpened(type: String, minutesAfterSent: Int?)
     case sparkRevealed(mode: SparkMode, isFirst: Bool, entry: String, reduceMotion: Bool)
@@ -78,6 +81,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .distillFallbackShown: "distill_fallback_shown"
         case .conceptDraftResolved: "concept_draft_resolved"
         case .conceptCategoryChanged: "concept_category_changed"
+        case .importPreviewed: "import_previewed"
+        case .importSubmitted: "import_submitted"
         case .notificationOpened: "notification_opened"
         case .sparkRevealed: "spark_revealed"
         case .sparkExtraRequested: "spark_extra_requested"
@@ -143,6 +148,10 @@ public enum AnalyticsEvent: Sendable, Equatable {
             ["action": .string(action)]
         case let .conceptCategoryChanged(context):
             ["context": .string(context)]
+        case let .importPreviewed(source, notes, alreadyImported):
+            ["source": .string(source), "notes_bucket": .string(Self.countBucket(notes)), "already_imported": .int(alreadyImported)]
+        case let .importSubmitted(source, selected, discarded, categories):
+            ["source": .string(source), "selected": .int(selected), "discarded": .int(discarded), "categories_count": .int(categories)]
         case let .notificationOpened(type, minutes):
             ["type": .string(type), "minutes_after_sent": minutes.map(AnalyticsValue.int) ?? .null]
         case let .sparkRevealed(mode, isFirst, entry, reduceMotion):
@@ -186,6 +195,16 @@ public enum AnalyticsEvent: Sendable, Equatable {
             ["setting": .string(setting)]
         case let .errorShown(screen, code):
             ["screen": .string(screen), "code": .string(code)]
+        }
+    }
+
+    /// `1-10`, `11-50`, `51-200`, `201+` notas.
+    static func countBucket(_ count: Int) -> String {
+        switch count {
+        case ...10: "1-10"
+        case 11...50: "11-50"
+        case 51...200: "51-200"
+        default: "201+"
         }
     }
 
@@ -313,6 +332,8 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     /// Swipe en el modal del reveal (design/reveal §12): a la derecha guarda, a la izquierda "No me sirve",
     /// con acciones de VoiceOver equivalentes. Necesita `reveal_synapse`.
     case revealSwipe = "reveal_swipe"
+    /// Importar notas (paso 89): Markdown y carpetas de Obsidian desde Archivos, y Apple Notes con un atajo.
+    case importNotes = "import_notes"
 
     public var defaultValue: Bool { true }
 

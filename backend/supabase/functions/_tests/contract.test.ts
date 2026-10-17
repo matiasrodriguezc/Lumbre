@@ -24,7 +24,7 @@ const WEB_FUNCTIONS = new Set(["waitlist", "demo-spark"]);
 const ATTESTED = new Set(["capture", "today", "spark", "search", "planner"]);
 /** Errores que vienen de la base (RPCs con el JWT del usuario) y no aparecen como ApiError en el código. */
 const DB_ERRORS: Record<string, string[]> = {
-  capture: ["quota_exceeded", "too_many_categories", "invalid_thesis", "invalid_category", "invalid_source"],
+  capture: ["quota_exceeded", "import_limit", "too_many_categories", "invalid_thesis", "invalid_category", "invalid_source"],
 };
 
 async function appFunctions(): Promise<string[]> {

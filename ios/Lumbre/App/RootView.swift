@@ -43,6 +43,9 @@ struct RootView: View {
                     appModel.dataChanged()
                 }
             }
+            .sheet(item: $appModel.importRequest) { request in
+                ImportNotesView(request: request)
+            }
             .onOpenURL { url in
                 guard EmailAccount.isCallback(url) else { return }
                 Task { await completeEmailLink(url) }

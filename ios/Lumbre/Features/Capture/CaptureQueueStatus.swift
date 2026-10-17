@@ -6,6 +6,8 @@ import SwiftUI
 /// La Bóveda lo usa; también se puede poner en `RootView` para que la cola arranque al abrir la app.
 struct CaptureQueueMonitor: ViewModifier {
     @Binding var pendingCount: Int
+    /// Se acabó el cupo de capturas de hoy: lo que queda sigue mañana.
+    var isWaitingForQuota: Binding<Bool> = .constant(false)
     @Environment(\.api) private var api
     @Environment(AppModel.self) private var appModel
     @Environment(\.scenePhase) private var scenePhase
@@ -24,6 +26,8 @@ struct CaptureQueueMonitor: ViewModifier {
                         appModel.dataChanged()
                     case .discarded(let error):
                         discardedMessage = Self.message(for: error)
+                    case .waitingForQuota(let waiting):
+                        isWaitingForQuota.wrappedValue = waiting
                     }
                 }
             }
@@ -46,14 +50,16 @@ struct CaptureQueueMonitor: ViewModifier {
 
 extension View {
     /// Vacía la cola offline cuando vuelve la red o la app pasa a primer plano, y expone cuántas capturas esperan.
-    func captureQueueMonitoring(pendingCount: Binding<Int> = .constant(0)) -> some View {
-        modifier(CaptureQueueMonitor(pendingCount: pendingCount))
+    func captureQueueMonitoring(pendingCount: Binding<Int> = .constant(0), isWaitingForQuota: Binding<Bool> = .constant(false)) -> some View {
+        modifier(CaptureQueueMonitor(pendingCount: pendingCount, isWaitingForQuota: isWaitingForQuota))
     }
 }
 
 /// Indicador chico de capturas que esperan conexión. Tocarlo reintenta.
 struct PendingCapturesBanner: View {
     let count: Int
+    /// Esperan porque se acabó el cupo de hoy (por ejemplo, después de importar notas), no por falta de red.
+    var isWaitingForQuota = false
     @Environment(\.api) private var api
     @State private var isRetrying = false
 
@@ -72,9 +78,15 @@ struct PendingCapturesBanner: View {
                     Image(systemName: "icloud.and.arrow.up")
                         .foregroundStyle(Palette.infoText)
                 }
-                Text(count == 1 ? "1 captura espera conexión" : "\(count) capturas esperan conexión")
-                    .font(.footnote.weight(.medium))
-                    .foregroundStyle(Palette.ink)
+                Group {
+                    if isWaitingForQuota {
+                        Text(count == 1 ? "1 captura sigue mañana: llegaste al tope de hoy" : "\(count) capturas siguen mañana: llegaste al tope de hoy")
+                    } else {
+                        Text(count == 1 ? "1 captura espera conexión" : "\(count) capturas esperan conexión")
+                    }
+                }
+                .font(.footnote.weight(.medium))
+                .foregroundStyle(Palette.ink)
                 Spacer(minLength: 0)
                 Text("Reintentar")
                     .font(.footnote.weight(.semibold))

@@ -114,6 +114,8 @@ public enum LumbreAPIError: LocalizedError, Equatable {
     case invalidCode
     /// Ya hay una cuenta con ese email: hay que entrar a esa cuenta en vez de crear una.
     case emailInUse
+    /// Ya importó todas las notas que permite su plan (`import_limit`).
+    case importLimitReached
     case offline
     case unexpected
 
@@ -133,6 +135,7 @@ public enum LumbreAPIError: LocalizedError, Equatable {
         case "invalid_email": self = .invalidEmail
         case "invalid_code": self = .invalidCode
         case "email_in_use": self = .emailInUse
+        case "import_limit": self = .importLimitReached
         default: return nil
         }
     }
@@ -153,6 +156,7 @@ public enum LumbreAPIError: LocalizedError, Equatable {
         case .invalidEmail: String(localized: "Revisá el email: no parece válido.", bundle: .module)
         case .invalidCode: String(localized: "El código no es correcto o ya venció. Revisalo o pedí otro.", bundle: .module)
         case .emailInUse: String(localized: "Ya hay una cuenta con ese email. Entrá con esa cuenta.", bundle: .module)
+        case .importLimitReached: String(localized: "Ya importaste las 50 notas del plan gratis. Con Pro importás todas las que quieras.", bundle: .module)
         case .offline: String(localized: "Sin conexión. Lo guardamos y lo mandamos cuando vuelva.", bundle: .module)
         case .unexpected: String(localized: "Algo salió mal. Probá de nuevo.", bundle: .module)
         }

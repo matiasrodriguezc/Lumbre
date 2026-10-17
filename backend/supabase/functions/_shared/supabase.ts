@@ -128,7 +128,7 @@ export function dbError(error: { message?: string; code?: string }): Error {
   const message = error.message ?? "";
   const known = [
     "not_authenticated", "invalid_thesis", "invalid_category", "invalid_source", "invalid_request",
-    "quota_exceeded", "too_many_categories", "too_many_projects", "not_found",
+    "quota_exceeded", "import_limit", "too_many_categories", "too_many_projects", "not_found",
   ] as const;
   const code = known.find((k) => message === k);
   if (code) return new ApiError(code);

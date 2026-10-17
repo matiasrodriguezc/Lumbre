@@ -85,6 +85,8 @@ public enum CreditKind: String, Sendable, Codable {
     case planner
     case plannerDeep = "planner_deep"
     case projects
+    /// Notas importadas (paso 89): 50 en total en free, un tope técnico por día en Pro.
+    case importNotes = "import"
 }
 
 /// Un cupo del usuario, como lo devuelve `credit_status()`.
@@ -263,8 +265,12 @@ public struct CaptureRequest: Sendable, Equatable {
     public var localAssetID: String?
     /// Pedir conceptualización automática (Pro, o las pruebas del mes en free).
     public var distill: Bool
+    /// Viene de importar notas (paso 89): cuenta como captura y, en free, también para el cupo `import` de 50 notas.
+    public var importSource: ImportSource?
+    /// La nota importada entera (hasta `NoteImport.noteTextLimit`): de ahí se conceptualiza. La tesis es su título.
+    public var noteText: String?
 
-    public init(thesis: String?, category: String, source: CaptureSource, sourceTitle: String? = nil, excerpt: String? = nil, localAssetID: String? = nil, distill: Bool = false) {
+    public init(thesis: String?, category: String, source: CaptureSource, sourceTitle: String? = nil, excerpt: String? = nil, localAssetID: String? = nil, distill: Bool = false, importSource: ImportSource? = nil, noteText: String? = nil) {
         self.thesis = thesis
         self.category = category
         self.source = source
@@ -272,6 +278,8 @@ public struct CaptureRequest: Sendable, Equatable {
         self.excerpt = excerpt
         self.localAssetID = localAssetID
         self.distill = distill
+        self.importSource = importSource
+        self.noteText = importSource == nil ? nil : noteText
     }
 }
 
