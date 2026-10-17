@@ -56,17 +56,6 @@
         }
       }
     },
-    "%@ y %@" : {
-      "comment" : "Las dos neuronas de la chispa. [widget.pending_pair]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ and %@"
-          }
-        }
-      }
-    },
     "%@ · %@" : {
       "comment" : "Tipo de fuente · fecha relativa (\"De un link · hace 2 días\"). [red.source_line]",
       "localizations" : {
@@ -251,6 +240,39 @@
         }
       }
     },
+    "Abre Capturar para sumar una neurona a tu Red." : {
+      "comment" : "Descripción del widget de captura en la galería. [widget.capture_description]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens Capture to add a neuron to your Network."
+          }
+        }
+      }
+    },
+    "Abre Lumbre en la chispa del día." : {
+      "comment" : "[siri.today_description]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens Lumbre on today's spark."
+          }
+        }
+      }
+    },
+    "Abre Lumbre listo para guardar una idea." : {
+      "comment" : "[siri.capture_description]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens Lumbre ready to save an idea."
+          }
+        }
+      }
+    },
     "Abre el link en Safari" : {
       "comment" : "[neurona.open_link_hint]",
       "localizations" : {
@@ -295,17 +317,6 @@
         }
       }
     },
-    "Abrir" : {
-      "comment" : "[widget.open]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open"
-          }
-        }
-      }
-    },
     "Abrir Ajustes" : {
       "comment" : "[capturar.dictate.open_settings]",
       "localizations" : {
@@ -317,13 +328,24 @@
         }
       }
     },
-    "Abrí Capturar directo desde la pantalla de inicio." : {
-      "comment" : "[widget.capture_description]",
+    "Abrir Capturar en ${applicationName}" : {
+      "comment" : "[siri.phrase_capture_2]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open Capture straight from your Home Screen."
+            "value" : "Open Capture in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Abrí Lumbre" : {
+      "comment" : "Sin datos, widget rectangular. [widget.open]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Lumbre"
           }
         }
       }
@@ -339,13 +361,24 @@
         }
       }
     },
-    "Abrí Lumbre para traerla." : {
-      "comment" : "[widget.no_data_body]",
+    "Abrí Lumbre para encenderla" : {
+      "comment" : "Lo mismo, debajo del título. [widget.ready_body]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open Lumbre to load it."
+            "value" : "Open Lumbre to light it"
+          }
+        }
+      }
+    },
+    "Abrí Lumbre para ver la chispa del día" : {
+      "comment" : "Sin datos, debajo del título (\"Tu chispa de hoy\"). [widget.no_data_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Lumbre to see today's spark"
           }
         }
       }
@@ -511,6 +544,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Something went wrong. Try again."
+          }
+        }
+      }
+    },
+    "Anotar una idea en ${applicationName}" : {
+      "comment" : "[siri.phrase_save_3]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note an idea in ${applicationName}"
           }
         }
       }
@@ -878,13 +922,24 @@
         }
       }
     },
-    "Capturar idea" : {
-      "comment" : "Control de iOS 18 (propuesta). [widget.control_capture]",
+    "Capturar en ${applicationName}" : {
+      "comment" : "[siri.phrase_capture_1]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Capture idea"
+            "value" : "Capture in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Capturar en Lumbre" : {
+      "comment" : "Control del Centro de control (iOS 18) y título del App Intent que abre Capturar. [widget.control_capture]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capture in Lumbre"
           }
         }
       }
@@ -896,17 +951,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Capture neurons"
-          }
-        }
-      }
-    },
-    "Capturar una idea" : {
-      "comment" : "Botón de captura del widget grande. [widget.capture_long]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Capture an idea"
           }
         }
       }
@@ -1022,7 +1066,7 @@
       }
     },
     "Chispa de hoy" : {
-      "comment" : "Nombre en la galería de widgets. [widget.spark_name]",
+      "comment" : "Nombre del widget en la galería y encabezado en la pantalla bloqueada. [widget.spark_name]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1193,6 +1237,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Share"
+          }
+        }
+      }
+    },
+    "Compartir con Lumbre todavía no está disponible." : {
+      "comment" : "Con el feature flag apagado. [compartir.unavailable]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sharing to Lumbre isn't available yet."
           }
         }
       }
@@ -1692,6 +1747,17 @@
         }
       }
     },
+    "Dejala en %lld caracteres o menos" : {
+      "comment" : "[compartir.limit]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep it to %lld characters or fewer"
+          }
+        }
+      }
+    },
     "Dejá solo la parte que te importa" : {
       "comment" : "[capturar.keep_relevant]",
       "localizations" : {
@@ -2187,6 +2253,17 @@
         }
       }
     },
+    "Elegí una categoría." : {
+      "comment" : "[siri.empty_category]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a category."
+          }
+        }
+      }
+    },
     "Email" : {
       "comment" : "[cuenta.email]",
       "localizations" : {
@@ -2249,17 +2326,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "In one line, in your own words"
-          }
-        }
-      }
-    },
-    "Encender" : {
-      "comment" : "Botón del widget chico y del 2×2. [widget.pending_cta_short]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Light it"
           }
         }
       }
@@ -2407,6 +2473,28 @@
         }
       }
     },
+    "Escribila en una frase" : {
+      "comment" : "[compartir.idea_placeholder]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write it in one sentence"
+          }
+        }
+      }
+    },
+    "Escribí la idea que querés guardar." : {
+      "comment" : "[siri.empty_idea]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Write the idea you want to save."
+          }
+        }
+      }
+    },
     "Escribí o preguntá…" : {
       "comment" : "[planificador.input]",
       "localizations" : {
@@ -2535,6 +2623,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "This can't be undone"
+          }
+        }
+      }
+    },
+    "Esto todavía no está disponible en Lumbre." : {
+      "comment" : "Con el feature flag apagado. [siri.unavailable]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This isn't available in Lumbre yet."
           }
         }
       }
@@ -2704,6 +2803,17 @@
         }
       }
     },
+    "Guarda una neurona en tu Red sin abrir la app." : {
+      "comment" : "[siri.save_description]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saves a neuron to your Network without opening the app."
+          }
+        }
+      }
+    },
     "Guardada" : {
       "comment" : "Femenino: la idea. También estado de una chispa guardada. [onboarding.seeds.saved]",
       "localizations" : {
@@ -2722,6 +2832,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Saved in “%@”"
+          }
+        }
+      }
+    },
+    "Guardada. Se suma a tu Red cuando abras Lumbre." : {
+      "comment" : "Sin sesión o sin conexión: queda en la cola compartida. [compartir.queued]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saved. It joins your Network when you open Lumbre."
+          }
+        }
+      }
+    },
+    "Guardada. Se suma a tu Red la próxima vez que abras Lumbre." : {
+      "comment" : "[siri.queued]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saved. It joins your Network next time you open Lumbre."
           }
         }
       }
@@ -2781,6 +2913,17 @@
         }
       }
     },
+    "Guardar ${idea} en ${category}" : {
+      "comment" : "Resumen del intent en Atajos. [siri.save_summary]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save ${idea} in ${category}"
+          }
+        }
+      }
+    },
     "Guardar %lld neuronas y seguir" : {
       "comment" : "[onboarding.seeds.save_many]",
       "localizations" : {
@@ -2799,6 +2942,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Save changes"
+          }
+        }
+      }
+    },
+    "Guardar en Lumbre" : {
+      "comment" : "[compartir.title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save to Lumbre"
           }
         }
       }
@@ -2832,6 +2986,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Save neuron and continue"
+          }
+        }
+      }
+    },
+    "Guardar una idea" : {
+      "comment" : "Nombre del widget de captura, su texto y el botón del widget grande. También título corto del atajo. [widget.capture_name]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save an idea"
+          }
+        }
+      }
+    },
+    "Guardar una idea en ${applicationName}" : {
+      "comment" : "[siri.phrase_save_1]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save an idea in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Guardar una idea en Lumbre" : {
+      "comment" : "Título del intent y etiqueta del widget circular. [siri.save_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save an idea in Lumbre"
           }
         }
       }
@@ -2950,6 +3137,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Save a quote, a link or a voice note so there's something to connect."
+          }
+        }
+      }
+    },
+    "Guardá una idea en ${applicationName}" : {
+      "comment" : "[siri.phrase_save_2]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save a thought in ${applicationName}"
           }
         }
       }
@@ -3218,6 +3416,17 @@
         }
       }
     },
+    "La idea es muy larga: dejala en 600 caracteres o menos." : {
+      "comment" : "[siri.too_long]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The idea is too long: keep it to 600 characters or fewer."
+          }
+        }
+      }
+    },
     "La idea tiene que tener entre 1 y 600 caracteres." : {
       "comment" : "[errores.api.invalid_thesis]",
       "localizations" : {
@@ -3383,6 +3592,17 @@
         }
       }
     },
+    "Las dos neuronas que se conectaron hoy y la chispa que salió." : {
+      "comment" : "Descripción en la galería de widgets. [widget.spark_description]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The two neurons that connected today and the spark they made."
+          }
+        }
+      }
+    },
     "Leer la política de privacidad" : {
       "comment" : "[onboarding.consent.read_policy]",
       "localizations" : {
@@ -3416,6 +3636,17 @@
         }
       }
     },
+    "Lista para encender" : {
+      "comment" : "Chispa sin encender, widget rectangular de pantalla bloqueada. [widget.pending_short]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ready to light"
+          }
+        }
+      }
+    },
     "Listo" : {
       "comment" : "[comun.done]",
       "localizations" : {
@@ -3434,6 +3665,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Done: your network is now in your account"
+          }
+        }
+      }
+    },
+    "Llega a las" : {
+      "comment" : "Seguido de la hora, que formatea el sistema. [widget.next_when]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrives at"
           }
         }
       }
@@ -3735,17 +3977,6 @@
         }
       }
     },
-    "Mañana a las %@" : {
-      "comment" : "[widget.next_lock_when]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tomorrow at %@"
-          }
-        }
-      }
-    },
     "Mejor si son de temas distintos: así se conectan mundos lejanos. Podés dictarlas con el micrófono del teclado." : {
       "comment" : "[onboarding.seeds.tip]",
       "localizations" : {
@@ -3819,6 +4050,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Models, services and opportunities"
+          }
+        }
+      }
+    },
+    "Mostrame la chispa de ${applicationName}" : {
+      "comment" : "[siri.phrase_today_2]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show me my ${applicationName} spark"
           }
         }
       }
@@ -4006,6 +4248,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Neuron saved"
+          }
+        }
+      }
+    },
+    "Neurona guardada en tu Red." : {
+      "comment" : "[siri.saved]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neuron saved to your Network."
           }
         }
       }
@@ -4204,6 +4457,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "We couldn't save a capture"
+          }
+        }
+      }
+    },
+    "No pudimos guardarla en el teléfono. Probá de nuevo." : {
+      "comment" : "[compartir.local_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't save it on your phone. Try again."
+          }
+        }
+      }
+    },
+    "No pudimos guardarla. Probá de nuevo." : {
+      "comment" : "También en Siri y Atajos. [compartir.save_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't save it. Try again."
+          }
+        }
+      }
+    },
+    "No pudimos leer lo que compartiste." : {
+      "comment" : "[compartir.unreadable]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't read what you shared."
           }
         }
       }
@@ -5044,6 +5330,17 @@
         }
       }
     },
+    "Pronto en Lumbre" : {
+      "comment" : "Con el feature flag apagado. [widget.unavailable]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coming soon to Lumbre"
+          }
+        }
+      }
+    },
     "Pronto también con Apple y Google." : {
       "comment" : "[cuenta.soon_providers]",
       "localizations" : {
@@ -5056,23 +5353,12 @@
       }
     },
     "Próxima chispa" : {
-      "comment" : "[widget.next_lock_title]",
+      "comment" : "Inline de pantalla bloqueada, seguido de la hora. [widget.next_lock_title]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Next spark"
-          }
-        }
-      }
-    },
-    "Próxima chispa: mañana %@" : {
-      "comment" : "Accesorio inline. %@ es la hora. [widget.next_lock]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Next spark: tomorrow %@"
           }
         }
       }
@@ -5128,6 +5414,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Remove attachment"
+          }
+        }
+      }
+    },
+    "Qué chispa salió hoy en ${applicationName}" : {
+      "comment" : "[siri.phrase_today_3]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What's today's spark in ${applicationName}"
           }
         }
       }
@@ -6023,6 +6320,17 @@
         }
       }
     },
+    "Tocá para encenderla" : {
+      "comment" : "Debajo del título cuando hay chispa. [widget.tap_to_light]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to light it"
+          }
+        }
+      }
+    },
     "Tocá para seguir dictando" : {
       "comment" : "[capturar.dictate.tap_to_continue]",
       "localizations" : {
@@ -6200,12 +6508,12 @@
       }
     },
     "Tu chispa de hoy" : {
-      "comment" : "[reveal.panel_daily]",
+      "comment" : "En el widget va debajo de \"Chispa de hoy\": no tiene que repetirlo. [reveal.panel_daily]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Today's spark"
+            "value" : "Your spark for today"
           }
         }
       }
@@ -6232,19 +6540,19 @@
         }
       }
     },
-    "Tu chispa del día y un atajo para capturar." : {
-      "comment" : "[widget.spark_description]",
+    "Tu chispa de hoy ya está lista" : {
+      "comment" : "Chispa lista que el widget todavía no conoce: título. [widget.ready_title]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your daily spark and a shortcut to capture."
+            "value" : "Today's spark is ready"
           }
         }
       }
     },
     "Tu chispa está lista" : {
-      "comment" : "Accesorios de pantalla bloqueada. [widget.pending_lock]",
+      "comment" : "Chispa sin encender: título del widget e inline de pantalla bloqueada. [widget.pending_lock]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6276,17 +6584,6 @@
         }
       }
     },
-    "Tu chispa nueva te espera" : {
-      "comment" : "[widget.no_data_title]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your new spark is waiting"
-          }
-        }
-      }
-    },
     "Tu email" : {
       "comment" : "[cuenta.email_label]",
       "localizations" : {
@@ -6298,6 +6595,17 @@
         }
       }
     },
+    "Tu idea" : {
+      "comment" : "[compartir.idea_label]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your idea"
+          }
+        }
+      }
+    },
     "Tu primera chispa ya está. Creá tu cuenta para que tu red no dependa de este teléfono." : {
       "comment" : "[cuenta.nudge.after_spark]",
       "localizations" : {
@@ -6305,6 +6613,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your first spark is here. Create your account so your network doesn't depend on this phone."
+          }
+        }
+      }
+    },
+    "Tu próxima chispa" : {
+      "comment" : "Esperando la chispa de mañana: título. [widget.next_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your next spark"
           }
         }
       }
@@ -6452,17 +6771,6 @@
         }
       }
     },
-    "Una frase, un link o una nota de voz" : {
-      "comment" : "[widget.capture_hint]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A quote, a link or a voice note"
-          }
-        }
-      }
-    },
     "Urbanismo" : {
       "comment" : "[onboarding.welcome.example_cat_a]",
       "localizations" : {
@@ -6518,6 +6826,17 @@
         }
       }
     },
+    "Va directo a tu Red" : {
+      "comment" : "Debajo de \"Guardar una idea\" en el widget de captura chico: una sola línea. [widget.capture_hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Into your Network"
+          }
+        }
+      }
+    },
     "Vamos a pasar esta chispa por el método de Walt Disney. No se entra al cuarto siguiente hasta terminar el actual." : {
       "comment" : "[planificador.disney.body]",
       "localizations" : {
@@ -6536,6 +6855,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "See Lumbre Pro"
+          }
+        }
+      }
+    },
+    "Ver la chispa de hoy" : {
+      "comment" : "[siri.today_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See today's spark"
+          }
+        }
+      }
+    },
+    "Ver la chispa de hoy en ${applicationName}" : {
+      "comment" : "[siri.phrase_today_1]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See today's spark in ${applicationName}"
           }
         }
       }
@@ -6591,6 +6932,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You already picked two. Remove one to pick this."
+          }
+        }
+      }
+    },
+    "Ya está lista" : {
+      "comment" : "Lo mismo, widget rectangular. [widget.ready_short]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It's ready"
           }
         }
       }
@@ -6815,6 +7167,17 @@
         }
       }
     },
+    "¿En qué categoría?" : {
+      "comment" : "[siri.category_prompt]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Which category?"
+          }
+        }
+      }
+    },
     "¿Por qué no te sirve?" : {
       "comment" : "[chispa.why_not]",
       "localizations" : {
@@ -6822,6 +7185,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Why isn't it useful?"
+          }
+        }
+      }
+    },
+    "¿Qué idea querés guardar?" : {
+      "comment" : "[siri.idea_prompt]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What idea do you want to save?"
           }
         }
       }

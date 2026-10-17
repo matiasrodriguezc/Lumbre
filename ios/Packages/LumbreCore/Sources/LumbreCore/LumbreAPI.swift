@@ -136,23 +136,24 @@ public enum LumbreAPIError: LocalizedError, Equatable {
         }
     }
 
+    /// Del catálogo de LumbreCore (`bundle: .module`): se traduce igual en la app, el widget, los App Intents y la Share Extension.
     public var errorDescription: String? {
         switch self {
-        case .quotaExceeded: String(localized: "Llegaste al límite de hoy. Mañana podés seguir.")
-        case .tooManyCategories: String(localized: "Ya tenés 50 categorías. Usá una de las que tenés.")
-        case .invalidThesis: String(localized: "La idea tiene que tener entre 1 y 600 caracteres.")
-        case .invalidCategory: String(localized: "La categoría tiene que tener entre 1 y 40 caracteres.")
-        case .invalidSource: String(localized: "Revisá el link: no parece válido.")
-        case .needsThesis: String(localized: "No pudimos sacar una idea de esto. ¿Qué idea te deja?")
-        case .proRequired: String(localized: "Esto es parte de Lumbre Pro.")
-        case .notEnoughConcepts: String(localized: "Guardá un par de neuronas más para tener material que conectar.")
-        case .tooManyProjects: String(localized: "Con el plan gratis tenés un circuito. Con Pro, todos los que quieras.")
-        case .accountRequired: String(localized: "Creá tu cuenta para usar esto.")
-        case .invalidEmail: String(localized: "Revisá el email: no parece válido.")
-        case .invalidCode: String(localized: "El código no es correcto o ya venció. Revisalo o pedí otro.")
-        case .emailInUse: String(localized: "Ya hay una cuenta con ese email. Entrá con esa cuenta.")
-        case .offline: String(localized: "Sin conexión. Lo guardamos y lo mandamos cuando vuelva.")
-        case .unexpected: String(localized: "Algo salió mal. Probá de nuevo.")
+        case .quotaExceeded: String(localized: "Llegaste al límite de hoy. Mañana podés seguir.", bundle: .module)
+        case .tooManyCategories: String(localized: "Ya tenés 50 categorías. Usá una de las que tenés.", bundle: .module)
+        case .invalidThesis: String(localized: "La idea tiene que tener entre 1 y 600 caracteres.", bundle: .module)
+        case .invalidCategory: String(localized: "La categoría tiene que tener entre 1 y 40 caracteres.", bundle: .module)
+        case .invalidSource: String(localized: "Revisá el link: no parece válido.", bundle: .module)
+        case .needsThesis: String(localized: "No pudimos sacar una idea de esto. ¿Qué idea te deja?", bundle: .module)
+        case .proRequired: String(localized: "Esto es parte de Lumbre Pro.", bundle: .module)
+        case .notEnoughConcepts: String(localized: "Guardá un par de neuronas más para tener material que conectar.", bundle: .module)
+        case .tooManyProjects: String(localized: "Con el plan gratis tenés un circuito. Con Pro, todos los que quieras.", bundle: .module)
+        case .accountRequired: String(localized: "Creá tu cuenta para usar esto.", bundle: .module)
+        case .invalidEmail: String(localized: "Revisá el email: no parece válido.", bundle: .module)
+        case .invalidCode: String(localized: "El código no es correcto o ya venció. Revisalo o pedí otro.", bundle: .module)
+        case .emailInUse: String(localized: "Ya hay una cuenta con ese email. Entrá con esa cuenta.", bundle: .module)
+        case .offline: String(localized: "Sin conexión. Lo guardamos y lo mandamos cuando vuelva.", bundle: .module)
+        case .unexpected: String(localized: "Algo salió mal. Probá de nuevo.", bundle: .module)
         }
     }
 }

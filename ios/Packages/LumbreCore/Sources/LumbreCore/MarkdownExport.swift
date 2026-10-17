@@ -6,15 +6,15 @@ public enum MarkdownExport {
     public static func project(name: String, sparks: [Spark], plans: [Spark.ID: [PlannerMessage]]) -> String {
         var lines = ["# \(name)", ""]
         if sparks.isEmpty {
-            lines.append(String(localized: "Todavía no hay ideas en este circuito."))
+            lines.append(String(localized: "Todavía no hay ideas en este circuito.", bundle: .module))
         }
         for spark in sparks {
             lines.append(contentsOf: self.spark(spark, level: 2))
             if let messages = plans[spark.id], !messages.isEmpty {
-                lines.append("### " + String(localized: "Plan"))
+                lines.append("### " + String(localized: "Plan", bundle: .module))
                 lines.append("")
                 for message in messages {
-                    let who = message.role == .user ? String(localized: "Yo") : "Lumbre"
+                    let who = message.role == .user ? String(localized: "Yo", bundle: .module) : "Lumbre"
                     lines.append("**\(who):** \(message.content)")
                     lines.append("")
                 }

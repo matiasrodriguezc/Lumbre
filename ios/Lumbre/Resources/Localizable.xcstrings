@@ -343,16 +343,37 @@
       }
     },
     "Abrí Lumbre" : {
-      "comment" : "Se traduce en Extensions.xcstrings: extensionsText(…) la busca en esa tabla.",
-      "shouldTranslate" : false
+      "comment" : "Sin datos, widget rectangular. [widget.open]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Lumbre"
+          }
+        }
+      }
     },
     "Abrí Lumbre para encenderla" : {
-      "comment" : "Se traduce en Extensions.xcstrings: extensionsText(…) la busca en esa tabla.",
-      "shouldTranslate" : false
+      "comment" : "Lo mismo, debajo del título. [widget.ready_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Lumbre to light it"
+          }
+        }
+      }
     },
     "Abrí Lumbre para ver la chispa del día" : {
-      "comment" : "Se traduce en Extensions.xcstrings: extensionsText(…) la busca en esa tabla.",
-      "shouldTranslate" : false
+      "comment" : "Sin datos, debajo del título (\"Tu chispa de hoy\"). [widget.no_data_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Lumbre to see today's spark"
+          }
+        }
+      }
     },
     "Aceptar" : {
       "comment" : "[comun.accept]",
@@ -1015,7 +1036,7 @@
       }
     },
     "Chispa de hoy" : {
-      "comment" : "Nombre en la galería de widgets. [widget.spark_name]",
+      "comment" : "Nombre del widget en la galería y encabezado en la pantalla bloqueada. [widget.spark_name]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1493,17 +1514,6 @@
         }
       }
     },
-    "Creá tu cuenta para usar esto." : {
-      "comment" : "[errores.api.account_required]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Create your account to use this."
-          }
-        }
-      }
-    },
     "Crítico" : {
       "comment" : "[planificador.room.critic]",
       "localizations" : {
@@ -1944,17 +1954,6 @@
         }
       }
     },
-    "El código no es correcto o ya venció. Revisalo o pedí otro." : {
-      "comment" : "[errores.api.invalid_code]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The code is wrong or has expired. Check it or ask for a new one."
-          }
-        }
-      }
-    },
     "El dictado no está disponible" : {
       "comment" : "[capturar.dictate.unavailable]",
       "localizations" : {
@@ -2307,17 +2306,6 @@
         }
       }
     },
-    "Esto es parte de Lumbre Pro." : {
-      "comment" : "[errores.api.pro_only]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This is part of Lumbre Pro."
-          }
-        }
-      }
-    },
     "Esto no se puede deshacer" : {
       "comment" : "[perfil.delete.cant_undo]",
       "localizations" : {
@@ -2616,12 +2604,26 @@
       }
     },
     "Guardar una idea" : {
-      "comment" : "Se traduce en Extensions.xcstrings: extensionsText(…) la busca en esa tabla.",
-      "shouldTranslate" : false
+      "comment" : "Nombre del widget de captura, su texto y el botón del widget grande. También título corto del atajo. [widget.capture_name]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save an idea"
+          }
+        }
+      }
     },
     "Guardar una idea en Lumbre" : {
-      "comment" : "Se traduce en Extensions.xcstrings: extensionsText(…) la busca en esa tabla.",
-      "shouldTranslate" : false
+      "comment" : "Título del intent y etiqueta del widget circular. [siri.save_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save an idea in Lumbre"
+          }
+        }
+      }
     },
     "Guardá %lld neuronas para ganar 1 extra" : {
       "comment" : "[hoy.meter.earn]",
@@ -2704,17 +2706,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Save neurons on other topics. Connections between different worlds make the best sparks."
-          }
-        }
-      }
-    },
-    "Guardá un par de neuronas más para tener material que conectar." : {
-      "comment" : "[errores.api.need_more]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save a couple more neurons so there's something to connect."
           }
         }
       }
@@ -2950,17 +2941,6 @@
         }
       }
     },
-    "La categoría tiene que tener entre 1 y 40 caracteres." : {
-      "comment" : "[errores.api.invalid_category]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The category has to be between 1 and 40 characters."
-          }
-        }
-      }
-    },
     "La chispa del día te espera a esta hora. El perfil creativo es la lente con la que se eligen las ideas." : {
       "comment" : "[perfil.your_spark_body]",
       "localizations" : {
@@ -2990,17 +2970,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Conceptualizing needs an account. Create one from Profile and try it for free."
-          }
-        }
-      }
-    },
-    "La idea tiene que tener entre 1 y 600 caracteres." : {
-      "comment" : "[errores.api.invalid_thesis]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The idea has to be between 1 and 600 characters."
           }
         }
       }
@@ -3149,8 +3118,15 @@
       }
     },
     "Lista para encender" : {
-      "comment" : "Se traduce en Extensions.xcstrings: extensionsText(…) la busca en esa tabla.",
-      "shouldTranslate" : false
+      "comment" : "Chispa sin encender, widget rectangular de pantalla bloqueada. [widget.pending_short]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ready to light"
+          }
+        }
+      }
     },
     "Listo" : {
       "comment" : "[comun.done]",
@@ -3164,16 +3140,12 @@
       }
     },
     "Llega a las" : {
-      "comment" : "Se traduce en Extensions.xcstrings: extensionsText(…) la busca en esa tabla.",
-      "shouldTranslate" : false
-    },
-    "Llegaste al límite de hoy. Mañana podés seguir." : {
-      "comment" : "[errores.api.quota]",
+      "comment" : "Seguido de la hora, que formatea el sistema. [widget.next_when]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You've hit today's limit. You can keep going tomorrow."
+            "value" : "Arrives at"
           }
         }
       }
@@ -3823,8 +3795,15 @@
       }
     },
     "No pudimos guardarla. Probá de nuevo." : {
-      "comment" : "Se traduce en Extensions.xcstrings: extensionsText(…) la busca en esa tabla.",
-      "shouldTranslate" : false
+      "comment" : "También en Siri y Atajos. [compartir.save_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't save it. Try again."
+          }
+        }
+      }
     },
     "No pudimos sacar una idea de esto. Escribí qué idea te deja y lo guardamos con tus palabras." : {
       "comment" : "[capturar.no_idea_found]",
@@ -3844,17 +3823,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "We couldn't get an idea out of this. Write what idea it leaves you with."
-          }
-        }
-      }
-    },
-    "No pudimos sacar una idea de esto. ¿Qué idea te deja?" : {
-      "comment" : "[errores.api.no_idea]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "We couldn't get an idea out of this. What idea does it leave you with?"
           }
         }
       }
@@ -4581,8 +4549,15 @@
       }
     },
     "Pronto en Lumbre" : {
-      "comment" : "Se traduce en Extensions.xcstrings: extensionsText(…) la busca en esa tabla.",
-      "shouldTranslate" : false
+      "comment" : "Con el feature flag apagado. [widget.unavailable]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coming soon to Lumbre"
+          }
+        }
+      }
     },
     "Pronto también con Apple y Google." : {
       "comment" : "[cuenta.soon_providers]",
@@ -4596,7 +4571,7 @@
       }
     },
     "Próxima chispa" : {
-      "comment" : "[widget.next_lock_title]",
+      "comment" : "Inline de pantalla bloqueada, seguido de la hora. [widget.next_lock_title]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4800,17 +4775,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Review permission"
-          }
-        }
-      }
-    },
-    "Revisá el email: no parece válido." : {
-      "comment" : "[errores.api.invalid_email]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Check the email: it doesn't look valid."
           }
         }
       }
@@ -5059,17 +5023,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You're offline and we couldn't save it on the phone. Try again in a bit."
-          }
-        }
-      }
-    },
-    "Sin conexión. Lo guardamos y lo mandamos cuando vuelva." : {
-      "comment" : "[errores.api.offline]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You're offline. We saved it and we'll send it when you're back."
           }
         }
       }
@@ -5488,8 +5441,15 @@
       }
     },
     "Tocá para encenderla" : {
-      "comment" : "Se traduce en Extensions.xcstrings: extensionsText(…) la busca en esa tabla.",
-      "shouldTranslate" : false
+      "comment" : "Debajo del título cuando hay chispa. [widget.tap_to_light]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to light it"
+          }
+        }
+      }
     },
     "Tocá para seguir dictando" : {
       "comment" : "[capturar.dictate.tap_to_continue]",
@@ -5531,17 +5491,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No ideas here yet"
-          }
-        }
-      }
-    },
-    "Todavía no hay ideas en este circuito." : {
-      "comment" : "Va dentro del Markdown exportado. [circuitos.export_empty]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "There are no ideas in this circuit yet."
           }
         }
       }
@@ -5668,12 +5617,12 @@
       }
     },
     "Tu chispa de hoy" : {
-      "comment" : "[reveal.panel_daily]",
+      "comment" : "En el widget va debajo de \"Chispa de hoy\": no tiene que repetirlo. [reveal.panel_daily]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Today's spark"
+            "value" : "Your spark for today"
           }
         }
       }
@@ -5690,11 +5639,18 @@
       }
     },
     "Tu chispa de hoy ya está lista" : {
-      "comment" : "Se traduce en Extensions.xcstrings: extensionsText(…) la busca en esa tabla.",
-      "shouldTranslate" : false
+      "comment" : "Chispa lista que el widget todavía no conoce: título. [widget.ready_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today's spark is ready"
+          }
+        }
+      }
     },
     "Tu chispa está lista" : {
-      "comment" : "Accesorios de pantalla bloqueada. [widget.pending_lock]",
+      "comment" : "Chispa sin encender: título del widget e inline de pantalla bloqueada. [widget.pending_lock]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5738,8 +5694,15 @@
       }
     },
     "Tu próxima chispa" : {
-      "comment" : "Se traduce en Extensions.xcstrings: extensionsText(…) la busca en esa tabla.",
-      "shouldTranslate" : false
+      "comment" : "Esperando la chispa de mañana: título. [widget.next_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your next spark"
+          }
+        }
+      }
     },
     "Tu red queda a salvo aunque cambies o pierdas el teléfono. Todo lo que guardaste como invitado pasa a tu cuenta." : {
       "comment" : "[cuenta.create.body]",
@@ -5929,8 +5892,15 @@
       }
     },
     "Va directo a tu Red" : {
-      "comment" : "Se traduce en Extensions.xcstrings: extensionsText(…) la busca en esa tabla.",
-      "shouldTranslate" : false
+      "comment" : "Debajo de \"Guardar una idea\" en el widget de captura chico: una sola línea. [widget.capture_hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Into your Network"
+          }
+        }
+      }
     },
     "Vamos a pasar esta chispa por el método de Walt Disney. No se entra al cuarto siguiente hasta terminar el actual." : {
       "comment" : "[planificador.disney.body]",
@@ -5977,16 +5947,12 @@
       }
     },
     "Ya está lista" : {
-      "comment" : "Se traduce en Extensions.xcstrings: extensionsText(…) la busca en esa tabla.",
-      "shouldTranslate" : false
-    },
-    "Ya hay una cuenta con ese email. Entrá con esa cuenta." : {
-      "comment" : "[errores.api.email_in_use]",
+      "comment" : "Lo mismo, widget rectangular. [widget.ready_short]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "There's already an account with that email. Sign in to that account."
+            "value" : "It's ready"
           }
         }
       }
@@ -6024,17 +5990,6 @@
         }
       }
     },
-    "Ya tenés 50 categorías. Usá una de las que tenés." : {
-      "comment" : "[errores.api.too_many_categories]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You already have 50 categories. Use one of the ones you have."
-          }
-        }
-      }
-    },
     "Ya tenés Lumbre Pro" : {
       "comment" : "[paywall.already_pro]",
       "localizations" : {
@@ -6064,17 +6019,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You've used today's extra sparks. More tomorrow."
-          }
-        }
-      }
-    },
-    "Yo" : {
-      "comment" : "Quién habla en el planificador exportado. [markdown.me]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Me"
           }
         }
       }

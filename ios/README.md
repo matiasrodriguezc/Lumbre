@@ -12,7 +12,7 @@ App de Lumbre en SwiftUI (Swift 6, iOS 17 o más; Liquid Glass en iOS 26). La in
 | `Lumbre/Features` | Una carpeta por pantalla: Today (Hoy y el reveal), Vault (Red), Projects (Circuitos), Profile, Capture, Concept, Spark (detalle, guardar, tarjeta para compartir), Planner, Paywall, Onboarding, Account (crear cuenta o entrar con email) y Shared. |
 | `Lumbre/Resources` | Íconos, String Catalog (`Localizable.xcstrings`, base es), `Lumbre.storekit` y el privacy manifest. |
 | `Packages/LumbreDesign` | Tokens generados, tipografía (Fraunces empaquetada), identidad neuronal (neurona, sinapsis, red de fondo, pulso) y componentes. |
-| `Packages/LumbreCore` | Modelos, el contrato `LumbreAPI`, `SupabaseLumbreAPI`, `MockLumbreAPI`, la caché (`CachedLumbreAPI`, SwiftData), la cola offline, el cliente de las Edge Functions, App Attest, analytics tipado y feature flags. |
+| `Packages/LumbreCore` | Modelos, el contrato `LumbreAPI`, `SupabaseLumbreAPI`, `MockLumbreAPI`, la caché (`CachedLumbreAPI`, SwiftData), la cola offline, el cliente de las Edge Functions, App Attest, analytics tipado y feature flags. Su propio String Catalog (`Resources/`, `bundle: .module`) para los errores y el export. |
 | `scripts/generate_tokens.py` | Genera los colores y tokens de LumbreDesign desde `design/system/tokens.json`. |
 
 ## Comandos
@@ -35,16 +35,10 @@ Correr los tests de LumbreCore (Swift Testing; los de integración se saltean si
 cd ios/Packages/LumbreCore && xcodebuild test -scheme LumbreCore -destination 'id=<udid>' -derivedDataPath ../../.build/DerivedData
 ```
 
-Llevar al String Catalog los textos nuevos del código (Xcode lo hace solo al compilar desde el IDE; con `xcodebuild`, después del build):
+Llevar a los String Catalogs los textos nuevos del código y cargarles el inglés de `design/copy/copy.json` (Xcode extrae solo al compilar desde el IDE; con `xcodebuild`, después del build). Los cinco catálogos y cuál usa cada target están en `design/copy/README.md`:
 
 ```bash
-cd ios && bash -c 'args=(); while IFS= read -r f; do args+=(--stringsdata "$f"); done < <(find .build/DerivedData/Build/Intermediates.noindex/{Lumbre.build/Debug-iphonesimulator/Lumbre,LumbreCore,LumbreDesign}.build -name "*.stringsdata" -path "*arm64*"); xcrun xcstringstool sync Lumbre/Resources/Localizable.xcstrings "${args[@]}"'
-```
-
-Y después cargar el inglés desde `design/copy/copy.json` (ver `design/copy/README.md`):
-
-```bash
-python3 design/copy/copy.py xcstrings --out ios/Lumbre/Resources/Localizable.xcstrings && python3 design/copy/copy.py revisar-ios
+python3 design/copy/copy.py sincronizar-ios && python3 design/copy/copy.py ios && python3 design/copy/copy.py revisar-ios
 ```
 
 O abrir `ios/Lumbre.xcodeproj` en Xcode y correr el esquema **Lumbre** (arranca en español de Argentina). Para probar en inglés: `-AppleLanguages "(en)"` al lanzar.

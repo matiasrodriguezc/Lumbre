@@ -274,6 +274,7 @@
     <string name="reveal_ignite">Encender la chispa</string>
     <!-- Hint de accesibilidad. -->
     <string name="reveal_ignite_hint">Revela la chispa</string>
+    <!-- En el widget va debajo de "Chispa de hoy": no tiene que repetirlo. -->
     <string name="reveal_panel_daily">Tu chispa de hoy</string>
     <string name="reveal_panel_extra">Tu chispa extra</string>
     <!-- Lo que anuncia VoiceOver al revelar. Título, cuerpo, neurona A, categoría A, neurona B, categoría B. -->
@@ -712,41 +713,68 @@
     <!-- Versión que usa la app (AIConsent.swift) para empty.hoy_sin_permiso. -->
     <string name="estados_hoy_sin_permiso_app_body">Las chispas usan IA para conectar tus neuronas. Para encenderlas necesitamos tu permiso.</string>
     <string name="estados_hoy_sin_permiso_meanwhile">Mientras tanto, podés seguir guardando neuronas.</string>
-    <!-- Widget y tarjeta para compartir -->
-    <!-- Nombre en la galería de widgets. -->
+    <!-- Widget -->
+    <!-- Nombre del widget en la galería y encabezado en la pantalla bloqueada. -->
     <string name="widget_spark_name">Chispa de hoy</string>
-    <string name="widget_spark_description">Tu chispa del día y un atajo para capturar.</string>
-    <string name="widget_capture_description">Abrí Capturar directo desde la pantalla de inicio.</string>
-    <!-- Botón de captura del widget grande. -->
-    <string name="widget_capture_long">Capturar una idea</string>
-    <string name="widget_capture_hint">Una frase, un link o una nota de voz</string>
-    <!-- Botón del widget chico y del 2×2. -->
-    <string name="widget_pending_cta_short">Encender</string>
-    <!-- Accesorios de pantalla bloqueada. -->
+    <!-- Descripción en la galería de widgets. -->
+    <string name="widget_spark_description">Las dos neuronas que se conectaron hoy y la chispa que salió.</string>
+    <!-- Nombre del widget de captura, su texto y el botón del widget grande. También título corto del atajo. -->
+    <string name="widget_capture_name">Guardar una idea</string>
+    <!-- Descripción del widget de captura en la galería. -->
+    <string name="widget_capture_description">Abre Capturar para sumar una neurona a tu Red.</string>
+    <!-- Debajo de "Guardar una idea" en el widget de captura chico: una sola línea. -->
+    <string name="widget_capture_hint">Va directo a tu Red</string>
+    <!-- Control del Centro de control (iOS 18) y título del App Intent que abre Capturar. -->
+    <string name="widget_control_capture">Capturar en Lumbre</string>
+    <!-- Chispa sin encender: título del widget e inline de pantalla bloqueada. -->
     <string name="widget_pending_lock">Tu chispa está lista</string>
-    <!-- Las dos neuronas de la chispa. -->
-    <string name="widget_pending_pair">%1$s y %2$s</string>
-    <!-- Accesorio inline. %@ es la hora. -->
-    <string name="widget_next_lock">Próxima chispa: mañana %s</string>
+    <!-- Chispa sin encender, widget rectangular de pantalla bloqueada. -->
+    <string name="widget_pending_short">Lista para encender</string>
+    <!-- Chispa lista que el widget todavía no conoce: título. -->
+    <string name="widget_ready_title">Tu chispa de hoy ya está lista</string>
+    <!-- Lo mismo, widget rectangular. -->
+    <string name="widget_ready_short">Ya está lista</string>
+    <!-- Lo mismo, debajo del título. -->
+    <string name="widget_ready_body">Abrí Lumbre para encenderla</string>
+    <!-- Debajo del título cuando hay chispa. -->
+    <string name="widget_tap_to_light">Tocá para encenderla</string>
+    <!-- Inline de pantalla bloqueada, seguido de la hora. -->
     <string name="widget_next_lock_title">Próxima chispa</string>
-    <string name="widget_next_lock_when">Mañana a las %s</string>
+    <!-- Esperando la chispa de mañana: título. -->
+    <string name="widget_next_title">Tu próxima chispa</string>
+    <!-- Seguido de la hora, que formatea el sistema. -->
+    <string name="widget_next_when">Llega a las</string>
+    <!-- Sin datos, widget rectangular. -->
+    <string name="widget_open">Abrí Lumbre</string>
+    <!-- Sin datos, debajo del título ("Tu chispa de hoy"). -->
+    <string name="widget_no_data_body">Abrí Lumbre para ver la chispa del día</string>
+    <!-- Con el feature flag apagado. -->
+    <string name="widget_unavailable">Pronto en Lumbre</string>
     <string name="widget_no_material_body">Guardá neuronas de temas distintos.</string>
     <string name="widget_signed_out_title">Abrí Lumbre para empezar</string>
     <!-- Solo si no se confirma que el invitado recibe la chispa (design/prototipo/invitado.md). -->
     <string name="widget_guest_title">Creá tu cuenta para recibir tu chispa diaria</string>
     <string name="widget_guest_body">Mientras tanto, podés capturar neuronas como invitado.</string>
-    <string name="widget_no_data_title">Tu chispa nueva te espera</string>
-    <string name="widget_no_data_body">Abrí Lumbre para traerla.</string>
-    <string name="widget_open">Abrir</string>
     <string name="widget_a11y_pending">Chispa por encender: %1$s, de %2$s, con %3$s, de %4$s. Tocá para encenderla.</string>
-    <!-- Control de iOS 18 (propuesta). -->
-    <string name="widget_control_capture">Capturar idea</string>
     <!-- Texto que acompaña la imagen al compartir (provisorio, espera el dominio). -->
     <string name="widget_share_text">Mi chispa de hoy en Lumbre: %s</string>
     <!-- Formato de la tarjeta (propuesta). No usar "Historia" a secas: choca con la categoría Historia, que en inglés es History. -->
     <string name="widget_share_story">Para historias</string>
     <!-- Formato de la tarjeta (propuesta). -->
     <string name="widget_share_feed">Para publicaciones</string>
+    <!-- Compartir hacia Lumbre (Share Extension) -->
+    <string name="compartir_title">Guardar en Lumbre</string>
+    <string name="compartir_idea_label">Tu idea</string>
+    <string name="compartir_idea_placeholder">Escribila en una frase</string>
+    <string name="compartir_limit">Dejala en %d caracteres o menos</string>
+    <!-- Con el feature flag apagado. -->
+    <string name="compartir_unavailable">Compartir con Lumbre todavía no está disponible.</string>
+    <string name="compartir_unreadable">No pudimos leer lo que compartiste.</string>
+    <!-- Sin sesión o sin conexión: queda en la cola compartida. -->
+    <string name="compartir_queued">Guardada. Se suma a tu Red cuando abras Lumbre.</string>
+    <!-- También en Siri y Atajos. -->
+    <string name="compartir_save_failed">No pudimos guardarla. Probá de nuevo.</string>
+    <string name="compartir_local_failed">No pudimos guardarla en el teléfono. Probá de nuevo.</string>
     <!-- Export a Markdown -->
     <!-- Quién habla en el planificador exportado. -->
     <string name="markdown_me">Yo</string>

@@ -2,6 +2,7 @@
   "sourceLanguage" : "es",
   "strings" : {
     "Abrir Capturar en ${applicationName}" : {
+      "comment" : "[siri.phrase_capture_2]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12,6 +13,7 @@
       }
     },
     "Anotar una idea en ${applicationName}" : {
+      "comment" : "[siri.phrase_save_3]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -22,6 +24,7 @@
       }
     },
     "Capturar en ${applicationName}" : {
+      "comment" : "[siri.phrase_capture_1]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -32,6 +35,7 @@
       }
     },
     "Guardar una idea en ${applicationName}" : {
+      "comment" : "[siri.phrase_save_1]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -42,6 +46,7 @@
       }
     },
     "Guardá una idea en ${applicationName}" : {
+      "comment" : "[siri.phrase_save_2]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -52,6 +57,7 @@
       }
     },
     "Mostrame la chispa de ${applicationName}" : {
+      "comment" : "[siri.phrase_today_2]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -62,6 +68,7 @@
       }
     },
     "Qué chispa salió hoy en ${applicationName}" : {
+      "comment" : "[siri.phrase_today_3]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -72,6 +79,7 @@
       }
     },
     "Ver la chispa de hoy en ${applicationName}" : {
+      "comment" : "[siri.phrase_today_1]",
       "localizations" : {
         "en" : {
           "stringUnit" : {

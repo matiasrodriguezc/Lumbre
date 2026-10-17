@@ -2,6 +2,7 @@
   "sourceLanguage" : "es",
   "strings" : {
     "Abre Capturar para sumar una neurona a tu Red." : {
+      "comment" : "Descripción del widget de captura en la galería. [widget.capture_description]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12,6 +13,7 @@
       }
     },
     "Abre Lumbre en la chispa del día." : {
+      "comment" : "[siri.today_description]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -22,6 +24,7 @@
       }
     },
     "Abre Lumbre listo para guardar una idea." : {
+      "comment" : "[siri.capture_description]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -32,6 +35,7 @@
       }
     },
     "Abrí Lumbre" : {
+      "comment" : "Sin datos, widget rectangular. [widget.open]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -42,16 +46,18 @@
       }
     },
     "Abrí Lumbre para encenderla" : {
+      "comment" : "Lo mismo, debajo del título. [widget.ready_body]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open Lumbre to light it up"
+            "value" : "Open Lumbre to light it"
           }
         }
       }
     },
     "Abrí Lumbre para ver la chispa del día" : {
+      "comment" : "Sin datos, debajo del título (\"Tu chispa de hoy\"). [widget.no_data_body]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -62,6 +68,7 @@
       }
     },
     "Capturar" : {
+      "comment" : "Botón + flotante y accesos para guardar una idea. [comun.capture]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -72,6 +79,7 @@
       }
     },
     "Capturar en Lumbre" : {
+      "comment" : "Control del Centro de control (iOS 18) y título del App Intent que abre Capturar. [widget.control_capture]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -82,6 +90,7 @@
       }
     },
     "Categoría" : {
+      "comment" : "[comun.category]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -92,6 +101,7 @@
       }
     },
     "Chispa de hoy" : {
+      "comment" : "Nombre del widget en la galería y encabezado en la pantalla bloqueada. [widget.spark_name]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -102,6 +112,7 @@
       }
     },
     "Elegí una categoría." : {
+      "comment" : "[siri.empty_category]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -112,6 +123,7 @@
       }
     },
     "Escribí la idea que querés guardar." : {
+      "comment" : "[siri.empty_idea]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -122,6 +134,7 @@
       }
     },
     "Esto todavía no está disponible en Lumbre." : {
+      "comment" : "Con el feature flag apagado. [siri.unavailable]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -132,6 +145,7 @@
       }
     },
     "Guarda una neurona en tu Red sin abrir la app." : {
+      "comment" : "[siri.save_description]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -142,6 +156,7 @@
       }
     },
     "Guardada. Se suma a tu Red la próxima vez que abras Lumbre." : {
+      "comment" : "[siri.queued]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -152,6 +167,7 @@
       }
     },
     "Guardar ${idea} en ${category}" : {
+      "comment" : "Resumen del intent en Atajos. [siri.save_summary]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -162,6 +178,7 @@
       }
     },
     "Guardar una idea" : {
+      "comment" : "Nombre del widget de captura, su texto y el botón del widget grande. También título corto del atajo. [widget.capture_name]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -172,6 +189,7 @@
       }
     },
     "Guardar una idea en Lumbre" : {
+      "comment" : "Título del intent y etiqueta del widget circular. [siri.save_title]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -182,6 +200,7 @@
       }
     },
     "Idea" : {
+      "comment" : "Accesibilidad del campo de texto. [capturar.idea]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -192,6 +211,7 @@
       }
     },
     "La idea es muy larga: dejala en 600 caracteres o menos." : {
+      "comment" : "[siri.too_long]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -202,6 +222,7 @@
       }
     },
     "Las dos neuronas que se conectaron hoy y la chispa que salió." : {
+      "comment" : "Descripción en la galería de widgets. [widget.spark_description]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -212,16 +233,18 @@
       }
     },
     "Lista para encender" : {
+      "comment" : "Chispa sin encender, widget rectangular de pantalla bloqueada. [widget.pending_short]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ready to light up"
+            "value" : "Ready to light"
           }
         }
       }
     },
     "Llega a las" : {
+      "comment" : "Seguido de la hora, que formatea el sistema. [widget.next_when]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -232,6 +255,7 @@
       }
     },
     "Neurona guardada en tu Red." : {
+      "comment" : "[siri.saved]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -242,6 +266,7 @@
       }
     },
     "No pudimos guardarla. Probá de nuevo." : {
+      "comment" : "También en Siri y Atajos. [compartir.save_failed]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -252,6 +277,7 @@
       }
     },
     "Pronto en Lumbre" : {
+      "comment" : "Con el feature flag apagado. [widget.unavailable]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -262,6 +288,7 @@
       }
     },
     "Próxima chispa" : {
+      "comment" : "Inline de pantalla bloqueada, seguido de la hora. [widget.next_lock_title]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -272,16 +299,18 @@
       }
     },
     "Tocá para encenderla" : {
+      "comment" : "Debajo del título cuando hay chispa. [widget.tap_to_light]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tap to light it up"
+            "value" : "Tap to light it"
           }
         }
       }
     },
     "Tu chispa de hoy" : {
+      "comment" : "En el widget va debajo de \"Chispa de hoy\": no tiene que repetirlo. [reveal.panel_daily]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -292,6 +321,7 @@
       }
     },
     "Tu chispa de hoy ya está lista" : {
+      "comment" : "Chispa lista que el widget todavía no conoce: título. [widget.ready_title]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -302,6 +332,7 @@
       }
     },
     "Tu chispa está lista" : {
+      "comment" : "Chispa sin encender: título del widget e inline de pantalla bloqueada. [widget.pending_lock]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -312,6 +343,7 @@
       }
     },
     "Tu próxima chispa" : {
+      "comment" : "Esperando la chispa de mañana: título. [widget.next_title]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -322,16 +354,18 @@
       }
     },
     "Va directo a tu Red" : {
+      "comment" : "Debajo de \"Guardar una idea\" en el widget de captura chico: una sola línea. [widget.capture_hint]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Straight to your Network"
+            "value" : "Into your Network"
           }
         }
       }
     },
     "Ver la chispa de hoy" : {
+      "comment" : "[siri.today_title]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -342,6 +376,7 @@
       }
     },
     "Ya está lista" : {
+      "comment" : "Lo mismo, widget rectangular. [widget.ready_short]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -352,16 +387,18 @@
       }
     },
     "¿En qué categoría?" : {
+      "comment" : "[siri.category_prompt]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In which category?"
+            "value" : "Which category?"
           }
         }
       }
     },
     "¿Qué idea querés guardar?" : {
+      "comment" : "[siri.idea_prompt]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
