@@ -228,7 +228,7 @@
     <string name="hoy_runway_body">Save a few more neurons so your sparks keep surprising you.</string>
     <string name="hoy_used_title">You\'ve used today\'s spark</string>
     <string name="hoy_used_discarded">You marked this one as not useful. That helps us pick tomorrow\'s better.</string>
-    <string name="hoy_empty_no_material">Nothing to combine yet</string>
+    <string name="hoy_empty_no_material">Nothing to connect yet</string>
     <string name="hoy_empty_no_pair">We couldn\'t find a good pair today</string>
     <string name="hoy_empty_no_material_body">Save a few neurons on different topics: a quote, a link or a voice note. That\'s what Lumbre needs to light your first spark.</string>
     <string name="hoy_empty_no_pair_body">Save neurons on other topics. Connections between different worlds make the best sparks.</string>
@@ -267,6 +267,7 @@
     <string name="chispa_save_move_title">Move idea</string>
     <string name="chispa_share_title">Share card</string>
     <string name="chispa_share_image">Share image</string>
+    <string name="chispa_share_format">Format</string>
     <string name="chispa_share_failed">We couldn\'t make the image. Try again.</string>
     <string name="chispa_share_filename">Lumbre-spark.png</string>
     <!-- Planificador -->
@@ -276,6 +277,7 @@
     <string name="planificador_intro">Ask anything about this idea or pick a shortcut: a backlog to get started, a devil\'s advocate or the stack you\'d use.</string>
     <string name="planificador_copy">Copy</string>
     <string name="planificador_input">Write or ask…</string>
+    <string name="planificador_input_short">Ask…</string>
     <string name="planificador_stop">Stop response</string>
     <string name="planificador_send">Send</string>
     <string name="planificador_mode_quick">Quick</string>
@@ -345,7 +347,7 @@
     <string name="capturar_no_idea_found">We couldn\'t get an idea out of this. Write what idea it leaves you with and we\'ll save it in your words.</string>
     <string name="capturar_no_idea_found_short">We couldn\'t get an idea out of this. Write what idea it leaves you with.</string>
     <string name="capturar_offline_queued">Saved offline: we\'ll send it when you\'re back online</string>
-    <string name="capturar_offline_failed">You\'re offline and we couldn\'t save it on the phone. Try again in a bit.</string>
+    <string name="capturar_offline_failed">There\'s no connection and we couldn\'t save it on your phone. What you wrote is still here: try again in a bit.</string>
     <string name="capturar_offline_retry">You\'re offline. Try again when you\'re back online.</string>
     <string name="capturar_dictate_stop">Stop dictation</string>
     <string name="capturar_dictate_start">Dictate</string>
@@ -379,7 +381,7 @@
     <string name="capturar_ocr_on_device">Text pulled out on your phone. The photo stays in your gallery.</string>
     <string name="capturar_image_failed">We couldn\'t open that image. Try another one.</string>
     <string name="capturar_pdf_failed">We couldn\'t open that PDF. Try another one.</string>
-    <string name="capturar_pdf_too_big">The PDF is over 20 MB. Try a lighter one.</string>
+    <string name="capturar_pdf_too_big">The PDF is over 20 MB. Try a lighter one or scan just the pages you care about.</string>
     <string name="capturar_trials_checking">Checking your trials…</string>
     <string name="capturar_trials_what">Lumbre reads the content and pulls out 1 to 3 neurons.</string>
     <string name="capturar_trials_used">You\'ve used this month\'s trials. Write what idea it leaves you with and we\'ll save it anyway.</string>
@@ -418,7 +420,7 @@
     <string name="red_drafts_title">Drafts to confirm</string>
     <string name="red_drafts_body">Lumbre wasn\'t quite sure about these ideas. Open them and confirm or fix them.</string>
     <string name="red_neurons">Neurons</string>
-    <string name="red_empty_category">Nothing in this category</string>
+    <string name="red_empty_category">This category has no neurons</string>
     <string name="red_empty_category_body">Pick another one or see all neurons.</string>
     <string name="red_no_results_semantic">Try other words: search understands ideas, not just matches.</string>
     <string name="red_no_results_filtered">Try other words or remove the category filter.</string>
@@ -479,7 +481,7 @@
     <string name="circuitos_create">Create circuit</string>
     <string name="circuitos_save_failed">We couldn\'t save the circuit</string>
     <string name="circuitos_rename_title">Rename circuit</string>
-    <string name="circuitos_detail_empty_title">No ideas here yet</string>
+    <string name="circuitos_detail_empty_title">No ideas in this circuit yet</string>
     <string name="circuitos_detail_empty_body">When you save a spark, pick this circuit to add it.</string>
     <string name="circuitos_detail_go_today">Go to Today</string>
     <string name="circuitos_export_empty">There are no ideas in this circuit yet.</string>
@@ -570,7 +572,7 @@
     <string name="errores_load_failed">Couldn\'t load</string>
     <string name="errores_later">Something went wrong. Try again in a bit.</string>
     <string name="errores_api_quota">You\'ve hit today\'s limit. You can keep going tomorrow.</string>
-    <string name="errores_api_too_many_categories">You already have 50 categories. Use one of the ones you have.</string>
+    <string name="errores_api_too_many_categories">You already have 50 categories, the maximum. Pick one you have or delete one from Network › Categories.</string>
     <string name="errores_api_invalid_thesis">The idea has to be between 1 and 600 characters.</string>
     <string name="errores_api_invalid_category">The category has to be between 1 and 40 characters.</string>
     <string name="errores_api_no_idea">We couldn\'t get an idea out of this. What idea does it leave you with?</string>

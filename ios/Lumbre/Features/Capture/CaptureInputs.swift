@@ -301,7 +301,7 @@ struct PhotoInput: View {
             return
         }
         guard data.count <= Self.pdfLimit else {
-            onFailure("too_large", String(localized: "El PDF pesa más de 20 MB. Probá con uno más liviano."))
+            onFailure("too_large", String(localized: "El PDF pesa más de 20 MB. Probá con uno más liviano o escaneá solo las páginas que te importan."))
             return
         }
         let thumbnail = document.page(at: 0)?.thumbnail(of: CGSize(width: 144, height: 192), for: .mediaBox)

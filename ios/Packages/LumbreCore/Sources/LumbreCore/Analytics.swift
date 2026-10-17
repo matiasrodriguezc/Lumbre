@@ -31,7 +31,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case sparkRevealed(mode: SparkMode, isFirst: Bool, entry: String, reduceMotion: Bool)
     case sparkExtraRequested(mode: SparkMode, source: String)
     case sparkEmptyStateShown(reason: String)
-    case shareCardCreated(mode: SparkMode)
+    /// `format`: `story` (1080 × 1920) o `feed` (1080 × 1350).
+    case shareCardCreated(mode: SparkMode, format: String)
     case sparkShared(activityType: String?)
     case aiContentReported(object: String, reason: ReportReason)
     // Bóveda
@@ -142,8 +143,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
             ["mode": .string(mode.rawValue), "source": .string(source)]
         case let .sparkEmptyStateShown(reason):
             ["reason": .string(reason)]
-        case let .shareCardCreated(mode):
-            ["mode": .string(mode.rawValue)]
+        case let .shareCardCreated(mode, format):
+            ["mode": .string(mode.rawValue), "format": .string(format)]
         case let .sparkShared(activityType):
             ["activity_type": activityType.map(AnalyticsValue.string) ?? .null]
         case let .aiContentReported(object, reason):
@@ -290,6 +291,8 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     case revealSynapse = "reveal_synapse"
     /// Tarjeta para compartir con las zonas seguras de design/compartir: margen de abajo de 340 y categoría en una línea.
     case shareCardSafeZones = "share_card_safe_zones"
+    /// Formato feed (1080 × 1350) como segunda opción en la hoja de compartir; historias sigue siendo el de siempre.
+    case shareCardFeed = "share_card_feed"
 
     public var defaultValue: Bool { true }
 
