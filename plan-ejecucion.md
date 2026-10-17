@@ -243,7 +243,7 @@ Salen de una lista de ideas revisada el 2026-10-17; las elegidas están en `plan
 - [ ] **92. Temas puente** · flag `bridge_topics`
   Si la Red tiene mucho de dos dominios que casi no se cruzaron, Lumbre sugiere 2 o 3 temas para leer que los unan ("bioarte" entre biología y arte). Solo temas, nunca artículos ni links. Una llamada por semana como mucho; se puede sumar al resumen semanal. Se muestra en la Red, y en Hoy cuando quedan pocos pares buenos.
   A definir: si es para todos o solo Pro.
-- [ ] **93. Swipe en el reveal** · flag `reveal_swipe`
+- [x] **93. Swipe en el reveal** · flag `reveal_swipe` · ✅ 2026-10-17: gesto en `design/reveal/` (README §12 y prototipo); en iOS, `UIPanGestureRecognizer` en el scroll del modal (un `DragGesture` le ganaba al scroll en iOS 18), `SparkActionRequest` en `SparkActions`, acciones de VoiceOver y evento `spark_swiped`. Probado en el simulador en los dos sentidos y en AX5; quedan provisorios la rotación, los hápticos, que el swipe cierre el modal y el popover del motivo en iOS 26.
   En el modal, ya revelada (desde los 900 ms): deslizar a la derecha guarda (abre la elección de circuito si está `projects`) y a la izquierda abre "No me sirve" con su motivo. La tarjeta sigue al dedo, con umbral, háptico y vuelta si no llega al umbral; con Reducir movimiento, sin fling. Los botones se quedan y VoiceOver usa acciones (`accessibilityAction`). Primero el gesto en `design/reveal/`.
   Listo cuando: el swipe funciona en los dos sentidos, no choca con el scroll del panel en AX5 y VoiceOver puede hacer lo mismo sin gesto.
 
