@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tu puesto en la fila · Lumbre</title>
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#E3E3DF">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/fraunces-600-soft.woff" as="font" type="font/woff" crossorigin>
+  <link rel="stylesheet" href="assets/tokens.css">
+  <link rel="stylesheet" href="assets/site.css">
+  <script type="module" src="assets/fila.js"></script>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="./" aria-label="Lumbre, inicio">
+        <img class="brand__mark" src="assets/img/lumbre-mark.svg" alt="" width="242" height="131">
+        <img class="brand__word" src="assets/img/lumbre-wordmark.svg" alt="Lumbre" width="361" height="128">
+      </a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="queue" data-loading>
+      <p class="pulse muted" role="status">
+        <svg viewBox="0 0 46 12" aria-hidden="true"><rect class="n-link" x="0" y="5" width="46" height="2" rx="1"/><circle class="n-impulse imp" cx="6" cy="6" r="4"/></svg>
+        Buscando tu lugar en la fila…
+      </p>
+    </div>
+
+    <div class="queue" data-entry hidden>
+      <div>
+        <p class="eyebrow">Tu puesto en la fila</p>
+        <div class="queue__pos">
+          <span class="queue__n" data-position aria-describedby="pos-of"></span>
+          <span class="lead" id="pos-of" data-total></span>
+        </div>
+      </div>
+      <p class="status" data-confirm-status role="status" aria-live="polite" hidden></p>
+
+      <dl class="facts">
+        <div><dt>Referidos confirmados</dt><dd data-referrals></dd></div>
+        <div><dt>Cada uno te sube</dt><dd data-boost></dd></div>
+      </dl>
+
+      <div class="share">
+        <h2>Compartí tu link</h2>
+        <p class="lead" data-share-lead></p>
+        <div class="share__link">
+          <label class="sr-only" for="share-url">Tu link</label>
+          <input class="input" id="share-url" data-share-url readonly>
+          <button class="btn btn--primary" type="button" data-copy>Copiar link</button>
+        </div>
+        <div class="share__channels">
+          <button class="btn btn--secondary btn--sm" type="button" data-native hidden>Compartir</button>
+          <a class="btn btn--secondary btn--sm" data-channel="whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a class="btn btn--secondary btn--sm" data-channel="x" target="_blank" rel="noopener noreferrer">X</a>
+          <a class="btn btn--secondary btn--sm" data-channel="email">Email</a>
+        </div>
+        <p class="status" data-share-status role="status" aria-live="polite" hidden></p>
+      </div>
+
+      <p class="small muted">Te vamos a escribir solo para avisarte cuando Lumbre esté lista. <button class="btn btn--ghost btn--sm" type="button" data-leave>Salir de la fila y borrar mi email</button></p>
+    </div>
+
+    <div class="queue" data-missing hidden>
+      <div class="empty">
+        <img src="assets/img/estado-sin-chispa.svg" alt="" width="240" height="150">
+        <h2>No encontramos tu lugar</h2>
+        <p class="lead" data-missing-text>Abrí el link del mail que te mandamos, o anotate con tu email y te llega uno nuevo.</p>
+        <a class="btn btn--primary" href="./#fila">Anotarme en la fila</a>
+      </div>
+    </div>
+
+    <div class="queue" data-left hidden>
+      <div class="empty">
+        <h2>Listo, saliste de la fila</h2>
+        <p class="lead">Borramos tu email. Si cambiás de idea, podés anotarte de nuevo cuando quieras.</p>
+        <a class="btn btn--secondary" href="./">Volver al inicio</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p class="small"><b>Lumbre.</b> <span class="muted">Donde se encienden las ideas.</span></p>
+      <p class="small"><a href="privacidad.html">Privacidad</a></p>
+    </div>
+  </footer>
+</body>
+</html>

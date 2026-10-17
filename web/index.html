@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lumbre · El método para tener ideas, en tu bolsillo</title>
+  <meta name="description" content="Guardá lo que leés, escuchás y pensás. Cada mañana, Lumbre conecta dos de tus ideas de mundos distintos y salta una chispa: una idea nueva para hacer esta semana.">
+  <meta name="theme-color" content="#E3E3DF">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Lumbre">
+  <meta property="og:title" content="Lumbre · El método para tener ideas, en tu bolsillo">
+  <meta property="og:description" content="Cada mañana, dos de tus ideas de mundos distintos se conectan y salta una chispa. Anotate en la fila.">
+  <meta property="og:image" content="assets/img/og.png">
+  <meta property="og:locale" content="es_AR">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="assets/fonts/fraunces-600-soft.woff" as="font" type="font/woff" crossorigin>
+  <link rel="stylesheet" href="assets/tokens.css">
+  <link rel="stylesheet" href="assets/site.css">
+  <script type="module" src="assets/landing.js"></script>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="./" aria-label="Lumbre, inicio">
+        <img class="brand__mark" src="assets/img/lumbre-mark.svg" alt="" width="242" height="131">
+        <img class="brand__word" src="assets/img/lumbre-wordmark.svg" alt="Lumbre" width="361" height="128">
+      </a>
+      <nav aria-label="Secciones">
+        <a class="btn btn--ghost btn--sm" href="#demo" data-flag="web_demo_spark">Probar la demo</a>
+        <a class="btn btn--secondary btn--sm" href="#fila" data-flag="web_waitlist">Anotarme</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div class="hero__net" aria-hidden="true"><img src="assets/img/red-dormida.svg" alt="" width="1200" height="420"></div>
+      <div class="wrap">
+        <div class="hero__inner">
+          <p class="eyebrow">Una app de idea stacking</p>
+          <h1>El método para tener ideas, en tu bolsillo.</h1>
+          <p class="lead">Guardá lo que leés, escuchás y pensás. Cada mañana, Lumbre conecta dos de tus ideas de mundos distintos y salta una chispa: una idea nueva, concreta, para hacer esta semana.</p>
+
+          <div id="fila" data-flag="web_waitlist">
+            <form class="join" data-join novalidate>
+              <label class="sr-only" for="join-email">Tu email</label>
+              <input class="input" id="join-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Tu email" required maxlength="254">
+              <div class="hp" aria-hidden="true"><label>No completar <input name="website" tabindex="-1" autocomplete="off"></label></div>
+              <button class="btn btn--primary" type="submit">Anotarme en la fila</button>
+            </form>
+            <p class="status" data-status role="status" aria-live="polite" hidden></p>
+            <p class="privacy-note">Solo te pedimos el email, para avisarte cuando Lumbre esté lista y contarte tu puesto en la fila. Nada más. <a href="privacidad.html">Privacidad</a></p>
+            <p class="privacy-note" data-ref-note hidden>Llegaste con una invitación: si te anotás y confirmás tu email, quien te invitó sube en la fila.</p>
+          </div>
+          <p class="privacy-note" data-flag-off="web_waitlist" hidden>La fila abre en unos días. Volvé pronto.</p>
+        </div>
+      </div>
+    </div>
+
+    <section id="como" aria-labelledby="como-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="como-title">Las buenas ideas salen de juntar dos</h2>
+          <p class="lead">Casi ninguna idea es nueva del todo: es una que ya existía, cruzada con otra de otro mundo. Lumbre hace ese cruce por vos, todos los días.</p>
+        </div>
+        <ol class="axon">
+          <li><span class="node" aria-hidden="true"><svg viewBox="0 0 32 32"><circle class="n-dormant" cx="16" cy="16" r="9"/></svg></span>
+            <div><h3>Guardá neuronas</h3><p>Una frase, un link, una captura o una nota de voz, desde cualquier app. Cada cosa que guardás es una neurona de tu Red.</p></div></li>
+          <li><span class="node" aria-hidden="true"><svg viewBox="0 0 32 32"><circle class="n-dormant" cx="16" cy="16" r="9"/><circle class="n-impulse" cx="16" cy="16" r="4"/></svg></span>
+            <div><h3>Lumbre las destila</h3><p>De cada una saca la idea de fondo: el mecanismo, no las palabras. Así se pueden cruzar ideas de mundos que nunca se tocan.</p></div></li>
+          <li><span class="node" aria-hidden="true"><svg viewBox="0 0 32 32"><circle class="n-active" cx="16" cy="16" r="9"/></svg></span>
+            <div><h3>Cada mañana salta una chispa</h3><p>Dos neuronas de dominios distintos se conectan, a la hora que elijas, y aparece una idea nueva: «Ciclones × aspiradoras», «Podcast × ruinas».</p></div></li>
+          <li><span class="node" aria-hidden="true"><svg viewBox="0 0 32 32"><circle class="n-active" cx="16" cy="16" r="9"/></svg></span>
+            <div><h3>La llevás a un Circuito</h3><p>Si te sirve, la guardás en un Circuito y la bajás a un plan con un primer paso para esta semana.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="demo" aria-labelledby="demo-title" data-flag="web_demo_spark">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="demo-title">Probalo con dos ideas tuyas</h2>
+          <p class="lead">Pegá dos ideas que no tengan nada que ver entre sí. Lumbre las conecta y te devuelve una chispa.</p>
+        </div>
+
+        <form class="demo" data-demo novalidate>
+          <div class="examples">
+            <span class="small muted">Probá con un ejemplo:</span>
+            <button class="chip" type="button" data-example="0">Ciclones × aspiradoras</button>
+            <button class="chip" type="button" data-example="1">Podcast × ruinas</button>
+            <button class="chip" type="button" data-example="2">Hormigas × reuniones</button>
+          </div>
+          <div class="demo__pair">
+            <div class="field">
+              <label for="idea-a">Primera idea</label>
+              <textarea class="textarea" id="idea-a" name="idea_a" maxlength="500" required placeholder="Algo que leíste, escuchaste o pensaste"></textarea>
+              <span class="counter" data-counter="idea-a" aria-hidden="true">0/500</span>
+            </div>
+            <svg class="demo__syn" viewBox="0 0 120 40" aria-hidden="true">
+              <path class="n-active" d="M0.2 22.7 L17.9 21.6 L32.4 22.5 L42.2 31.5 L43.5 33.6 L46.1 34.6 L47.9 34.0 L49.0 32.9 L49.6 31.1 L49.3 29.6 L47.3 27.7 L43.1 27.6 L39.9 24.2 L39.9 22.6 L40.8 21.9 L45.3 21.7 L47.7 23.3 L49.8 23.5 L51.9 22.1 L52.6 19.9 L51.6 17.5 L49.8 16.5 L47.7 16.7 L45.3 18.3 L40.8 18.1 L39.9 17.4 L39.9 15.8 L43.1 12.4 L47.3 12.3 L49.3 10.4 L49.6 8.9 L49.0 7.1 L47.4 5.7 L45.9 5.4 L43.5 6.4 L42.2 8.5 L32.8 17.2 L18.1 16.4 L-0.5 17.3 L-2.2 18.4 L-2.7 20.5 L-1.6 22.2Z"/>
+              <path class="n-active" d="M75.1 18.3 L72.3 16.7 L70.2 16.5 L68.1 17.9 L67.4 19.9 L68.1 22.1 L70.2 23.5 L72.3 23.3 L74.7 21.7 L79.2 21.9 L80.1 22.6 L80.1 24.2 L76.9 27.6 L72.7 27.7 L70.7 29.6 L70.4 31.1 L71.0 32.9 L72.1 34.0 L73.9 34.6 L76.5 33.6 L77.8 31.5 L87.6 22.5 L102.1 21.6 L120.1 22.7 L121.9 22.0 L122.7 20.1 L122.0 18.1 L120.0 17.2 L102.1 16.4 L87.6 17.4 L77.8 8.5 L76.5 6.4 L73.4 5.5 L71.9 6.1 L70.7 7.6 L70.4 9.1 L71.0 10.9 L73.2 12.5 L76.9 12.4 L80.3 16.2 L80.1 17.4 L79.2 18.1Z"/>
+            </svg>
+            <div class="field">
+              <label for="idea-b">Segunda idea</label>
+              <textarea class="textarea" id="idea-b" name="idea_b" maxlength="500" required placeholder="Otra de un mundo bien distinto"></textarea>
+              <span class="counter" data-counter="idea-b" aria-hidden="true">0/500</span>
+            </div>
+          </div>
+          <div class="demo__row">
+            <div class="field">
+              <label for="demo-email">Tu email</label>
+              <input class="input" id="demo-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="nombre@ejemplo.com" required maxlength="254">
+            </div>
+            <div class="hp" aria-hidden="true"><label>No completar <input name="website" tabindex="-1" autocomplete="off"></label></div>
+            <button class="btn btn--primary is-glow" type="submit"><span class="dot" aria-hidden="true"></span><svg class="btn-pulse" viewBox="0 0 40 10" aria-hidden="true"><rect x="0" y="4" width="40" height="2" rx="1"/><circle cx="5" cy="5" r="3.5"/></svg><span data-label>Encender la chispa</span></button>
+          </div>
+          <p class="status" data-status role="status" aria-live="polite" hidden></p>
+          <p class="privacy-note">Una chispa por día. Tus ideas no se guardan: se usan para encender la chispa y listo. Tu email queda en la fila de Lumbre y te llega un mail para confirmarlo. <a href="privacidad.html">Privacidad</a></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="closing" aria-labelledby="cierre-title" data-flag="web_waitlist">
+      <div class="wrap">
+        <div class="closing__box">
+          <h2 id="cierre-title">Anotate en la fila</h2>
+          <p class="lead">Llegamos primero a iPhone y después a Android. Cuando te anotes vas a tener tu link: cada persona que se anote con él te sube puestos.</p>
+          <form class="join" data-join novalidate>
+            <label class="sr-only" for="join-email-2">Tu email</label>
+            <input class="input" id="join-email-2" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Tu email" required maxlength="254">
+            <div class="hp" aria-hidden="true"><label>No completar <input name="website" tabindex="-1" autocomplete="off"></label></div>
+            <button class="btn btn--primary" type="submit">Anotarme en la fila</button>
+          </form>
+          <p class="status" data-status role="status" aria-live="polite" hidden></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p class="small"><b>Lumbre.</b> <span class="muted">Donde se encienden las ideas.</span></p>
+      <p class="small"><a href="privacidad.html">Privacidad</a></p>
+    </div>
+  </footer>
+
+  <template id="reveal-template">
+    <div class="veil" data-veil>
+      <div class="panel play" role="dialog" aria-modal="true" aria-labelledby="spark-title" tabindex="-1">
+        <button class="panel__close" type="button" aria-label="Cerrar" data-close>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <div class="reveal">
+          <div class="atom atom--a">Neurona<b data-a></b></div>
+          <svg class="reveal__syn" viewBox="0 0 120 40" aria-hidden="true">
+            <path class="n-active syn-l" d="M0.2 22.7 L17.9 21.6 L32.4 22.5 L42.2 31.5 L43.5 33.6 L46.1 34.6 L47.9 34.0 L49.0 32.9 L49.6 31.1 L49.3 29.6 L47.3 27.7 L43.1 27.6 L39.9 24.2 L39.9 22.6 L40.8 21.9 L45.3 21.7 L47.7 23.3 L49.8 23.5 L51.9 22.1 L52.6 19.9 L51.6 17.5 L49.8 16.5 L47.7 16.7 L45.3 18.3 L40.8 18.1 L39.9 17.4 L39.9 15.8 L43.1 12.4 L47.3 12.3 L49.3 10.4 L49.6 8.9 L49.0 7.1 L47.4 5.7 L45.9 5.4 L43.5 6.4 L42.2 8.5 L32.8 17.2 L18.1 16.4 L-0.5 17.3 L-2.2 18.4 L-2.7 20.5 L-1.6 22.2Z"/>
+            <path class="n-active syn-r" d="M75.1 18.3 L72.3 16.7 L70.2 16.5 L68.1 17.9 L67.4 19.9 L68.1 22.1 L70.2 23.5 L72.3 23.3 L74.7 21.7 L79.2 21.9 L80.1 22.6 L80.1 24.2 L76.9 27.6 L72.7 27.7 L70.7 29.6 L70.4 31.1 L71.0 32.9 L72.1 34.0 L73.9 34.6 L76.5 33.6 L77.8 31.5 L87.6 22.5 L102.1 21.6 L120.1 22.7 L121.9 22.0 L122.7 20.1 L122.0 18.1 L120.0 17.2 L102.1 16.4 L87.6 17.4 L77.8 8.5 L76.5 6.4 L73.4 5.5 L71.9 6.1 L70.7 7.6 L70.4 9.1 L71.0 10.9 L73.2 12.5 L76.9 12.4 L80.3 16.2 L80.1 17.4 L79.2 18.1Z"/>
+            <circle class="n-impulse imp-l" cx="8" cy="20" r="3"/><circle class="n-impulse imp-r" cx="112" cy="20" r="3"/>
+            <path class="n-spark syn-star" transform="translate(51.5,11.5) scale(0.708)" d="M12 1 Q12 12 23 12 Q12 12 12 23 Q12 12 1 12 Q12 12 12 1Z"/>
+          </svg>
+          <div class="atom atom--b">Neurona<b data-b></b></div>
+        </div>
+        <h2 class="spark-title" id="spark-title" data-title></h2>
+        <p class="spark-body" data-body></p>
+        <div class="panel__after" data-after></div>
+      </div>
+    </div>
+  </template>
+</body>
+</html>

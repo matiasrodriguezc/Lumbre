@@ -45,3 +45,6 @@ android/captures/
 ios/Lumbre/Resources/DevCredentials.plist
 # Las versiones de los paquetes las fija el Package.resolved del proyecto de la app
 ios/Packages/*/Package.resolved
+
+# Worktrees de agentes
+.claude/worktrees/
