@@ -33,16 +33,22 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case notificationOpened(type: String, minutesAfterSent: Int?)
     case sparkRevealed(mode: SparkMode, isFirst: Bool, entry: String, reduceMotion: Bool)
     case sparkExtraRequested(mode: SparkMode, source: String)
+    /// Swipe en el reveal (flag `reveal_swipe`): `direction` es `save` o `dismiss`; `input`, `gesture` o `accessibility_action`.
+    case sparkSwiped(mode: SparkMode, direction: String, input: String)
     case sparkEmptyStateShown(reason: String)
-    case shareCardCreated(mode: SparkMode)
+    /// `format`: `story` (1080 × 1920) o `feed` (1080 × 1350).
+    case shareCardCreated(mode: SparkMode, format: String)
     case sparkShared(activityType: String?)
     case aiContentReported(object: String, reason: ReportReason)
     // Bóveda
     case vaultSearched(words: Int, results: Int)
     case vaultFiltered(domain: String)
     case conceptOpened(entry: String)
+    /// Desde una neurona que nació de una chispa, abre la chispa original (flag `spark_neuron`).
+    case sparkOriginOpened
     // Planificador, proyectos y export
     case plannerOpened(entry: String)
+    case plannerLensUsed(lens: PlannerLens, mode: PlannerMode, method: PlannerMethod)
     case markdownExported(object: String)
     // Pro
     case paywallShown(trigger: String, variant: String)
@@ -80,6 +86,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .notificationOpened: "notification_opened"
         case .sparkRevealed: "spark_revealed"
         case .sparkExtraRequested: "spark_extra_requested"
+        case .sparkSwiped: "spark_swiped"
         case .sparkEmptyStateShown: "spark_empty_state_shown"
         case .shareCardCreated: "share_card_created"
         case .sparkShared: "spark_shared"
@@ -87,7 +94,9 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .vaultSearched: "vault_searched"
         case .vaultFiltered: "vault_filtered"
         case .conceptOpened: "concept_opened"
+        case .sparkOriginOpened: "spark_origin_opened"
         case .plannerOpened: "planner_opened"
+        case .plannerLensUsed: "planner_lens_used"
         case .markdownExported: "markdown_exported"
         case .paywallShown: "paywall_shown"
         case .paywallDismissed: "paywall_dismissed"
@@ -102,7 +111,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
     /// Propiedades del evento, con los nombres y valores de `docs/analytics.md`.
     public var properties: [String: AnalyticsValue] {
         switch self {
-        case .onboardingStarted, .guestEntered:
+        case .onboardingStarted, .guestEntered, .sparkOriginOpened:
             [:]
         case let .onboardingStepCompleted(step, index):
             ["step": .string(step), "step_index": .int(index)]
@@ -149,10 +158,12 @@ public enum AnalyticsEvent: Sendable, Equatable {
             ["mode": .string(mode.rawValue), "is_first": .bool(isFirst), "entry": .string(entry), "reduce_motion": .bool(reduceMotion)]
         case let .sparkExtraRequested(mode, source):
             ["mode": .string(mode.rawValue), "source": .string(source)]
+        case let .sparkSwiped(mode, direction, input):
+            ["mode": .string(mode.rawValue), "direction": .string(direction), "input": .string(input)]
         case let .sparkEmptyStateShown(reason):
             ["reason": .string(reason)]
-        case let .shareCardCreated(mode):
-            ["mode": .string(mode.rawValue)]
+        case let .shareCardCreated(mode, format):
+            ["mode": .string(mode.rawValue), "format": .string(format)]
         case let .sparkShared(activityType):
             ["activity_type": activityType.map(AnalyticsValue.string) ?? .null]
         case let .aiContentReported(object, reason):
@@ -166,6 +177,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
             ["entry": .string(entry)]
         case let .plannerOpened(entry):
             ["entry": .string(entry)]
+        case let .plannerLensUsed(lens, mode, method):
+            ["lens": .string(lens.rawValue), "mode": .string(mode.rawValue), "method": .string(method.rawValue)]
         case let .markdownExported(object):
             ["object": .string(object)]
         case let .paywallShown(trigger, variant):
@@ -296,6 +309,8 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     case neuralIdentity = "neural_identity"
     /// Planificador con el método de los tres cuartos de Walt Disney (planner.v2).
     case disneyPlanner = "planner_disney"
+    /// Lentes del planificador: modelo de negocio, trama y post (planner_lens.v1).
+    case plannerLenses = "planner_lenses"
     /// Crear la cuenta o entrar con un código por email (en vez del aviso de "las cuentas llegan pronto").
     case emailAccount = "account_email"
     /// Share Extension: compartir texto, links, imágenes y PDFs desde otras apps.
@@ -307,8 +322,16 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     /// Reveal de 900 ms con la coreografía de design/reveal: la sinapsis entra, cruza el impulso y salta la chispa;
     /// cierre con fundido. Apagado, queda el reveal anterior (~1.200 ms).
     case revealSynapse = "reveal_synapse"
+    /// La chispa guardada se vuelve neurona (paso 88): `save_spark` con `p_as_neuron`, "Nació de una chispa" en la Red
+    /// y el camino a la chispa original. El servidor también lo apaga con `app_config.spark_neuron_enabled`.
+    case sparkNeuron = "spark_neuron"
     /// Tarjeta para compartir con las zonas seguras de design/compartir: margen de abajo de 340 y categoría en una línea.
     case shareCardSafeZones = "share_card_safe_zones"
+    /// Formato feed (1080 × 1350) como segunda opción en la hoja de compartir; historias sigue siendo el de siempre.
+    case shareCardFeed = "share_card_feed"
+    /// Swipe en el modal del reveal (design/reveal §12): a la derecha guarda, a la izquierda "No me sirve",
+    /// con acciones de VoiceOver equivalentes. Necesita `reveal_synapse`.
+    case revealSwipe = "reveal_swipe"
     /// Importar notas (paso 89): Markdown y carpetas de Obsidian desde Archivos, y Apple Notes con un atajo.
     case importNotes = "import_notes"
 

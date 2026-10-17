@@ -122,7 +122,7 @@ struct VaultView: View {
             }
             if filtered.isEmpty {
                 ContentUnavailableView(
-                    "Nada en esta categoría",
+                    "Esta categoría no tiene neuronas",
                     systemImage: "tag",
                     description: Text("Elegí otra o mirá todas las neuronas.")
                 )
@@ -222,7 +222,7 @@ struct VaultView: View {
         ContentUnavailableView {
             EmptyStateLabel("Todavía no hay neuronas", systemImage: "square.stack.3d.up", illustration: .emptyVault)
         } description: {
-            Text("Guardá una frase, un link o una nota de voz para tener material que combinar.")
+            Text("Guardá una frase, un link o una nota de voz para tener material que conectar.")
         } actions: {
             Button("Capturar") {
                 appModel.presentCapture(entry: "empty_vault")

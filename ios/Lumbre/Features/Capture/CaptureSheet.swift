@@ -388,7 +388,7 @@ struct CaptureSheet: View {
             finish(String(localized: "Guardado sin conexión: lo mandamos cuando vuelva"), delay: .milliseconds(1800))
         } catch {
             Analytics.track(.captureFailed(reason: "network"))
-            errorMessage = String(localized: "Sin conexión y no pudimos guardarlo en el teléfono. Probá de nuevo en un rato.")
+            errorMessage = String(localized: "No hay conexión y no pudimos guardarlo en el teléfono. Lo que escribiste sigue acá: probá de nuevo en un rato.")
         }
     }
 

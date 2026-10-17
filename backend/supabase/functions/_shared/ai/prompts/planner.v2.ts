@@ -5,6 +5,7 @@
 // sabe en qué cuarto está el hilo y cuánto tiempo pasó la persona en cada uno, y se lo pasa al modelo en cada turno.
 
 import type { ConceptBrief } from "../types.ts";
+import { lensOf } from "./planner.lenses.ts";
 
 export const PLANNER_DISNEY_VERSION = "planner.v2";
 export const SUMMARY_DISNEY_VERSION = "planner_summary.v2";
@@ -38,16 +39,20 @@ export interface RoomState {
 
 /**
  * Recorre el hilo en orden. Cada mensaje de la persona cuenta para el cuarto de la respuesta anterior
- * (es la respuesta a lo que preguntó ese cuarto).
+ * (es la respuesta a lo que preguntó ese cuarto). Los pedidos de lente (respuesta con [[lens:…]]) no cuentan.
  */
 export function roomState(messages: Array<{ role: "user" | "assistant"; content: string }>): RoomState {
   const userTurns: Record<Room, number> = { dreamer: 0, realist: 0, critic: 0, plan: 0 };
   let current: Room | null = null;
+  let lastCounted: Room | null = null;
   for (const message of messages) {
     if (message.role === "assistant") {
+      if (lensOf(message.content) && lastCounted) userTurns[lastCounted] -= 1;
+      lastCounted = null;
       current = roomOf(message.content) ?? current;
     } else if (current) {
       userTurns[current] += 1;
+      lastCounted = current;
     }
   }
   return { current, userTurns };

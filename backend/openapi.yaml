@@ -128,6 +128,8 @@ paths:
       summary: Chispa extra en tiempo real
       description: |
         Descuenta `spark_extra`. `pick` (Pro) combina los dos conceptos elegidos por el usuario.
+        Los dos tienen que ser de mundos distintos y no puede ser una neurona nacida de una chispa con uno de sus
+        padres (400 `invalid_request`).
         Si la IA falla, devuelve el crédito.
       requestBody:
         required: true
@@ -219,6 +221,13 @@ paths:
                   enum: [free, disney]
                   default: free
                   description: "disney: método de los tres cuartos (prompt planner.v2, flag planner_disney en la app)"
+                lens:
+                  type: string
+                  enum: [business_model, plot, post]
+                  description: |
+                    Lente (planner_lens.v1, flag planner_lenses en la app): la respuesta convierte la chispa en un modelo
+                    de negocio, una trama o un post, con su formato. Empieza con la marca `[[lens:…]]` y no avanza
+                    los cuartos del método. Sirve con los dos métodos.
       responses:
         '200':
           description: Stream de eventos
@@ -402,11 +411,15 @@ components:
         status: { type: string, enum: [draft, ready] }
         distilled: { type: boolean }
         confidence: { type: [string, 'null'], enum: [high, medium, low, null] }
-        source_type: { type: string, enum: [text, voice, selection, screenshot, scan, link, image, pdf] }
+        source_type: { type: string, enum: [text, voice, selection, screenshot, scan, link, image, pdf, audio, video, import, spark] }
         source_url: { type: [string, 'null'] }
         source_title: { type: [string, 'null'] }
         excerpt: { type: [string, 'null'] }
         from_library: { type: boolean }
+        origin_spark_id:
+          type: [string, 'null']
+          format: uuid
+          description: La chispa guardada de la que nació esta neurona (`source_type = spark`, flag `spark_neuron`).
         created_at: { type: string, format: date-time }
         category:
           oneOf:

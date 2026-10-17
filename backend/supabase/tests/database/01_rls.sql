@@ -55,7 +55,7 @@ select is(
     where n.nspname = 'public' and p.prosecdef
       and (has_function_privilege('anon', p.oid, 'execute') or has_function_privilege('authenticated', p.oid, 'execute'))),
   array['capture_concept', 'create_project', 'credit_status', 'delete_my_account', 'export_my_data', 'move_concept',
-        'register_push_token'],
+        'register_push_token', 'save_spark'],
   'solo estas funciones security definer las puede llamar la app'
 );
 select is(

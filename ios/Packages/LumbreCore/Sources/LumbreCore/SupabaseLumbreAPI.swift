@@ -213,13 +213,10 @@ public struct SupabaseLumbreAPI: LumbreAPI {
 
     public func saveSpark(id: Spark.ID, projectID: Project.ID?) async throws {
         try await perform {
-            try await client.from("sparks")
-                .update([
-                    "status": AnyJSON.string(SparkStatus.saved.rawValue),
-                    "project_id": projectID.map { AnyJSON.string($0.uuidString) } ?? .null,
-                ])
-                .eq("id", value: id)
-                .execute()
+            // Con el flag `spark_neuron`, la primera vez que se guarda nace su neurona (si el servidor también lo tiene).
+            try await client.rpc("save_spark", params: SaveSparkParams(
+                p_spark: id, p_project: projectID, p_as_neuron: FeatureFlag.sparkNeuron.isEnabled
+            )).execute()
         }
     }
 
@@ -464,8 +461,8 @@ public struct SupabaseLumbreAPI: LumbreAPI {
     }
 
     /// Streaming por SSE: emite cada `delta` y termina con `done`. Cancelar el stream corta la conexión.
-    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod) -> AsyncThrowingStream<String, Error> {
-        let body = PlannerBody(sparkId: sparkID, message: text, mode: mode.rawValue, method: method.rawValue)
+    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod, lens: PlannerLens?) -> AsyncThrowingStream<String, Error> {
+        let body = PlannerBody(sparkId: sparkID, message: text, mode: mode.rawValue, method: method.rawValue, lens: lens?.rawValue)
         return AsyncThrowingStream { continuation in
             let task = Task {
                 do {
@@ -689,7 +686,7 @@ private actor SessionGate {
 enum QueryColumns {
     static let domain = "slug,name_es,name_en,symbol_ios"
     static let category = "id,name,domain:domains(\(domain))"
-    static let concept = "id,title,thesis,principle,status,distilled,confidence,source_type,source_url,source_title,excerpt,from_library,created_at,"
+    static let concept = "id,title,thesis,principle,status,distilled,confidence,source_type,source_url,source_title,excerpt,from_library,origin_spark_id,origin_lo,origin_hi,created_at,"
         + "category:categories!concepts_category_same_user(\(category))"
     static let spark = "id,title,body,mode,status,feedback,project_id,scheduled_for,created_at,project:projects(name),"
         + "concept_a:concepts!sparks_concept_lo_fkey(\(concept)),concept_b:concepts!sparks_concept_hi_fkey(\(concept))"
@@ -708,6 +705,12 @@ private struct PushTokenParams: Encodable, Sendable {
 
 private struct CreateProjectParams: Encodable, Sendable {
     let p_name: String
+}
+
+private struct SaveSparkParams: Encodable, Sendable {
+    let p_spark: UUID
+    let p_project: UUID?
+    let p_as_neuron: Bool
 }
 
 private struct MoveConceptParams: Encodable, Sendable {
@@ -736,6 +739,8 @@ private struct PlannerBody: Encodable, Sendable {
     let message: String
     let mode: String
     let method: String
+    /// Sin lente no va en el cuerpo.
+    let lens: String?
 }
 
 /// Cuerpo de `POST /capture`.

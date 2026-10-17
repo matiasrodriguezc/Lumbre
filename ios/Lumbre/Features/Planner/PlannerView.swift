@@ -4,6 +4,7 @@ import SwiftUI
 
 /// Planificador Pro: chat anclado a una chispa. Conoce el perfil, las dos neuronas y el circuito.
 /// Con el flag `planner_disney`, guía con el método de los tres cuartos de Walt Disney: Soñador, Realista, Crítico y síntesis.
+/// Con el flag `planner_lenses`, suma tres lentes: la chispa como modelo de negocio, trama o post (planner_lens.v1).
 struct PlannerView: View {
     let sparkID: Spark.ID
     /// `planner_opened.entry`: `spark_detail` o `project`.
@@ -82,6 +83,7 @@ struct PlannerView: View {
                         ProgressView().frame(maxWidth: .infinity).padding(.top, Space.s8)
                     } else if messages.isEmpty && pending == nil {
                         if usesDisney { disneyIntro } else { emptyHint }
+                        if usesDisney && usesLenses { lensIntro }
                     }
                     ForEach(messages) { message in
                         bubble(for: message)
@@ -143,7 +145,9 @@ struct PlannerView: View {
     }
 
     private var emptyHint: some View {
-        Text("Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo o el stack que usarías.")
+        Text(usesLenses
+             ? "Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo, el stack que usarías o una lente para verla como modelo de negocio, trama o post."
+             : "Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo o el stack que usarías.")
             .font(.callout)
             .foregroundStyle(Palette.inkMuted)
             .padding(.vertical, Space.s2)
@@ -155,6 +159,12 @@ struct PlannerView: View {
         case .user:
             ChatBubble(role: .user, text: message.displayText)
         case .assistant:
+            if let lens = message.lens {
+                Text("Lente: \(lens.title)")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(Palette.inkMuted)
+                    .padding(.bottom, -Space.s2)
+            }
             ChatBubble(role: .planner, text: message.displayText)
                 .contextMenu {
                     Button {
@@ -237,14 +247,26 @@ struct PlannerView: View {
     }
 
     private var quickReplyButtons: some View {
-        ForEach(quickReplies, id: \.label) { reply in
-            Button {
-                send(reply.prompt)
-            } label: {
-                LumbreChip(reply.label, variant: .select)
+        Group {
+            ForEach(quickReplies, id: \.label) { reply in
+                Button {
+                    send(reply.prompt)
+                } label: {
+                    LumbreChip(reply.label, variant: .select)
+                }
+                .buttonStyle(.plain)
+                .disabled(isStreaming || isLoading)
             }
-            .buttonStyle(.plain)
-            .disabled(isStreaming || isLoading)
+            ForEach(composerLenses, id: \.self) { lens in
+                Button {
+                    send(lens.prompt, lens: lens)
+                } label: {
+                    LumbreChip(lens.title, systemImage: "eyeglasses", variant: .select)
+                }
+                .buttonStyle(.plain)
+                .disabled(isStreaming || isLoading)
+                .accessibilityLabel(Text("Lente: \(lens.title)"))
+            }
         }
     }
 
@@ -333,12 +355,16 @@ struct PlannerView: View {
     }
 
     /// Atajos del composer: en los cuartos, los del método; antes de empezar, ninguno (arranca con el botón del Soñador);
-    /// después de la síntesis o sin el método, los de siempre.
+    /// con un hilo que no entró al método, la entrada al Soñador y los de siempre; después de la síntesis o sin el método,
+    /// los de siempre.
     private var quickReplies: [(label: String, prompt: String)] {
         let presets = PlannerPreset.allCases.map { (label: $0.label, prompt: $0.prompt) }
         guard usesDisney else { return presets }
         switch currentRoom {
-        case nil: return messages.isEmpty ? [] : presets
+        case nil:
+            // Un hilo que empezó sin el método (o con una lente) puede entrar al Soñador desde acá.
+            let start = (label: String(localized: "Entrar al cuarto del Soñador"), prompt: String(localized: "Empecemos por el Soñador."))
+            return messages.isEmpty ? [] : [start] + presets
         case .dreamer: return [
             (String(localized: "Más grande todavía"), String(localized: "Llevalo más grande todavía.")),
             (String(localized: "Pasemos al Realista"), String(localized: "Pasemos al siguiente cuarto: el Realista.")),
@@ -351,6 +377,53 @@ struct PlannerView: View {
             (String(localized: "Pasemos a la síntesis"), String(localized: "Pasemos al siguiente cuarto: la síntesis.")),
         ]
         case .plan: return presets
+        }
+    }
+
+    // MARK: Lentes
+
+    private var usesLenses: Bool { FeatureFlag.plannerLenses.isEnabled }
+
+    /// Las lentes van donde van los atajos de siempre: sin el método, después de la síntesis o si el hilo empezó
+    /// sin el método. En los cuartos no aparecen, para no sacar a la persona del método (el servidor igual no lo avanza).
+    /// Con el método y el hilo vacío, están en la intro (`lensIntro`).
+    private var composerLenses: [PlannerLens] {
+        guard usesLenses else { return [] }
+        guard usesDisney else { return PlannerLens.allCases }
+        switch currentRoom {
+        case nil: return messages.isEmpty ? [] : PlannerLens.allCases
+        case .plan: return PlannerLens.allCases
+        case .dreamer, .realist, .critic: return []
+        }
+    }
+
+    private var lensIntro: some View {
+        VStack(alignment: .leading, spacing: Space.s2) {
+            Text("O mirala con una lente")
+                .font(.headline)
+                .foregroundStyle(Palette.ink)
+            Text("Un modelo de negocio, una trama o un post, cada uno con su formato.")
+                .font(.callout)
+                .foregroundStyle(Palette.inkMuted)
+                .fixedSize(horizontal: false, vertical: true)
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: Space.s2) { lensIntroButtons }
+                VStack(alignment: .leading, spacing: Space.s2) { lensIntroButtons }
+            }
+        }
+        .padding(.top, Space.s4)
+    }
+
+    private var lensIntroButtons: some View {
+        ForEach(PlannerLens.allCases, id: \.self) { lens in
+            Button {
+                send(lens.prompt, lens: lens)
+            } label: {
+                LumbreChip(lens.title, systemImage: "eyeglasses", variant: .select)
+            }
+            .buttonStyle(.plain)
+            .disabled(isStreaming || isLoading)
+            .accessibilityLabel(Text("Lente: \(lens.title)"))
         }
     }
 
@@ -431,12 +504,17 @@ struct PlannerView: View {
         }
     }
 
-    private func send(_ text: String) {
+    private func send(_ text: String, lens: PlannerLens? = nil) {
         let question = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !question.isEmpty, !isStreaming else { return }
+        // Sin el "Acepto" no sale nada hacia la IA, tampoco una lente (el servidor responde 403 ai_consent_required).
         guard AIConsent.isGranted else {
             appModel.presentAIConsent()
             return
+        }
+        let method: PlannerMethod = usesDisney ? .disney : .free
+        if let lens {
+            Analytics.track(.plannerLensUsed(lens: lens, mode: mode, method: method))
         }
         draft = ""
         inlineError = nil
@@ -445,7 +523,7 @@ struct PlannerView: View {
         let mode = mode
         streamTask = Task {
             do {
-                for try await chunk in api.sendPlannerMessage(sparkID: sparkID, text: question, mode: mode, method: usesDisney ? .disney : .free) {
+                for try await chunk in api.sendPlannerMessage(sparkID: sparkID, text: question, mode: mode, method: method, lens: lens) {
                     pending?.answer += chunk
                 }
                 await finish()
@@ -584,6 +662,25 @@ private struct RoomStepper: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(current.map { Text("Cuarto actual: \($0.title)") } ?? Text("El método todavía no arrancó"))
+    }
+}
+
+extension PlannerLens {
+    var title: String {
+        switch self {
+        case .businessModel: String(localized: "Modelo de negocio")
+        case .plot: String(localized: "Trama")
+        case .post: String(localized: "Post")
+        }
+    }
+
+    /// Mensaje que manda la lente (el formato lo pide el servidor con `lens`, no este texto).
+    var prompt: String {
+        switch self {
+        case .businessModel: String(localized: "Convertí esta chispa en un modelo de negocio.")
+        case .plot: String(localized: "Convertí esta chispa en una trama.")
+        case .post: String(localized: "Convertí esta chispa en un post.")
+        }
     }
 }
 

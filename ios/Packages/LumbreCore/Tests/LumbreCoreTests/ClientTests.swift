@@ -97,6 +97,26 @@ private enum Sample {
         #expect(concept.status == .ready)
     }
 
+    @Test func sparkNeuronDecodesItsOrigin() throws {
+        let json = """
+        { "id": "8F0A3C1E-2B4D-4E6F-8A1B-3C5D7E9F0A2B", "title": "Masa madre cuántica", "thesis": "Una levadura que solo crece si nadie la mira.",
+          "principle": null, "status": "ready", "distilled": false, "confidence": null, "source_type": "spark",
+          "source_url": null, "source_title": null, "excerpt": null, "from_library": false,
+          "origin_spark_id": "1A2B3C4D-5E6F-4A1B-8C2D-3E4F5A6B7C8D",
+          "origin_lo": "2B3C4D5E-6F7A-4B2C-9D3E-4F5A6B7C8D9E", "origin_hi": "3C4D5E6F-7A8B-4C3D-8E4F-5A6B7C8D9E0F",
+          "created_at": "2026-10-17T12:00:00.000Z", "category": null }
+        """
+        let concept = try decoder.decode(ConceptDTO.self, from: Data(json.utf8)).model
+        #expect(concept.sourceType == .spark)
+        #expect(concept.originSparkID == UUID(uuidString: "1A2B3C4D-5E6F-4A1B-8C2D-3E4F5A6B7C8D"))
+        #expect(concept.originConceptIDs.count == 2)
+        let parent = Concept(id: UUID(uuidString: "2B3C4D5E-6F7A-4B2C-9D3E-4F5A6B7C8D9E")!, category: nil, title: "P", thesis: "P", sourceType: .text, createdAt: .now)
+        #expect(concept.isSparkRelative(of: parent) && parent.isSparkRelative(of: concept))
+        // Una neurona de antes del paso 88 (sin las columnas) decodifica igual.
+        let old = try decoder.decode(ConceptDTO.self, from: Data(Sample.conceptWithoutCategory.utf8)).model
+        #expect(old.originSparkID == nil && old.originConceptIDs.isEmpty && !old.isSparkRelative(of: parent))
+    }
+
     @Test func sparkDecodesConceptsProjectAndLocalDay() throws {
         let spark = try decoder.decode(SparkDTO.self, from: Data(Sample.spark().utf8)).model
         #expect(spark.conceptA.title == "Escasez intencional")
@@ -462,7 +482,7 @@ private final class FlakyAPI: LumbreAPI {
     func sparks(inProject id: Project.ID) async throws -> [Spark] { [] }
     func exportProjectMarkdown(id: Project.ID) async throws -> String { "" }
     func plannerMessages(sparkID: Spark.ID) async throws -> [PlannerMessage] { [] }
-    func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod) -> AsyncThrowingStream<String, Error> {
+    func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod, lens: PlannerLens?) -> AsyncThrowingStream<String, Error> {
         AsyncThrowingStream { $0.finish() }
     }
     func setPlanForDevelopment(_ plan: Plan) async throws {}

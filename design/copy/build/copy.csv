@@ -56,7 +56,7 @@ comun.report_thanks,Comunes,Gracias por avisar. La vamos a revisar.,Thanks for l
 comun.report_detail,Comunes,La revisamos y ajustamos lo que genera Lumbre.,We review it and adjust what Lumbre generates.,,,ambas,app,
 comun.ideas_count,Comunes,%lld ideas,%lld ideas,,,ambas,app,Ideas (chispas guardadas) en un circuito.
 comun.no_neurons_title,Comunes,Todavía no hay neuronas,No neurons yet,,,ambas,app,
-comun.no_neurons_body,Comunes,"Guardá una frase, un link o una nota de voz para tener material que combinar.","Save a quote, a link or a voice note so there's something to connect.",,,ambas,app,
+comun.no_neurons_body,Comunes,"Guardá una frase, un link o una nota de voz para tener material que conectar.","Save a quote, a link or a voice note so there's something to connect.",,,ambas,app,
 comun.nothing_here,Comunes,Nada por acá,Nothing here,,,ambas,app,
 comun.new_circuit,Comunes,Nuevo circuito,New circuit,,,ambas,app,
 comun.circuit_name,Comunes,Nombre del circuito,Circuit name,,,ambas,app,
@@ -215,7 +215,7 @@ hoy.runway.title,Hoy,Te quedan pocas combinaciones nuevas,You're running low on 
 hoy.runway.body,Hoy,Guardá algunas neuronas más para que las chispas sigan sorprendiendo.,Save a few more neurons so your sparks keep surprising you.,,,ambas,app,
 hoy.used.title,Hoy,Ya usaste la chispa de hoy,You've used today's spark,,,ambas,app,
 hoy.used.discarded,Hoy,Marcaste que esta no te sirve. Con eso elegimos mejor la de mañana.,You marked this one as not useful. That helps us pick tomorrow's better.,,,ambas,app,
-hoy.empty.no_material,Hoy,Todavía no hay material para combinar,Nothing to combine yet,,,ambas,app,
+hoy.empty.no_material,Hoy,Todavía no hay material para conectar,Nothing to connect yet,,,ambas,app,
 hoy.empty.no_pair,Hoy,Hoy no encontramos un buen par,We couldn't find a good pair today,,,ambas,app,
 hoy.empty.no_material_body,Hoy,"Guardá algunas neuronas de temas distintos: una frase, un link o una nota de voz. Con eso Lumbre enciende tu primera chispa.","Save a few neurons on different topics: a quote, a link or a voice note. That's what Lumbre needs to light your first spark.",,,ambas,app,
 hoy.empty.no_pair_body,Hoy,Guardá neuronas de otros temas. Las conexiones entre mundos distintos dan las mejores chispas.,Save neurons on other topics. Connections between different worlds make the best sparks.,,,ambas,app,
@@ -252,6 +252,7 @@ chispa.save.another,"Chispa: acciones, detalle, guardar y compartir",Crear otro 
 chispa.save.move_title,"Chispa: acciones, detalle, guardar y compartir",Mover idea,Move idea,,,ambas,app,
 chispa.share.title,"Chispa: acciones, detalle, guardar y compartir",Tarjeta para compartir,Share card,,,ambas,app,
 chispa.share.image,"Chispa: acciones, detalle, guardar y compartir",Compartir imagen,Share image,,,ambas,app,
+chispa.share.format,"Chispa: acciones, detalle, guardar y compartir",Formato,Format,,,ambas,app,Etiqueta del selector historias / publicaciones (la lee VoiceOver).
 chispa.share.failed,"Chispa: acciones, detalle, guardar y compartir",No pudimos armar la imagen. Probá de nuevo.,We couldn't make the image. Try again.,,,ambas,app,
 chispa.share.filename,"Chispa: acciones, detalle, guardar y compartir",Lumbre-chispa.png,Lumbre-spark.png,,,ambas,app,Nombre del archivo que se comparte.
 planificador.report_reply,Planificador,Reportar esta respuesta,Report this reply,,,ambas,app,
@@ -260,6 +261,7 @@ planificador.circuit,Planificador,Circuito: %@,Circuit: %@,,,ambas,app,
 planificador.intro,Planificador,"Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo o el stack que usarías.","Ask anything about this idea or pick a shortcut: a backlog to get started, a devil's advocate or the stack you'd use.",,,ambas,app,
 planificador.copy,Planificador,Copiar,Copy,,,ambas,app,
 planificador.input,Planificador,Escribí o preguntá…,Write or ask…,,,ambas,app,
+planificador.input_short,Planificador,Preguntá…,Ask…,,,ambas,app,"Versión corta del campo con texto de accesibilidad, para que entre en una línea."
 planificador.stop,Planificador,Detener respuesta,Stop response,,,ambas,app,
 planificador.send,Planificador,Enviar,Send,,,ambas,app,
 planificador.mode.quick,Planificador,Rápido,Quick,,,ambas,app,
@@ -328,7 +330,7 @@ capturar.distilling_body,Capturar,Lumbre lee el contenido y saca las neuronas. P
 capturar.no_idea_found,Capturar,No pudimos sacar una idea de esto. Escribí qué idea te deja y lo guardamos con tus palabras.,We couldn't get an idea out of this. Write what idea it leaves you with and we'll save it in your words.,,,ambas,app,
 capturar.no_idea_found_short,Capturar,No pudimos sacar una idea de esto. Escribí qué idea te deja.,We couldn't get an idea out of this. Write what idea it leaves you with.,,,ambas,app,
 capturar.offline_queued,Capturar,Guardado sin conexión: lo mandamos cuando vuelva,Saved offline: we'll send it when you're back online,,,ambas,app,
-capturar.offline_failed,Capturar,Sin conexión y no pudimos guardarlo en el teléfono. Probá de nuevo en un rato.,You're offline and we couldn't save it on the phone. Try again in a bit.,,,ambas,app,
+capturar.offline_failed,Capturar,No hay conexión y no pudimos guardarlo en el teléfono. Lo que escribiste sigue acá: probá de nuevo en un rato.,There's no connection and we couldn't save it on your phone. What you wrote is still here: try again in a bit.,,,ambas,app,
 capturar.offline_retry,Capturar,Sin conexión. Probá de nuevo cuando vuelva la red.,You're offline. Try again when you're back online.,,,ambas,app,
 capturar.dictate.stop,Capturar,Parar el dictado,Stop dictation,,,ambas,app,
 capturar.dictate.start,Capturar,Dictar,Dictate,,,ambas,app,
@@ -362,7 +364,7 @@ capturar.no_text_found,Capturar,No encontramos texto. Escribí qué idea te deja
 capturar.ocr_on_device,Capturar,Texto sacado en el teléfono. La foto queda en tu fototeca.,Text pulled out on your phone. The photo stays in your library.,Texto sacado en el teléfono. La foto queda en tu galería.,Text pulled out on your phone. The photo stays in your gallery.,ambas,app,
 capturar.image_failed,Capturar,No pudimos abrir esa imagen. Probá con otra.,We couldn't open that image. Try another one.,,,ambas,app,
 capturar.pdf_failed,Capturar,No pudimos abrir ese PDF. Probá con otro.,We couldn't open that PDF. Try another one.,,,ambas,app,
-capturar.pdf_too_big,Capturar,El PDF pesa más de 20 MB. Probá con uno más liviano.,The PDF is over 20 MB. Try a lighter one.,,,ambas,app,
+capturar.pdf_too_big,Capturar,El PDF pesa más de 20 MB. Probá con uno más liviano o escaneá solo las páginas que te importan.,The PDF is over 20 MB. Try a lighter one or scan just the pages you care about.,,,ambas,app,
 capturar.trials.checking,Capturar,Revisando tus pruebas…,Checking your trials…,,,ambas,app,
 capturar.trials.what,Capturar,Lumbre lee el contenido y saca de 1 a 3 neuronas.,Lumbre reads the content and pulls out 1 to 3 neurons.,,,ambas,app,
 capturar.trials.used,Capturar,Usaste las pruebas de este mes. Escribí qué idea te deja esto y lo guardamos igual.,You've used this month's trials. Write what idea it leaves you with and we'll save it anyway.,,,ambas,app,
@@ -397,7 +399,7 @@ red.categories,Red,Categorías,Categories,,,ambas,app,
 red.drafts.title,Red,Borradores para confirmar,Drafts to confirm,,,ambas,app,
 red.drafts.body,Red,Lumbre no estaba del todo seguro de estas ideas. Abrilas y confirmalas o corregilas.,Lumbre wasn't quite sure about these ideas. Open them and confirm or fix them.,,,ambas,app,
 red.neurons,Red,Neuronas,Neurons,,,ambas,app,
-red.empty_category,Red,Nada en esta categoría,Nothing in this category,,,ambas,app,
+red.empty_category,Red,Esta categoría no tiene neuronas,This category has no neurons,,,ambas,app,
 red.empty_category_body,Red,Elegí otra o mirá todas las neuronas.,Pick another one or see all neurons.,,,ambas,app,
 red.no_results_semantic,Red,"Probá con otras palabras: la búsqueda entiende ideas, no solo coincidencias.","Try other words: search understands ideas, not just matches.",,,ambas,app,
 red.no_results_filtered,Red,Probá con otras palabras o sacá el filtro de categoría.,Try other words or remove the category filter.,,,ambas,app,
@@ -413,6 +415,7 @@ red.source.screenshot,Red,Captura de pantalla,Screenshot,,,ambas,app,
 red.source.link,Red,De un link,From a link,,,ambas,app,
 red.source.image,Red,Imagen,Image,,,ambas,app,
 red.source.audio,Red,Audio,Audio,,,ambas,app,
+red.source.spark,Red,Nació de una chispa,Born from a spark,,,ambas,app,Fuente de una neurona que nació de una chispa guardada (flag spark_neuron)
 red.draft_prefix,Red,Borrador · ,Draft · ,,,ambas,app,
 red.cat.none_title,Red,Todavía no tenés categorías,No categories yet,,,ambas,app,
 red.cat.none_body,Red,Se crean a medida que guardás neuronas.,They're created as you save neurons.,,,ambas,app,
@@ -441,6 +444,8 @@ neurona.excerpt_a11y,Detalle de neurona,Fragmento subrayado: %@,Highlighted exce
 neurona.sparks,Detalle de neurona,Chispas donde aparece,Sparks it appears in,,,ambas,app,
 neurona.no_sparks,Detalle de neurona,"Todavía no se conectó con otra neurona. Cuando aparezca en una chispa, la vas a ver acá.","It hasn't connected with another neuron yet. When it shows up in a spark, you'll see it here.",,,ambas,app,
 neurona.open_spark_hint,Detalle de neurona,Abre la chispa,Opens the spark,,,ambas,app,
+neurona.origin_spark,Detalle de neurona,Ver la chispa original,See the original spark,,,ambas,app,
+neurona.origin_spark_hint,Detalle de neurona,Abre la chispa de la que nació esta neurona,Opens the spark this neuron was born from,,,ambas,app,
 neurona.combine,Detalle de neurona,Combinar con…,Combine with…,,,ambas,app,
 neurona.combine_body,Detalle de neurona,Elegí otra neurona y Lumbre enciende una chispa con las dos.,Pick another neuron and Lumbre lights a spark with both.,,,ambas,app,
 neurona.combine_pro,Detalle de neurona,Con Lumbre Pro elegís qué neuronas se conectan.,With Lumbre Pro you choose which neurons connect.,,,ambas,app,
@@ -456,7 +461,7 @@ circuitos.empty.body,Circuitos,Un circuito junta las ideas que querés llevar ad
 circuitos.create,Circuitos,Crear circuito,Create circuit,,,ambas,app,
 circuitos.save_failed,Circuitos,No pudimos guardar el circuito,We couldn't save the circuit,,,ambas,app,
 circuitos.rename_title,Circuitos,Renombrar circuito,Rename circuit,,,ambas,app,
-circuitos.detail.empty_title,Circuitos,Todavía no hay ideas acá,No ideas here yet,,,ambas,app,
+circuitos.detail.empty_title,Circuitos,Todavía no hay ideas en este circuito,No ideas in this circuit yet,,,ambas,app,
 circuitos.detail.empty_body,Circuitos,"Cuando guardes una chispa, elegí este circuito para sumarla.","When you save a spark, pick this circuit to add it.",,,ambas,app,
 circuitos.detail.go_today,Circuitos,Ir a Hoy,Go to Today,,,ambas,app,
 circuitos.export_empty,Circuitos,Todavía no hay ideas en este circuito.,There are no ideas in this circuit yet.,,,ambas,app,Va dentro del Markdown exportado.
@@ -544,7 +549,7 @@ errores.offline_body,Errores y carga,Revisá tu conexión y probá de nuevo.,Che
 errores.load_failed,Errores y carga,No se pudo cargar,Couldn't load,,,ambas,app,
 errores.later,Errores y carga,Algo salió mal. Probá de nuevo en un rato.,Something went wrong. Try again in a bit.,,,ambas,app,
 errores.api.quota,Errores y carga,Llegaste al límite de hoy. Mañana podés seguir.,You've hit today's limit. You can keep going tomorrow.,,,ambas,app,
-errores.api.too_many_categories,Errores y carga,Ya tenés 50 categorías. Usá una de las que tenés.,You already have 50 categories. Use one of the ones you have.,,,ambas,app,
+errores.api.too_many_categories,Errores y carga,"Ya tenés 50 categorías, el máximo. Elegí una de las que tenés o borrá alguna desde Red › Categorías.","You already have 50 categories, the maximum. Pick one you have or delete one from Network › Categories.",,,ambas,app,
 errores.api.invalid_thesis,Errores y carga,La idea tiene que tener entre 1 y 600 caracteres.,The idea has to be between 1 and 600 characters.,,,ambas,app,
 errores.api.invalid_category,Errores y carga,La categoría tiene que tener entre 1 y 40 caracteres.,The category has to be between 1 and 40 characters.,,,ambas,app,
 errores.api.no_idea,Errores y carga,No pudimos sacar una idea de esto. ¿Qué idea te deja?,We couldn't get an idea out of this. What idea does it leave you with?,,,ambas,app,
@@ -620,8 +625,8 @@ widget.guest_title,Widget,Creá tu cuenta para recibir tu chispa diaria,Create y
 widget.guest_body,Widget,"Mientras tanto, podés capturar neuronas como invitado.","Meanwhile, you can capture neurons as a guest.",,,ambas,nuevo,
 widget.a11y_pending,Widget,"Chispa por encender: %@, de %@, con %@, de %@. Tocá para encenderla.","Spark to light: %1$@, from %2$@, with %3$@, from %4$@. Tap to light it.",,,ambas,nuevo,
 widget.share_text,Widget,Mi chispa de hoy en Lumbre: %@,Today's spark from Lumbre: %@,,,ambas,nuevo,"Texto que acompaña la imagen al compartir (provisorio, espera el dominio)."
-widget.share_story,Widget,Para historias,For stories,,,ambas,nuevo,"Formato de la tarjeta (propuesta). No usar ""Historia"" a secas: choca con la categoría Historia, que en inglés es History."
-widget.share_feed,Widget,Para publicaciones,For posts,,,ambas,nuevo,Formato de la tarjeta (propuesta).
+widget.share_story,Widget,Para historias,For stories,,,ambas,app,"Selector de formato en la hoja de la tarjeta para compartir. No usar ""Historia"" a secas: choca con la categoría Historia, que en inglés es History."
+widget.share_feed,Widget,Para publicaciones,For posts,,,ambas,app,Selector de formato en la hoja de la tarjeta para compartir.
 siri.save_title,"Siri, Atajos y App Intents",Guardar una idea en Lumbre,Save an idea in Lumbre,,,ios,app,Título del intent y etiqueta del widget circular.
 siri.save_description,"Siri, Atajos y App Intents",Guarda una neurona en tu Red sin abrir la app.,Saves a neuron to your Network without opening the app.,,,ios,app,
 siri.idea_prompt,"Siri, Atajos y App Intents",¿Qué idea querés guardar?,What idea do you want to save?,,,ios,app,
