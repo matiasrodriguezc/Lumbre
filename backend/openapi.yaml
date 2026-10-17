@@ -122,6 +122,8 @@ paths:
       summary: Chispa extra en tiempo real
       description: |
         Descuenta `spark_extra`. `pick` (Pro) combina los dos conceptos elegidos por el usuario.
+        Los dos tienen que ser de mundos distintos y no puede ser una neurona nacida de una chispa con uno de sus
+        padres (400 `invalid_request`).
         Si la IA falla, devuelve el crédito.
       requestBody:
         required: true
@@ -402,11 +404,15 @@ components:
         status: { type: string, enum: [draft, ready] }
         distilled: { type: boolean }
         confidence: { type: [string, 'null'], enum: [high, medium, low, null] }
-        source_type: { type: string, enum: [text, voice, selection, screenshot, scan, link, image, pdf] }
+        source_type: { type: string, enum: [text, voice, selection, screenshot, scan, link, image, pdf, audio, video, import, spark] }
         source_url: { type: [string, 'null'] }
         source_title: { type: [string, 'null'] }
         excerpt: { type: [string, 'null'] }
         from_library: { type: boolean }
+        origin_spark_id:
+          type: [string, 'null']
+          format: uuid
+          description: La chispa guardada de la que nació esta neurona (`source_type = spark`, flag `spark_neuron`).
         created_at: { type: string, format: date-time }
         category:
           oneOf:

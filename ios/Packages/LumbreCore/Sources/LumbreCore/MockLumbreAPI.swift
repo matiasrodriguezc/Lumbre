@@ -391,6 +391,14 @@ private actor MockStore {
 
     func save(sparkID: Spark.ID, projectID: Project.ID?) {
         guard let index = sparks.firstIndex(where: { $0.id == sparkID }) else { return }
+        // Como save_spark: la primera vez que se guarda nace su neurona. No cuenta para la chispa extra.
+        if FeatureFlag.sparkNeuron.isEnabled, sparks[index].status != .saved, !concepts.contains(where: { $0.originSparkID == sparkID }) {
+            let spark = sparks[index]
+            concepts.insert(Concept(
+                category: nil, title: String(spark.title.prefix(120)), thesis: String((spark.body.isEmpty ? spark.title : spark.body).prefix(600)),
+                sourceType: .spark, originSparkID: spark.id, originConceptIDs: [spark.conceptA.id, spark.conceptB.id], createdAt: .now
+            ), at: 0)
+        }
         sparks[index].status = .saved
         sparks[index].projectID = projectID
         sparks[index].projectName = projects.first { $0.id == projectID }?.name
@@ -407,11 +415,13 @@ private actor MockStore {
         guard extraRemaining > 0 else { throw LumbreAPIError.quotaExceeded }
         let pair: (Concept, Concept)
         if let pick, let a = concepts.first(where: { $0.id == pick.0 }), let b = concepts.first(where: { $0.id == pick.1 }) {
+            // Como /spark: una neurona de chispa no se combina con sus padres (400 invalid_request).
+            if a.isSparkRelative(of: b) { throw LumbreAPIError.unexpected }
             pair = (a, b)
         } else {
             let used = Set(sparks.map { Set([$0.conceptA.id, $0.conceptB.id]) })
             let candidates = concepts.flatMap { a in concepts.compactMap { b -> (Concept, Concept)? in
-                a.id.uuidString < b.id.uuidString && a.category != b.category && !used.contains([a.id, b.id]) ? (a, b) : nil
+                a.id.uuidString < b.id.uuidString && a.category != b.category && !a.isSparkRelative(of: b) && !used.contains([a.id, b.id]) ? (a, b) : nil
             } }
             guard let chosen = candidates.randomElement() else { throw LumbreAPIError.notEnoughConcepts }
             pair = chosen

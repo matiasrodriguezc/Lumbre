@@ -34,7 +34,7 @@ final class ShareModel {
         draft = result.draft
         preview = result.preview
         if result.pdfTooLarge && draft.isEmpty {
-            phase = .unavailable(String(localized: "El PDF pesa más de 20 MB. Probá con uno más liviano."))
+            phase = .unavailable(String(localized: "El PDF pesa más de 20 MB. Probá con uno más liviano o escaneá solo las páginas que te importan."))
             return
         }
         guard !draft.isEmpty else {

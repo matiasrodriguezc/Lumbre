@@ -145,7 +145,7 @@ Fuente: **A** = app (iOS y Android), **S** = servidor (Edge Functions o webhook)
 | `spark_feedback_given` | S | `mode`, `reason`: `obvious`, `irrelevant`, `already_had`; `distance_percentile`, `uses_library_concept` | "No me sirve" con motivo |
 | `spark_extra_requested` | A | `mode`, `source`: `earned`, `pro` | Pide una chispa más |
 | `spark_empty_state_shown` | A | `reason`: `used_today`, `no_candidates`, `few_concepts` | Hoy no tiene chispa para mostrar |
-| `share_card_created` | A | `mode` | Se genera la tarjeta para historias |
+| `share_card_created` | A | `mode`, `format`: `story`, `feed` | Se genera la tarjeta para compartir (historias o publicaciones) |
 | `spark_shared` | A | `activity_type` (el que devuelve la hoja del sistema, si lo da) | Termina de compartir |
 | `ai_content_reported` | A | `object`: `spark`, `planner_message`; `reason` | Reporta contenido generado (requisito de Google Play) |
 
@@ -157,6 +157,8 @@ Fuente: **A** = app (iOS y Android), **S** = servidor (Edge Functions o webhook)
 | `vault_filtered` | A | `domain` | Aplica un filtro de dominio |
 | `concept_opened` | A | `entry`: `vault`, `search`, `spark_detail` | Abre el detalle de un concepto |
 | `concept_deleted` | S | `source_type`, `age_days_bucket` | Borra un concepto |
+| `spark_neuron_created` | S | `mode` (el de la chispa), `parent_is_spark_neuron` | Al guardar una chispa nace su neurona (`save_spark`, flag `spark_neuron`). No cuenta como `concept_saved`: no es información nueva que agregó la persona |
+| `spark_origin_opened` | A | — | Desde una neurona que nació de una chispa, abre la chispa original (flag `spark_neuron`) |
 
 ### Planificador, proyectos y export
 

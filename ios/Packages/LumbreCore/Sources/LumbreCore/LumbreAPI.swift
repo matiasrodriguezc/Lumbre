@@ -141,7 +141,7 @@ public enum LumbreAPIError: LocalizedError, Equatable {
     public var errorDescription: String? {
         switch self {
         case .quotaExceeded: String(localized: "Llegaste al límite de hoy. Mañana podés seguir.", bundle: .module)
-        case .tooManyCategories: String(localized: "Ya tenés 50 categorías. Usá una de las que tenés.", bundle: .module)
+        case .tooManyCategories: String(localized: "Ya tenés 50 categorías, el máximo. Elegí una de las que tenés o borrá alguna desde Red › Categorías.", bundle: .module)
         case .invalidThesis: String(localized: "La idea tiene que tener entre 1 y 600 caracteres.", bundle: .module)
         case .invalidCategory: String(localized: "La categoría tiene que tener entre 1 y 40 caracteres.", bundle: .module)
         case .invalidSource: String(localized: "Revisá el link: no parece válido.", bundle: .module)

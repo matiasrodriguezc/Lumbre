@@ -156,7 +156,10 @@ struct CombinePickerSheet: View {
             }
             .disabled(requesting != nil)
             .task {
-                concepts = ((try? await api.concepts()) ?? []).filter { $0.id != conceptID }
+                let all = (try? await api.concepts()) ?? []
+                // Una neurona que nació de una chispa no se combina con sus padres (ni al revés).
+                let current = all.first { $0.id == conceptID }
+                concepts = all.filter { other in other.id != conceptID && current?.isSparkRelative(of: other) != true }
             }
             .alert("No se pudo encender", isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
                 Button("Entendido", role: .cancel) {}
