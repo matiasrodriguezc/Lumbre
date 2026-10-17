@@ -113,7 +113,7 @@ struct ShareCardImage: Transferable {
             Analytics.track(.sparkShared(activityType: nil))
             return image.png
         }
-        .suggestedFileName("Lumbre-chispa.png")
+        .suggestedFileName(String(localized: "Lumbre-chispa.png"))
     }
 }
 

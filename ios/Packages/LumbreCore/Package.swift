@@ -14,7 +14,9 @@ let package = Package(
     targets: [
         .target(
             name: "LumbreCore",
-            dependencies: [.product(name: "Supabase", package: "supabase-swift")]
+            dependencies: [.product(name: "Supabase", package: "supabase-swift")],
+            // Catálogo propio: los errores y el export se traducen en la app y en las extensiones por igual.
+            resources: [.process("Resources")]
         ),
         .testTarget(
             name: "LumbreCoreTests",

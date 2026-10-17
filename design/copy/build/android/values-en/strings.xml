@@ -240,7 +240,7 @@
     <string name="reveal_about_to_connect">Two of your neurons from different worlds are about to connect.</string>
     <string name="reveal_ignite">Light the spark</string>
     <string name="reveal_ignite_hint">Reveals the spark</string>
-    <string name="reveal_panel_daily">Today\'s spark</string>
+    <string name="reveal_panel_daily">Your spark for today</string>
     <string name="reveal_panel_extra">Your extra spark</string>
     <string name="reveal_a11y_summary">Spark: %1$s. %2$s It combines %3$s, from %4$s, with %5$s, from %6$s.</string>
     <!-- Chispa: acciones, detalle, guardar y compartir -->
@@ -623,30 +623,43 @@
     <string name="estados_unsupported_format_aviso">Lumbre doesn\'t read Word, PowerPoint or video files. Save a PDF or the link, or write what idea it leaves you with.</string>
     <string name="estados_hoy_sin_permiso_app_body">Sparks use AI to connect your neurons. To light them, we need your permission.</string>
     <string name="estados_hoy_sin_permiso_meanwhile">Meanwhile, you can keep saving neurons.</string>
-    <!-- Widget y tarjeta para compartir -->
+    <!-- Widget -->
     <string name="widget_spark_name">Today\'s spark</string>
-    <string name="widget_spark_description">Your daily spark and a shortcut to capture.</string>
-    <string name="widget_capture_description">Open Capture straight from your Home Screen.</string>
-    <string name="widget_capture_long">Capture an idea</string>
-    <string name="widget_capture_hint">A quote, a link or a voice note</string>
-    <string name="widget_pending_cta_short">Light it</string>
+    <string name="widget_spark_description">The two neurons that connected today and the spark they made.</string>
+    <string name="widget_capture_name">Save an idea</string>
+    <string name="widget_capture_description">Opens Capture to add a neuron to your Network.</string>
+    <string name="widget_capture_hint">Into your Network</string>
+    <string name="widget_control_capture">Capture in Lumbre</string>
     <string name="widget_pending_lock">Your spark is ready</string>
-    <string name="widget_pending_pair">%1$s and %2$s</string>
-    <string name="widget_next_lock">Next spark: tomorrow %s</string>
+    <string name="widget_pending_short">Ready to light</string>
+    <string name="widget_ready_title">Today\'s spark is ready</string>
+    <string name="widget_ready_short">It\'s ready</string>
+    <string name="widget_ready_body">Open Lumbre to light it</string>
+    <string name="widget_tap_to_light">Tap to light it</string>
     <string name="widget_next_lock_title">Next spark</string>
-    <string name="widget_next_lock_when">Tomorrow at %s</string>
+    <string name="widget_next_title">Your next spark</string>
+    <string name="widget_next_when">Arrives at</string>
+    <string name="widget_open">Open Lumbre</string>
+    <string name="widget_no_data_body">Open Lumbre to see today\'s spark</string>
+    <string name="widget_unavailable">Coming soon to Lumbre</string>
     <string name="widget_no_material_body">Save neurons from different topics.</string>
     <string name="widget_signed_out_title">Open Lumbre to get started</string>
     <string name="widget_guest_title">Create your account to get your daily spark</string>
     <string name="widget_guest_body">Meanwhile, you can capture neurons as a guest.</string>
-    <string name="widget_no_data_title">Your new spark is waiting</string>
-    <string name="widget_no_data_body">Open Lumbre to load it.</string>
-    <string name="widget_open">Open</string>
     <string name="widget_a11y_pending">Spark to light: %1$s, from %2$s, with %3$s, from %4$s. Tap to light it.</string>
-    <string name="widget_control_capture">Capture idea</string>
     <string name="widget_share_text">Today\'s spark from Lumbre: %s</string>
     <string name="widget_share_story">For stories</string>
     <string name="widget_share_feed">For posts</string>
+    <!-- Compartir hacia Lumbre (Share Extension) -->
+    <string name="compartir_title">Save to Lumbre</string>
+    <string name="compartir_idea_label">Your idea</string>
+    <string name="compartir_idea_placeholder">Write it in one sentence</string>
+    <string name="compartir_limit">Keep it to %d characters or fewer</string>
+    <string name="compartir_unavailable">Sharing to Lumbre isn\'t available yet.</string>
+    <string name="compartir_unreadable">We couldn\'t read what you shared.</string>
+    <string name="compartir_queued">Saved. It joins your Network when you open Lumbre.</string>
+    <string name="compartir_save_failed">We couldn\'t save it. Try again.</string>
+    <string name="compartir_local_failed">We couldn\'t save it on your phone. Try again.</string>
     <!-- Export a Markdown -->
     <string name="markdown_me">Me</string>
 </resources>

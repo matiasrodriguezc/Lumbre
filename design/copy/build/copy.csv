@@ -54,7 +54,7 @@ comun.not_useful,Comunes,No me sirve,Not useful,,,ambas,app,
 comun.report,Comunes,Reportar,Report,,,ambas,app,
 comun.report_thanks,Comunes,Gracias por avisar. La vamos a revisar.,Thanks for letting us know. We'll review it.,,,ambas,app,
 comun.report_detail,Comunes,La revisamos y ajustamos lo que genera Lumbre.,We review it and adjust what Lumbre generates.,,,ambas,app,
-comun.ideas_count,Comunes,^[%lld idea](inflect: true),^[%lld idea](inflect: true),,,ambas,app,Ideas (chispas guardadas) en un circuito.
+comun.ideas_count,Comunes,%lld ideas,%lld ideas,,,ambas,app,Ideas (chispas guardadas) en un circuito.
 comun.no_neurons_title,Comunes,Todavía no hay neuronas,No neurons yet,,,ambas,app,
 comun.no_neurons_body,Comunes,"Guardá una frase, un link o una nota de voz para tener material que combinar.","Save a quote, a link or a voice note so there's something to connect.",,,ambas,app,
 comun.nothing_here,Comunes,Nada por acá,Nothing here,,,ambas,app,
@@ -196,7 +196,7 @@ hoy.meter.one,Hoy,1 chispa para encender,1 spark to light,,,ambas,app,
 hoy.meter.many,Hoy,%lld chispas para encender,%lld sparks to light,,,ambas,app,
 hoy.meter.used,Hoy,Usaste las chispas de hoy,You've used today's sparks,,,ambas,app,
 hoy.meter.lit,Hoy,Chispa de hoy encendida,Today's spark is lit,,,ambas,nuevo,Contador cuando la chispa de hoy ya se encendió (widget y Hoy). Hoy solo está en el preview del componente.
-hoy.meter.earn,Hoy,Guardá ^[%lld neurona](inflect: true) para ganar 1 extra,Save ^[%lld neuron](inflect: true) to earn 1 extra,,,ambas,app,
+hoy.meter.earn,Hoy,Guardá %lld neuronas para ganar 1 extra,Save %lld neurons to earn 1 extra,,,ambas,app,
 hoy.meter.earn_a11y,Hoy,%lld de %lld neuronas para la próxima chispa extra,%lld of %lld neurons toward your next extra spark,,,ambas,app,
 hoy.refill.today,Hoy,Se recarga hoy a las %@,Refills today at %@,,,ambas,app,
 hoy.refill.tomorrow,Hoy,Se recarga mañana a las %@,Refills tomorrow at %@,,,ambas,app,
@@ -226,7 +226,7 @@ reveal.ready_extra,Reveal de la chispa,Tu chispa extra está lista,Your extra sp
 reveal.about_to_connect,Reveal de la chispa,Dos neuronas tuyas de mundos distintos están por conectarse.,Two of your neurons from different worlds are about to connect.,,,ambas,app,
 reveal.ignite,Reveal de la chispa,Encender la chispa,Light the spark,,,ambas,app,Botón principal negro con el punto rosa.
 reveal.ignite_hint,Reveal de la chispa,Revela la chispa,Reveals the spark,,,ambas,app,Hint de accesibilidad.
-reveal.panel_daily,Reveal de la chispa,Tu chispa de hoy,Today's spark,,,ambas,app,
+reveal.panel_daily,Reveal de la chispa,Tu chispa de hoy,Your spark for today,,,ambas,app,"En el widget va debajo de ""Chispa de hoy"": no tiene que repetirlo."
 reveal.panel_extra,Reveal de la chispa,Tu chispa extra,Your extra spark,,,ambas,app,
 reveal.a11y_summary,Reveal de la chispa,"Chispa: %@. %@ Combina %@, de %@, con %@, de %@.","Spark: %1$@. %2$@ It combines %3$@, from %4$@, with %5$@, from %6$@.",,,ambas,app,"Lo que anuncia VoiceOver al revelar. Título, cuerpo, neurona A, categoría A, neurona B, categoría B."
 chispa.share,"Chispa: acciones, detalle, guardar y compartir",Compartir,Share,,,ambas,app,
@@ -596,27 +596,61 @@ estados.file_unreadable_pdf_con_contrasena,"Estados vacíos, error, offline y co
 estados.unsupported_format_aviso,"Estados vacíos, error, offline y contenido inaccesible","Lumbre no lee archivos de Word, PowerPoint ni videos. Guardá un PDF o el link, o escribí qué idea te deja.","Lumbre doesn't read Word, PowerPoint or video files. Save a PDF or the link, or write what idea it leaves you with.",,,ambas,nuevo,Estado inaccessible.unsupported_format (Aviso). Ver design/estados/README.md.
 estados.hoy_sin_permiso_app_body,"Estados vacíos, error, offline y contenido inaccesible",Las chispas usan IA para conectar tus neuronas. Para encenderlas necesitamos tu permiso.,"Sparks use AI to connect your neurons. To light them, we need your permission.",,,ambas,app,Versión que usa la app (AIConsent.swift) para empty.hoy_sin_permiso.
 estados.hoy_sin_permiso_meanwhile,"Estados vacíos, error, offline y contenido inaccesible","Mientras tanto, podés seguir guardando neuronas.","Meanwhile, you can keep saving neurons.",,,ambas,app,
-widget.spark_name,Widget y tarjeta para compartir,Chispa de hoy,Today's spark,,,ambas,nuevo,Nombre en la galería de widgets.
-widget.spark_description,Widget y tarjeta para compartir,Tu chispa del día y un atajo para capturar.,Your daily spark and a shortcut to capture.,,,ambas,nuevo,
-widget.capture_description,Widget y tarjeta para compartir,Abrí Capturar directo desde la pantalla de inicio.,Open Capture straight from your Home Screen.,,,ambas,nuevo,
-widget.capture_long,Widget y tarjeta para compartir,Capturar una idea,Capture an idea,,,ambas,nuevo,Botón de captura del widget grande.
-widget.capture_hint,Widget y tarjeta para compartir,"Una frase, un link o una nota de voz","A quote, a link or a voice note",,,ambas,nuevo,
-widget.pending_cta_short,Widget y tarjeta para compartir,Encender,Light it,,,ambas,nuevo,Botón del widget chico y del 2×2.
-widget.pending_lock,Widget y tarjeta para compartir,Tu chispa está lista,Your spark is ready,,,ambas,nuevo,Accesorios de pantalla bloqueada.
-widget.pending_pair,Widget y tarjeta para compartir,%@ y %@,%@ and %@,,,ambas,nuevo,Las dos neuronas de la chispa.
-widget.next_lock,Widget y tarjeta para compartir,Próxima chispa: mañana %@,Next spark: tomorrow %@,,,ambas,nuevo,Accesorio inline. %@ es la hora.
-widget.next_lock_title,Widget y tarjeta para compartir,Próxima chispa,Next spark,,,ambas,nuevo,
-widget.next_lock_when,Widget y tarjeta para compartir,Mañana a las %@,Tomorrow at %@,,,ambas,nuevo,
-widget.no_material_body,Widget y tarjeta para compartir,Guardá neuronas de temas distintos.,Save neurons from different topics.,,,ambas,nuevo,
-widget.signed_out_title,Widget y tarjeta para compartir,Abrí Lumbre para empezar,Open Lumbre to get started,,,ambas,nuevo,
-widget.guest_title,Widget y tarjeta para compartir,Creá tu cuenta para recibir tu chispa diaria,Create your account to get your daily spark,,,ambas,nuevo,Solo si no se confirma que el invitado recibe la chispa (design/prototipo/invitado.md).
-widget.guest_body,Widget y tarjeta para compartir,"Mientras tanto, podés capturar neuronas como invitado.","Meanwhile, you can capture neurons as a guest.",,,ambas,nuevo,
-widget.no_data_title,Widget y tarjeta para compartir,Tu chispa nueva te espera,Your new spark is waiting,,,ambas,nuevo,
-widget.no_data_body,Widget y tarjeta para compartir,Abrí Lumbre para traerla.,Open Lumbre to load it.,,,ambas,nuevo,
-widget.open,Widget y tarjeta para compartir,Abrir,Open,,,ambas,nuevo,
-widget.a11y_pending,Widget y tarjeta para compartir,"Chispa por encender: %@, de %@, con %@, de %@. Tocá para encenderla.","Spark to light: %1$@, from %2$@, with %3$@, from %4$@. Tap to light it.",,,ambas,nuevo,
-widget.control_capture,Widget y tarjeta para compartir,Capturar idea,Capture idea,,,ambas,nuevo,Control de iOS 18 (propuesta).
-widget.share_text,Widget y tarjeta para compartir,Mi chispa de hoy en Lumbre: %@,Today's spark from Lumbre: %@,,,ambas,nuevo,"Texto que acompaña la imagen al compartir (provisorio, espera el dominio)."
-widget.share_story,Widget y tarjeta para compartir,Para historias,For stories,,,ambas,nuevo,"Formato de la tarjeta (propuesta). No usar ""Historia"" a secas: choca con la categoría Historia, que en inglés es History."
-widget.share_feed,Widget y tarjeta para compartir,Para publicaciones,For posts,,,ambas,nuevo,Formato de la tarjeta (propuesta).
+widget.spark_name,Widget,Chispa de hoy,Today's spark,,,ambas,app,Nombre del widget en la galería y encabezado en la pantalla bloqueada.
+widget.spark_description,Widget,Las dos neuronas que se conectaron hoy y la chispa que salió.,The two neurons that connected today and the spark they made.,,,ambas,app,Descripción en la galería de widgets.
+widget.capture_name,Widget,Guardar una idea,Save an idea,,,ambas,app,"Nombre del widget de captura, su texto y el botón del widget grande. También título corto del atajo."
+widget.capture_description,Widget,Abre Capturar para sumar una neurona a tu Red.,Opens Capture to add a neuron to your Network.,,,ambas,app,Descripción del widget de captura en la galería.
+widget.capture_hint,Widget,Va directo a tu Red,Into your Network,,,ambas,app,"Debajo de ""Guardar una idea"" en el widget de captura chico: una sola línea."
+widget.control_capture,Widget,Capturar en Lumbre,Capture in Lumbre,,,ambas,app,Control del Centro de control (iOS 18) y título del App Intent que abre Capturar.
+widget.pending_lock,Widget,Tu chispa está lista,Your spark is ready,,,ambas,app,Chispa sin encender: título del widget e inline de pantalla bloqueada.
+widget.pending_short,Widget,Lista para encender,Ready to light,,,ambas,app,"Chispa sin encender, widget rectangular de pantalla bloqueada."
+widget.ready_title,Widget,Tu chispa de hoy ya está lista,Today's spark is ready,,,ambas,app,Chispa lista que el widget todavía no conoce: título.
+widget.ready_short,Widget,Ya está lista,It's ready,,,ambas,app,"Lo mismo, widget rectangular."
+widget.ready_body,Widget,Abrí Lumbre para encenderla,Open Lumbre to light it,,,ambas,app,"Lo mismo, debajo del título."
+widget.tap_to_light,Widget,Tocá para encenderla,Tap to light it,,,ambas,app,Debajo del título cuando hay chispa.
+widget.next_lock_title,Widget,Próxima chispa,Next spark,,,ambas,app,"Inline de pantalla bloqueada, seguido de la hora."
+widget.next_title,Widget,Tu próxima chispa,Your next spark,,,ambas,app,Esperando la chispa de mañana: título.
+widget.next_when,Widget,Llega a las,Arrives at,,,ambas,app,"Seguido de la hora, que formatea el sistema."
+widget.open,Widget,Abrí Lumbre,Open Lumbre,,,ambas,app,"Sin datos, widget rectangular."
+widget.no_data_body,Widget,Abrí Lumbre para ver la chispa del día,Open Lumbre to see today's spark,,,ambas,app,"Sin datos, debajo del título (""Tu chispa de hoy"")."
+widget.unavailable,Widget,Pronto en Lumbre,Coming soon to Lumbre,,,ambas,app,Con el feature flag apagado.
+widget.no_material_body,Widget,Guardá neuronas de temas distintos.,Save neurons from different topics.,,,ambas,nuevo,
+widget.signed_out_title,Widget,Abrí Lumbre para empezar,Open Lumbre to get started,,,ambas,nuevo,
+widget.guest_title,Widget,Creá tu cuenta para recibir tu chispa diaria,Create your account to get your daily spark,,,ambas,nuevo,Solo si no se confirma que el invitado recibe la chispa (design/prototipo/invitado.md).
+widget.guest_body,Widget,"Mientras tanto, podés capturar neuronas como invitado.","Meanwhile, you can capture neurons as a guest.",,,ambas,nuevo,
+widget.a11y_pending,Widget,"Chispa por encender: %@, de %@, con %@, de %@. Tocá para encenderla.","Spark to light: %1$@, from %2$@, with %3$@, from %4$@. Tap to light it.",,,ambas,nuevo,
+widget.share_text,Widget,Mi chispa de hoy en Lumbre: %@,Today's spark from Lumbre: %@,,,ambas,nuevo,"Texto que acompaña la imagen al compartir (provisorio, espera el dominio)."
+widget.share_story,Widget,Para historias,For stories,,,ambas,nuevo,"Formato de la tarjeta (propuesta). No usar ""Historia"" a secas: choca con la categoría Historia, que en inglés es History."
+widget.share_feed,Widget,Para publicaciones,For posts,,,ambas,nuevo,Formato de la tarjeta (propuesta).
+siri.save_title,"Siri, Atajos y App Intents",Guardar una idea en Lumbre,Save an idea in Lumbre,,,ios,app,Título del intent y etiqueta del widget circular.
+siri.save_description,"Siri, Atajos y App Intents",Guarda una neurona en tu Red sin abrir la app.,Saves a neuron to your Network without opening the app.,,,ios,app,
+siri.idea_prompt,"Siri, Atajos y App Intents",¿Qué idea querés guardar?,What idea do you want to save?,,,ios,app,
+siri.category_prompt,"Siri, Atajos y App Intents",¿En qué categoría?,Which category?,,,ios,app,
+siri.save_summary,"Siri, Atajos y App Intents",Guardar ${idea} en ${category},Save ${idea} in ${category},,,ios,app,Resumen del intent en Atajos.
+siri.saved,"Siri, Atajos y App Intents",Neurona guardada en tu Red.,Neuron saved to your Network.,,,ios,app,
+siri.queued,"Siri, Atajos y App Intents",Guardada. Se suma a tu Red la próxima vez que abras Lumbre.,Saved. It joins your Network next time you open Lumbre.,,,ios,app,
+siri.today_title,"Siri, Atajos y App Intents",Ver la chispa de hoy,See today's spark,,,ios,app,
+siri.today_description,"Siri, Atajos y App Intents",Abre Lumbre en la chispa del día.,Opens Lumbre on today's spark.,,,ios,app,
+siri.capture_description,"Siri, Atajos y App Intents",Abre Lumbre listo para guardar una idea.,Opens Lumbre ready to save an idea.,,,ios,app,
+siri.unavailable,"Siri, Atajos y App Intents",Esto todavía no está disponible en Lumbre.,This isn't available in Lumbre yet.,,,ios,app,Con el feature flag apagado.
+siri.empty_idea,"Siri, Atajos y App Intents",Escribí la idea que querés guardar.,Write the idea you want to save.,,,ios,app,
+siri.too_long,"Siri, Atajos y App Intents",La idea es muy larga: dejala en 600 caracteres o menos.,The idea is too long: keep it to 600 characters or fewer.,,,ios,app,
+siri.empty_category,"Siri, Atajos y App Intents",Elegí una categoría.,Pick a category.,,,ios,app,
+siri.phrase_save_1,"Siri, Atajos y App Intents",Guardar una idea en ${applicationName},Save an idea in ${applicationName},,,ios,app,
+siri.phrase_save_2,"Siri, Atajos y App Intents",Guardá una idea en ${applicationName},Save a thought in ${applicationName},,,ios,app,
+siri.phrase_save_3,"Siri, Atajos y App Intents",Anotar una idea en ${applicationName},Note an idea in ${applicationName},,,ios,app,
+siri.phrase_today_1,"Siri, Atajos y App Intents",Ver la chispa de hoy en ${applicationName},See today's spark in ${applicationName},,,ios,app,
+siri.phrase_today_2,"Siri, Atajos y App Intents",Mostrame la chispa de ${applicationName},Show me my ${applicationName} spark,,,ios,app,
+siri.phrase_today_3,"Siri, Atajos y App Intents",Qué chispa salió hoy en ${applicationName},What's today's spark in ${applicationName},,,ios,app,
+siri.phrase_capture_1,"Siri, Atajos y App Intents",Capturar en ${applicationName},Capture in ${applicationName},,,ios,app,
+siri.phrase_capture_2,"Siri, Atajos y App Intents",Abrir Capturar en ${applicationName},Open Capture in ${applicationName},,,ios,app,
+compartir.title,Compartir hacia Lumbre (Share Extension),Guardar en Lumbre,Save to Lumbre,,,ambas,app,
+compartir.idea_label,Compartir hacia Lumbre (Share Extension),Tu idea,Your idea,,,ambas,app,
+compartir.idea_placeholder,Compartir hacia Lumbre (Share Extension),Escribila en una frase,Write it in one sentence,,,ambas,app,
+compartir.limit,Compartir hacia Lumbre (Share Extension),Dejala en %lld caracteres o menos,Keep it to %lld characters or fewer,,,ambas,app,
+compartir.unavailable,Compartir hacia Lumbre (Share Extension),Compartir con Lumbre todavía no está disponible.,Sharing to Lumbre isn't available yet.,,,ambas,app,Con el feature flag apagado.
+compartir.unreadable,Compartir hacia Lumbre (Share Extension),No pudimos leer lo que compartiste.,We couldn't read what you shared.,,,ambas,app,
+compartir.queued,Compartir hacia Lumbre (Share Extension),Guardada. Se suma a tu Red cuando abras Lumbre.,Saved. It joins your Network when you open Lumbre.,,,ambas,app,Sin sesión o sin conexión: queda en la cola compartida.
+compartir.save_failed,Compartir hacia Lumbre (Share Extension),No pudimos guardarla. Probá de nuevo.,We couldn't save it. Try again.,,,ambas,app,También en Siri y Atajos.
+compartir.local_failed,Compartir hacia Lumbre (Share Extension),No pudimos guardarla en el teléfono. Probá de nuevo.,We couldn't save it on your phone. Try again.,,,ambas,app,
 markdown.me,Export a Markdown,Yo,Me,,,ambas,app,Quién habla en el planificador exportado.

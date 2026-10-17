@@ -4,7 +4,9 @@
     python3 design/copy/copy.py validar                 # claves únicas, placeholders iguales en es y en
     python3 design/copy/copy.py xcstrings               # → design/copy/build/ios/Localizable.xcstrings
     python3 design/copy/copy.py xcstrings --out ios/Lumbre/Resources/Localizable.xcstrings
-                                                        #   (mezcla: conserva claves y traducciones que ya estén)
+                                                        #   (mezcla: solo traduce las claves que ya tiene el catálogo)
+    python3 design/copy/copy.py sincronizar-ios         # después de compilar: lleva a los catálogos las claves del código y saca las viejas
+    python3 design/copy/copy.py ios                     # carga el inglés en los cinco catálogos de iOS (app, Siri, extensiones, LumbreCore)
     python3 design/copy/copy.py android                 # → design/copy/build/android/values{,-en}/strings.xml
     python3 design/copy/copy.py android --out android/app/src/main/res
     python3 design/copy/copy.py revisar-ios             # compara copy.json con los literales de los .swift
@@ -19,6 +21,7 @@ from __future__ import annotations
 import csv
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 from xml.sax.saxutils import escape as xml_escape
@@ -107,19 +110,39 @@ def validate(data: dict) -> list[str]:
 # ---------- iOS: String Catalog ----------
 
 def build_xcstrings(data: dict, existing: dict | None = None) -> dict:
+    """Con `existing` mezcla: traduce solo las claves que ya tiene el catálogo (las que extrajo el compilador),
+    así el mismo copy.json alimenta todos los catálogos de iOS sin meter en cada uno lo de los demás."""
     catalog = existing or {"sourceLanguage": "es", "strings": {}, "version": "1.0"}
     catalog.setdefault("strings", {})
     for _, e in entries(data):
-        if not is_ios(e):
-            continue
         key = e["es"]
+        if not is_ios(e) or (existing is not None and key not in catalog["strings"]):
+            continue
         item = catalog["strings"].get(key, {})
         comment = e.get("note", "").strip()
         item["comment"] = (comment + " " if comment else "") + f"[{e['id']}]"
+        item.pop("shouldTranslate", None)
         locs = item.setdefault("localizations", {})
-        locs["en"] = {"stringUnit": {"state": "translated", "value": e["en"]}}
+        plural = e.get("plural")
+        if plural:
+            # Plurales del catálogo (Vary by plural) en los dos idiomas, también en el de origen.
+            for lang in LANGS:
+                locs[lang] = {"variations": {"plural": {
+                    qty: {"stringUnit": {"state": "translated", "value": ios_format(text)}}
+                    for qty, text in plural[lang].items()}}}
+        else:
+            locs["en"] = {"stringUnit": {"state": "translated", "value": e["en"]}}
         catalog["strings"][key] = item
+    for key, item in catalog["strings"].items():
+        # Símbolos y formatos sin palabras ("×", "%@ · %@"): iguales en todos los idiomas.
+        if not item.get("localizations") and not re.search(r"[A-Za-zÁÉÍÓÚáéíóúñÑ]", SPEC.sub("", key)):
+            item["shouldTranslate"] = False
     return catalog
+
+
+def ios_format(text: str) -> str:
+    """Las formas de `plural` están en formato Android (%d, %s): en iOS van %lld y %@."""
+    return SPEC.sub(lambda m: "%" + (m.group(1) + "$" if m.group(1) else "") + ("@" if m.group(2) in ("@", "s") else "lld" if m.group(2) in ("d", "ld", "lld") else m.group(2)), text)
 
 
 def dump_xcstrings(catalog: dict) -> str:
@@ -266,7 +289,7 @@ def read_literal(src: str, i: int):
 
 NOISE_LINE = re.compile(r"Logger|logger\.|print\(|Analytics\.|\.track\(|\.screen\(")
 # Argumentos que nunca son copy: símbolos, assets, claves.
-NOISE_BEFORE = re.compile(r"(systemImage|named|forKey|identifier|accessibilityIdentifier|suggestedFileName|bundle|subsystem|category|entry|trigger|tag|id):\s*$|(Image|Color|URL\(string|UTType|Notification\.Name)\(\s*$|@AppStorage\(\s*$|\[\s*$")
+NOISE_BEFORE = re.compile(r"(systemImage|systemImageName|named|forKey|identifier|accessibilityIdentifier|bundle|table|kind|subsystem|category|entry|trigger|tag|id):\s*$|(Image|Color|URL\(string|UTType|Notification\.Name)\(\s*$|@AppStorage\(\s*$|\[\s*$")
 
 
 def looks_like_copy(text: str) -> bool:
@@ -283,22 +306,69 @@ def looks_like_copy(text: str) -> bool:
 IGNORED = {
     "Lumbre", "Fraunces", "Volver a ver el onboarding", "Desarrollo", "Solo en Debug. El plan real lo cambia el webhook de RevenueCat.",
     "Se recarga mañana a las 8:00", "US$ 00,00", "US$ 0,00 por mes", "Fecha con un formato desconocido",
-    "Content-Type", "Accept", "Authorization", "Bearer {}", "PGRST116", "Cache.store", "Cache-local.store",
+    "Content-Type", "Accept", "Authorization", "Bearer {}", "PGRST116", "PGRST204", "Cache.store", "Cache-local.store",
 }
+
+# Todos los catálogos de iOS. `ios` los carga desde copy.json; cada clave necesita `en` (o shouldTranslate false si no es texto).
+CATALOGS = [
+    "ios/Lumbre/Resources/Localizable.xcstrings",                         # la app (y LumbreDesign)
+    "ios/Lumbre/App/AppShortcuts.xcstrings",                              # frases de Siri
+    "ios/Shared/Extensions.xcstrings",                                    # widget y App Intents (table: "Extensions")
+    "ios/LumbreShare/Localizable.xcstrings",                              # Share Extension
+    "ios/Packages/LumbreCore/Sources/LumbreCore/Resources/Localizable.xcstrings",  # errores y export (bundle: .module)
+]
+# Catálogos que salen de lo que extrae el compilador (*.stringsdata del último build con xcodebuild -derivedDataPath
+# ios/.build/DerivedData). Extensions y AppShortcuts no: el compilador mete extensionsText(…) en Localizable y no
+# extrae las frases de Siri, así que esas claves se agregan a mano.
+SYNCED = {
+    "ios/Lumbre/Resources/Localizable.xcstrings": ["Lumbre.build/Debug-iphonesimulator/Lumbre.build", "LumbreDesign.build"],
+    "ios/LumbreShare/Localizable.xcstrings": ["Lumbre.build/Debug-iphonesimulator/LumbreShare.build"],
+    "ios/Packages/LumbreCore/Sources/LumbreCore/Resources/Localizable.xcstrings": ["LumbreCore.build"],
+}
+
+
+def sync_ios() -> int:
+    derived = ROOT / "ios" / ".build" / "DerivedData" / "Build" / "Intermediates.noindex"
+    for rel, dirs in SYNCED.items():
+        files = sorted(f for d in dirs for f in (derived / d).rglob("*.stringsdata") if "arm64" in f.parts[-2])
+        if not files:
+            print(f"{rel}: no hay *.stringsdata en {derived}; compilá primero (ios/README.md).")
+            return 1
+        path = ROOT / rel
+        subprocess.run(["xcrun", "xcstringstool", "sync", str(path), *[a for f in files for a in ("--stringsdata", str(f))]], check=True)
+        keys = {x["key"] for f in files for x in json.loads(f.read_text(encoding="utf-8")).get("tables", {}).get("Localizable", [])}
+        catalog = json.loads(path.read_text(encoding="utf-8"))
+        gone = [k for k in catalog["strings"] if k not in keys]
+        for k in gone:
+            del catalog["strings"][k]
+        path.write_text(dump_xcstrings(catalog), encoding="utf-8")
+        print(f"{rel}: {len(catalog['strings'])} claves" + (f", sacadas {len(gone)}: {gone}" if gone else ""))
+    return 0
+
+
+# Código que se revisa contra copy.json.
+SWIFT_ROOTS = ["ios/Lumbre", "ios/Shared", "ios/LumbreWidgets", "ios/LumbreShare"]
+
+
+def untranslated(path: Path) -> list[str]:
+    catalog = json.loads(path.read_text(encoding="utf-8"))
+    return [k for k, v in catalog["strings"].items()
+            if v.get("shouldTranslate", True) and v.get("extractionState") != "stale" and "en" not in v.get("localizations", {})]
 
 
 def normalize(text: str) -> str:
     text = text.replace("%%", "%")
+    text = re.sub(r"\$\{\w+\}", "{}", text)  # argumentos de App Intents: ${applicationName}
     return SPEC.sub("{}", text)
 
 
 def review_ios(data: dict) -> int:
-    roots = [ROOT / "ios" / "Lumbre"] + sorted((ROOT / "ios" / "Packages").glob("*/Sources"))
+    roots = [ROOT / r for r in SWIFT_ROOTS] + sorted((ROOT / "ios" / "Packages").glob("*/Sources"))
     found: dict[str, list[str]] = {}
     every: set[str] = set()
     for root in roots:
         for path in sorted(root.rglob("*.swift")):
-            if "Mock" in path.name or "Preview" in path.name:
+            if "Mock" in path.name or "Preview" in path.name or "Gallery" in path.name:  # datos de prueba y solo Debug
                 continue
             src = path.read_text(encoding="utf-8")
             lines = src.splitlines()
@@ -326,6 +396,12 @@ def review_ios(data: dict) -> int:
         print(f"\nMarcados 'nuevo' que ya están en el código ({len(nuevos)}): pasalos a status app.")
         for e in nuevos:
             print(f"  {e['id']}")
+    for rel in CATALOGS:
+        pending = untranslated(ROOT / rel)
+        if pending:
+            print(f"\nSin inglés en {rel} ({len(pending)}): traducilos (copy.json y xcstrings --out) o, si no son texto, shouldTranslate false.")
+            for k in pending:
+                print(f"  {k!r}")
     return 0
 
 
@@ -388,6 +464,15 @@ def main() -> int:
     if cmd == "formatear":
         SOURCE.write_text(dump_copy(data), encoding="utf-8")
         print("copy.json reescrito.")
+        return 0
+    if cmd == "sincronizar-ios":
+        return sync_ios()
+    if cmd == "ios":
+        for rel in CATALOGS:
+            path = ROOT / rel
+            catalog = build_xcstrings(data, json.loads(path.read_text(encoding="utf-8")))
+            path.write_text(dump_xcstrings(catalog), encoding="utf-8")
+            print(f"{rel}: {len(catalog['strings'])} claves, {len(untranslated(path))} sin inglés.")
         return 0
     if cmd in ("xcstrings", "todo"):
         out = arg("--out", BUILD / "ios" / "Localizable.xcstrings") if cmd == "xcstrings" else BUILD / "ios" / "Localizable.xcstrings"

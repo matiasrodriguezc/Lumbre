@@ -2,6 +2,7 @@
   "sourceLanguage" : "es",
   "strings" : {
     "Cancelar" : {
+      "comment" : "[comun.cancel]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -12,6 +13,7 @@
       }
     },
     "Categoría" : {
+      "comment" : "[comun.category]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -22,6 +24,7 @@
       }
     },
     "Compartir con Lumbre todavía no está disponible." : {
+      "comment" : "Con el feature flag apagado. [compartir.unavailable]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -32,6 +35,7 @@
       }
     },
     "Dejala en %lld caracteres o menos" : {
+      "comment" : "[compartir.limit]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -42,6 +46,7 @@
       }
     },
     "El PDF pesa más de 20 MB. Probá con uno más liviano." : {
+      "comment" : "[capturar.pdf_too_big]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -52,6 +57,7 @@
       }
     },
     "Escribila en una frase" : {
+      "comment" : "[compartir.idea_placeholder]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -62,6 +68,7 @@
       }
     },
     "Guardada. Se suma a tu Red cuando abras Lumbre." : {
+      "comment" : "Sin sesión o sin conexión: queda en la cola compartida. [compartir.queued]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -72,6 +79,7 @@
       }
     },
     "Guardar" : {
+      "comment" : "[comun.save]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -82,6 +90,7 @@
       }
     },
     "Guardar en Lumbre" : {
+      "comment" : "[compartir.title]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -92,6 +101,7 @@
       }
     },
     "Idea" : {
+      "comment" : "Accesibilidad del campo de texto. [capturar.idea]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -102,6 +112,7 @@
       }
     },
     "Imagen" : {
+      "comment" : "[red.source.image]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -112,6 +123,7 @@
       }
     },
     "Link" : {
+      "comment" : "[capturar.kind.link]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -122,6 +134,7 @@
       }
     },
     "Neurona guardada" : {
+      "comment" : "[capturar.saved]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -132,6 +145,7 @@
       }
     },
     "No pudimos guardarla en el teléfono. Probá de nuevo." : {
+      "comment" : "[compartir.local_failed]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -142,6 +156,7 @@
       }
     },
     "No pudimos guardarla. Probá de nuevo." : {
+      "comment" : "También en Siri y Atajos. [compartir.save_failed]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -152,6 +167,7 @@
       }
     },
     "No pudimos leer lo que compartiste." : {
+      "comment" : "[compartir.unreadable]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -162,6 +178,7 @@
       }
     },
     "O escribí una nueva" : {
+      "comment" : "[capturar.category.or_new]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -172,6 +189,7 @@
       }
     },
     "PDF" : {
+      "comment" : "[capturar.kind.pdf]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -182,6 +200,7 @@
       }
     },
     "Por ejemplo: Marketing" : {
+      "comment" : "[capturar.category.placeholder]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -192,16 +211,18 @@
       }
     },
     "Se crea la categoría “%@”" : {
+      "comment" : "[capturar.category.will_create]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The category “%@” will be created"
+            "value" : "Creates the category “%@”"
           }
         }
       }
     },
     "Texto" : {
+      "comment" : "Tipo de captura y tipo de fuente en la Red. [capturar.kind.text]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -212,6 +233,7 @@
       }
     },
     "Texto seleccionado" : {
+      "comment" : "[red.source.selection]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -222,6 +244,7 @@
       }
     },
     "Tu idea" : {
+      "comment" : "[compartir.idea_label]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -232,14 +255,18 @@
       }
     },
     "¿Qué idea te deja esto?" : {
+      "comment" : "Pedido de una línea propia cuando no se puede (o no se quiere) conceptualizar. [comun.what_idea]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "What idea does this give you?"
+            "value" : "What idea does this leave you with?"
           }
         }
       }
+    },
+    "“%@”" : {
+      "shouldTranslate" : false
     }
   },
   "version" : "1.0"
