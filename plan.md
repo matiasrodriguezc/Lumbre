@@ -97,14 +97,14 @@ Reglas clave (decidido el 2026-10-13, reemplaza a Sunset Nebula):
 - **Circuitos con tablero** (antes Proyectos): 1 en free, ilimitados en Pro.
 - **Export a Notion, Linear y GitHub (Pro).**
 - **Videos y podcasts por link (Pro):** transcripción cuando está disponible por vías permitidas.
-- **Importar subrayados y notas:** Kindle, Apple Books, Readwise, Markdown, Notion, Apple Notes, Keep. Hasta 50 en free, ilimitado en Pro. **Se adelanta** (decidido el 2026-10-17): arrancar en frío es el mayor riesgo. Primero Markdown (archivos sueltos o una carpeta de Obsidian) y Apple Notes (vía Atajos, que es la única forma de leerlas en bloque).
+- **Importar subrayados y notas:** Kindle, Apple Books, Readwise, Markdown, Notion, Apple Notes, Keep. Hasta 50 en free, ilimitado en Pro. **Se adelanta** (decidido el 2026-10-17): arrancar en frío es el mayor riesgo. Primero Markdown (archivos sueltos o una carpeta de Obsidian) y Apple Notes (vía Atajos, que es la única forma de leerlas en bloque). Las notas largas se conceptualizan con IA (con el cupo y el consentimiento; si no, la primera línea, editable) y la importación cuenta para el tope de 30 capturas por día: lo que sobra sigue al día siguiente.
 - **Resumen semanal.**
 
 Agregado el 2026-10-17 (ver `plan-ejecucion.md`, bloque J):
 - **La chispa guardada se vuelve neurona:** al guardarla entra a la Red y puede volver a cruzarse. Nunca se empareja con sus dos neuronas de origen, no gasta cupo de captura ni suma para la chispa extra, y guarda de qué neuronas nació (la base del grafo de la 2.0).
 - **Lentes en el planificador (Pro):** atajos para convertir la chispa en un modelo de negocio, una trama o un post.
 - **Perilla de distancia:** Lineal, Serendipia (por defecto) y Caos, que corren la banda de §5. Solo en las chispas pedidas a mano (extra y Pro), nunca en la diaria, y recién con el prompt de chispa evaluado.
-- **Temas puente:** cuando la Red tiene mucho de dos mundos que casi no se cruzan, Lumbre sugiere temas para leer que los unan. Solo temas, nunca artículos ni links (la IA los inventaría).
+- **Temas puente:** cuando la Red tiene mucho de dos mundos que casi no se cruzan, Lumbre sugiere temas para leer que los unan. Solo temas, nunca artículos ni links (la IA los inventaría). Solo Pro (decidido el 2026-10-17).
 - **Swipe en el reveal:** en el modal, a la derecha guarda y a la izquierda abre "No me sirve" con su motivo. Los botones siguen y es lo que usa VoiceOver.
 
 ### Versión 2.0
