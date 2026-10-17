@@ -341,7 +341,7 @@ SQL, sin LLM (`20261009130000_emparejamiento.sql`). `pick_spark_pair(user, exclu
 | `limpiar-web` | 06:37 UTC | Web pública: ventanas de `web_rate_limits` de más de 2 días, chispas de la demo de más de 30 y emails sin confirmar de más de 30 |
 | `alertas-de-costo` | 03:05 UTC | Guarda en `cost_alerts` los usuarios del día anterior por encima de su tope y el global si pasó el 80% |
 | `procesar-pendientes` | cada 5 min | `/process` |
-| `chispas-diarias` | cada 15 min | `/daily-sparks` |
+| `chispas-diarias` | cada minuto | `/daily-sparks` (200 usuarios por llamada; ver `LOAD-TEST.md`) |
 | `chispas-diarias-resultados` | cada 10 min | `/daily-sparks` con `{"collect": true}` |
 | `enviar-pushes` | cada 5 min | `/send-pushes` |
 

@@ -67,7 +67,7 @@ select results_eq(
       where jobname in ('procesar-pendientes', 'chispas-diarias', 'chispas-diarias-resultados', 'enviar-pushes',
                         'vencer-texto-crudo', 'alertas-de-costo')
       order by jobname $$,
-  $$ values ('alertas-de-costo', '5 3 * * *'), ('chispas-diarias', '*/15 * * * *'), ('chispas-diarias-resultados', '*/10 * * * *'),
+  $$ values ('alertas-de-costo', '5 3 * * *'), ('chispas-diarias', '* * * * *'), ('chispas-diarias-resultados', '*/10 * * * *'),
             ('enviar-pushes', '*/5 * * * *'), ('procesar-pendientes', '*/5 * * * *'), ('vencer-texto-crudo', '27 6 * * *') $$,
   'los crons del servidor están programados');
 
