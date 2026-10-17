@@ -41,6 +41,28 @@ import Testing
         #expect(try await api.concepts().contains { $0.id == result.conceptID })
     }
 
+    @Test func savedSparkBecomesANeuronThatNeverMeetsItsParents() async throws {
+        let spark = try #require(try await api.today().spark)
+        let before = try await api.today()
+        try await api.saveSpark(id: spark.id, projectID: nil)
+        let neurons = try await api.concepts().filter { $0.sourceType == .spark }
+        let neuron = try #require(neurons.first)
+        #expect(neurons.count == 1)
+        #expect(neuron.title == spark.title && neuron.originSparkID == spark.id)
+        #expect(Set(neuron.originConceptIDs) == [spark.conceptA.id, spark.conceptB.id])
+        // Mover la chispa no crea otra, y guardar chispas no da chispas extra.
+        try await api.saveSpark(id: spark.id, projectID: nil)
+        #expect(try await api.concepts().filter { $0.sourceType == .spark }.count == 1)
+        let after = try await api.today()
+        #expect(after.quota.extraRemaining == before.quota.extraRemaining)
+        #expect(after.quota.conceptsUntilExtra == before.quota.conceptsUntilExtra)
+        // Combinarla a mano con uno de sus padres no se puede.
+        try await api.setPlanForDevelopment(.pro)
+        await #expect(throws: LumbreAPIError.self) {
+            _ = try await api.requestSpark(pick: (neuron.id, spark.conceptA.id))
+        }
+    }
+
     @Test func guestStartsEmptyAndNotOnboarded() async throws {
         let guest = MockLumbreAPI(latency: .zero, onboarded: false)
         let profile = try await guest.profile()

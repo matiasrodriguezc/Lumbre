@@ -39,6 +39,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case vaultSearched(words: Int, results: Int)
     case vaultFiltered(domain: String)
     case conceptOpened(entry: String)
+    /// Desde una neurona que nació de una chispa, abre la chispa original (flag `spark_neuron`).
+    case sparkOriginOpened
     // Planificador, proyectos y export
     case plannerOpened(entry: String)
     case markdownExported(object: String)
@@ -83,6 +85,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .vaultSearched: "vault_searched"
         case .vaultFiltered: "vault_filtered"
         case .conceptOpened: "concept_opened"
+        case .sparkOriginOpened: "spark_origin_opened"
         case .plannerOpened: "planner_opened"
         case .markdownExported: "markdown_exported"
         case .paywallShown: "paywall_shown"
@@ -98,7 +101,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
     /// Propiedades del evento, con los nombres y valores de `docs/analytics.md`.
     public var properties: [String: AnalyticsValue] {
         switch self {
-        case .onboardingStarted, .guestEntered:
+        case .onboardingStarted, .guestEntered, .sparkOriginOpened:
             [:]
         case let .onboardingStepCompleted(step, index):
             ["step": .string(step), "step_index": .int(index)]
@@ -289,6 +292,9 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     /// Reveal de 900 ms con la coreografía de design/reveal: la sinapsis entra, cruza el impulso y salta la chispa;
     /// cierre con fundido. Apagado, queda el reveal anterior (~1.200 ms).
     case revealSynapse = "reveal_synapse"
+    /// La chispa guardada se vuelve neurona (paso 88): `save_spark` con `p_as_neuron`, "Nació de una chispa" en la Red
+    /// y el camino a la chispa original. El servidor también lo apaga con `app_config.spark_neuron_enabled`.
+    case sparkNeuron = "spark_neuron"
     /// Tarjeta para compartir con las zonas seguras de design/compartir: margen de abajo de 340 y categoría en una línea.
     case shareCardSafeZones = "share_card_safe_zones"
     /// Formato feed (1080 × 1350) como segunda opción en la hoja de compartir; historias sigue siendo el de siempre.

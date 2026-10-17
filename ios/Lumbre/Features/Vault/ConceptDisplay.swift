@@ -25,6 +25,7 @@ extension SourceType {
         case .image: return String(localized: "Imagen")
         case .pdf: return String(localized: "PDF")
         case .audio: return String(localized: "Audio")
+        case .spark: return String(localized: "Nació de una chispa")
         }
     }
 
@@ -39,6 +40,7 @@ extension SourceType {
         case .image: return "photo"
         case .pdf: return "doc.richtext"
         case .audio: return "waveform"
+        case .spark: return "sparkles"
         }
     }
 }

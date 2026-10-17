@@ -295,6 +295,17 @@
         }
       }
     },
+    "Abre la chispa de la que nació esta neurona" : {
+      "comment" : "[neurona.origin_spark_hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the spark this neuron was born from"
+          }
+        }
+      }
+    },
     "Abre la neurona" : {
       "comment" : "[red.open_neuron_hint]",
       "localizations" : {
@@ -4197,6 +4208,17 @@
         }
       }
     },
+    "Nació de una chispa" : {
+      "comment" : "Fuente de una neurona que nació de una chispa guardada (flag spark_neuron) [red.source.spark]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Born from a spark"
+          }
+        }
+      }
+    },
     "Nada por acá" : {
       "comment" : "[comun.nothing_here]",
       "localizations" : {
@@ -6899,6 +6921,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "See today's spark in ${applicationName}"
+          }
+        }
+      }
+    },
+    "Ver la chispa original" : {
+      "comment" : "[neurona.origin_spark]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See the original spark"
           }
         }
       }

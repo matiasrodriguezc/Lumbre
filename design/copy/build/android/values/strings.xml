@@ -482,6 +482,8 @@
     <string name="red_source_link">De un link</string>
     <string name="red_source_image">Imagen</string>
     <string name="red_source_audio">Audio</string>
+    <!-- Fuente de una neurona que nació de una chispa guardada (flag spark_neuron) -->
+    <string name="red_source_spark">Nació de una chispa</string>
     <string name="red_draft_prefix">Borrador · </string>
     <string name="red_cat_none_title">Todavía no tenés categorías</string>
     <string name="red_cat_none_body">Se crean a medida que guardás neuronas.</string>
@@ -511,6 +513,8 @@
     <string name="neurona_sparks">Chispas donde aparece</string>
     <string name="neurona_no_sparks">Todavía no se conectó con otra neurona. Cuando aparezca en una chispa, la vas a ver acá.</string>
     <string name="neurona_open_spark_hint">Abre la chispa</string>
+    <string name="neurona_origin_spark">Ver la chispa original</string>
+    <string name="neurona_origin_spark_hint">Abre la chispa de la que nació esta neurona</string>
     <string name="neurona_combine">Combinar con…</string>
     <string name="neurona_combine_body">Elegí otra neurona y Lumbre enciende una chispa con las dos.</string>
     <string name="neurona_combine_pro">Con Lumbre Pro elegís qué neuronas se conectan.</string>

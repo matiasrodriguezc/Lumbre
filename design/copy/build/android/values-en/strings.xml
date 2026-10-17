@@ -436,6 +436,7 @@
     <string name="red_source_link">From a link</string>
     <string name="red_source_image">Image</string>
     <string name="red_source_audio">Audio</string>
+    <string name="red_source_spark">Born from a spark</string>
     <string name="red_draft_prefix">Draft · </string>
     <string name="red_cat_none_title">No categories yet</string>
     <string name="red_cat_none_body">They\'re created as you save neurons.</string>
@@ -465,6 +466,8 @@
     <string name="neurona_sparks">Sparks it appears in</string>
     <string name="neurona_no_sparks">It hasn\'t connected with another neuron yet. When it shows up in a spark, you\'ll see it here.</string>
     <string name="neurona_open_spark_hint">Opens the spark</string>
+    <string name="neurona_origin_spark">See the original spark</string>
+    <string name="neurona_origin_spark_hint">Opens the spark this neuron was born from</string>
     <string name="neurona_combine">Combine with…</string>
     <string name="neurona_combine_body">Pick another neuron and Lumbre lights a spark with both.</string>
     <string name="neurona_combine_pro">With Lumbre Pro you choose which neurons connect.</string>

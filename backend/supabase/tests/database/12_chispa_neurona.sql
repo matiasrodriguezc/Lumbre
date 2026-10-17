@@ -99,6 +99,7 @@ select throws_ok($$ update public.concepts set origin_lo = null where id = (sele
   '42501', null, 'la app no puede cambiar los padres de la neurona');
 reset role;
 
+select set_config('request.jwt.claims', '', true);
 select throws_ok($$ select public.save_spark('88000000-0000-4000-8000-0000000005a3', null, true) $$,
   '28000', 'not_authenticated', 'save_spark: sin sesión no hace nada');
 
@@ -189,6 +190,7 @@ create temp table child_spark as
   select public.create_spark('88000000-0000-4000-8000-000000000001', (select id from neuron),
                              '88000000-0000-4000-8000-0000000000a4', 'extra', 'Nieta', 'Cuerpo de la nieta.') as id;
 select isnt((select id from child_spark), null, 'create_spark: la neurona se combina con otra que no es su padre');
+grant select on child_spark to authenticated;
 set local role authenticated;
 select pg_temp.login('88000000-0000-4000-8000-000000000001');
 create temp table grandchild as select public.save_spark((select id from child_spark), null, true) as id;

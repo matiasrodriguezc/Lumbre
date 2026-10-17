@@ -54,6 +54,9 @@ struct ConceptDTO: Codable, Sendable {
     let sourceTitle: String?
     let excerpt: String?
     let fromLibrary: Bool?
+    let originSparkId: UUID?
+    let originLo: UUID?
+    let originHi: UUID?
     let createdAt: Date
     let category: CategoryDTO?
 
@@ -70,6 +73,9 @@ struct ConceptDTO: Codable, Sendable {
         sourceTitle = model.sourceTitle
         excerpt = model.excerpt
         fromLibrary = model.fromLibrary
+        originSparkId = model.originSparkID
+        originLo = model.originConceptIDs.first
+        originHi = model.originConceptIDs.dropFirst().first
         createdAt = model.createdAt
         category = model.category.map(CategoryDTO.init)
     }
@@ -89,6 +95,8 @@ struct ConceptDTO: Codable, Sendable {
             sourceTitle: sourceTitle,
             excerpt: excerpt,
             fromLibrary: fromLibrary ?? false,
+            originSparkID: originSparkId,
+            originConceptIDs: [originLo, originHi].compactMap(\.self),
             createdAt: createdAt
         )
     }

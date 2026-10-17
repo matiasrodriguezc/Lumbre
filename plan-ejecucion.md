@@ -228,7 +228,7 @@ Necesita: H9 (Android Studio y SDK, que hoy no están instalados).
 
 Salen de una lista de ideas revisada el 2026-10-17; las elegidas están en `plan.md` §4 (versión 1.1). Van en orden de valor. Cada una detrás de su feature flag, con sus eventos en `docs/analytics.md`, en iOS primero (Android las toma al llegar a su paso). Las que no dependen de cuentas (88, 90, 93) se pueden adelantar antes del lanzamiento si sobra tiempo.
 
-- [ ] **88. La chispa guardada se vuelve neurona** · flag `spark_neuron`
+- [x] **88. La chispa guardada se vuelve neurona** · flag `spark_neuron` · ✅ 2026-10-17: migración `20261017100000_chispa_neurona.sql` (`save_spark()` con `p_as_neuron`, apagable con `app_config.spark_neuron_enabled`; dominio por cercanía al embeberse; `spark_pairs`/`create_spark` y `/spark` pick nunca la cruzan con sus padres; no cuenta para la extra), pgTAP `12_chispa_neurona.sql`, e2e, y en iOS "Nació de una chispa" con "Ver la chispa original". Falta verlo a ojo en el simulador.
   Al guardar una chispa se crea una neurona con su título y su cuerpo (embebidos en el servidor) y la referencia a sus dos neuronas de origen. El emparejamiento nunca la cruza con sus padres; no gasta cupo de captura ni suma para la chispa extra (si no, guardar chispas daría chispas). En la Red se ve con "Nació de una chispa" y desde ahí se llega a la chispa original. Migración, pgTAP y tests del emparejamiento.
   Listo cuando: una chispa guardada aparece en la Red, puede salir en una chispa nueva con otra neurona y nunca con sus padres.
 - [ ] **89. Importar notas: Markdown y Apple Notes** · flag `import_notes`

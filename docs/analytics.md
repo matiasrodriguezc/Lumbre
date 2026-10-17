@@ -157,6 +157,8 @@ Fuente: **A** = app (iOS y Android), **S** = servidor (Edge Functions o webhook)
 | `vault_filtered` | A | `domain` | Aplica un filtro de dominio |
 | `concept_opened` | A | `entry`: `vault`, `search`, `spark_detail` | Abre el detalle de un concepto |
 | `concept_deleted` | S | `source_type`, `age_days_bucket` | Borra un concepto |
+| `spark_neuron_created` | S | `mode` (el de la chispa), `parent_is_spark_neuron` | Al guardar una chispa nace su neurona (`save_spark`, flag `spark_neuron`). No cuenta como `concept_saved`: no es información nueva que agregó la persona |
+| `spark_origin_opened` | A | — | Desde una neurona que nació de una chispa, abre la chispa original (flag `spark_neuron`) |
 
 ### Planificador, proyectos y export
 

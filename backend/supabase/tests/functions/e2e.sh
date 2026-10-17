@@ -224,13 +224,23 @@ check "capture: sin consentimiento no gasta la destilación" \
 echo "== 5. Lo que la app hace directo con su sesión"
 PROJECT_ID="$(rest "rpc/create_project" -X POST -d '{"p_name": "Mi primer proyecto"}' | jq -r .id)"
 check_true "create_project: crea el proyecto" "$([[ "$PROJECT_ID" =~ ^[0-9a-f-]{36}$ ]] && echo true || echo false)"
-rest "sparks?id=eq.$DAILY_ID" -X PATCH -d "{\"status\": \"saved\", \"project_id\": \"$PROJECT_ID\"}" >/dev/null
+# Paso 88: guardar con save_spark y el flag spark_neuron hace nacer una neurona de la chispa.
+EXTRA_AVAILABLE="$(rest "rpc/credit_status" -X POST -d '{}' | jq -r '.[] | select(.kind == "spark_extra") | .available')"
+NEURON_ID="$(rest "rpc/save_spark" -X POST -d "{\"p_spark\": \"$DAILY_ID\", \"p_project\": \"$PROJECT_ID\", \"p_as_neuron\": true}" | jq -r .)"
+check_true "save_spark: la chispa guardada nace como neurona" "$([[ "$NEURON_ID" =~ ^[0-9a-f-]{36}$ ]] && echo true || echo false)"
+check "save_spark: la neurona está en la Red y apunta a su chispa" \
+  "$(rest "concepts?id=eq.$NEURON_ID&select=source_type,origin_spark_id" | jq -r '.[0] | .source_type + "|" + .origin_spark_id')" "spark|$DAILY_ID"
+check "save_spark: la neurona de chispa no suma para la chispa extra" \
+  "$(rest "rpc/credit_status" -X POST -d '{}' | jq -r '.[] | select(.kind == "spark_extra") | .available')" "$EXTRA_AVAILABLE"
+call process '{}' "$SERVICE_ROLE_KEY"
+check "process: embebe la neurona de chispa y le da el dominio más cercano" \
+  "$(psql "$DB_URL" -tAXc "select embedding is not null and domain is not null from public.concepts where id = '$NEURON_ID'")" "t"
 call today
 check "today: la chispa guardada queda en el proyecto" "$(echo "$BODY" | jq -r '.spark.status + "|" + .spark.project_name')" "saved|Mi primer proyecto"
 check "register_push_token: registra el token" "$(rest "rpc/register_push_token" -X POST -o /dev/null -w '%{http_code}' -d '{"p_token": "e2e-token", "p_platform": "ios", "p_sandbox": true}')" "204"
 check "content_reports: reporta la chispa" "$(rest "content_reports" -X POST -o /dev/null -w '%{http_code}' -d "{\"spark_id\": \"$EXTRA_ID\", \"reason\": \"wrong\"}")" "201"
 EXPORT="$(rest "rpc/export_my_data" -X POST -d '{}')"
-check "export_my_data: trae los 9 conceptos" "$(echo "$EXPORT" | jq -r '.concepts | length')" "9"
+check "export_my_data: trae los 10 conceptos (9 y la neurona de la chispa)" "$(echo "$EXPORT" | jq -r '.concepts | length')" "10"
 # Planificador: 2 turnos libres + 3 del método de los tres cuartos = 10 mensajes.
 check_true "export_my_data: con chispas, proyecto y planificador" \
   "$(echo "$EXPORT" | jq -r '(.sparks | length) >= 3 and (.projects | length) == 1 and (.planner[0].messages | length) == 10')"

@@ -141,6 +141,8 @@ public struct Category: Hashable, Sendable, Identifiable {
 /// Mismos valores que `concepts.source_type` en el esquema.
 public enum SourceType: String, Sendable, CaseIterable, Codable {
     case text, voice, selection, screenshot, scan, link, image, pdf, audio
+    /// La neurona nació de una chispa guardada (flag `spark_neuron`).
+    case spark
 }
 
 /// Mismos valores que `concepts.status`: un borrador es una conceptualización de confianza media que falta confirmar.
@@ -169,9 +171,13 @@ public struct Concept: Identifiable, Hashable, Sendable {
     public let excerpt: String?
     /// Copiado de la biblioteca de conceptos invitados.
     public let fromLibrary: Bool
+    /// La chispa guardada de la que nació (`sourceType == .spark`). Nil si esa chispa ya no existe.
+    public let originSparkID: Spark.ID?
+    /// Las dos neuronas de esa chispa: nunca se combina con ellas.
+    public let originConceptIDs: [UUID]
     public let createdAt: Date
 
-    public init(id: UUID = UUID(), category: Category?, title: String, thesis: String, principle: String? = nil, status: ConceptStatus = .ready, distilled: Bool = false, confidence: Confidence? = nil, sourceType: SourceType, sourceURL: URL? = nil, sourceTitle: String? = nil, excerpt: String? = nil, fromLibrary: Bool = false, createdAt: Date) {
+    public init(id: UUID = UUID(), category: Category?, title: String, thesis: String, principle: String? = nil, status: ConceptStatus = .ready, distilled: Bool = false, confidence: Confidence? = nil, sourceType: SourceType, sourceURL: URL? = nil, sourceTitle: String? = nil, excerpt: String? = nil, fromLibrary: Bool = false, originSparkID: Spark.ID? = nil, originConceptIDs: [UUID] = [], createdAt: Date) {
         self.id = id
         self.category = category
         self.title = title
@@ -185,7 +191,14 @@ public struct Concept: Identifiable, Hashable, Sendable {
         self.sourceTitle = sourceTitle
         self.excerpt = excerpt
         self.fromLibrary = fromLibrary
+        self.originSparkID = originSparkID
+        self.originConceptIDs = originConceptIDs
         self.createdAt = createdAt
+    }
+
+    /// True si una de las dos nació de una chispa de la otra: el servidor no las combina.
+    public func isSparkRelative(of other: Concept) -> Bool {
+        originConceptIDs.contains(other.id) || other.originConceptIDs.contains(id)
     }
 }
 
