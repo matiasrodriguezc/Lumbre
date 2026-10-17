@@ -170,7 +170,7 @@ Adelantado: se hace con datos de prueba. Las pantallas llaman a `LumbreAPI`; hoy
 
 - [x] **62. Revisión de seguridad** · MAT-293 · ✅ 2026-10-16: parte de backend e iOS en `backend/SECURITY-REVIEW.md`: 11 hallazgos arreglados (incluido el consentimiento para IA en el servidor) y 3 riesgos anotados. Suite completa en verde. La de Android va en el 86.
   RLS, claves, App Attest, rate limits y logs sin contenido de notas. La parte de Android se repite en el paso 86.
-- [ ] **63. Prueba de carga del batch (10x)** · MAT-294 · Adelantado el 2026-10-16: con 1.000 usuarios, 1.000 chispas en 14 s; el cron pasó de 15 min a cada minuto (de ~800 a ~12.000 usuarios por hora). La corrida de 5.000 llenó el disco: repetirla con espacio. Ver `backend/LOAD-TEST.md`.
+- [x] **63. Prueba de carga del batch (10x)** · MAT-294 · ✅ 2026-10-17: 10x completo, 5.000 usuarios × 20 conceptos: 5.000 chispas en 56 s (27 llamadas de 200, 0 errores) y 5.000 push en 12 s. El cron pasó de 15 min a cada minuto (de ~800 a ~12.000 usuarios por hora). Ver `backend/LOAD-TEST.md`.
 - [x] **64. Borradores de términos, privacidad y consentimiento para IA** · MAT-295 · ✅ 2026-10-16: `docs/legal/`: borradores es/en de privacidad, términos y consentimiento para IA, coherentes con el backend. Esperan al abogado (H3).
   Para que los revise el abogado (H3).
 - [x] **65. Privacy manifest, etiquetas de App Store y Data safety de Play** · MAT-296 · ✅ 2026-10-16: `PrivacyInfo.xcprivacy` y las respuestas de App Privacy y Data safety en `docs/tiendas/`.

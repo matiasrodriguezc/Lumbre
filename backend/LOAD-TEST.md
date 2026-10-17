@@ -4,7 +4,22 @@ Script: `supabase/tests/load/daily_batch.sh`. Siembra N usuarios sintéticos con
 
 Corre con el proveedor de IA `local`: mide el servidor (SQL, Edge Functions, inserciones), no la latencia del modelo. Con Anthropic, la diaria va por la Batches API (`spark_jobs`), así que la llamada solo encola y el tiempo del modelo queda fuera del cron.
 
-## Resultado (2026-10-16, stack local en una Mac)
+## Resultado 10x (2026-10-17, stack local en una Mac)
+
+| Medida | Valor |
+|---|---|
+| Usuarios × conceptos | 5000 × 20 (100.000 conceptos), sembrados en 126 s |
+| `users_needing_daily_spark(200)` | 26 ms |
+| `spark_pairs` por usuario | 2,6 ms |
+| Llamadas a `/daily-sparks` | 27 (200 usuarios cada una, entre 1,7 y 3,4 s; 0 errores HTTP) |
+| Chispas diarias creadas | 5000 de 5000 (0 errores por usuario) |
+| Tiempo total del batch | 56 s |
+| Push marcadas | 5000 en 12 s (12 llamadas, sin claves de APNs) |
+| Disco usado por la prueba | ~9 GB (base y WAL) |
+
+Con el cron cada minuto, 5.000 usuarios en la misma zona tienen su chispa en unos 25 minutos (una llamada de 200 por minuto); el trabajo en sí son 56 s.
+
+## Resultado 1x (2026-10-16)
 
 | Medida | Valor |
 |---|---|
@@ -16,7 +31,7 @@ Corre con el proveedor de IA `local`: mide el servidor (SQL, Edge Functions, ins
 | Tiempo total del batch | 14 s |
 | Push marcadas | 1000 en 3 s (3 llamadas, sin claves de APNs) |
 
-La corrida de 5.000 usuarios (10x) no terminó: llenó el disco de la máquina y Postgres entró en recovery. Antes de caer había medido `users_needing_daily_spark(200)` en 113 ms y llamadas de 200 usuarios de 11 a 36 s, con una que cortó por el límite del worker (HTTP 546), todo con el sistema ya degradado. Con la base sana, una llamada de 200 tarda ~2,5 s, así que 5.000 usuarios serían 25 llamadas, unos 65 s de trabajo.
+Un primer intento de 5.000 usuarios (el 2026-10-16) no terminó: llenó el disco de la máquina y Postgres entró en recovery. Antes de caer había medido `users_needing_daily_spark(200)` en 113 ms y llamadas de 200 usuarios de 11 a 36 s, con una que cortó por el límite del worker (HTTP 546), todo con el sistema ya degradado. Con la base sana, una llamada de 200 tarda ~2,5 s, así que 5.000 usuarios serían 25 llamadas, unos 65 s de trabajo.
 
 ## Hallazgo y cambio
 
@@ -26,6 +41,5 @@ La migración `20261016140000_chispas_diarias_cada_minuto.sql` pasa `chispas-dia
 
 ## Pendiente
 
-- Repetir los 5.000 usuarios con disco libre (`USERS=5000`, necesita varios GB para la base y el WAL).
 - Medir en staging con Anthropic real (paso 41): el tiempo de la Batches API y el costo por chispa en `llm_calls`.
 - Si la base crece mucho, subir `p_limit` o paralelizar por zona horaria.
