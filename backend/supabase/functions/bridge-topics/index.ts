@@ -2,10 +2,10 @@
 //
 // Si la Red tiene mucho de dos dominios que casi no se cruzaron, sugiere 2 o 3 temas para leer que los unan.
 // - La app la pide al abrir la Red y en Hoy cuando quedan pocos pares buenos, solo con el flag bridge_topics.
-// - Una llamada a la IA por semana como mucho (cupo bridge_topics de plan_limits, free y Pro): la sugerencia
-//   de la semana queda guardada y se devuelve sin volver a llamar.
-// - Sin sugerencia posible responde { bridge: null }: invitado (sin IA), sin consentimiento, sin dos dominios
-//   fuertes y poco cruzados, cupo de la semana ya usado, o la IA falló. Hoy y la Red simplemente no muestran nada.
+// - Solo Pro (decidido el 2026-10-17) y una llamada a la IA por semana como mucho (cupo bridge_topics de
+//   plan_limits): la sugerencia de la semana queda guardada y se devuelve sin volver a llamar.
+// - Sin sugerencia posible responde { bridge: null }: no es Pro (invitado o free), sin consentimiento, sin dos
+//   dominios fuertes y poco cruzados, cupo de la semana ya usado, o la IA falló. Hoy y la Red no muestran nada.
 // - Si la IA falla antes de responder se devuelve el cupo; si respondió algo inválido (links, obras), no:
 //   así una respuesta mala no se repite toda la semana.
 // - Los títulos de las neuronas van al modelo como datos (bridge.v1); los logs nunca llevan contenido.
@@ -14,7 +14,7 @@ import { requireDeviceIntegrity } from "../_shared/attest/guard.ts";
 import { AIError } from "../_shared/ai/types.ts";
 import { suggestBridgeTopics, type BridgeTopic } from "../_shared/ai/tasks.ts";
 import { ApiError, describeError, handler, json } from "../_shared/http.ts";
-import { admin, consumeCredit, dbError, hasAIConsent, refundCredit, requireUser, rpc } from "../_shared/supabase.ts";
+import { admin, consumeCredit, dbError, effectivePlan, hasAIConsent, refundCredit, requireUser, rpc } from "../_shared/supabase.ts";
 
 const BRIDGE_PER_HOUR = Number(Deno.env.get("LUMBRE_BRIDGE_PER_HOUR") ?? 60);
 /** Títulos de ejemplo de cada dominio que van al modelo como contexto. */
@@ -66,8 +66,8 @@ Deno.serve(handler("bridge-topics", async (req) => {
   if (!(await rpc<boolean>(admin(), "hit_rate_limit", { p_key: `bridge:${user.id}`, p_max: BRIDGE_PER_HOUR, p_window_seconds: 3600 }))) {
     throw new ApiError("rate_limited");
   }
-  // El invitado no tiene IA; sin el "Acepto", los títulos de sus neuronas no van al modelo.
-  if (user.isAnonymous || !(await hasAIConsent(user.id))) return json({ bridge: null });
+  // Solo Pro (el invitado y free no tienen el cupo); sin el "Acepto", los títulos de sus neuronas no van al modelo.
+  if (user.isAnonymous || (await effectivePlan(user.id)) !== "pro" || !(await hasAIConsent(user.id))) return json({ bridge: null });
 
   const [current] = await rpc<BridgeRow[]>(admin(), "current_bridge_topics", { p_user: user.id });
   if (current) return json({ bridge: await present(current) });

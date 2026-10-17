@@ -295,6 +295,17 @@
         }
       }
     },
+    "Abre la chispa de la que nació esta neurona" : {
+      "comment" : "[neurona.origin_spark_hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the spark this neuron was born from"
+          }
+        }
+      }
+    },
     "Abre la neurona" : {
       "comment" : "[red.open_neuron_hint]",
       "localizations" : {
@@ -2055,13 +2066,13 @@
         }
       }
     },
-    "El PDF pesa más de 20 MB. Probá con uno más liviano." : {
+    "El PDF pesa más de 20 MB. Probá con uno más liviano o escaneá solo las páginas que te importan." : {
       "comment" : "[capturar.pdf_too_big]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The PDF is over 20 MB. Try a lighter one."
+            "value" : "The PDF is over 20 MB. Try a lighter one or scan just the pages you care about."
           }
         }
       }
@@ -2550,6 +2561,17 @@
         }
       }
     },
+    "Esta categoría no tiene neuronas" : {
+      "comment" : "[red.empty_category]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This category has no neurons"
+          }
+        }
+      }
+    },
     "Esta nota tiene muro de pago: solo pudimos leer el título. Escribí qué idea te deja y la guardamos con el link." : {
       "comment" : "Estado inaccessible.paywall_link (Aviso). Ver design/estados/README.md. [estados.paywall_link_aviso]",
       "localizations" : {
@@ -2700,6 +2722,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filter by category"
+          }
+        }
+      }
+    },
+    "Formato" : {
+      "comment" : "Etiqueta del selector historias / publicaciones (la lee VoiceOver). [chispa.share.format]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Format"
           }
         }
       }
@@ -3130,7 +3163,7 @@
         }
       }
     },
-    "Guardá una frase, un link o una nota de voz para tener material que combinar." : {
+    "Guardá una frase, un link o una nota de voz para tener material que conectar." : {
       "comment" : "[comun.no_neurons_body]",
       "localizations" : {
         "en" : {
@@ -4175,13 +4208,13 @@
         }
       }
     },
-    "Nada en esta categoría" : {
-      "comment" : "[red.empty_category]",
+    "Nació de una chispa" : {
+      "comment" : "Fuente de una neurona que nació de una chispa guardada (flag spark_neuron) [red.source.spark]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nothing in this category"
+            "value" : "Born from a spark"
           }
         }
       }
@@ -4325,6 +4358,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nothing to restore"
+          }
+        }
+      }
+    },
+    "No hay conexión y no pudimos guardarlo en el teléfono. Lo que escribiste sigue acá: probá de nuevo en un rato." : {
+      "comment" : "[capturar.offline_failed]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There's no connection and we couldn't save it on your phone. What you wrote is still here: try again in a bit."
           }
         }
       }
@@ -4880,7 +4924,7 @@
       }
     },
     "Para historias" : {
-      "comment" : "Formato de la tarjeta (propuesta). No usar \"Historia\" a secas: choca con la categoría Historia, que en inglés es History. [widget.share_story]",
+      "comment" : "Selector de formato en la hoja de la tarjeta para compartir. No usar \"Historia\" a secas: choca con la categoría Historia, que en inglés es History. [widget.share_story]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4891,7 +4935,7 @@
       }
     },
     "Para publicaciones" : {
-      "comment" : "Formato de la tarjeta (propuesta). [widget.share_feed]",
+      "comment" : "Selector de formato en la hoja de la tarjeta para compartir. [widget.share_feed]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5172,6 +5216,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ask anything about this idea or pick a shortcut: a backlog to get started, a devil's advocate or the stack you'd use."
+          }
+        }
+      }
+    },
+    "Preguntá…" : {
+      "comment" : "Versión corta del campo con texto de accesibilidad, para que entre en una línea. [planificador.input_short]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask…"
           }
         }
       }
@@ -5880,17 +5935,6 @@
         }
       }
     },
-    "Sin conexión y no pudimos guardarlo en el teléfono. Probá de nuevo en un rato." : {
-      "comment" : "[capturar.offline_failed]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You're offline and we couldn't save it on the phone. Try again in a bit."
-          }
-        }
-      }
-    },
     "Sin conexión. Lo guardamos y lo mandamos cuando vuelva." : {
       "comment" : "[errores.api.offline]",
       "localizations" : {
@@ -6364,13 +6408,13 @@
         }
       }
     },
-    "Todavía no hay ideas acá" : {
+    "Todavía no hay ideas en este circuito" : {
       "comment" : "[circuitos.detail.empty_title]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No ideas here yet"
+            "value" : "No ideas in this circuit yet"
           }
         }
       }
@@ -6386,13 +6430,13 @@
         }
       }
     },
-    "Todavía no hay material para combinar" : {
+    "Todavía no hay material para conectar" : {
       "comment" : "[hoy.empty.no_material]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nothing to combine yet"
+            "value" : "Nothing to connect yet"
           }
         }
       }
@@ -6881,6 +6925,17 @@
         }
       }
     },
+    "Ver la chispa original" : {
+      "comment" : "[neurona.origin_spark]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See the original spark"
+          }
+        }
+      }
+    },
     "Ver todas" : {
       "comment" : "Estado empty.category (Secundaria). Ver design/estados/README.md. [estados.category_secundaria]",
       "localizations" : {
@@ -6991,6 +7046,17 @@
         }
       }
     },
+    "Ya tenés 50 categorías, el máximo. Elegí una de las que tenés o borrá alguna desde Red › Categorías." : {
+      "comment" : "[errores.api.too_many_categories]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You already have 50 categories, the maximum. Pick one you have or delete one from Network › Categories."
+          }
+        }
+      }
+    },
     "Ya tenés 50 categorías." : {
       "comment" : "Motivo que se agrega al aviso de captura descartada. [estados.queue_discarded_reason_2]",
       "localizations" : {
@@ -6998,17 +7064,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You already have 50 categories."
-          }
-        }
-      }
-    },
-    "Ya tenés 50 categorías. Usá una de las que tenés." : {
-      "comment" : "[errores.api.too_many_categories]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You already have 50 categories. Use one of the ones you have."
           }
         }
       }

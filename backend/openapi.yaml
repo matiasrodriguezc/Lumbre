@@ -44,6 +44,11 @@ paths:
            Un link o un archivo pueden dar hasta 3 conceptos.
         3. Sin `distill` (o sin cupo), `thesis` es obligatoria. Textos de menos de 30 palabras nunca se destilan.
         4. Siempre: embedding y dominio por la categoría. Si la IA falla, el concepto se guarda igual y se procesa después.
+        5. Con `import_source` (importar notas, paso 89): `source_type` tiene que ser `text` y `thesis` es el título
+           o la primera línea. Con `distill`, se destila de `note_text` (la nota entera) si tiene 30 palabras o más.
+           Cuenta para las capturas del día (429 `quota_exceeded`: la app la deja en la cola para el día siguiente) y
+           además, en free y como invitado, para el cupo `import` de 50 notas en total (429 `import_limit`). Si el cupo
+           se acaba a mitad de una nota que dio varios conceptos, responde 200 con los que se guardaron.
       requestBody:
         required: true
         content:
@@ -68,6 +73,16 @@ paths:
                     path: { type: string, description: "Ruta dentro del bucket capture-temp" }
                     mime_type: { type: string, enum: [image/jpeg, image/png, application/pdf] }
                 distill: { type: boolean, default: false }
+                import_source:
+                  type: string
+                  enum: [markdown, apple_notes]
+                  description: La nota viene de importar (archivos Markdown o carpeta de Obsidian, o Apple Notes por Atajos)
+                note_text:
+                  type: string
+                  maxLength: 20000
+                  description: |
+                    Solo con `import_source`: la nota entera, en texto plano. Se usa para destilar (si tiene 30 palabras
+                    o más y se pide `distill`) y no se guarda. `thesis` es su título o su primera línea.
       responses:
         '200':
           description: Guardado
@@ -122,6 +137,8 @@ paths:
       summary: Chispa extra en tiempo real
       description: |
         Descuenta `spark_extra`. `pick` (Pro) combina los dos conceptos elegidos por el usuario.
+        Los dos tienen que ser de mundos distintos y no puede ser una neurona nacida de una chispa con uno de sus
+        padres (400 `invalid_request`).
         Si la IA falla, devuelve el crédito.
       requestBody:
         required: true
@@ -213,6 +230,13 @@ paths:
                   enum: [free, disney]
                   default: free
                   description: "disney: método de los tres cuartos (prompt planner.v2, flag planner_disney en la app)"
+                lens:
+                  type: string
+                  enum: [business_model, plot, post]
+                  description: |
+                    Lente (planner_lens.v1, flag planner_lenses en la app): la respuesta convierte la chispa en un modelo
+                    de negocio, una trama o un post, con su formato. Empieza con la marca `[[lens:…]]` y no avanza
+                    los cuartos del método. Sirve con los dos métodos.
       responses:
         '200':
           description: Stream de eventos
@@ -227,14 +251,14 @@ paths:
 
   /bridge-topics:
     post:
-      summary: Temas puente de la semana (flag bridge_topics)
+      summary: Temas puente de la semana (Pro, flag bridge_topics)
       description: |
         Si la Red tiene mucho de dos dominios que casi no se cruzaron en sus chispas (`bridge_domain_pair()`),
         sugiere 2 o 3 temas para leer que los unan. Solo temas: nunca obras, autores ni links (se validan en la salida).
-        Descuenta `bridge_topics` (1 por semana, free y Pro): la sugerencia de la semana queda guardada y se devuelve
+        Solo Pro. Descuenta `bridge_topics` (1 por semana): la sugerencia de la semana queda guardada y se devuelve
         sin volver a llamar a la IA. Si la IA falla antes de responder, devuelve el cupo.
-        `bridge` es null para el invitado, sin consentimiento para la IA, sin dos dominios fuertes y poco cruzados,
-        con el cupo de la semana ya usado o si la IA falló.
+        `bridge` es null si no es Pro (invitado o free), sin consentimiento para la IA, sin dos dominios fuertes y
+        poco cruzados, con el cupo de la semana ya usado o si la IA falló.
       requestBody:
         content:
           application/json:
@@ -374,7 +398,7 @@ components:
           description: |
             not_authenticated (401) · invalid_thesis · invalid_category · invalid_source · invalid_request (400) ·
             pro_required (402) · account_required · attestation_failed · ai_consent_required (403) · not_found (404) ·
-            not_enough_concepts (409) · needs_thesis (422) · quota_exceeded · too_many_categories ·
+            not_enough_concepts (409) · needs_thesis (422) · quota_exceeded · import_limit · too_many_categories ·
             too_many_projects · rate_limited (429) · ai_unavailable (503) · internal (500).
             Es un string abierto (la app trata un código desconocido como error genérico).
       x-error-codes:
@@ -391,6 +415,7 @@ components:
         not_enough_concepts: 409
         needs_thesis: 422
         quota_exceeded: 429
+        import_limit: 429
         too_many_categories: 429
         too_many_projects: 429
         rate_limited: 429
@@ -428,11 +453,15 @@ components:
         status: { type: string, enum: [draft, ready] }
         distilled: { type: boolean }
         confidence: { type: [string, 'null'], enum: [high, medium, low, null] }
-        source_type: { type: string, enum: [text, voice, selection, screenshot, scan, link, image, pdf] }
+        source_type: { type: string, enum: [text, voice, selection, screenshot, scan, link, image, pdf, audio, video, import, spark] }
         source_url: { type: [string, 'null'] }
         source_title: { type: [string, 'null'] }
         excerpt: { type: [string, 'null'] }
         from_library: { type: boolean }
+        origin_spark_id:
+          type: [string, 'null']
+          format: uuid
+          description: La chispa guardada de la que nació esta neurona (`source_type = spark`, flag `spark_neuron`).
         created_at: { type: string, format: date-time }
         category:
           oneOf:

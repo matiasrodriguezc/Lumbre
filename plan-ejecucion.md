@@ -135,7 +135,7 @@ Adelantado: se hace con datos de prueba. Las pantallas llaman a `LumbreAPI`; hoy
 - [x] **45. TabView flotante y botón Capturar** · MAT-258 · ✅ 2026-09-27: Liquid Glass con Capturar separado a la derecha (lugar de la pestaña de búsqueda). Además quedaron versiones visuales con datos de prueba de Hoy, Bóveda, Perfil y la sheet de Capturar; sus pasos (47, 48, 51, 57) siguen abiertos para la funcionalidad completa.
 - [x] **46. Onboarding** · MAT-256 · ✅ 2026-10-16: cuenta con email (flag `account_email`), copy neuronal y consentimiento para IA en el recorrido. Apple y Google con el 20b.
   Perfil, semillas, hora de la chispa, permiso de push y registro del token; crear cuenta o entrar como invitado.
-- [x] **47. Hoy con reveal y contador** · MAT-257 · ✅ 2026-10-16: reveal en modal con Reducir movimiento; sin consentimiento no pide la chispa. Ajustar a la coreografía del paso 12 queda pendiente.
+- [x] **47. Hoy con reveal y contador** · MAT-257 · ✅ 2026-10-16: reveal en modal con Reducir movimiento; sin consentimiento no pide la chispa. 2026-10-17: coreografía del paso 12 aplicada (900 ms, háptico a los 650, cierre con fundido, cruz de 44 pt, `entry` de push y widget; flag `reveal_synapse`) y el contador pasa a usado después del reveal.
 - [x] **48. Sheet de Capturar y cola offline** · MAT-259 · ✅ 2026-10-16: ya estaba completo; sin consentimiento no ofrece destilar y las animaciones respetan Reducir movimiento.
 - [ ] **49. Share Extension** · MAT-260 · Adelantado el 2026-10-16: Share Extension con texto, links, selección de Safari, imagen y PDF; manda con la sesión compartida o encola. Falta verla funcionando (en el simulador no respondía la hoja de compartir) y probarla en dispositivo (H1).
 - [x] **50. OCR con VisionKit** · MAT-261 · ✅ 2026-10-16: VisionKit y Vision ya estaban; revisado sin cambios.
@@ -146,10 +146,10 @@ Adelantado: se hace con datos de prueba. Las pantallas llaman a `LumbreAPI`; hoy
 - [ ] **54. Paywall y RevenueCat** · MAT-265
   Necesita: H1 (RevenueCat y productos en App Store Connect).
 - [x] **55. Widget y App Intents** · MAT-266, MAT-267 · ✅ 2026-10-16: widget de la chispa de hoy y de captura (todos los tamaños, pantalla bloqueada y control de iOS 18), App Intents y atajos de Siri, links `lumbre://`. Falta probarlo en dispositivo.
-- [x] **56. Tarjeta para compartir** · MAT-268 · ✅ 2026-10-16: 1080×1920 con la chispa centrada. Las propuestas del paso 13 (margen de 340, formato feed) quedan sin aplicar.
+- [x] **56. Tarjeta para compartir** · MAT-268 · ✅ 2026-10-16: 1080×1920 con la chispa centrada. 2026-10-17: margen de 340 y categoría en una línea (flag `share_card_safe_zones`) y formato feed 1080×1350 como segunda opción (flag `share_card_feed`).
 - [x] **57. Perfil y ajustes** · MAT-269 · ✅ 2026-10-16: "Crear cuenta" con email; cerrar sesión y borrar la cuenta limpian el consentimiento.
   Incluye exportar datos y borrar cuenta.
-- [ ] **58. Accesibilidad** · MAT-271 · Adelantado el 2026-10-16: AX5 revisado en Hoy, Red, Perfil y Capturar (dos cortes arreglados) y Reducir movimiento en Capturar, planificador y chispa. Falta recorrer detalle, planificador y paywall en AX5 y VoiceOver en dispositivo.
+- [ ] **58. Accesibilidad** · MAT-271 · Adelantado el 2026-10-16: AX5 revisado en Hoy, Red, Perfil y Capturar (dos cortes arreglados) y Reducir movimiento en Capturar, planificador y chispa. 2026-10-17: AX5 recorrido también en detalle, planificador, paywall y onboarding, y la app en inglés. Falta VoiceOver en dispositivo.
   VoiceOver, Dynamic Type al máximo y Reducir movimiento en todas las pantallas.
 - [ ] **59. fastlane y TestFlight interno** · MAT-254 (parte 2)
   Necesita: H1 (Apple Developer).
@@ -228,13 +228,13 @@ Necesita: H9 (Android Studio y SDK, que hoy no están instalados).
 
 Salen de una lista de ideas revisada el 2026-10-17; las elegidas están en `plan.md` §4 (versión 1.1). Van en orden de valor. Cada una detrás de su feature flag, con sus eventos en `docs/analytics.md`, en iOS primero (Android las toma al llegar a su paso). Las que no dependen de cuentas (88, 90, 93) se pueden adelantar antes del lanzamiento si sobra tiempo.
 
-- [ ] **88. La chispa guardada se vuelve neurona** · flag `spark_neuron`
+- [x] **88. La chispa guardada se vuelve neurona** · flag `spark_neuron` · ✅ 2026-10-17: migración `20261017100000_chispa_neurona.sql` (`save_spark()` con `p_as_neuron`, apagable con `app_config.spark_neuron_enabled`; dominio por cercanía al embeberse; `spark_pairs`/`create_spark` y `/spark` pick nunca la cruzan con sus padres; no cuenta para la extra), pgTAP `12_chispa_neurona.sql`, e2e, y en iOS "Nació de una chispa" con "Ver la chispa original". Falta verlo a ojo en el simulador.
   Al guardar una chispa se crea una neurona con su título y su cuerpo (embebidos en el servidor) y la referencia a sus dos neuronas de origen. El emparejamiento nunca la cruza con sus padres; no gasta cupo de captura ni suma para la chispa extra (si no, guardar chispas daría chispas). En la Red se ve con "Nació de una chispa" y desde ahí se llega a la chispa original. Migración, pgTAP y tests del emparejamiento.
   Listo cuando: una chispa guardada aparece en la Red, puede salir en una chispa nueva con otra neurona y nunca con sus padres.
-- [ ] **89. Importar notas: Markdown y Apple Notes** · flag `import_notes`
+- [x] **89. Importar notas: Markdown y Apple Notes** · flag `import_notes` · ✅ 2026-10-17: Red › Más › Importar notas (archivos `.md` o una bóveda de Obsidian) y `ImportNotesIntent` para el atajo de Apple Notes, con vista previa (elegir, descartar, categoría por carpeta, tesis editable); las largas se conceptualizan desde la nota entera con Acepto y cupo; cupo `import` de 50 en free e invitado y cada nota cuenta como captura (lo que sobra sigue mañana desde la cola, con aviso). Tests de LumbreCore, pgTAP, e2e de `/capture` y verificado en el simulador con `-mock`. Provisorio: 500 por tanda en Pro y que cuenten para la chispa extra (ios/README.md).
   Markdown: archivos `.md` sueltos o una carpeta de Obsidian (desde Archivos). Apple Notes: un atajo de Atajos que busca las notas y se las pasa a un App Intent de Lumbre (no hay API para leerlas en bloque). Cada nota entra por `/capture`, con la cola offline, y con los límites de §4: 50 en free, ilimitado en Pro. Vista previa antes de importar, con elegir y descartar.
-  A definir antes de empezar: qué tesis lleva una nota larga cuando no se conceptualiza (primera línea, o que el usuario elija), y si importar cuenta para el tope de 30 capturas por día.
-- [ ] **90. Lentes en el planificador** · flag `planner_lenses`
+  Decidido el 2026-10-17: las notas largas se conceptualizan con IA (gastan el cupo de conceptualización y necesitan el "Acepto"); si no hay cupo o consentimiento, la tesis es la primera línea, editable en la vista previa. Importar cuenta para el tope de 30 capturas por día: lo que pase del tope queda en la cola y sigue al día siguiente, con aviso.
+- [x] **90. Lentes en el planificador** · flag `planner_lenses` · ✅ 2026-10-17: prompt `planner_lens.v1` como bloque aparte sobre planner.v2 (o v1), con la chispa delimitada; `/planner` con `lens`, respuestas con `[[lens:…]]` que no mueven los cuartos de Disney; evento `planner_lens_used` y `lens` en `planner_message_sent`; tests de Deno, e2e (las tres lentes, 400 y 403 sin consentimiento) y verificado en el simulador con `-mockPro`. El formato con el modelo real queda para cuando haya clave de Anthropic.
   Tres atajos más en el planificador (Pro): "Modelo de negocio", "Trama" y "Post". Cada uno es un pedido con su formato de salida, sobre `planner.v2`. Evento con la lente elegida.
   Listo cuando: los tres atajos responden con su formato y respetan el consentimiento para IA.
 - [ ] **91. Perilla de distancia** · flag `distance_dial`
@@ -242,8 +242,8 @@ Salen de una lista de ideas revisada el 2026-10-17; las elegidas están en `plan
   Necesita: paso 30 (prompt de chispa evaluado).
 - [ ] **92. Temas puente** · flag `bridge_topics`
   Si la Red tiene mucho de dos dominios que casi no se cruzaron, Lumbre sugiere 2 o 3 temas para leer que los unan ("bioarte" entre biología y arte). Solo temas, nunca artículos ni links. Una llamada por semana como mucho; se puede sumar al resumen semanal. Se muestra en la Red, y en Hoy cuando quedan pocos pares buenos.
-  A definir: si es para todos o solo Pro.
-- [ ] **93. Swipe en el reveal** · flag `reveal_swipe`
+  Decidido el 2026-10-17: solo Pro.
+- [x] **93. Swipe en el reveal** · flag `reveal_swipe` · ✅ 2026-10-17: gesto en `design/reveal/` (README §12 y prototipo); en iOS, `UIPanGestureRecognizer` en el scroll del modal (un `DragGesture` le ganaba al scroll en iOS 18), `SparkActionRequest` en `SparkActions`, acciones de VoiceOver y evento `spark_swiped`. Probado en el simulador en los dos sentidos y en AX5; quedan provisorios la rotación, los hápticos, que el swipe cierre el modal y el popover del motivo en iOS 26.
   En el modal, ya revelada (desde los 900 ms): deslizar a la derecha guarda (abre la elección de circuito si está `projects`) y a la izquierda abre "No me sirve" con su motivo. La tarjeta sigue al dedo, con umbral, háptico y vuelta si no llega al umbral; con Reducir movimiento, sin fling. Los botones se quedan y VoiceOver usa acciones (`accessibilityAction`). Primero el gesto en `design/reveal/`.
   Listo cuando: el swipe funciona en los dos sentidos, no choca con el scroll del panel en AX5 y VoiceOver puede hacer lo mismo sin gesto.
 

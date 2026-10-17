@@ -85,6 +85,8 @@ public enum CreditKind: String, Sendable, Codable {
     case planner
     case plannerDeep = "planner_deep"
     case projects
+    /// Notas importadas (paso 89): 50 en total en free, un tope técnico por día en Pro.
+    case importNotes = "import"
 }
 
 /// Un cupo del usuario, como lo devuelve `credit_status()`.
@@ -141,6 +143,8 @@ public struct Category: Hashable, Sendable, Identifiable {
 /// Mismos valores que `concepts.source_type` en el esquema.
 public enum SourceType: String, Sendable, CaseIterable, Codable {
     case text, voice, selection, screenshot, scan, link, image, pdf, audio
+    /// La neurona nació de una chispa guardada (flag `spark_neuron`).
+    case spark
 }
 
 /// Mismos valores que `concepts.status`: un borrador es una conceptualización de confianza media que falta confirmar.
@@ -169,9 +173,13 @@ public struct Concept: Identifiable, Hashable, Sendable {
     public let excerpt: String?
     /// Copiado de la biblioteca de conceptos invitados.
     public let fromLibrary: Bool
+    /// La chispa guardada de la que nació (`sourceType == .spark`). Nil si esa chispa ya no existe.
+    public let originSparkID: Spark.ID?
+    /// Las dos neuronas de esa chispa: nunca se combina con ellas.
+    public let originConceptIDs: [UUID]
     public let createdAt: Date
 
-    public init(id: UUID = UUID(), category: Category?, title: String, thesis: String, principle: String? = nil, status: ConceptStatus = .ready, distilled: Bool = false, confidence: Confidence? = nil, sourceType: SourceType, sourceURL: URL? = nil, sourceTitle: String? = nil, excerpt: String? = nil, fromLibrary: Bool = false, createdAt: Date) {
+    public init(id: UUID = UUID(), category: Category?, title: String, thesis: String, principle: String? = nil, status: ConceptStatus = .ready, distilled: Bool = false, confidence: Confidence? = nil, sourceType: SourceType, sourceURL: URL? = nil, sourceTitle: String? = nil, excerpt: String? = nil, fromLibrary: Bool = false, originSparkID: Spark.ID? = nil, originConceptIDs: [UUID] = [], createdAt: Date) {
         self.id = id
         self.category = category
         self.title = title
@@ -185,7 +193,14 @@ public struct Concept: Identifiable, Hashable, Sendable {
         self.sourceTitle = sourceTitle
         self.excerpt = excerpt
         self.fromLibrary = fromLibrary
+        self.originSparkID = originSparkID
+        self.originConceptIDs = originConceptIDs
         self.createdAt = createdAt
+    }
+
+    /// True si una de las dos nació de una chispa de la otra: el servidor no las combina.
+    public func isSparkRelative(of other: Concept) -> Bool {
+        originConceptIDs.contains(other.id) || other.originConceptIDs.contains(id)
     }
 }
 
@@ -250,8 +265,12 @@ public struct CaptureRequest: Sendable, Equatable {
     public var localAssetID: String?
     /// Pedir conceptualización automática (Pro, o las pruebas del mes en free).
     public var distill: Bool
+    /// Viene de importar notas (paso 89): cuenta como captura y, en free, también para el cupo `import` de 50 notas.
+    public var importSource: ImportSource?
+    /// La nota importada entera (hasta `NoteImport.noteTextLimit`): de ahí se conceptualiza. La tesis es su título.
+    public var noteText: String?
 
-    public init(thesis: String?, category: String, source: CaptureSource, sourceTitle: String? = nil, excerpt: String? = nil, localAssetID: String? = nil, distill: Bool = false) {
+    public init(thesis: String?, category: String, source: CaptureSource, sourceTitle: String? = nil, excerpt: String? = nil, localAssetID: String? = nil, distill: Bool = false, importSource: ImportSource? = nil, noteText: String? = nil) {
         self.thesis = thesis
         self.category = category
         self.source = source
@@ -259,6 +278,8 @@ public struct CaptureRequest: Sendable, Equatable {
         self.excerpt = excerpt
         self.localAssetID = localAssetID
         self.distill = distill
+        self.importSource = importSource
+        self.noteText = importSource == nil ? nil : noteText
     }
 }
 
@@ -469,9 +490,26 @@ public enum PlannerRoom: String, Sendable, CaseIterable {
     }
 }
 
+/// Lentes del planificador (planner_lens.v1): convierten la chispa en un modelo de negocio, una trama o un post.
+/// La respuesta empieza con la marca `[[lens:…]]` en vez de la del cuarto (`PlannerRoom.split` también la oculta).
+public enum PlannerLens: String, Sendable, CaseIterable {
+    case businessModel = "business_model"
+    case plot
+    case post
+
+    /// La lente que marca una respuesta, si tiene marca.
+    public static func of(_ raw: String) -> PlannerLens? {
+        let trimmed = raw.drop { $0.isWhitespace }
+        guard trimmed.hasPrefix("[[lens:"), let close = trimmed.range(of: "]]") else { return nil }
+        return PlannerLens(rawValue: String(trimmed[trimmed.index(trimmed.startIndex, offsetBy: 7)..<close.lowerBound]))
+    }
+}
+
 extension PlannerMessage {
     /// Cuarto del método al que pertenece la respuesta, si tiene marca.
     public var room: PlannerRoom? { PlannerRoom.split(content).room }
+    /// Lente con la que se pidió la respuesta, si tiene marca.
+    public var lens: PlannerLens? { role == .assistant ? PlannerLens.of(content) : nil }
     /// El texto para mostrar, sin la marca del cuarto.
     public var displayText: String { role == .assistant ? PlannerRoom.split(content).text : content }
 }

@@ -131,8 +131,8 @@ select set_config('request.jwt.claims', '{"sub": "f0000000-0000-4000-8000-000000
 
 select results_eq(
   $$ select kind, available, used, remaining from public.credit_status() order by kind $$,
-  $$ values ('bridge_topics', 1, 0, 1), ('capture', 30, 30, 0), ('distill', 5, 5, 0), ('projects', 1, 0, 1), ('spark_extra', 2, 2, 0) $$,
-  'credit_status: free ve sus cupos con lo ganado y lo usado (y los de proyectos y temas puente)'
+  $$ values ('capture', 30, 30, 0), ('distill', 5, 5, 0), ('import', 50, 0, 50), ('projects', 1, 0, 1), ('spark_extra', 2, 2, 0) $$,
+  'credit_status: free ve sus cupos con lo ganado y lo usado (y los de proyectos e importar notas)'
 );
 select throws_ok($$ select public.refund_credit(auth.uid(), 'capture') $$, '42501', null,
   'refund_credit: la app no puede llamarla');

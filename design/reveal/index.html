@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Lumbre · Paso 12 (MAT-225): coreografía del reveal. Documento + prototipo animado (Web Animations API, sin librerías).
+<!-- Lumbre · Paso 12 (MAT-225): coreografía del reveal. Paso 93: swipe en el reveal (flag reveal_swipe). Documento + prototipo animado (Web Animations API, sin librerías).
      La especificación en texto está en README.md, en esta misma carpeta. Para verla: python3 -m http.server -d design. -->
 <html lang="es" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lumbre · Coreografía del reveal</title>
@@ -147,6 +147,28 @@
 .steps{margin:0;padding-left:20px;max-width:80ch}
 .steps li{margin:6px 0;color:var(--ink-muted)}
 .steps li b{color:var(--ink)}
+
+/* Swipe (flag reveal_swipe, README §12): la tarjeta envuelve al panel para moverse sin pisar su fundido */
+.rv-card{margin:auto;width:100%;max-width:440px;touch-action:pan-y}
+.rv.is-swipe .rv-card{-webkit-user-select:none;user-select:none}
+.rv.is-swipe.is-revealed .rv-card{cursor:grab}
+.rv-card.is-dragging{cursor:grabbing}
+.rv-hint{position:absolute;top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border-radius:var(--radius-full);
+  background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1px var(--border);font:600 15px/20px var(--font-text);opacity:0;pointer-events:none;white-space:nowrap}
+.rv-hint svg{width:18px;height:18px;flex:none}
+.rv-hint--save{left:16px}
+.rv-hint--dismiss{right:16px}
+.rv-hint.is-armed{background:var(--accent);color:var(--on-accent);box-shadow:none}
+/* La acción que abre el swipe, con la forma de las del sistema (hoja de circuitos / diálogo del motivo) */
+.rv-act{position:absolute;inset:0;z-index:30}
+.rv-act[hidden]{display:none}
+.rv-act__scrim{position:absolute;inset:0;background:var(--scrim)}
+.rv-act__box{position:absolute;left:8px;right:8px;bottom:34px;display:flex;flex-direction:column;gap:8px}
+.rv-act__group{background:var(--surface);border-radius:var(--radius-md);overflow:hidden}
+.rv-act__title{margin:0;padding:14px 16px 12px;text-align:center;font:600 13px/18px var(--font-text);color:var(--ink-muted)}
+.rv-act__title small{display:block;font-weight:400;margin-top:2px}
+.rv-act button{display:block;width:100%;border:0;border-top:1px solid var(--border);background:transparent;color:var(--ink);font:400 17px/22px var(--font-text);padding:14px 16px;min-height:52px;cursor:pointer}
+.rv-act .rv-act__cancel{border-top:0;font-weight:600}
 </style>
 </head>
 <body class="doc" data-platform="ios">
@@ -162,7 +184,7 @@
 <main>
 
 <h2 class="sec">Prototipo</h2>
-<p class="lead">Tocá “Encender la chispa” en el teléfono. Bajá la velocidad para ver cada pista, arrastrá la posición para congelar un instante y cerrá con la cruz o tocando afuera (antes de los 900&nbsp;ms el toque se ignora, como en la app).</p>
+<p class="lead">Tocá “Encender la chispa” en el teléfono. Bajá la velocidad para ver cada pista, arrastrá la posición para congelar un instante y cerrá con la cruz o tocando afuera (antes de los 900&nbsp;ms el toque se ignora, como en la app). Ya revelada, deslizá el panel: a la derecha guarda y a la izquierda abre “No me sirve” (con el teclado, ← y → hacen lo que las acciones de VoiceOver).</p>
 
 <div class="proto">
   <div class="proto__phone">
@@ -198,7 +220,11 @@
           <!-- El reveal: modal a pantalla completa sobre Hoy desenfocado -->
           <div class="rv" id="rv" hidden>
             <div class="rv-veil"></div>
+            <!-- Detrás del panel: el indicador del lado que el swipe deja al descubierto -->
+            <div class="rv-hint rv-hint--save" id="hintSave" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/></svg>Guardar idea</div>
+            <div class="rv-hint rv-hint--dismiss" id="hintDismiss" aria-hidden="true">No me sirve</div>
             <div class="rv-scroll" id="rvScroll">
+              <div class="rv-card" id="rvCard">
               <section class="rv-panel" role="dialog" aria-modal="true" aria-labelledby="rvLabel">
                 <div class="rv-glow" aria-hidden="true"></div>
                 <div class="rv-head">
@@ -224,6 +250,14 @@
                   </div>
                 </div>
               </section>
+              </div>
+            </div>
+            <div class="rv-act" id="rvAct" hidden>
+              <div class="rv-act__scrim" id="rvActScrim"></div>
+              <div class="rv-act__box" role="dialog" aria-modal="true" aria-labelledby="rvActTitle">
+                <div class="rv-act__group" id="rvActGroup"></div>
+                <div class="rv-act__group"><button class="rv-act__cancel" id="rvActCancel" type="button">Cancelar</button></div>
+              </div>
             </div>
           </div>
           <div class="tel__home"></div>
@@ -250,6 +284,10 @@
         <button class="sw" id="rmSwitch" type="button" role="switch" aria-checked="false"><span class="sw__track" aria-hidden="true"></span>Reducir movimiento</button>
       </div>
       <p class="note" id="rmNote" style="margin:-8px 0 0">Arranca según la preferencia del sistema (<code>prefers-reduced-motion</code>).</p>
+      <div class="ctrl__row"><span class="ctrl__lab">Flags</span>
+        <button class="sw" id="swipeSwitch" type="button" role="switch" aria-checked="true"><span class="sw__track" aria-hidden="true"></span><code>reveal_swipe</code></button>
+        <button class="sw" id="projectsSwitch" type="button" role="switch" aria-checked="true"><span class="sw__track" aria-hidden="true"></span><code>projects</code></button>
+      </div>
       <div class="ctrl__row"><span class="ctrl__lab">Tema</span>
         <div class="seg" role="group" aria-label="Tema"><button data-set-theme="light">Gris</button><button data-set-theme="dark">Grafito</button></div>
       </div>
@@ -355,6 +393,33 @@
     <li>Con texto grande el panel scrollea (como hoy). Los desplazamientos son fijos en pt, no dependen del tamaño de letra.</li>
   </ul></div>
 </div>
+
+<h2 class="sec" id="swipe">Swipe</h2>
+<p class="lead">Paso 93, flag <code>reveal_swipe</code>. Ya revelada (900&nbsp;ms, o 200 con Reducir movimiento), la tarjeta se puede deslizar: a la derecha guarda (abre “Dónde la guardás” si está <code>projects</code>; si no, guarda directo) y a la izquierda abre “¿Por qué no te sirve?”. Es un atajo de los botones, que siguen en su lugar. Probalo en el teléfono de arriba. El detalle está en el README, §12.</p>
+<div class="dos">
+  <div class="card"><h3>Gesto</h3><ul>
+    <li><b>Eje:</b> se decide a los 10&nbsp;pt. A menos de 30° de la horizontal es swipe; si no, es scroll y la tarjeta no se mueve. Ya decidido como swipe, el scroll del modal se apaga hasta soltar (con texto grande el panel scrollea).</li>
+    <li><b>Sigue al dedo</b> 1:1 en <i>x</i>, con una rotación de hasta ±4° (sin rotación con Reducir movimiento). Si el lado no aplica (ya guardada o ya descartada), se resiste: un cuarto del recorrido, hasta 32&nbsp;pt.</li>
+    <li><b>Indicador</b> detrás del panel, en el lado que queda al descubierto: “Guardar idea” a la izquierda, “No me sirve” a la derecha. Se hace visible con el recorrido y se llena de <code>accent</code> al cruzar el umbral. Sin rosa.</li>
+    <li><b>Umbral:</b> 30&nbsp;% del ancho del panel (mínimo 96&nbsp;pt), o un tirón de más de 700&nbsp;pt/s con 48&nbsp;pt de recorrido. Háptico al cruzarlo: <code>.impact(.medium)</code> al armarse y <code>.impact(.light)</code> al desarmarse (<code>GESTURE_THRESHOLD_ACTIVATE</code> / <code>DEACTIVATE</code> en Android).</li>
+  </ul></div>
+  <div class="card"><h3>Accesibilidad y medición</h3><ul>
+    <li><b>VoiceOver</b> no usa el gesto: el título y el cuerpo tienen las acciones “Guardar idea” y “No me sirve” (<code>accessibilityAction(named:)</code>), que hacen lo mismo sin mover la tarjeta. En Android, <code>customActions</code>.</li>
+    <li>Los botones siguen siendo el camino principal; el gesto no se anuncia ni tiene hint.</li>
+    <li>Con el flag apagado no hay gesto ni acciones: solo los botones.</li>
+    <li><b><code>spark_swiped</code></b> al soltar pasado el umbral o al usar la acción: <code>mode</code>, <code>direction</code> (<code>save</code>, <code>dismiss</code>), <code>input</code> (<code>gesture</code>, <code>accessibility_action</code>).</li>
+  </ul></div>
+</div>
+<div class="tabla-wrap" style="margin-top:16px"><table class="tabla">
+  <thead><tr><th>Al soltar</th><th>Con movimiento</th><th>Con Reducir movimiento</th></tr></thead>
+  <tbody>
+    <tr><td>Antes del umbral</td><td>Vuelve al centro con <code>.spring(duration: 0.3, bounce: 0.2)</code></td><td>Vuelve en 200&nbsp;ms con el fundido sereno, sin rebote</td></tr>
+    <tr><td>Pasado el umbral</td><td>Sale por ese lado (hasta el borde más 40&nbsp;pt) con opacidad a 0, en 220&nbsp;ms con la curva fundido; se abre la acción</td><td>Sin salida: se funde en su lugar en 200&nbsp;ms; se abre la acción</td></tr>
+    <tr><td>Terminó bien</td><td colspan="2">El modal se cierra con su fundido de 200&nbsp;ms y la chispa queda en Hoy con su estado nuevo</td></tr>
+    <tr><td>Canceló o falló</td><td>Vuelve desde el lado por el que salió, 300&nbsp;ms, curva entrada</td><td>Aparece en el centro con un fundido sereno de 200&nbsp;ms</td></tr>
+  </tbody>
+</table></div>
+<div class="callout callout--prov" style="margin-top:16px"><p><b>Provisorio, a confirmar.</b> Que el swipe cierre el modal y el botón no (deslizar es sacar la tarjeta de encima; el botón deja ver “Idea guardada” y seguir con Planificar). La rotación, la salida en 220&nbsp;ms, el indicador sin rosa, los números del umbral y los hápticos.</p></div>
 
 <h2 class="sec">Casos</h2>
 <div class="tabla-wrap"><table class="tabla">
@@ -556,9 +621,12 @@
   function setRevealed(v) {
     revealed = v;
     rvClose.disabled = !v;
+    rv.classList.toggle('is-revealed', v);
   }
 
-  function flashHaptic() {
+  /* El nombre es el del háptico que se muestra (por defecto, el del reveal). */
+  function flashHaptic(name) {
+    $('#hapBadge .hap-name').textContent = name || hapticName();
     var k = 1 / speed;
     var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     $('#hapRing').animate(still ? [{ opacity: 1 }, { opacity: 0 }] : [{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(1.035)' }],
@@ -577,6 +645,7 @@
 
   function resetToHoy() {
     cancelAll();
+    resetSwipe();
     rv.getAnimations().forEach(function (a) { a.cancel(); });
     rv.hidden = true;
     closing = false;
@@ -674,6 +743,171 @@
       pauseBtn.disabled = true;
       log(null, 'Cerrado con ' + reason + ' (fundido de 200 ms, sin deslizar). La chispa queda en Hoy.');
     };
+  }
+
+  /* ---------- Swipe (flag reveal_swipe, README §12) ---------- */
+  var card, hintSave, hintDismiss, rvAct, swipeOn = true, projectsOn = true;
+  var drag = null, armed = false, busy = false, saved = false, discarded = false;
+
+  function swipeReady() { return swipeOn && revealed && !closing && !busy && !rv.hidden; }
+  function allowed(dir) { return dir > 0 ? !saved : !discarded; }
+  function threshold() { return Math.max(96, card.offsetWidth * 0.3); }
+  /* El teléfono está con zoom: los píxeles del puntero no son los del panel. */
+  function scale() { return card.getBoundingClientRect().width / card.offsetWidth || 1; }
+  function tf(x) {
+    var rot = reduced ? 0 : Math.max(-4, Math.min(4, x / card.offsetWidth * 4));
+    return 'translateX(' + x.toFixed(1) + 'px) rotate(' + rot.toFixed(2) + 'deg)';
+  }
+  function place(x, opacity) {
+    card.style.transform = x ? tf(x) : '';
+    card.style.opacity = opacity === undefined ? '' : String(opacity);
+  }
+  function swipeHapticName(on) {
+    if (platform() === 'android') return on ? 'GESTURE_THRESHOLD_ACTIVATE' : 'GESTURE_THRESHOLD_DEACTIVATE';
+    return on ? '.impact(.medium)' : '.impact(.light)';
+  }
+  function hints(x, quiet) {
+    var dir = x > 0 ? 1 : x < 0 ? -1 : 0;
+    var p = Math.min(Math.abs(x) / threshold(), 1);
+    var on = dir !== 0 && allowed(dir) && Math.abs(x) >= threshold();
+    hintSave.style.opacity = dir > 0 && allowed(1) ? p : 0;
+    hintDismiss.style.opacity = dir < 0 && allowed(-1) ? p : 0;
+    hintSave.classList.toggle('is-armed', on && dir > 0);
+    hintDismiss.classList.toggle('is-armed', on && dir < 0);
+    if (on !== armed) {
+      armed = on;
+      if (quiet) return;
+      flashHaptic(swipeHapticName(on));
+      log(null, on ? 'Cruzó el umbral: háptico <em>' + swipeHapticName(true) + '</em>; soltar acá ' + (dir > 0 ? 'guarda' : 'abre “No me sirve”') + '.'
+        : 'Volvió antes del umbral: háptico <em>' + swipeHapticName(false) + '</em>.');
+    }
+  }
+  /* Resorte de SwiftUI .spring(duration: d, bounce: b), muestreado en keyframes. */
+  function springFrames(x, d, b) {
+    var z = 1 - b, w = 2 * Math.PI / d, wd = w * Math.sqrt(1 - z * z), n = 30, k = [];
+    for (var i = 0; i <= n; i++) {
+      var t = i / n * d * 1.6;
+      var v = i === n ? 1 : 1 - Math.exp(-z * w * t) * (Math.cos(wd * t) + (z * w / wd) * Math.sin(wd * t));
+      k.push({ transform: tf(x * (1 - v)), offset: i / n });
+    }
+    return { kf: k, dur: d * 1.6 * 1000 };
+  }
+  function run(kf, dur, ease, done) {
+    var a = card.animate(kf, { duration: dur / speed, easing: ease, fill: 'forwards' });
+    a.onfinish = function () { done(); a.cancel(); };
+  }
+  function resetSwipe() {
+    if (!card) return;
+    card.getAnimations().forEach(function (a) { a.cancel(); });
+    drag = null; busy = false; saved = false; discarded = false;
+    place(0);
+    card.classList.remove('is-dragging');
+    rvScroll.style.overflowY = '';
+    hints(0, true);
+    rvAct.hidden = true;
+  }
+
+  function onDown(e) {
+    if (!swipeReady() || drag || e.button > 0) return;
+    drag = { id: e.pointerId, x0: e.clientX, y0: e.clientY, axis: null, x: 0, k: scale(), samples: [] };
+  }
+  function onMove(e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    var dx = (e.clientX - drag.x0) / drag.k, dy = (e.clientY - drag.y0) / drag.k;
+    if (!drag.axis) {
+      if (Math.sqrt(dx * dx + dy * dy) < 10) return;
+      /* Se decide una vez: a menos de 30° de la horizontal es swipe; si no, el scroll se queda con todo el gesto. */
+      drag.axis = Math.abs(dy) <= 0.58 * Math.abs(dx) ? 'x' : 'y';
+      if (drag.axis === 'y') return;
+      card.setPointerCapture(e.pointerId);
+      card.classList.add('is-dragging');
+      rvScroll.style.overflowY = 'hidden';
+    }
+    if (drag.axis !== 'x') return;
+    e.preventDefault();
+    var dir = dx > 0 ? 1 : -1;
+    drag.x = allowed(dir) ? dx : dir * Math.min(Math.abs(dx) * 0.25, 32);
+    drag.samples.push({ x: dx, t: e.timeStamp });
+    while (drag.samples.length > 2 && e.timeStamp - drag.samples[0].t > 100) drag.samples.shift();
+    place(drag.x);
+    hints(drag.x);
+  }
+  function onUp(e, cancelled) {
+    if (!drag || e.pointerId !== drag.id) return;
+    var d = drag;
+    drag = null;
+    card.classList.remove('is-dragging');
+    rvScroll.style.overflowY = '';
+    if (d.axis !== 'x') return;
+    var first = d.samples[0], last = d.samples[d.samples.length - 1];
+    var v = first && last && last.t > first.t ? (last.x - first.x) / (last.t - first.t) * 1000 : 0;
+    var dir = d.x > 0 ? 1 : -1;
+    var fling = Math.abs(d.x) > 48 && Math.abs(v) > 700 && (v > 0 ? 1 : -1) === dir;
+    var commit = !cancelled && allowed(dir) && (Math.abs(d.x) >= threshold() || fling);
+    if (commit) launch(dir > 0 ? 'save' : 'dismiss', 'gesture', d.x, fling && Math.abs(d.x) < threshold());
+    else back(d.x);
+  }
+  function back(x) {
+    hints(0, true);
+    if (!x) return;
+    if (reduced) run([{ transform: tf(x) }, { transform: 'none' }], 200, CALM, function () { place(0); });
+    else { var s = springFrames(x, 0.3, 0.2); run(s.kf, s.dur, 'linear', function () { place(0); }); }
+  }
+
+  function launch(action, input, x, byFling) {
+    busy = true;
+    hints(0, true);
+    log(null, (input === 'gesture' ? (byFling ? 'Tirón ' : 'Soltó pasado el umbral ') + (action === 'save' ? 'a la derecha' : 'a la izquierda') + '. ' : 'Acción de VoiceOver “' + (action === 'save' ? 'Guardar idea' : 'No me sirve') + '”. ') +
+      '<em>spark_swiped</em> · mode: daily · direction: ' + action + ' · input: ' + input + '.');
+    if (input !== 'gesture') { openAction(action, 0); return; }
+    var dir = action === 'save' ? 1 : -1;
+    if (reduced) {
+      run([{ transform: tf(x), opacity: 1 }, { transform: tf(x), opacity: 0 }], 200, CALM, function () { place(0, 0); openAction(action, 0); });
+    } else {
+      var edge = dir * (tel.clientWidth / 2 + card.offsetWidth / 2 + 40);
+      run([{ transform: tf(x), opacity: 1 }, { transform: tf(edge), opacity: 0 }], 220, FADE, function () { place(edge, 0); openAction(action, edge); });
+    }
+  }
+  function openAction(action, edge) {
+    if (rv.hidden || closing) return;
+    if (action === 'save' && !projectsOn) {
+      log(null, 'Sin <em>projects</em>: guarda directo, sin circuito (<em>saveSpark</em>).');
+      finish(true, action, edge);
+      return;
+    }
+    var opts = action === 'save' ? ['Sin circuito', 'Ideas para el podcast'] : ['Es obvia', 'No tiene que ver conmigo', 'Ya la había tenido'];
+    var title = action === 'save' ? 'Dónde la guardás<small>En la app es la hoja de circuitos (SaveSparkSheet).</small>' : '¿Por qué no te sirve?<small>Con esto elegimos mejor las próximas chispas.</small>';
+    $('#rvActGroup').innerHTML = '<p class="rv-act__title" id="rvActTitle">' + title + '</p>' + opts.map(function (o) { return '<button type="button">' + o + '</button>'; }).join('');
+    $$('#rvActGroup button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        rvAct.hidden = true;
+        $('#rvActGroup').innerHTML = '';
+        log(null, (action === 'save' ? 'Guardada en “' : 'Motivo “') + b.textContent + '” (' + (action === 'save' ? '<em>spark_saved</em>' : '<em>spark_feedback_given</em>') + ', del servidor).');
+        finish(true, action, edge);
+      });
+    });
+    rvAct.dataset.action = action;
+    rvAct.dataset.edge = String(edge);
+    rvAct.hidden = false;
+    $('#rvActGroup button').focus({ preventScroll: true });
+  }
+  function cancelAction() {
+    if (rvAct.hidden) return;
+    rvAct.hidden = true;
+    $('#rvActGroup').innerHTML = '';
+    log(null, 'Canceló: la tarjeta vuelve.');
+    finish(false, rvAct.dataset.action, Number(rvAct.dataset.edge));
+  }
+  function finish(ok, action, edge) {
+    if (ok) {
+      if (action === 'save') saved = true; else discarded = true;
+      busy = false;
+      close('el swipe');
+      return;
+    }
+    var done = function () { place(0); busy = false; };
+    if (reduced || !edge) run([{ transform: 'none', opacity: 0 }, { transform: 'none', opacity: 1 }], 200, CALM, done);
+    else run([{ transform: tf(edge), opacity: 0 }, { transform: 'none', opacity: 1 }], 300, ENTER, done);
   }
 
   /* ---------- Línea de tiempo ---------- */
@@ -782,7 +1016,33 @@
     scrub.addEventListener('input', function () { seek(Number(scrub.value)); });
     rvClose.addEventListener('click', function () { close('la cruz'); });
     rvScroll.addEventListener('click', function (e) { if (e.target === rvScroll) close('afuera'); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !rv.hidden) close('escape'); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !rvAct.hidden) { cancelAction(); return; }
+      if (e.key === 'Escape' && !rv.hidden) close('escape');
+      /* Con el teclado, ← y → hacen lo que las acciones de VoiceOver (sin mover la tarjeta). */
+      if ((e.key === 'ArrowRight' || e.key === 'ArrowLeft') && swipeReady() && rv.contains(document.activeElement)) {
+        var action = e.key === 'ArrowRight' ? 'save' : 'dismiss';
+        if (allowed(action === 'save' ? 1 : -1)) { e.preventDefault(); launch(action, 'accessibility_action', 0); }
+      }
+    });
+
+    card = $('#rvCard'); hintSave = $('#hintSave'); hintDismiss = $('#hintDismiss'); rvAct = $('#rvAct');
+    card.addEventListener('pointerdown', onDown);
+    card.addEventListener('pointermove', onMove);
+    card.addEventListener('pointerup', function (e) { onUp(e, false); });
+    card.addEventListener('pointercancel', function (e) { onUp(e, true); });
+    $('#rvActCancel').addEventListener('click', cancelAction);
+    $('#rvActScrim').addEventListener('click', cancelAction);
+    var flagSwitch = function (id, set) {
+      $(id).addEventListener('click', function () {
+        var v = $(id).getAttribute('aria-checked') !== 'true';
+        $(id).setAttribute('aria-checked', String(v));
+        set(v);
+      });
+    };
+    flagSwitch('#swipeSwitch', function (v) { swipeOn = v; rv.classList.toggle('is-swipe', v); log(null, v ? 'Flag <em>reveal_swipe</em> encendido.' : 'Flag <em>reveal_swipe</em> apagado: sin gesto ni acciones, solo los botones.'); });
+    flagSwitch('#projectsSwitch', function (v) { projectsOn = v; });
+    rv.classList.add('is-swipe');
 
     var syncPlatform = function () {
       var android = platform() === 'android';

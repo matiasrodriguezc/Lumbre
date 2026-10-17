@@ -126,12 +126,14 @@ Fuente: **A** = app (iOS y Android), **S** = servidor (Edge Functions o webhook)
 | `capture_failed` | A | `reason`: `rate_limited`, `network`, `unsupported_format`, `too_large`, `server_error` | La captura no se pudo guardar |
 | `ocr_completed` | A | `kind`: `screenshot`, `scan`, `success`, `length_bucket` | Termina el OCR local |
 | `offline_queue_flushed` | A | `count` | Se mandan capturas encoladas al volver la red |
-| `concept_saved` | S | `source_type`, `distilled`, `confidence`: `high`, `medium`, `low`, `null`; `domain`, `status`: `draft`, `ready`; `concepts_in_capture` (1–3), `is_seed`, `category_created` | Se escribe un concepto en la base |
+| `concept_saved` | S | `source_type`, `distilled`, `confidence`: `high`, `medium`, `low`, `null`; `domain`, `status`: `draft`, `ready`; `concepts_in_capture` (1–3), `is_seed`, `category_created`, `import_source`: `markdown`, `apple_notes`, `null` | Se escribe un concepto en la base |
 | `distill_fallback_shown` | A | `reason`: `low_confidence`, `inaccessible`, `free_quota` | Aparece "¿Qué idea te deja esto?" |
 | `concept_draft_resolved` | A | `action`: `confirmed`, `edited`, `discarded` | Resuelve un borrador de confianza media |
 | `concept_category_changed` | A | `context`: `review`, `detail` | Mueve un concepto a otra de sus categorías |
 | `category_created` | S | `categories_count` | Se crea una categoría nueva al guardar un concepto |
 | `extra_spark_earned` | S | `earned_today` (1 o 2) | Guardar 3 conceptos le dio una chispa extra |
+| `import_previewed` | A | `source`: `markdown_files`, `obsidian_folder`, `apple_notes`; `notes_bucket`: `1-10`, `11-50`, `51-200`, `201+`; `already_imported` | Se abre la vista previa de importar notas (paso 89) |
+| `import_submitted` | A | `source`, `selected`, `discarded` (las que se sacaron de la vista previa), `categories_count` | Toca Importar: las notas entran a la cola offline |
 
 ### Chispa
 
@@ -143,9 +145,10 @@ Fuente: **A** = app (iOS y Android), **S** = servidor (Edge Functions o webhook)
 | `spark_revealed` | A | `mode`, `is_first`, `entry`: `push`, `widget`, `app`; `minutes_since_available`, `reduce_motion` | Termina el reveal |
 | `spark_saved` | S | `mode`, `entry` (lo manda la app en la llamada), `is_first`, `has_project` | La chispa pasa a guardada. **Evento de la métrica norte** |
 | `spark_feedback_given` | S | `mode`, `reason`: `obvious`, `irrelevant`, `already_had`; `distance_percentile`, `uses_library_concept` | "No me sirve" con motivo |
+| `spark_swiped` | A | `mode`, `direction`: `save`, `dismiss`; `input`: `gesture`, `accessibility_action` | En el modal del reveal, suelta la tarjeta pasado el umbral o usa la acción de VoiceOver, antes de que se abra la acción (flag `reveal_swipe`, design/reveal §12). El resultado sigue en `spark_saved` y `spark_feedback_given` |
 | `spark_extra_requested` | A | `mode`, `source`: `earned`, `pro` | Pide una chispa más |
 | `spark_empty_state_shown` | A | `reason`: `used_today`, `no_candidates`, `few_concepts` | Hoy no tiene chispa para mostrar |
-| `share_card_created` | A | `mode` | Se genera la tarjeta para historias |
+| `share_card_created` | A | `mode`, `format`: `story`, `feed` | Se genera la tarjeta para compartir (historias o publicaciones) |
 | `spark_shared` | A | `activity_type` (el que devuelve la hoja del sistema, si lo da) | Termina de compartir |
 | `ai_content_reported` | A | `object`: `spark`, `planner_message`; `reason` | Reporta contenido generado (requisito de Google Play) |
 
@@ -157,13 +160,16 @@ Fuente: **A** = app (iOS y Android), **S** = servidor (Edge Functions o webhook)
 | `vault_filtered` | A | `domain` | Aplica un filtro de dominio |
 | `concept_opened` | A | `entry`: `vault`, `search`, `spark_detail` | Abre el detalle de un concepto |
 | `concept_deleted` | S | `source_type`, `age_days_bucket` | Borra un concepto |
+| `spark_neuron_created` | S | `mode` (el de la chispa), `parent_is_spark_neuron` | Al guardar una chispa nace su neurona (`save_spark`, flag `spark_neuron`). No cuenta como `concept_saved`: no es información nueva que agregó la persona |
+| `spark_origin_opened` | A | — | Desde una neurona que nació de una chispa, abre la chispa original (flag `spark_neuron`) |
 
 ### Planificador, proyectos y export
 
 | Evento | Fuente | Propiedades | Cuándo |
 |---|---|---|---|
 | `planner_opened` | A | `entry`: `spark_detail`, `project` | Abre el planificador (con o sin Pro) |
-| `planner_message_sent` | S | `mode`: `quick`, `deep`; `suggestion`: `backlog`, `devil_advocate`, `stack`, `none`; `method`: `free`, `disney`; `room`: `dreamer`, `realist`, `critic`, `plan`, `none` | Se procesa un mensaje |
+| `planner_message_sent` | S | `mode`: `quick`, `deep`; `suggestion`: `backlog`, `devil_advocate`, `stack`, `none`; `method`: `free`, `disney`; `room`: `dreamer`, `realist`, `critic`, `plan`, `none`; `lens`: `business_model`, `plot`, `post`, `none` | Se procesa un mensaje |
+| `planner_lens_used` | A | `lens`: `business_model`, `plot`, `post`; `mode`: `quick`, `deep`; `method`: `free`, `disney` | Toca una lente del planificador y el pedido sale (con el consentimiento para la IA; flag `planner_lenses`) |
 | `quota_reached` | S | `kind`: `capture`, `distill`, `spark_extra`, `planner`, `planner_deep` | `consume_credit()` devuelve false |
 | `markdown_exported` | A | `object`: `spark`, `project` | Exporta a Markdown |
 | `project_created` | S | `from`: `spark`, `manual` | Crea un proyecto (tablero en 1.1) |

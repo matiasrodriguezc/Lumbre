@@ -45,13 +45,13 @@
         }
       }
     },
-    "El PDF pesa más de 20 MB. Probá con uno más liviano." : {
+    "El PDF pesa más de 20 MB. Probá con uno más liviano o escaneá solo las páginas que te importan." : {
       "comment" : "[capturar.pdf_too_big]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The PDF is over 20 MB. Try a lighter one."
+            "value" : "The PDF is over 20 MB. Try a lighter one or scan just the pages you care about."
           }
         }
       }

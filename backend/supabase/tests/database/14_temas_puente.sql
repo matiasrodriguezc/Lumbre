@@ -6,8 +6,9 @@ select plan(24);
 
 -- ---------------------------------------------------------------
 -- Datos
---   A  free: biología 6, arte 5, cocina 2, sin chispas entre biología y arte
---   B  free: biología 4 listas + 2 borradores + 3 de la biblioteca, arte 5 (biología no llega a 5 propias)
+--   A  free: biología 6, arte 5, cocina 2, sin chispas entre biología y arte (la detección no mira el plan;
+--      la Edge Function corta antes a quien no es Pro)
+--   B  free: biología 4 listas + 2 borradores + 3 de la biblioteca (+1 nacida de una chispa), arte 5
 --   C  pro: tecnología 10, biología 6, arte 6; tecnología y biología ya se cruzaron 3 veces
 --   G  invitado
 -- ---------------------------------------------------------------
@@ -64,6 +65,10 @@ select results_eq(
 );
 select is((select count(*)::int from public.bridge_domain_pair('92000000-0000-4000-8000-00000000000b')), 0,
   'los borradores y las neuronas de la biblioteca no cuentan para "mucho"');
+insert into public.concepts (user_id, domain, title, thesis, source_type)
+values ('92000000-0000-4000-8000-00000000000b', 'biologia', 'Nacida de una chispa', 'Cuerpo.', 'spark');
+select is((select count(*)::int from public.bridge_domain_pair('92000000-0000-4000-8000-00000000000b')), 0,
+  'las neuronas que nacieron de una chispa tampoco cuentan');
 select results_eq(
   $$ select domain_a, domain_b from public.bridge_domain_pair('92000000-0000-4000-8000-00000000000c') $$,
   $$ values ('arte', 'tecnologia') $$,
@@ -92,16 +97,15 @@ select is((select count(*)::int from public.bridge_domain_pair('92000000-0000-40
 update public.app_config set value = '5' where key = 'bridge_topics_min_concepts';
 
 -- ---------------------------------------------------------------
--- Cupo: una llamada por semana, free y Pro; el invitado no tiene
+-- Cupo: solo Pro, una llamada por semana; free e invitado no tienen
 -- ---------------------------------------------------------------
-select is(public.consume_credit('92000000-0000-4000-8000-00000000000a', 'bridge_topics'), true, 'free: la primera de la semana tiene cupo');
-select is(public.consume_credit('92000000-0000-4000-8000-00000000000a', 'bridge_topics'), false, 'free: la segunda de la semana no');
-select is(public.consume_credit('92000000-0000-4000-8000-00000000000c', 'bridge_topics'), true, 'pro: la primera de la semana tiene cupo');
-select is(public.consume_credit('92000000-0000-4000-8000-00000000000c', 'bridge_topics'), false, 'pro: también una sola por semana');
+select is(public.consume_credit('92000000-0000-4000-8000-00000000000a', 'bridge_topics'), false, 'free: sin cupo (solo Pro)');
 select is(public.consume_credit('92000000-0000-4000-8000-00000000000d', 'bridge_topics'), false, 'invitado: sin cupo (nada de IA)');
+select is(public.consume_credit('92000000-0000-4000-8000-00000000000c', 'bridge_topics'), true, 'pro: la primera de la semana tiene cupo');
+select is(public.consume_credit('92000000-0000-4000-8000-00000000000c', 'bridge_topics'), false, 'pro: la segunda de la semana no');
 
-select is(public.refund_credit('92000000-0000-4000-8000-00000000000a', 'bridge_topics'), true, 'si la IA falla se devuelve el cupo');
-select is(public.consume_credit('92000000-0000-4000-8000-00000000000a', 'bridge_topics'), true, 'y se puede volver a pedir esa semana');
+select is(public.refund_credit('92000000-0000-4000-8000-00000000000c', 'bridge_topics'), true, 'si la IA falla se devuelve el cupo');
+select is(public.consume_credit('92000000-0000-4000-8000-00000000000c', 'bridge_topics'), true, 'y se puede volver a pedir esa semana');
 
 select is(extract(isodow from public.period_start('week', 'Asia/Tokyo'))::int, 1, 'la semana arranca el lunes, en la zona del usuario');
 select is(
@@ -111,8 +115,8 @@ select is(
 );
 -- Lo usado la semana pasada no cuenta para esta.
 update public.usage_ledger set period_start = period_start - 7
- where user_id = '92000000-0000-4000-8000-00000000000a' and kind = 'bridge_topics';
-select is(public.consume_credit('92000000-0000-4000-8000-00000000000a', 'bridge_topics'), true, 'una semana nueva tiene cupo nuevo');
+ where user_id = '92000000-0000-4000-8000-00000000000c' and kind = 'bridge_topics';
+select is(public.consume_credit('92000000-0000-4000-8000-00000000000c', 'bridge_topics'), true, 'una semana nueva tiene cupo nuevo');
 
 -- ---------------------------------------------------------------
 -- La sugerencia de la semana

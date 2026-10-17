@@ -4,12 +4,15 @@
 -- ("bioarte" entre biología y arte). Solo temas: nunca artículos, autores ni links (la IA los inventaría).
 --
 -- - La detección es SQL, sin LLM: bridge_domain_pair() elige los dos dominios con más neuronas propias
---   (sin borradores ni las de la biblioteca) que casi no aparecieron juntos en una chispa.
+--   (sin borradores, ni las de la biblioteca, ni las que nacieron de una chispa) que casi no aparecieron juntos
+--   en una chispa.
 -- - Los umbrales viven en app_config y se cambian sin publicar versión (provisorios: 5 neuronas por dominio
 --   y como mucho 1 chispa entre los dos).
--- - Una llamada a la IA por semana como mucho, para free y Pro (decidido el 2026-10-17): cupo `bridge_topics`
---   de 1 por semana en plan_limits, así pasa por consume_credit() como toda llamada de IA y dos pedidos
---   simultáneos no pasan el techo. El invitado no tiene cupo (nada de IA).
+-- - Solo Pro (decidido el 2026-10-17) y una llamada a la IA por semana como mucho: cupo `bridge_topics` de 1 por
+--   semana en plan_limits, así pasa por consume_credit() como toda llamada de IA y dos pedidos simultáneos no pasan
+--   el techo. Free e invitado no tienen fila: no tienen cupo.
+-- - Va después de 20261017150000_importar_notas.sql, que también redefine plan_limits_kind_check: la lista de acá
+--   tiene que incluir la de esa ('import').
 -- - La sugerencia de la semana queda en bridge_topics y se devuelve sin volver a llamar a la IA.
 -- Todo esto lo usa la Edge Function bridge-topics con service role: la app no ve la tabla ni las funciones.
 
@@ -19,14 +22,13 @@
 alter table public.plan_limits drop constraint plan_limits_kind_check;
 alter table public.plan_limits
   add constraint plan_limits_kind_check
-  check (kind in ('capture', 'distill', 'spark_extra', 'planner', 'planner_deep', 'projects', 'bridge_topics'));
+  check (kind in ('capture', 'distill', 'spark_extra', 'planner', 'planner_deep', 'projects', 'import', 'bridge_topics'));
 alter table public.plan_limits drop constraint plan_limits_period_check;
 alter table public.plan_limits
   add constraint plan_limits_period_check check (period in ('day', 'week', 'month', 'total'));
 
 -- La semana arranca el lunes en la zona del usuario (date_trunc('week'), igual que period_start()).
 insert into public.plan_limits (plan, kind, period, max_count) values
-  ('free', 'bridge_topics', 'week', 1),
   ('pro', 'bridge_topics', 'week', 1);
 
 insert into public.app_config (key, value, description) values
@@ -78,7 +80,8 @@ as $$
   strong as (
     select c.domain, count(*)::int as n
     from public.concepts c
-    where c.user_id = p_user and c.status = 'ready' and not c.from_library and c.domain is not null
+    where c.user_id = p_user and c.status = 'ready' and not c.from_library and c.source_type <> 'spark'
+      and c.domain is not null
     group by c.domain
     having count(*) >= (select min_concepts from settings)
     order by count(*) desc, c.domain

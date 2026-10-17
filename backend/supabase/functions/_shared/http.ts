@@ -21,6 +21,7 @@ export const errorStatus = {
   not_enough_concepts: 409,
   needs_thesis: 422,
   quota_exceeded: 429,
+  import_limit: 429,
   too_many_categories: 429,
   too_many_projects: 429,
   rate_limited: 429,

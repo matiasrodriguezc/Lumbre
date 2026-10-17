@@ -12,6 +12,10 @@ struct SparkActions: View {
     /// Si está, "Planificar" llama a esto en vez de empujar la pantalla (por ejemplo, desde el modal del reveal,
     /// que no tiene navegación propia).
     var onPlan: (() -> Void)? = nil
+    /// Un pedido de afuera (el swipe del reveal): abre la misma hoja, el mismo diálogo o el mismo guardado que los botones.
+    var request: SparkActionRequest? = nil
+    /// Cuando termina el `request`: `true` si guardó o mandó el motivo; `false` si se canceló o falló.
+    var onRequestFinished: (Bool) -> Void = { _ in }
 
     @Environment(\.api) private var api
     @Environment(AppModel.self) private var appModel
@@ -23,6 +27,9 @@ struct SparkActions: View {
     @State private var isSharing = false
     @State private var isSaving = false
     @State private var notice: Notice?
+    @State private var activeRequest: SparkActionRequest.Action?
+    /// Eligió un circuito o un motivo en lo que abrió el `request` (la hoja y el diálogo se cierran igual al cancelar).
+    @State private var requestChoseOption = false
 
     private enum Notice: Equatable {
         case saved, feedback, reported, failed(String)
@@ -62,7 +69,10 @@ struct SparkActions: View {
         .animation(reduceMotion ? nil : .snappy, value: spark.status)
         .confirmationDialog("¿Por qué no te sirve?", isPresented: $isAskingFeedback, titleVisibility: .visible) {
             ForEach(SparkFeedback.allCases, id: \.self) { reason in
-                Button(reason.label) { sendFeedback(reason) }
+                Button(reason.label) {
+                    requestChoseOption = true
+                    sendFeedback(reason)
+                }
             }
         } message: {
             Text("Con esto elegimos mejor las próximas chispas.")
@@ -74,8 +84,21 @@ struct SparkActions: View {
         } message: {
             Text("La revisamos y ajustamos lo que genera Lumbre.")
         }
-        .sheet(isPresented: $isChoosingProject) {
+        .onChange(of: request) { _, request in
+            if let request { perform(request.action) }
+        }
+        .onChange(of: isAskingFeedback) { _, isAsking in
+            guard !isAsking, activeRequest == .dismiss else { return }
+            // El botón del motivo corre después de que se cierra el diálogo: si no eligió ninguno, canceló.
+            DispatchQueue.main.async {
+                if !requestChoseOption { finishRequest(false) }
+            }
+        }
+        .sheet(isPresented: $isChoosingProject, onDismiss: {
+            if activeRequest == .save { finishRequest(requestChoseOption) }
+        }) {
             SaveSparkSheet(spark: spark) { projectID, projectName in
+                requestChoseOption = true
                 var updated = spark
                 updated.status = .saved
                 updated.projectID = projectID
@@ -187,6 +210,27 @@ struct SparkActions: View {
         }
     }
 
+    private func perform(_ action: SparkActionRequest.Action) {
+        activeRequest = action
+        requestChoseOption = false
+        switch action {
+        case .save:
+            if FeatureFlag.projects.isEnabled {
+                isChoosingProject = true
+            } else {
+                saveWithoutProject()
+            }
+        case .dismiss:
+            isAskingFeedback = true
+        }
+    }
+
+    private func finishRequest(_ succeeded: Bool) {
+        guard activeRequest != nil else { return }
+        activeRequest = nil
+        onRequestFinished(succeeded)
+    }
+
     private func saveWithoutProject() {
         isSaving = true
         Task {
@@ -200,8 +244,10 @@ struct SparkActions: View {
                 notice = .saved
                 onChange(updated)
                 appModel.dataChanged()
+                finishRequest(true)
             } catch {
                 notice = .failed(error.localizedDescription)
+                finishRequest(false)
             }
         }
     }
@@ -216,8 +262,10 @@ struct SparkActions: View {
                 notice = .feedback
                 onChange(updated)
                 appModel.dataChanged()
+                finishRequest(true)
             } catch {
                 notice = .failed(error.localizedDescription)
+                finishRequest(false)
             }
         }
     }
@@ -233,6 +281,16 @@ struct SparkActions: View {
             }
         }
     }
+}
+
+/// Lo que el swipe del reveal le pide a `SparkActions`. Cada pedido es nuevo (su `id`), así el mismo lado se puede repetir.
+struct SparkActionRequest: Equatable {
+    enum Action: String {
+        case save, dismiss
+    }
+
+    let action: Action
+    let id = UUID()
 }
 
 /// Con tamaños de accesibilidad, el ícono va arriba del texto: al lado, "Planificar" y "Compartir" no entran en el

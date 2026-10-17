@@ -180,6 +180,7 @@ Toda operación que gasta IA pasa primero por `consume_credit(user, kind)`, desd
 - El plan efectivo sale de `effective_plan()`: `guest` si la sesión es anónima; si no, el `plan` del perfil.
 - Los períodos (día y mes) se cuentan en la zona horaria del usuario.
 - Si una fila tiene `earned_every`, el cupo se gana: 1 por cada N conceptos guardados en el período, con `max_count` como techo. Es el caso de las chispas extra en free (3 conceptos dan 1, hasta 2 por día).
+- **Importar notas** (paso 89): `capture_concept()` con `p_import_source` (`markdown`, `apple_notes`) descuenta la captura del día como cualquier otra (`quota_exceeded`: la app la deja en la cola para mañana) y además, si el plan tiene fila `import` (free e invitado: 50 en `total`; Pro no tiene), una de ese cupo (`import_limit`). La neurona guarda `concepts.import_source`. `/capture` destila una nota larga desde `note_text` y devuelve el `import` de los conceptos de más.
 - El descuento es atómico: el `update ... where used < techo` bloquea la fila, así que llamadas simultáneas no pasan el límite.
 - Si la operación falla después de descontar, la Edge Function llama a `refund_credit(user, kind)`.
 - La app muestra lo que le queda con `credit_status()`, que devuelve solo los cupos del usuario de la sesión.
@@ -243,6 +244,7 @@ Lo que la app hace **directo con su sesión** (PostgREST y RLS). Todo lo demás 
 | Mover un concepto de categoría | `rpc/move_concept(p_concept, p_category)`: la crea si no existe (límite de 50) y el concepto hereda su dominio |
 | Guardar texto sin pasar por la función | `rpc/capture_concept(...)` (sin embedding hasta que corre `/process`; la app usa `/capture`) |
 | Chispas | `sparks`: leer; cambiar `status` (`revealed`, `saved`, `discarded`), `feedback` (`obvious`, `irrelevant`, `already_had`) y `project_id`. El feedback mueve la banda del emparejamiento |
+| Guardar una chispa | `rpc/save_spark(p_spark, p_project, p_as_neuron)`: la guarda (con su circuito o `null`) y, con `p_as_neuron` (flag `spark_neuron` de la app) y `app_config.spark_neuron_enabled`, la primera vez crea su neurona (`source_type = 'spark'`, `origin_spark_id`, `origin_lo`, `origin_hi`). Devuelve el id de esa neurona o `null`. La neurona no gasta cupo de captura, no suma para la chispa extra y nunca se empareja con sus padres |
 | Proyectos | `projects`: leer, renombrar (`name`) y borrar; crear con `rpc/create_project(p_name)` (error `too_many_projects`) |
 | Planificador | `planner_messages` y `planner_threads`: leer (los mensajes los escribe `/planner`) |
 | Reportes de contenido IA | `content_reports`: insertar `spark_id` o `planner_message_id`, `reason` (`offensive`, `dangerous`, `wrong`, `other`) y `note` (≤ 500). El `user_id` lo pone la base |

@@ -226,7 +226,8 @@ struct ProfileView: View {
     }
 
     private var visibleCredits: [Credit] {
-        let order: [CreditKind] = [.capture, .distill, .sparkExtra, .planner, .plannerDeep]
+        var order: [CreditKind] = [.capture, .distill, .sparkExtra, .planner, .plannerDeep]
+        if FeatureFlag.importNotes.isEnabled { order.append(.importNotes) }
         return order.compactMap { kind in credits.first { $0.kind == kind } }
     }
 
@@ -434,6 +435,7 @@ private struct CreditRow: View {
         case .planner: "Planificador este mes"
         case .plannerDeep: "Planes profundos este mes"
         case .projects: "Circuitos"
+        case .importNotes: "Notas para importar"
         }
     }
 }
