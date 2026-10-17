@@ -12,6 +12,7 @@ struct PlannerView: View {
     @Environment(\.api) private var api
     @Environment(AppModel.self) private var appModel
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var spark: Spark?
     @State private var messages: [PlannerMessage] = []
     @State private var credits: [Credit] = []
@@ -97,6 +98,13 @@ struct PlannerView: View {
                     if didReport {
                         ActionNotice(text: "Gracias por avisar. La vamos a revisar.")
                     }
+                    if isLargeText {
+                        VStack(alignment: .leading, spacing: Space.s2) {
+                            quickReplyButtons
+                            modePicker
+                        }
+                        .padding(.top, Space.s2)
+                    }
                     Color.clear.frame(height: 1).id(Self.bottomID)
                 }
                 .padding(.horizontal, Space.s4)
@@ -166,27 +174,26 @@ struct PlannerView: View {
 
     // MARK: Composer
 
+    /// Con tamaños de accesibilidad, los atajos y el modo bajan al final del chat y en la barra queda solo el campo:
+    /// con todo abajo, la barra tapaba casi toda la pantalla y "Plan profundo" se cortaba por sílabas.
+    private var isLargeText: Bool { dynamicTypeSize.isAccessibilitySize }
+
+    /// Con tamaños de accesibilidad, el largo se cortaba en "pr…".
+    private var placeholder: LocalizedStringKey { isLargeText ? "Preguntá…" : "Escribí o preguntá…" }
+
     private var composer: some View {
         VStack(alignment: .leading, spacing: Space.s2) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: Space.s2) {
-                    ForEach(quickReplies, id: \.label) { reply in
-                        Button {
-                            send(reply.prompt)
-                        } label: {
-                            LumbreChip(reply.label, variant: .select)
-                        }
-                        .buttonStyle(.plain)
-                        .disabled(isStreaming || isLoading)
-                    }
+            if !isLargeText {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: Space.s2) { quickReplyButtons }
                 }
-            }
-            .scrollClipDisabled()
+                .scrollClipDisabled()
 
-            modePicker
+                modePicker
+            }
 
             HStack(alignment: .bottom, spacing: Space.s2) {
-                TextField("Escribí o preguntá…", text: $draft, axis: .vertical)
+                TextField(placeholder, text: $draft, axis: .vertical)
                     .lineLimit(1...5)
                     .focused($isComposing)
                     .padding(.horizontal, Space.s3)
@@ -229,16 +236,33 @@ struct PlannerView: View {
         .overlay(alignment: .top) { Divider().overlay(Palette.border) }
     }
 
+    private var quickReplyButtons: some View {
+        ForEach(quickReplies, id: \.label) { reply in
+            Button {
+                send(reply.prompt)
+            } label: {
+                LumbreChip(reply.label, variant: .select)
+            }
+            .buttonStyle(.plain)
+            .disabled(isStreaming || isLoading)
+        }
+    }
+
     private var modePicker: some View {
-        HStack(spacing: Space.s2) {
+        let layout = isLargeText
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: Space.s2))
+            : AnyLayout(HStackLayout(spacing: Space.s2))
+        return layout {
             modeOption(.quick, title: "Rápido")
             modeOption(.deep, title: "Plan profundo")
-            Spacer(minLength: Space.s2)
+            if !isLargeText {
+                Spacer(minLength: Space.s2)
+            }
             if let quota = quotaText {
                 quota
                     .font(.caption.weight(.medium))
                     .foregroundStyle(Palette.inkMuted)
-                    .multilineTextAlignment(.trailing)
+                    .multilineTextAlignment(isLargeText ? .leading : .trailing)
             }
         }
     }

@@ -7,6 +7,7 @@ struct DraftReviewView: View {
     let onDone: () -> Void
 
     @Environment(\.api) private var api
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var drafts: [Concept]
 
     init(drafts: [Concept], onDone: @escaping () -> Void) {
@@ -25,7 +26,7 @@ struct DraftReviewView: View {
                     .fixedSize(horizontal: false, vertical: true)
                 ForEach(drafts) { draft in
                     DraftCard(concept: draft, isOnly: drafts.count == 1) { resolved in
-                        withAnimation(.snappy) { drafts.removeAll { $0.id == resolved } }
+                        withAnimation(reduceMotion ? nil : .snappy) { drafts.removeAll { $0.id == resolved } }
                         if drafts.isEmpty { onDone() }
                     }
                 }

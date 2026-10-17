@@ -13,6 +13,8 @@ struct PlanTile: View {
     let isSelected: Bool
     let action: () -> Void
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         Button(action: action) {
             HStack(alignment: .center, spacing: Space.s3) {
@@ -26,13 +28,25 @@ struct PlanTile: View {
                             .background(Palette.pro, in: Capsule())
                             .padding(.bottom, Space.s1)
                     }
-                    Text(name)
-                        .font(.headline)
-                        .foregroundStyle(Palette.ink)
-                    HStack(alignment: .firstTextBaseline, spacing: Space.s1) {
+                    HStack(alignment: .top) {
+                        Text(name)
+                            .font(.headline)
+                            .foregroundStyle(Palette.ink)
+                        if isLargeText {
+                            Spacer(minLength: Space.s2)
+                            check
+                        }
+                    }
+                    // Con tamaños de accesibilidad, el período va abajo del precio y la marca sube al lado del nombre:
+                    // con las dos al costado, el precio se partía o se cortaba.
+                    let priceLayout = isLargeText
+                        ? AnyLayout(VStackLayout(alignment: .leading, spacing: 0))
+                        : AnyLayout(HStackLayout(alignment: .firstTextBaseline, spacing: Space.s1))
+                    priceLayout {
                         Text(verbatim: price)
                             .lumbreDisplay(.title1)
                             .foregroundStyle(Palette.ink)
+                            .fixedSize(horizontal: false, vertical: true)
                         Text(period)
                             .font(.callout)
                             .foregroundStyle(Palette.inkMuted)
@@ -43,10 +57,9 @@ struct PlanTile: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                    .font(.title2)
-                    .foregroundStyle(isSelected ? Palette.pro : Palette.borderStrong)
-                    .accessibilityHidden(true)
+                if !isLargeText {
+                    check
+                }
             }
             .padding(Space.s4)
             .background(Palette.surface, in: RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
@@ -60,6 +73,15 @@ struct PlanTile: View {
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(isSelected ? [.isSelected, .isButton] : .isButton)
         .sensoryFeedback(.selection, trigger: isSelected)
+    }
+
+    private var isLargeText: Bool { dynamicTypeSize.isAccessibilitySize }
+
+    private var check: some View {
+        Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+            .font(.title2)
+            .foregroundStyle(isSelected ? Palette.pro : Palette.borderStrong)
+            .accessibilityHidden(true)
     }
 }
 

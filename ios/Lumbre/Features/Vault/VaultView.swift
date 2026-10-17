@@ -13,6 +13,7 @@ struct VaultView: View {
     @Environment(\.api) private var api
     @Environment(\.dataVersion) private var dataVersion
     @Environment(AppModel.self) private var appModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var path: [VaultRoute] = []
     @State private var concepts: [Concept] = []
     @State private var categories: [LumbreCore.Category] = []
@@ -208,7 +209,7 @@ struct VaultView: View {
 
     private func chip(_ title: String, systemImage: String?, isOn: Bool, action: @escaping () -> Void) -> some View {
         Button {
-            withAnimation(.snappy) { action() }
+            withAnimation(reduceMotion ? nil : .snappy) { action() }
         } label: {
             LumbreChip(title, systemImage: systemImage, variant: isOn ? .on : .select)
                 .frame(minHeight: 44)

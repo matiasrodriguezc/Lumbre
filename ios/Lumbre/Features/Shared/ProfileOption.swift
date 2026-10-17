@@ -12,13 +12,21 @@ struct ProfileOption: View {
     var isEnabled: Bool = true
     let action: () -> Void
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    /// El recuadro crece con el ícono: fijo en 36, con texto grande el ícono se salía y pisaba el título.
+    @ScaledMetric(relativeTo: .body) private var iconBox: CGFloat = 36
+
     var body: some View {
+        // Con tamaños de accesibilidad, el ícono va arriba: al lado, "oportunidades" se cortaba por sílabas.
+        let layout = dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: Space.s2))
+            : AnyLayout(HStackLayout(alignment: .top, spacing: Space.s3))
         Button(action: action) {
-            HStack(alignment: .top, spacing: Space.s3) {
+            layout {
                 Image(systemName: systemImage)
                     .font(.body.weight(.semibold))
                     .foregroundStyle(isSelected ? Palette.onAccent : Palette.ink)
-                    .frame(width: 36, height: 36)
+                    .frame(width: iconBox, height: iconBox)
                     .background(isSelected ? Palette.accent : Palette.surfaceAlt, in: RoundedRectangle(cornerRadius: Radius.sm, style: .continuous))
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {

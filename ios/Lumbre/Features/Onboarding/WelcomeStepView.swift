@@ -123,6 +123,7 @@ struct WelcomeStepView: View {
 /// Dos conceptos que chocan: lo que hace Lumbre, sin la estrella (que es solo de la chispa del día).
 private struct CollisionIllustration: View {
     @Environment(\.neuralIdentity) private var neuralIdentity
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         ViewThatFits(in: .horizontal) {
@@ -165,7 +166,8 @@ private struct CollisionIllustration: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(Space.s4)
-        .frame(minWidth: 140, maxWidth: 220, alignment: .leading)
+        // Con tamaños de accesibilidad, a todo el ancho: en 220 pt, "Urbanismo" y "semáforos" se cortaban por sílabas.
+        .frame(minWidth: 140, maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : 220, alignment: .leading)
         .background(Palette.surface, in: RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: Radius.md, style: .continuous).strokeBorder(Palette.border, lineWidth: 1))
     }

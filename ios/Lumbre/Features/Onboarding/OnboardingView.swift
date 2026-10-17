@@ -26,6 +26,14 @@ struct OnboardingView: View {
                 }
         }
         .environment(model)
+        #if DEBUG
+        .task {
+            // `-mockGuest -open seeds`: arranca en ese paso, con los anteriores en la pila.
+            if let raw = UserDefaults.standard.string(forKey: "open"), let step = OnboardingStep(rawValue: raw) {
+                model.path = OnboardingStep.allCases.filter { $0 != .welcome && $0.index <= step.index }
+            }
+        }
+        #endif
     }
 }
 

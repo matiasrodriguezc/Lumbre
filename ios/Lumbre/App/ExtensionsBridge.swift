@@ -15,6 +15,8 @@ struct ExtensionsBridge: ViewModifier {
     @Environment(\.api) private var api
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage("theme") private var theme: ThemePreference = .light
+    /// Solo Debug: la tarjeta para compartir que abre `-open share`.
+    @State private var debugShareSpark: Spark?
 
     func body(content: Content) -> some View {
         content
@@ -45,10 +47,34 @@ struct ExtensionsBridge: ViewModifier {
                 if ProcessInfo.processInfo.arguments.contains("-checkExternalCapture") {
                     Task { await ExternalCaptureCheck.run() }
                 }
+                if let screen = UserDefaults.standard.string(forKey: "open") {
+                    openDebugScreen(screen)
+                }
                 #endif
                 await watchQueue()
             }
+            #if DEBUG
+            .sheet(item: $debugShareSpark) { ShareCardSheet(spark: $0) }
+            #endif
     }
+
+    #if DEBUG
+    /// `-open <pantalla>` con `-mock` o `-mockPro`: abre una pantalla con los datos de prueba, para revisarla
+    /// (por ejemplo con texto grande) sin tocar el simulador.
+    private func openDebugScreen(_ screen: String) {
+        let spark = MockData.recentSparks[0]
+        switch screen {
+        case "spark": appModel.open(.spark(spark.id))
+        case "planner": appModel.open(.planner(spark.id))
+        case "concept": appModel.open(.concept(MockData.concepts[2].id))
+        case "draft": appModel.open(.concept(MockData.concepts[7].id))
+        case "paywall": appModel.open(.paywall(trigger: "settings"))
+        case "share": debugShareSpark = spark
+        case "consent": appModel.presentAIConsent()
+        default: break
+        }
+    }
+    #endif
 
     private func open(_ link: LumbreDeepLink) {
         switch link {
