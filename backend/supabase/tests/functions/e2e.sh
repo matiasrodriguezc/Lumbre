@@ -3,7 +3,8 @@
 #   1. Un invitado guarda 6 conceptos de categorías distintas (/capture) y, cuando acepta la IA, Hoy le da su chispa diaria.
 #   2. Como invitado no puede pedir chispas extra; crea su cuenta (email de Mailpit) y pasa a free.
 #   3. Con 6 conceptos guardados hoy ganó extras: pide una (/spark). Busca en su bóveda (/search).
-#   4. Pasa a Pro con /dev-plan y usa el planificador en streaming (/planner). Revoca el consentimiento: nada va a la IA.
+#   4. Pasa a Pro con /dev-plan, usa el planificador en streaming (/planner) y recibe temas puente (/bridge-topics).
+#      Revoca el consentimiento: nada va a la IA.
 #   5. Proyecto, push, reporte, export de sus datos y borrado de la cuenta (RPCs con su sesión).
 #   6. Ana (seed) después de /process: Hoy, búsqueda y extra.
 #   7. Funciones internas y webhook: sin clave no entran; con la clave de servicio responden.
@@ -199,8 +200,31 @@ check "search: una consulta vacía es invalid_request" "$STATUS|$(echo "$BODY" |
 echo "== 4. Pro y planificador"
 call planner "{\"spark_id\": \"$DAILY_ID\", \"message\": \"Hola\", \"mode\": \"quick\"}"
 check "planner: free no tiene planificador (402)" "$STATUS|$(echo "$BODY" | jq -r .error)" "402|pro_required"
+# Temas puente (paso 92): solo Pro.
+call bridge-topics
+check "bridge-topics: free no recibe temas" "$STATUS|$(echo "$BODY" | jq -c .bridge)" "200|null"
 call dev-plan '{"plan": "pro"}'
 check "dev-plan: pasa a Pro" "$STATUS|$(echo "$BODY" | jq -r .plan)" "200|pro"
+call bridge-topics
+check "bridge-topics: Pro sin dos dominios fuertes no recibe temas" "$STATUS|$(echo "$BODY" | jq -c .bridge)" "200|null"
+# Dos dominios con 5 neuronas cada uno que nunca se cruzaron (se borran al final del bloque).
+psql "$DB_URL" -qXc "insert into public.concepts (user_id, domain, title, thesis, source_type)
+  select '$USER_ID', d, 'Puente ' || d || ' ' || g, 'Tesis de prueba.', 'text' from unnest(array['biologia', 'arte']) d, generate_series(1, 5) g" >/dev/null
+call bridge-topics
+check "bridge-topics: une biología y arte" "$STATUS|$(echo "$BODY" | jq -r '[.bridge.domains[].slug] | join("+")')" "200|arte+biologia"
+check_true "bridge-topics: de 2 a 3 temas" "$(echo "$BODY" | jq -r '(.bridge.topics | length) as $n | $n >= 2 and $n <= 3')"
+check_true "bridge-topics: sin links" "$(echo "$BODY" | jq -r '[.bridge.topics[] | (.title + " " + .why) | test("https?:|www\\.|@")] | any | not')"
+valid /bridge-topics
+BRIDGE_ID="$(echo "$BODY" | jq -r .bridge.id)"
+check "bridge-topics: registra la llamada en llm_calls con su prompt" \
+  "$(psql "$DB_URL" -tAXc "select count(*) || '|' || max(prompt_version) from public.llm_calls where user_id = '$USER_ID' and feature = 'bridge_topics'")" "1|bridge.v1"
+call bridge-topics
+check "bridge-topics: el segundo pedido de la semana devuelve la misma sugerencia" "$(echo "$BODY" | jq -r .bridge.id)" "$BRIDGE_ID"
+check "bridge-topics: y no vuelve a llamar a la IA" \
+  "$(psql "$DB_URL" -tAXc "select count(*) from public.llm_calls where user_id = '$USER_ID' and feature like 'bridge_topics%'")" "1"
+check "bridge-topics: el cupo de la semana quedó usado" \
+  "$(rest "rpc/credit_status" -X POST -d '{}' | jq -r '.[] | select(.kind == "bridge_topics") | .remaining')" "0"
+psql "$DB_URL" -qXc "delete from public.concepts where user_id = '$USER_ID' and title like 'Puente %'" >/dev/null
 SSE="$(curl -sN -X POST "$FN/planner" -H "apikey: $ANON_KEY" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
   -d "{\"spark_id\": \"$DAILY_ID\", \"message\": \"Armame un backlog\", \"mode\": \"quick\"}")"
 check_true "planner: llegan varios eventos delta" "$([[ "$(echo "$SSE" | grep -c '^event: delta')" -gt 3 ]] && echo true || echo false)"
@@ -252,6 +276,8 @@ call planner "{\"spark_id\": \"$DAILY_ID\", \"message\": \"Hola\", \"mode\": \"q
 check "planner: sin consentimiento no responde (403)" "$STATUS|$(echo "$BODY" | jq -r .error)" "403|ai_consent_required"
 call planner "{\"spark_id\": \"$DAILY_ID\", \"message\": \"Convertila en un post.\", \"mode\": \"quick\", \"lens\": \"post\"}"
 check "planner lente: sin consentimiento no responde (403)" "$STATUS|$(echo "$BODY" | jq -r .error)" "403|ai_consent_required"
+call bridge-topics
+check "bridge-topics: sin consentimiento no devuelve temas" "$STATUS|$(echo "$BODY" | jq -c .bridge)" "200|null"
 DISTILL_LEFT="$(rest "rpc/credit_status" -X POST -d '{}' | jq -r '.[] | select(.kind == "distill") | .remaining')"
 capture "$LONG Y sin revisión, los errores llegan a producción." "Equipos" true
 check "capture: sin consentimiento guarda sin destilar" "$STATUS|$(echo "$BODY" | jq -r .distillation)|$(echo "$BODY" | jq -r '.concepts[0].distilled')" "200|consent_required|false"
