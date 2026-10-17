@@ -125,7 +125,7 @@ struct ProfileView: View {
                     Text("Lumbre Pro")
                         .font(.headline)
                         .foregroundStyle(Palette.ink)
-                    Text("Hasta 10 chispas por día, destilación automática y el planificador")
+                    Text("Hasta 10 chispas por día, conceptualización automática y el planificador")
                         .font(.footnote)
                         .foregroundStyle(Palette.inkMuted)
                 }
@@ -429,7 +429,7 @@ private struct CreditRow: View {
     private var title: LocalizedStringKey {
         switch credit.kind {
         case .capture: "Capturas de hoy"
-        case .distill: "Destilaciones del mes"
+        case .distill: "Conceptualizaciones del mes"
         case .sparkExtra: "Chispas extra de hoy"
         case .planner: "Planificador este mes"
         case .plannerDeep: "Planes profundos este mes"

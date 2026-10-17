@@ -69,7 +69,7 @@ def main() -> None:
         "red-encabezado": clean(first_svg_after(ident, 'class="today__head"')),
         "red-historia": clean(first_svg_after(ident, 'class="share"')),
         "red-splash": clean(first_svg_after(ident, 'class="splash"')),
-        # Pulso (axón) para destilar y encender
+        # Pulso (axón) para conceptualizar y encender
         "axon": clean(first_svg_after(ident, 'class="loader"')),
         # Estados vacíos
         "estado-red-vacia": clean((SYSTEM / "identidad" / "estado-boveda-vacia.svg").read_text()),

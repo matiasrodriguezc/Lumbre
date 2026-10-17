@@ -17,7 +17,7 @@ Paso 66 (MAT-297). Qué muestra cada captura y qué dice. Las imágenes se hacen
 | 1 | **Reveal de la chispa** (modal) | El momento chispa congelado en el final del reveal: las dos neuronas arriba ("Semáforos en onda verde" · Ingeniería y "Code review" · Tecnología), la sinapsis encendida en el medio y el título "Revisiones en onda verde" con su texto. Fondo desenfocado | Dos ideas se cruzan. Salta una chispa. | Two ideas meet. A spark lights up. |
 | 2 | **Hoy** | La chispa del día ya revelada, con el contador ("Te queda 1 chispa hoy") y la red de fondo | Una chispa nueva cada mañana | A new spark every morning |
 | 3 | **Capturar** (sheet) desde Safari con Compartir | La sheet de Capturar con un link y el fragmento subrayado, y el botón "Guardar neurona" | Guardá lo que te inspira, desde cualquier app | Save what inspires you, from any app |
-| 4 | **Destilación** (revisión de la neurona) | Un link largo convertido en neurona: título, tesis y principio, con el dominio | Cada cosa que guardás, en una idea de una línea | Everything you save, in one line |
+| 4 | **Conceptualización** (revisión de la neurona) | Un link largo convertido en neurona: título, tesis y principio, con el dominio | Cada cosa que guardás, en una idea de una línea | Everything you save, in one line |
 | 5 | **Red** con búsqueda | Búsqueda "cosas que se ordenan solas" y el resultado de hormigas y feromonas arriba (búsqueda por significado, no por palabras) | Encontrá ideas por lo que significan | Find ideas by what they mean |
 | 6 | **Planificador** (Pro) | La síntesis final: el sueño en una frase y el plan en cinco pasos con el de esta semana marcado | De la chispa a un plan para esta semana | From spark to a plan for this week |
 | 7 | **Tarjeta para compartir** | La tarjeta vertical de la chispa, como se ve en una historia | Compartí tus chispas | Share your sparks |
@@ -28,7 +28,7 @@ Por qué este orden: 1 y 2 venden lo único que hace Lumbre (el choque y el háb
 
 ## Video de vista previa (opcional, después)
 
-15 a 25 segundos, sin audio necesario: capturar una nota desde Safari (3 s) → la neurona destilada (3 s) → a la mañana, la push (2 s) → el reveal completo a velocidad real (5 s) → la chispa en Hoy (3 s) → placa "Una chispa nueva cada mañana" (3 s). Grabado del simulador en 6,9".
+15 a 25 segundos, sin audio necesario: capturar una nota desde Safari (3 s) → la neurona conceptualizada (3 s) → a la mañana, la push (2 s) → el reveal completo a velocidad real (5 s) → la chispa en Hoy (3 s) → placa "Una chispa nueva cada mañana" (3 s). Grabado del simulador en 6,9".
 
 ## Textos alternativos para pruebas A/B (Product Page Optimization, después del lanzamiento)
 

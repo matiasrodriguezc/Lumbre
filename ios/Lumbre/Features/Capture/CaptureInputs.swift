@@ -257,7 +257,7 @@ struct PhotoInput: View {
             String(localized: "\(attachment.pageCount) páginas. El archivo no se guarda: solo la idea.")
         case .photo, .scan:
             form.thesis.isEmpty
-                ? String(localized: "No encontramos texto. Escribí qué idea te deja o destilá la imagen.")
+                ? String(localized: "No encontramos texto. Escribí qué idea te deja o conceptualizá la imagen.")
                 : String(localized: "Texto sacado en el teléfono. La foto queda en tu fototeca.")
         }
     }
@@ -312,9 +312,9 @@ struct PhotoInput: View {
     }
 }
 
-// MARK: - Destilar
+// MARK: - Conceptualizar
 
-/// Toggle de destilación con lo que queda de cupo. Violeta: es una función Pro (con pruebas en free).
+/// Toggle de conceptualización con lo que queda de cupo. Violeta: es una función Pro (con pruebas en free).
 struct DistillToggle: View {
     let title: LocalizedStringKey
     @Binding var isOn: Bool
@@ -360,7 +360,7 @@ struct DistillToggle: View {
                 proButton
             }
         case .guest:
-            Text("La destilación es con cuenta. Creala desde Perfil y probala gratis.")
+            Text("La conceptualización es con cuenta. Creala desde Perfil y probala gratis.")
                 .font(.footnote)
                 .foregroundStyle(Palette.inkMuted)
                 .fixedSize(horizontal: false, vertical: true)

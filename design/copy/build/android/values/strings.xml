@@ -36,9 +36,9 @@
     <string name="comun_title">Título</string>
     <!-- La idea de la neurona en una frase. -->
     <string name="comun_thesis">Tesis</string>
-    <!-- El mecanismo de fondo que sale de la destilación. -->
+    <!-- El mecanismo de fondo que sale de la conceptualización. -->
     <string name="comun_principle">Principio</string>
-    <!-- Pedido de una línea propia cuando no se puede (o no se quiere) destilar. -->
+    <!-- Pedido de una línea propia cuando no se puede (o no se quiere) conceptualizar. -->
     <string name="comun_what_idea">¿Qué idea te deja esto?</string>
     <string name="comun_one_line">En una línea, con tus palabras</string>
     <string name="comun_plan">Plan</string>
@@ -109,10 +109,10 @@
     <string name="onboarding_welcome_example_a">Onda verde de semáforos</string>
     <string name="onboarding_welcome_example_b">Code review</string>
     <string name="onboarding_consent_title">Tus ideas y la IA</string>
-    <string name="onboarding_consent_body">Para destilar lo que guardás y encender las chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic.</string>
+    <string name="onboarding_consent_body">Para conceptualizar lo que guardás y encender las chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic.</string>
     <string name="onboarding_consent_scope">Solo se manda lo necesario para cada chispa: tus ideas y tu perfil creativo.</string>
     <string name="onboarding_consent_change">Podés cambiar esto cuando quieras en Perfil &gt; Privacidad.</string>
-    <string name="onboarding_consent_decline_note">Si no aceptás, podés guardar ideas igual, pero las chispas y la destilación necesitan este permiso.</string>
+    <string name="onboarding_consent_decline_note">Si no aceptás, podés guardar ideas igual, pero las chispas y la conceptualización necesitan este permiso.</string>
     <string name="onboarding_consent_read_policy">Leer la política de privacidad</string>
     <string name="onboarding_consent_accept">Acepto</string>
     <string name="onboarding_consent_decline">No acepto</string>
@@ -212,7 +212,7 @@
     <!-- Hoja que aparece cuando un invitado toca algo que necesita cuenta (ver design/prototipo/invitado.md). -->
     <string name="cuenta_gate_title">Esto es con cuenta</string>
     <string name="cuenta_gate_spark_extra">Las chispas extra se ganan guardando neuronas, y se guardan en tu cuenta. Creala gratis: lo que ya guardaste pasa con vos.</string>
-    <string name="cuenta_gate_distill">Destilar lee links, fotos y PDFs y saca las neuronas por vos. Con una cuenta gratis tenés pruebas todos los meses.</string>
+    <string name="cuenta_gate_distill">Conceptualizar lee links, fotos y PDFs y saca las neuronas por vos. Con una cuenta gratis tenés pruebas todos los meses.</string>
     <string name="cuenta_gate_planner">El planificador es parte de Lumbre Pro, y Pro va con una cuenta. Creala primero: lo que guardaste pasa con vos.</string>
     <string name="cuenta_gate_pro">Para suscribirte a Lumbre Pro necesitás una cuenta, así Pro te sigue a cualquier teléfono.</string>
     <string name="cuenta_gate_limit">Llegaste a las 10 neuronas de hoy como invitado. Con una cuenta gratis guardás hasta 30 por día.</string>
@@ -369,17 +369,17 @@
     <!-- Accesibilidad del campo de texto. -->
     <string name="capturar_idea">Idea</string>
     <string name="capturar_link_invalid">Revisá el link: no parece válido.</string>
-    <string name="capturar_optional_distill">Opcional: si la escribís, la destilación la usa</string>
-    <string name="capturar_distill_pdf">Destilar el PDF</string>
-    <string name="capturar_distill_image">Destilar la imagen</string>
-    <string name="capturar_distill_auto">Destilar automáticamente</string>
+    <string name="capturar_optional_distill">Opcional: si la escribís, la conceptualización la usa</string>
+    <string name="capturar_distill_pdf">Conceptualizar el PDF</string>
+    <string name="capturar_distill_image">Conceptualizar la imagen</string>
+    <string name="capturar_distill_auto">Conceptualizar automáticamente</string>
     <string name="capturar_over_limit">Te pasaste por %d caracteres. Dejá solo la idea (hasta 600).</string>
     <string name="capturar_char_count">%d de 600 caracteres</string>
     <string name="capturar_looks_like_link">Parece un link. Guardalo como link para que quede la fuente.</string>
     <string name="capturar_switch_to_link">Pasar a Link</string>
     <string name="capturar_save">Guardar neurona</string>
     <string name="capturar_saved">Neurona guardada</string>
-    <string name="capturar_distilling">Destilando…</string>
+    <string name="capturar_distilling">Conceptualizando…</string>
     <string name="capturar_distilling_body">Lumbre lee el contenido y saca las neuronas. Puede tardar unos segundos.</string>
     <string name="capturar_no_idea_found">No pudimos sacar una idea de esto. Escribí qué idea te deja y lo guardamos con tus palabras.</string>
     <string name="capturar_no_idea_found_short">No pudimos sacar una idea de esto. Escribí qué idea te deja.</string>
@@ -414,7 +414,7 @@
     <string name="capturar_scanned_one">Página escaneada</string>
     <string name="capturar_scanned_many">%d páginas escaneadas</string>
     <string name="capturar_pdf_pages">%d páginas. El archivo no se guarda: solo la idea.</string>
-    <string name="capturar_no_text_found">No encontramos texto. Escribí qué idea te deja o destilá la imagen.</string>
+    <string name="capturar_no_text_found">No encontramos texto. Escribí qué idea te deja o conceptualizá la imagen.</string>
     <string name="capturar_ocr_on_device">Texto sacado en el teléfono. La foto queda en tu galería.</string>
     <string name="capturar_image_failed">No pudimos abrir esa imagen. Probá con otra.</string>
     <string name="capturar_pdf_failed">No pudimos abrir ese PDF. Probá con otro.</string>
@@ -422,7 +422,7 @@
     <string name="capturar_trials_checking">Revisando tus pruebas…</string>
     <string name="capturar_trials_what">Lumbre lee el contenido y saca de 1 a 3 neuronas.</string>
     <string name="capturar_trials_used">Usaste las pruebas de este mes. Escribí qué idea te deja esto y lo guardamos igual.</string>
-    <string name="capturar_trials_guest">La destilación es con cuenta. Creala desde Perfil y probala gratis.</string>
+    <string name="capturar_trials_guest">La conceptualización es con cuenta. Creala desde Perfil y probala gratis.</string>
     <string name="capturar_trials_one_left">Te queda 1 prueba este mes.</string>
     <string name="capturar_trials_many_left">Te quedan %d pruebas este mes.</string>
     <string name="capturar_trials_unlimited_pro">Ilimitado en Pro</string>
@@ -451,8 +451,8 @@
     <string name="capturar_draft_save_changes">Guardar cambios</string>
     <string name="capturar_draft_saved_many">Guardamos %d neuronas</string>
     <string name="capturar_draft_saved_many_body">Salieron de lo que capturaste. Ya están en tu red.</string>
-    <string name="capturar_draft_saved_raw">Lo guardamos sin destilar</string>
-    <string name="capturar_draft_saved_raw_body">Usaste las pruebas de destilación de este mes. Con Lumbre Pro destilás links, fotos y PDFs sin límite.</string>
+    <string name="capturar_draft_saved_raw">Lo guardamos sin conceptualizar</string>
+    <string name="capturar_draft_saved_raw_body">Usaste las pruebas de conceptualización de este mes. Con Lumbre Pro conceptualizás links, fotos y PDFs sin límite.</string>
     <!-- Red -->
     <string name="red_search">Buscar ideas, no palabras</string>
     <string name="red_categories">Categorías</string>
@@ -497,7 +497,7 @@
     <string name="neurona_delete">Borrar neurona</string>
     <string name="neurona_delete_body">Sale de tu red y de las próximas chispas. No se puede deshacer.</string>
     <string name="neurona_saved_on">Guardado el %s</string>
-    <string name="neurona_distilled">Destilado por Lumbre</string>
+    <string name="neurona_distilled">Conceptualizado por Lumbre</string>
     <string name="neurona_from_library">De la biblioteca de Lumbre</string>
     <string name="neurona_draft_notice">Borrador. Lumbre no estaba del todo seguro de esta idea: confirmala o corregila.</string>
     <string name="neurona_source">Fuente</string>
@@ -510,7 +510,7 @@
     <string name="neurona_combine_body">Elegí otra neurona y Lumbre enciende una chispa con las dos.</string>
     <string name="neurona_combine_pro">Con Lumbre Pro elegís qué neuronas se conectan.</string>
     <string name="neurona_thesis_limit">La tesis puede tener hasta 600 caracteres.</string>
-    <string name="neurona_principle_locked">El principio lo saca la destilación y no se edita.</string>
+    <string name="neurona_principle_locked">El principio lo saca la conceptualización y no se edita.</string>
     <string name="neurona_edit_title">Editar neurona</string>
     <string name="neurona_try_other_words">Probá con otras palabras.</string>
     <string name="neurona_filter">Filtrar neuronas</string>
@@ -529,7 +529,7 @@
     <string name="circuitos_export_empty">Todavía no hay ideas en este circuito.</string>
     <!-- Perfil y ajustes -->
     <string name="perfil_subscription">Suscripción</string>
-    <string name="perfil_pro_pitch">Hasta 10 chispas por día, destilación automática y el planificador</string>
+    <string name="perfil_pro_pitch">Hasta 10 chispas por día, conceptualización automática y el planificador</string>
     <string name="perfil_your_spark">Tu chispa</string>
     <string name="perfil_your_spark_body">La chispa del día te espera a esta hora. El perfil creativo es la lente con la que se eligen las ideas.</string>
     <string name="perfil_notifications">Avisos</string>
@@ -551,7 +551,7 @@
     <string name="perfil_quota_value">%1$d de %2$d</string>
     <string name="perfil_quota_a11y">Te quedan %1$d de %2$d</string>
     <string name="perfil_quota_captures">Capturas de hoy</string>
-    <string name="perfil_quota_distill">Destilaciones del mes</string>
+    <string name="perfil_quota_distill">Conceptualizaciones del mes</string>
     <string name="perfil_quota_extra">Chispas extra de hoy</string>
     <string name="perfil_quota_planner">Planificador este mes</string>
     <string name="perfil_quota_deep">Planes profundos este mes</string>
@@ -561,8 +561,8 @@
     <string name="perfil_theme_gray">Gris</string>
     <string name="perfil_theme_system">Como el sistema</string>
     <string name="perfil_creative_subtitle">Elegí hasta dos. Son la lente con la que se eligen y escriben tus chispas.</string>
-    <string name="perfil_ai_title">Chispas y destilación con IA</string>
-    <string name="perfil_ai_body">Para destilar tus ideas y encender las chispas, Lumbre manda el texto de tus ideas y tu perfil creativo a Claude, una IA de Anthropic. Sin este permiso podés guardar neuronas, pero no se destilan ni se encienden chispas, y el planificador no responde.</string>
+    <string name="perfil_ai_title">Chispas y conceptualización con IA</string>
+    <string name="perfil_ai_body">Para conceptualizar tus ideas y encender las chispas, Lumbre manda el texto de tus ideas y tu perfil creativo a Claude, una IA de Anthropic. Sin este permiso podés guardar neuronas, pero no se conceptualizan ni se encienden chispas, y el planificador no responde.</string>
     <string name="perfil_export">Exportar mis datos</string>
     <string name="perfil_export_body">Un archivo JSON con tu perfil, categorías, neuronas, chispas, circuitos y conversaciones del planificador.</string>
     <string name="perfil_delete_body">Borra tu cuenta y todo lo que guardaste. No se puede deshacer.</string>
@@ -579,7 +579,7 @@
     <!-- Paywall -->
     <string name="paywall_subtitle">Más chispas por día y un plan para cada idea.</string>
     <string name="paywall_benefit_sparks">Hasta 10 chispas por día, y elegís qué neuronas se conectan</string>
-    <string name="paywall_benefit_distill">Destilación automática de links, fotos y PDFs</string>
+    <string name="paywall_benefit_distill">Conceptualización automática de links, fotos y PDFs</string>
     <string name="paywall_benefit_planner">Planificador para bajar cada idea a tareas</string>
     <string name="paywall_benefit_circuits">Circuitos ilimitados</string>
     <string name="paywall_loading">Cargando los precios</string>
@@ -650,7 +650,7 @@
     <!-- Estado error.load_offline (Cuerpo). Ver design/estados/README.md. -->
     <string name="estados_load_offline_cuerpo">Revisá tu conexión y probá de nuevo. Lo que captures mientras tanto queda guardado en el teléfono.</string>
     <!-- Estado error.quota_distill_pro (Cuerpo). Ver design/estados/README.md. -->
-    <string name="estados_quota_distill_pro_cuerpo">Llegaste al uso justo de destilación de este mes. Se renueva el mes que viene.</string>
+    <string name="estados_quota_distill_pro_cuerpo">Llegaste al uso justo de conceptualización de este mes. Se renueva el mes que viene.</string>
     <!-- Estado error.store_failed (Cuerpo). Ver design/estados/README.md. -->
     <string name="estados_store_failed_cuerpo">La tienda no respondió. Probá de nuevo en un rato.</string>
     <!-- Estado error.ai_spark (Título). Ver design/estados/README.md. -->
@@ -694,15 +694,15 @@
     <!-- Estado inaccessible.social_login (Aviso). Ver design/estados/README.md. -->
     <string name="estados_social_login_aviso">%s no deja leer publicaciones sin iniciar sesión. Si tiene texto, copialo y pegalo; si no, escribí qué idea te deja.</string>
     <!-- Estado inaccessible.social_login (Nota del interruptor). Ver design/estados/README.md. -->
-    <string name="estados_social_login_nota_del_interruptor">No se puede destilar este link.</string>
+    <string name="estados_social_login_nota_del_interruptor">No se puede conceptualizar este link.</string>
     <!-- Estado inaccessible.private_doc (Aviso). Ver design/estados/README.md. -->
     <string name="estados_private_doc_aviso">Este documento es privado: Lumbre no puede abrirlo. Escribí qué idea te deja, o compartilo como PDF.</string>
     <!-- Estado inaccessible.unreachable (Aviso). Ver design/estados/README.md. -->
     <string name="estados_unreachable_aviso">No pudimos abrir esta página. Escribí qué idea te deja y la guardamos con el link. No se descontó la prueba.</string>
     <!-- Estado inaccessible.image_no_idea (Aviso). Ver design/estados/README.md. -->
     <string name="estados_image_no_idea_aviso">En esta foto no encontramos una idea para guardar. Escribí qué te deja y la guardamos con la foto.</string>
-    <!-- Estado inaccessible.ocr_no_text (Sin destilación). Ver design/estados/README.md. -->
-    <string name="estados_ocr_no_text_sin_destilacion">No encontramos texto. Escribí qué idea te deja.</string>
+    <!-- Estado inaccessible.ocr_no_text (Sin conceptualización). Ver design/estados/README.md. -->
+    <string name="estados_ocr_no_text_sin_conceptualizacion">No encontramos texto. Escribí qué idea te deja.</string>
     <!-- Estado inaccessible.pdf_no_text (Aviso). Ver design/estados/README.md. -->
     <string name="estados_pdf_no_text_aviso">Este PDF no tiene texto seleccionable. Escaneá las páginas que te importan con Escanear página, o escribí qué idea te deja.</string>
     <!-- Estado inaccessible.file_unreadable (PDF con contraseña). Ver design/estados/README.md. -->

@@ -47,11 +47,11 @@ GRATIS
 · Captura de texto y voz sin límite
 · Una chispa por día, más hasta dos que ganás guardando ideas
 · Red ilimitada con búsqueda
-· Algunas destilaciones automáticas de links, imágenes y PDFs por mes
+· Algunas conceptualizaciones automáticas de links, imágenes y PDFs por mes
 · Un circuito y export a Markdown
 
 LUMBRE PRO
-· Destilación automática de links, imágenes y PDFs
+· Conceptualización automática de links, imágenes y PDFs
 · Hasta 10 chispas por día
 · Planificador
 · Circuitos sin límite
@@ -59,7 +59,7 @@ LUMBRE PRO
 Pro se cobra por mes o por año (el anual incluye 7 días de prueba). El pago se hace con tu cuenta de Apple y la suscripción se renueva sola al mismo precio, salvo que la canceles al menos 24 horas antes del fin del período. La administrás y la cancelás desde los ajustes de tu cuenta de Apple.
 
 TUS DATOS
-Lumbre usa Claude, una IA de Anthropic, para destilar tus ideas y encender las chispas, y te pide permiso antes. No guardamos tus archivos, no hay publicidad y podés exportar o borrar todo desde la app.
+Lumbre usa Claude, una IA de Anthropic, para conceptualizar tus ideas y encender las chispas, y te pide permiso antes. No guardamos tus archivos, no hay publicidad y podés exportar o borrar todo desde la app.
 
 Privacidad: https://[DOMINIO]/privacidad
 Términos: https://[DOMINIO]/terminos
@@ -115,7 +115,7 @@ FREE
 · One circuit and Markdown export
 
 LUMBRE PRO
-· Automatic distillation of links, images and PDFs
+· Automatic conceptualization of links, images and PDFs
 · Up to 10 sparks a day
 · Planner
 · Unlimited circuits
@@ -123,7 +123,7 @@ LUMBRE PRO
 Pro is billed monthly or yearly (the yearly plan includes a 7-day free trial). Payment is charged to your Apple Account and the subscription renews automatically at the same price unless cancelled at least 24 hours before the end of the period. Manage or cancel it in your Apple Account settings.
 
 YOUR DATA
-Lumbre uses Claude, an AI by Anthropic, to distill your ideas and light up sparks, and asks your permission first. We don't keep your files, there are no ads, and you can export or delete everything from the app.
+Lumbre uses Claude, an AI by Anthropic, to conceptualize your ideas and light up sparks, and asks your permission first. We don't keep your files, there are no ads, and you can export or delete everything from the app.
 
 Privacy: https://[DOMAIN]/privacy
 Terms: https://[DOMAIN]/terms

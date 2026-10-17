@@ -31,7 +31,7 @@ This policy covers the Lumbre app for iOS and Android, the website [DOMAIN], the
 - Your circuits and your conversations with the planner.
 - Any reports you make about AI-generated content.
 
-**Files.** If you send an image or a PDF to be distilled, it goes to temporary storage, is processed and **deleted right away**, whether processing succeeded or not. We don't keep your files, audio or full web pages.
+**Files.** If you send an image or a PDF to be conceptualized, it goes to temporary storage, is processed and **deleted right away**, whether processing succeeded or not. We don't keep your files, audio or full web pages.
 
 **Voice.** Voice dictation is transcribed on your phone by the operating system. Only the text reaches Lumbre.
 
@@ -51,7 +51,7 @@ This policy covers the Lumbre app for iOS and Android, the website [DOMAIN], the
 
 | Purpose | Data | Legal basis |
 |---|---|---|
-| Providing the service: saving, distilling, sparks, search, planner, syncing across devices | Account, profile, your content | Performance of the contract (the terms) and your consent to AI processing (section 4) |
+| Providing the service: saving, conceptualizing, sparks, search, planner, syncing across devices | Account, profile, your content | Performance of the contract (the terms) and your consent to AI processing (section 4) |
 | Sending your spark at the time you chose | Push token, time, time zone | Performance of the contract; you can turn notifications off on your phone |
 | Charging for and activating Pro | Purchases | Performance of the contract |
 | Enforcing plan limits and preventing abuse | Quotas, AI call log, hashed IP (web) | Legitimate interest in a working, abuse-free service |
@@ -64,13 +64,13 @@ We don't use your data for advertising, we don't sell it, we don't build profile
 ## 4. Artificial intelligence
 
 Lumbre uses **Claude**, by **Anthropic, PBC** (United States), to:
-- **Distill:** turn what you save (text, a link, an image or a PDF) into a neuron with a title, thesis and principle.
+- **Conceptualize:** turn what you save (text, a link, an image or a PDF) into a neuron with a title, thesis and principle.
 - **Generate sparks:** from two of your neurons and your creative profile.
 - **The planner** (Pro): your messages, the spark, the two neurons behind it and your creative profile.
 
 To search and pair ideas, the text of each neuron and each search is sent to an embeddings provider, [EMBEDDINGS PROVIDER] (United States), which turns it into numbers.
 
-Before sending your content to the AI, the app asks for your permission. If you decline, you can still use Lumbre to save ideas, but they won't be distilled and no sparks will be generated. You can change your answer at any time in Profile › Privacy and data.
+Before sending your content to the AI, the app asks for your permission. If you decline, you can still use Lumbre to save ideas, but they won't be conceptualized and no sparks will be generated. You can change your answer at any time in Profile › Privacy and data.
 
 Only what each task needs is sent. Under its current commercial terms, Anthropic does not use data received through its API to train its models and keeps it for a limited time for safety purposes. [VERIFY current wording and retention period before publishing.]
 
@@ -83,7 +83,7 @@ Only with providers that process it on our behalf to run the service, under cont
 | Provider | Purpose | Location |
 |---|---|---|
 | Supabase | Database, authentication and temporary storage | [PROD REGION] |
-| Anthropic | AI: distilling, sparks, planner, web demo | United States |
+| Anthropic | AI: conceptualizing, sparks, planner, web demo | United States |
 | [EMBEDDINGS PROVIDER] | Embeddings for search and pairing | United States |
 | PostHog | Usage analytics, no content | European Union |
 | Sentry | Error reports | United States |
@@ -97,8 +97,8 @@ We may also disclose data when a competent authority requires it by law, or to d
 
 | Data | Period |
 |---|---|
-| Files sent for distilling (images, PDFs) | Deleted as soon as they are processed |
-| Full text of each capture | 30 days; after that only the distilled neuron remains |
+| Files sent for conceptualizing (images, PDFs) | Deleted as soon as they are processed |
+| Full text of each capture | 30 days; after that only the conceptualized neuron remains |
 | Your account and everything you saved | Until you delete it or delete your account |
 | Guest accounts | Deleted automatically after 30 days without use |
 | AI usage and subscription logs | Kept for accounting and cost control, without your user ID once your account is deleted |

@@ -2,7 +2,7 @@ import LumbreCore
 import LumbreDesign
 import SwiftUI
 
-/// Sheet global de Capturar: texto, voz, link o foto (con OCR en el teléfono), categoría y, si se pide, destilación.
+/// Sheet global de Capturar: texto, voz, link o foto (con OCR en el teléfono), categoría y, si se pide, conceptualización.
 /// La abre `RootView` cuando `appModel.captureEntry` no es nil.
 struct CaptureSheet: View {
     /// Pasos después de guardar.
@@ -179,13 +179,13 @@ struct CaptureSheet: View {
     }
 
     private var thesisPrompt: LocalizedStringKey {
-        form.willDistill(canDistill: access.canDistill) ? "Opcional: si la escribís, la destilación la usa" : "En una línea, con tus palabras"
+        form.willDistill(canDistill: access.canDistill) ? "Opcional: si la escribís, la conceptualización la usa" : "En una línea, con tus palabras"
     }
 
     private var distillTitle: LocalizedStringKey {
         switch form.kind {
-        case .photo: form.attachment?.kind == .pdf ? "Destilar el PDF" : "Destilar la imagen"
-        default: "Destilar automáticamente"
+        case .photo: form.attachment?.kind == .pdf ? "Conceptualizar el PDF" : "Conceptualizar la imagen"
+        default: "Conceptualizar automáticamente"
         }
     }
 
@@ -259,7 +259,7 @@ struct CaptureSheet: View {
                 ProgressView()
                     .controlSize(.large)
             }
-            Text("Destilando…")
+            Text("Conceptualizando…")
                 .font(.headline)
             Text("Lumbre lee el contenido y saca las neuronas. Puede tardar unos segundos.")
                 .font(.callout)

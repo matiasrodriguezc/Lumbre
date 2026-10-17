@@ -30,8 +30,8 @@ Las claves de copy son las de `design/copy/copy.json` (paso 10). Lo que dice *nu
 | `error.unexpected` | Error inesperado | Alerta o toast | en la app |
 | `error.share_card` | No se armó la tarjeta | Alerta | en la app |
 | `error.quota_capture` | Capturas de hoy agotadas | Alerta | cambia |
-| `error.quota_distill` | Destilaciones del mes agotadas (free) | Pantalla en la sheet | cambia |
-| `error.quota_distill_pro` | Uso justo de destilación (Pro) | Pantalla en la sheet | nuevo |
+| `error.quota_distill` | Conceptualizaciones del mes agotadas (free) | Pantalla en la sheet | cambia |
+| `error.quota_distill_pro` | Uso justo de conceptualización (Pro) | Pantalla en la sheet | nuevo |
 | `error.quota_spark_extra` | Chispas extra agotadas | Alerta | cambia |
 | `error.quota_planner` | Planificador sin cupo | Inline | cambia |
 | `error.quota_circuits` | Circuitos en free | Pie de lista + alerta | cambia |
@@ -43,7 +43,7 @@ Las claves de copy son las de `design/copy/copy.json` (paso 10). Lo que dice *nu
 | `error.store_pending` | Compra pendiente | Alerta | en la app |
 | `error.store_nothing_to_restore` | Nada para restaurar | Alerta | cambia |
 | `error.ai_spark` | La chispa no se encendió | Inline | cambia |
-| `error.ai_distill` | No se pudo destilar | Inline en la sheet / toast | cambia |
+| `error.ai_distill` | No se pudo conceptualizar | Inline en la sheet / toast | cambia |
 | `error.ai_planner` | La respuesta no llegó | Inline | cambia |
 | `error.session_expired` | Sesión vencida | Sheet | nuevo |
 | `error.invalid_link` | Link inválido | Inline en el campo | en la app |
@@ -99,7 +99,7 @@ Las claves de copy son las de `design/copy/copy.json` (paso 10). Lo que dice *nu
 - Lo escrito nunca se pierde: ante un error, la sheet queda abierta con el texto, y el cuerpo lo dice.
 - Un solo botón principal. Los vacíos que crean algo (Capturar, Crear circuito) lo llevan como principal; los errores ponen “Reintentar” como secundario; la navegación (“Ir a Hoy”, “Volver”) va secundaria.
 - Botones con verbo y nombre estable: “Reintentar”, “Capturar”, “Crear cuenta”, “Entendido” (no “Aceptar” ni “OK”).
-- Vocabulario de la interfaz: neurona, Red, Circuitos, chispa, destilar, encender. “Cola”, “servidor”, “IA” y los códigos de error no se muestran (la IA se nombra solo donde se pide permiso).
+- Vocabulario de la interfaz: neurona, Red, Circuitos, chispa, conceptualizar, encender. “Cola”, “servidor”, “IA” y los códigos de error no se muestran (la IA se nombra solo donde se pide permiso).
 - Sentence case, voseo, sin emoji, números con cifras. En inglés, el mismo tono: directo, cálido, sin “Oops” ni “Sorry”.
 
 ### Color, íconos y tipografía
@@ -136,7 +136,7 @@ Solo en estados de pantalla (180–200 pt). Con la identidad neuronal apagada, e
 - iOS: ContentUnavailableView para vacíos y carga, `.alert`, sheets con detents, toast propio sobre la barra flotante, ProgressView para reintentos.
 - Android: Column centrada para vacíos (no hay equivalente del sistema), AlertDialog y ModalBottomSheet de Material 3, Snackbar con acción, CircularProgressIndicator.
 - Rutas y tienda: iOS dice Ajustes y cuenta de Apple; Android, Configuración y Google Play (reemplazos `android` de copy.json).
-- El pulso (ImpulseLoader) es solo para destilar y encender; cualquier otra espera, spinner del sistema.
+- El pulso (ImpulseLoader) es solo para conceptualizar y encender; cualquier otra espera, spinner del sistema.
 
 ### De cada código de error a su estado
 
@@ -568,40 +568,40 @@ Algo falló o se llegó a un límite. El título dice qué pasó y el cuerpo, qu
 - **Analytics:** `capture_failed` (reason `rate_limited`); servidor: `quota_reached` (kind `capture`)
 - **Provisorio, a confirmar:** El texto del invitado sale de copy.json (`cuenta.gate.limit`, nuevo); qué ve el invitado se define en `design/prototipo/invitado.md` (propuesta del paso 14, a confirmar).
 
-### `error.quota_distill` · Destilaciones del mes agotadas (free)
+### `error.quota_distill` · Conceptualizaciones del mes agotadas (free)
 
 - **Forma:** Pantalla en la sheet · **En la app:** cambia
-- **Dónde:** Capturar, al guardar un link, foto o PDF con “Destilar” prendido.
+- **Dónde:** Capturar, al guardar un link, foto o PDF con “Conceptualizar” prendido.
 - **Lo dispara:** Free con las 5 pruebas del mes usadas: `distillation = quota_exceeded` en la respuesta de `/capture` (la neurona se guarda igual).
 - **Ilustración:** Ninguna · **Ícono iOS / Android:** checkmark.circle / check_circle (en `success`, con “Neurona guardada”)
-- **Comportamiento:** Antes de guardar, el interruptor ya avisa (texto del aviso). Si igual se llega al tope, se guarda sin destilar y se muestra esta pantalla. “Conocé Lumbre Pro” abre el paywall (trigger `distill`).
+- **Comportamiento:** Antes de guardar, el interruptor ya avisa (texto del aviso). Si igual se llega al tope, se guarda sin conceptualizar y se muestra esta pantalla. “Conocé Lumbre Pro” abre el paywall (trigger `distill`).
 
 | Campo | En la app hoy | Propuesto (es) | en | Estado | Clave |
 |---|---|---|---|---|---|
 | Aviso previo | Usaste las pruebas de este mes. Escribí qué idea te deja esto y lo guardamos igual. | Usaste las pruebas de este mes. Escribí qué idea te deja esto y lo guardamos igual. | You've used this month's trials. Write what idea it leaves you with and we'll save it anyway. | igual | `capturar.trials.used` |
-| Título | Lo guardamos sin destilar | Lo guardamos sin destilar | We saved it without distilling | igual | `capturar.draft.saved_raw` |
-| Cuerpo | Usaste las pruebas de destilación de este mes. Con Lumbre Pro destilás links, fotos y PDFs sin límite. | Usaste las pruebas de destilación de este mes. Con Lumbre Pro, los links, fotos y PDFs se destilan solos. | You've used this month's distilling trials. With Lumbre Pro, links, photos and PDFs distill on their own. | cambia | `capturar.draft.saved_raw_body (cambia)` |
+| Título | Lo guardamos sin conceptualizar | Lo guardamos sin conceptualizar | We saved it without conceptualizing | igual | `capturar.draft.saved_raw` |
+| Cuerpo | Usaste las pruebas de conceptualización de este mes. Con Lumbre Pro conceptualizás links, fotos y PDFs sin límite. | Usaste las pruebas de conceptualización de este mes. Con Lumbre Pro, los links, fotos y PDFs se conceptualizan solos. | You've used this month's conceptualization trials. With Lumbre Pro, links, photos and PDFs conceptualize on their own. | cambia | `capturar.draft.saved_raw_body (cambia)` |
 | Principal | Conocé Lumbre Pro | Conocé Lumbre Pro | Meet Lumbre Pro | igual | `comun.meet_pro` |
 | Terciaria | Listo | Listo | Done | igual | `comun.done` |
-| Invitado (aviso) | La destilación es con cuenta. Creala desde Perfil y probala gratis. | La destilación es con cuenta. Creala desde Perfil y probala gratis. | Distilling needs an account. Create one from Profile and try it for free. | igual | `capturar.trials.guest` |
+| Invitado (aviso) | La conceptualización es con cuenta. Creala desde Perfil y probala gratis. | La conceptualización es con cuenta. Creala desde Perfil y probala gratis. | Conceptualizing needs an account. Create one from Profile and try it for free. | igual | `capturar.trials.guest` |
 
-- **Por qué cambia:** Pro tiene un uso justo de 300 destilaciones por mes (`plan_limits`): “sin límite” no es cierto.
+- **Por qué cambia:** Pro tiene un uso justo de 300 conceptualizaciones por mes (`plan_limits`): “sin límite” no es cierto.
 - **Accesibilidad:** La pantalla se anuncia por su título. Al aparecer se anuncia el título (VoiceOver: anuncio; Android: live region educada). El ícono es decorativo.
 - **iOS y Android:** Dentro de la sheet de Capturar. iOS: aviso arriba del campo. Android: igual, dentro de la ModalBottomSheet; el teclado no tapa el aviso.
 - **Analytics:** `distill_fallback_shown` (reason `free_quota`); `paywall_shown` (trigger `distill`)
 
-### `error.quota_distill_pro` · Uso justo de destilación (Pro)
+### `error.quota_distill_pro` · Uso justo de conceptualización (Pro)
 
 - **Forma:** Pantalla en la sheet · **En la app:** nuevo
 - **Dónde:** Capturar.
-- **Lo dispara:** Pro con las 300 destilaciones del mes usadas.
+- **Lo dispara:** Pro con las 300 conceptualizaciones del mes usadas.
 - **Ilustración:** Ninguna · **Ícono iOS / Android:** checkmark.circle / check_circle
 - **Comportamiento:** Misma pantalla sin el botón de Pro: solo “Listo”.
 
 | Campo | En la app hoy | Propuesto (es) | en | Estado | Clave |
 |---|---|---|---|---|---|
-| Título | — | Lo guardamos sin destilar | We saved it without distilling | nuevo | `capturar.draft.saved_raw` |
-| Cuerpo | — | Llegaste al uso justo de destilación de este mes. Se renueva el mes que viene. | You've reached this month's fair use for distilling. It renews next month. | nuevo | nueva |
+| Título | — | Lo guardamos sin conceptualizar | We saved it without conceptualizing | nuevo | `capturar.draft.saved_raw` |
+| Cuerpo | — | Llegaste al uso justo de conceptualización de este mes. Se renueva el mes que viene. | You've reached this month's fair use for conceptualization. It renews next month. | nuevo | nueva |
 | Principal | — | Listo | Done | nuevo | `comun.done` |
 
 - **Por qué cambia:** Hoy un Pro vería el ofrecimiento de Pro. Usa la misma fórmula de “uso justo” que el planificador.
@@ -687,7 +687,7 @@ Algo falló o se llegó a un límite. El título dice qué pasó y el cuerpo, qu
 ### `error.account_required` · Función con cuenta (invitado)
 
 - **Forma:** Sheet · **En la app:** cambia · **Provisorio**
-- **Dónde:** Invitado que toca Pedir otra chispa, Combinar con…, Planificar, Destilar o Lumbre Pro.
+- **Dónde:** Invitado que toca Pedir otra chispa, Combinar con…, Planificar, Conceptualizar o Lumbre Pro.
 - **Lo dispara:** 403 `account_required` (o la app lo sabe antes por el plan `guest`).
 - **Ilustración:** Ninguna (neurona chica de marca) · **Ícono iOS / Android:** —
 - **Comportamiento:** “Crear cuenta” abre el flujo de cuenta; al terminar, vuelve a la acción. “Ahora no” cierra. Mientras las cuentas no estén (H1), se muestra “Las cuentas llegan pronto”.
@@ -806,20 +806,20 @@ Algo falló o se llegó a un límite. El título dice qué pasó y el cuerpo, qu
 - **iOS y Android:** iOS y Android: mismo componente dentro de la lista o del formulario.
 - **Analytics:** `error_shown` (screen `today`, code `ai_unavailable`)
 
-### `error.ai_distill` · No se pudo destilar
+### `error.ai_distill` · No se pudo conceptualizar
 
 - **Forma:** Inline en la sheet / toast · **En la app:** cambia
-- **Dónde:** Capturar con “Destilar” prendido.
+- **Dónde:** Capturar con “Conceptualizar” prendido.
 - **Lo dispara:** Sin idea escrita: 503 `ai_unavailable`. Con idea escrita: se guarda con sus palabras y `distillation = unavailable`. En los dos casos se devuelve la prueba.
 - **Ilustración:** Ninguna · **Ícono iOS / Android:** exclamationmark.triangle / error (en `danger`)
 - **Comportamiento:** Sin idea: aviso arriba, el interruptor se apaga y el foco va al campo. Con idea: la sheet se cierra con el toast.
 
 | Campo | En la app hoy | Propuesto (es) | en | Estado | Clave |
 |---|---|---|---|---|---|
-| Aviso (sin idea) | Algo salió mal. Probá de nuevo. | No pudimos destilar esto ahora. Escribí qué idea te deja y lo guardamos, o probá de nuevo en un rato. No se descontó la prueba. | We couldn't distill this right now. Write what idea it leaves you with and we'll save it, or try again in a bit. It didn't use a trial. | cambia | `comun.something_wrong_retry (cambia)` |
-| Toast (con idea) | Neurona guardada | Neurona guardada, sin destilar | Neuron saved, not distilled | cambia | `capturar.saved (cambia)` |
+| Aviso (sin idea) | Algo salió mal. Probá de nuevo. | No pudimos conceptualizar esto ahora. Escribí qué idea te deja y lo guardamos, o probá de nuevo en un rato. No se descontó la prueba. | We couldn't conceptualize this right now. Write what idea it leaves you with and we'll save it, or try again in a bit. It didn't use a trial. | cambia | `comun.something_wrong_retry (cambia)` |
+| Toast (con idea) | Neurona guardada | Neurona guardada, sin conceptualizar | Neuron saved, not conceptualized | cambia | `capturar.saved (cambia)` |
 
-- **Por qué cambia:** Hoy la falla es genérica o silenciosa: la persona cree que se destiló. “No se descontó la prueba” va solo en free.
+- **Por qué cambia:** Hoy la falla es genérica o silenciosa: la persona cree que se conceptualizó. “No se descontó la prueba” va solo en free.
 - **Accesibilidad:** Al aparecer se anuncia el título (VoiceOver: anuncio; Android: live region educada). El ícono es decorativo. El error queda asociado al campo (accessibilityHint / supportingText con error) y el foco vuelve al campo.
 - **iOS y Android:** Dentro de la sheet de Capturar. iOS: aviso arriba del campo. Android: igual, dentro de la ModalBottomSheet; el teclado no tapa el aviso.
 - **Analytics:** `distill_fallback_shown` (reason nuevo: `unavailable`)
@@ -992,7 +992,7 @@ Sin red, la app muestra lo último que cargó, guarda las capturas en el teléfo
 - **Dónde:** Capturar, Share Extension e intent de compartir.
 - **Lo dispara:** Guardar falla por red con el flag `offlineQueue` prendido: la captura queda en disco.
 - **Ilustración:** Ninguna · **Ícono iOS / Android:** icloud.and.arrow.up / cloud_upload (hoy: checkmark)
-- **Comportamiento:** La sheet se cierra a los 1,8 s. Si se pidió destilar, se destila al mandarse; si para entonces no quedan pruebas, se guarda sin destilar.
+- **Comportamiento:** La sheet se cierra a los 1,8 s. Si se pidió conceptualizar, se conceptualiza al mandarse; si para entonces no quedan pruebas, se guarda sin conceptualizar.
 
 | Campo | En la app hoy | Propuesto (es) | en | Estado | Clave |
 |---|---|---|---|---|---|
@@ -1046,7 +1046,7 @@ Sin red, la app muestra lo último que cargó, guarda las capturas en el teléfo
 - **Dónde:** Cualquier pestaña, con la app adelante.
 - **Lo dispara:** Al volver la red se mandaron capturas de la cola.
 - **Ilustración:** Ninguna · **Ícono iOS / Android:** checkmark.circle / check_circle (en `success`)
-- **Comportamiento:** Una vez por vaciado. Habla de capturas, no de neuronas: una captura destilada puede dar hasta 3.
+- **Comportamiento:** Una vez por vaciado. Habla de capturas, no de neuronas: una captura conceptualizada puede dar hasta 3.
 
 | Campo | En la app hoy | Propuesto (es) | en | Estado | Clave |
 |---|---|---|---|---|---|
@@ -1138,10 +1138,10 @@ Links, fotos, PDFs y audios de los que no se puede sacar una idea. El contenido 
 ### `inaccessible.generic` · Sin idea: escribila vos
 
 - **Forma:** Inline en la sheet · **En la app:** en la app
-- **Dónde:** Capturar (link, foto, PDF, audio) con “Destilar” prendido.
+- **Dónde:** Capturar (link, foto, PDF, audio) con “Conceptualizar” prendido.
 - **Lo dispara:** 422 `needs_thesis` sin motivo, o confianza baja (plan.md §5). Es la caída por defecto de toda la familia.
 - **Ilustración:** Ninguna · **Ícono iOS / Android:** exclamationmark.bubble / feedback
-- **Comportamiento:** Aviso arriba de la sheet; el interruptor de destilar se apaga, el foco va a “¿Qué idea te deja esto?” y se anuncia el aviso. La fuente queda adjunta y se guarda con la neurona. La prueba de destilación se devuelve.
+- **Comportamiento:** Aviso arriba de la sheet; el interruptor de conceptualizar se apaga, el foco va a “¿Qué idea te deja esto?” y se anuncia el aviso. La fuente queda adjunta y se guarda con la neurona. La prueba de conceptualización se devuelve.
 
 | Campo | En la app hoy | Propuesto (es) | en | Estado | Clave |
 |---|---|---|---|---|---|
@@ -1173,10 +1173,10 @@ Links, fotos, PDFs y audios de los que no se puede sacar una idea. El contenido 
 ### `inaccessible.audio_no_speech` · Audio sin palabras
 
 - **Forma:** Inline en la sheet · **En la app:** nuevo · **Provisorio**
-- **Dónde:** Capturar › audio largo (destilación Pro).
+- **Dónde:** Capturar › audio largo (conceptualización Pro).
 - **Lo dispara:** 422 `needs_thesis` con `reason` `no_speech`: música, silencio o ruido.
 - **Ilustración:** Ninguna · **Ícono iOS / Android:** waveform / graphic_eq
-- **Comportamiento:** Aviso arriba de la sheet; el interruptor de destilar se apaga, el foco va a “¿Qué idea te deja esto?” y se anuncia el aviso. La fuente queda adjunta y se guarda con la neurona. La prueba de destilación se devuelve. El audio no se guarda (plan.md §6).
+- **Comportamiento:** Aviso arriba de la sheet; el interruptor de conceptualizar se apaga, el foco va a “¿Qué idea te deja esto?” y se anuncia el aviso. La fuente queda adjunta y se guarda con la neurona. La prueba de conceptualización se devuelve. El audio no se guarda (plan.md §6).
 
 | Campo | En la app hoy | Propuesto (es) | en | Estado | Clave |
 |---|---|---|---|---|---|
@@ -1193,7 +1193,7 @@ Links, fotos, PDFs y audios de los que no se puede sacar una idea. El contenido 
 - **Dónde:** Capturar › Link.
 - **Lo dispara:** 422 `needs_thesis` con `reason` `paywall`: la página solo dio título y descripción y no alcanzó para una idea.
 - **Ilustración:** Ninguna · **Ícono iOS / Android:** exclamationmark.bubble / feedback
-- **Comportamiento:** Aviso arriba de la sheet; el interruptor de destilar se apaga, el foco va a “¿Qué idea te deja esto?” y se anuncia el aviso. La fuente queda adjunta y se guarda con la neurona. La prueba de destilación se devuelve. Si el título y la descripción alcanzan para una idea con confianza media, va a borrador (`inaccessible.draft_medium`).
+- **Comportamiento:** Aviso arriba de la sheet; el interruptor de conceptualizar se apaga, el foco va a “¿Qué idea te deja esto?” y se anuncia el aviso. La fuente queda adjunta y se guarda con la neurona. La prueba de conceptualización se devuelve. Si el título y la descripción alcanzan para una idea con confianza media, va a borrador (`inaccessible.draft_medium`).
 
 | Campo | En la app hoy | Propuesto (es) | en | Estado | Clave |
 |---|---|---|---|---|---|
@@ -1204,7 +1204,7 @@ Links, fotos, PDFs y audios de los que no se puede sacar una idea. El contenido 
 - **Accesibilidad:** Al aparecer se anuncia el título (VoiceOver: anuncio; Android: live region educada). El ícono es decorativo. El error queda asociado al campo (accessibilityHint / supportingText con error) y el foco vuelve al campo.
 - **iOS y Android:** Dentro de la sheet de Capturar. iOS: aviso arriba del campo. Android: igual, dentro de la ModalBottomSheet; el teclado no tapa el aviso.
 - **Analytics:** `distill_fallback_shown` (reason `inaccessible`)
-- **Provisorio, a confirmar:** Requiere que el servidor mande el motivo (`reason`) en el 422; la destilación ya lo devuelve en su JSON. Sin motivo, cae a `inaccessible.generic`.
+- **Provisorio, a confirmar:** Requiere que el servidor mande el motivo (`reason`) en el 422; la conceptualización ya lo devuelve en su JSON. Sin motivo, cae a `inaccessible.generic`.
 
 ### `inaccessible.social_login` · Red social con login
 
@@ -1212,18 +1212,18 @@ Links, fotos, PDFs y audios de los que no se puede sacar una idea. El contenido 
 - **Dónde:** Capturar › Link de Instagram, TikTok, Facebook o LinkedIn.
 - **Lo dispara:** El host está en la lista de redes que piden login. Se sabe antes de guardar.
 - **Ilustración:** Ninguna · **Ícono iOS / Android:** lock / lock
-- **Comportamiento:** Aparece al pegar el link, antes de guardar. El interruptor de destilar queda deshabilitado (“No se puede destilar este link.”), así no se gasta una prueba. El link se guarda como fuente.
+- **Comportamiento:** Aparece al pegar el link, antes de guardar. El interruptor de conceptualizar queda deshabilitado (“No se puede conceptualizar este link.”), así no se gasta una prueba. El link se guarda como fuente.
 
 | Campo | En la app hoy | Propuesto (es) | en | Estado | Clave |
 |---|---|---|---|---|---|
 | Aviso | — | %@ no deja leer publicaciones sin iniciar sesión. Si tiene texto, copialo y pegalo; si no, escribí qué idea te deja. | %@ doesn't let us read posts without signing in. If it has text, copy and paste it; if not, write what idea it leaves you with. | nuevo | nueva |
-| Nota del interruptor | — | No se puede destilar este link. | This link can't be distilled. | nuevo | nueva |
+| Nota del interruptor | — | No se puede conceptualizar este link. | This link can't be conceptualized. | nuevo | nueva |
 
 - **Por qué cambia:** plan.md §5: de estas redes no se saca “casi nada”. Avisar antes ahorra la espera y la prueba.
 - **Accesibilidad:** Al aparecer se anuncia el título (VoiceOver: anuncio; Android: live region educada). El ícono es decorativo.
 - **iOS y Android:** Dentro de la sheet de Capturar. iOS: aviso arriba del campo. Android: igual, dentro de la ModalBottomSheet; el teclado no tapa el aviso.
 - **Analytics:** `distill_fallback_shown` (reason `inaccessible`)
-- **Provisorio, a confirmar:** Detectar por host y apagar la destilación antes de guardar es una decisión de comportamiento que no está en plan.md.
+- **Provisorio, a confirmar:** Detectar por host y apagar la conceptualización antes de guardar es una decisión de comportamiento que no está en plan.md.
 
 ### `inaccessible.private_doc` · Documento privado
 
@@ -1231,7 +1231,7 @@ Links, fotos, PDFs y audios de los que no se puede sacar una idea. El contenido 
 - **Dónde:** Capturar › Link (Google Docs, Drive, Notion, Dropbox…).
 - **Lo dispara:** 422 `needs_thesis` con `reason` `private` (401/403 o página de login).
 - **Ilustración:** Ninguna · **Ícono iOS / Android:** lock / lock
-- **Comportamiento:** Aviso arriba de la sheet; el interruptor de destilar se apaga, el foco va a “¿Qué idea te deja esto?” y se anuncia el aviso. La fuente queda adjunta y se guarda con la neurona. La prueba de destilación se devuelve.
+- **Comportamiento:** Aviso arriba de la sheet; el interruptor de conceptualizar se apaga, el foco va a “¿Qué idea te deja esto?” y se anuncia el aviso. La fuente queda adjunta y se guarda con la neurona. La prueba de conceptualización se devuelve.
 
 | Campo | En la app hoy | Propuesto (es) | en | Estado | Clave |
 |---|---|---|---|---|---|
@@ -1248,7 +1248,7 @@ Links, fotos, PDFs y audios de los que no se puede sacar una idea. El contenido 
 - **Dónde:** Capturar › Link.
 - **Lo dispara:** 422 `needs_thesis` con `reason` `unreachable`: timeout de 8 s, 404, 5xx, más de 1,5 MB o host no público.
 - **Ilustración:** Ninguna · **Ícono iOS / Android:** wifi.slash / wifi_off
-- **Comportamiento:** Aviso arriba de la sheet; el interruptor de destilar se apaga, el foco va a “¿Qué idea te deja esto?” y se anuncia el aviso. La fuente queda adjunta y se guarda con la neurona. La prueba de destilación se devuelve.
+- **Comportamiento:** Aviso arriba de la sheet; el interruptor de conceptualizar se apaga, el foco va a “¿Qué idea te deja esto?” y se anuncia el aviso. La fuente queda adjunta y se guarda con la neurona. La prueba de conceptualización se devuelve.
 
 | Campo | En la app hoy | Propuesto (es) | en | Estado | Clave |
 |---|---|---|---|---|---|
@@ -1263,10 +1263,10 @@ Links, fotos, PDFs y audios de los que no se puede sacar una idea. El contenido 
 ### `inaccessible.image_no_idea` · Imagen sin idea adentro
 
 - **Forma:** Inline en la sheet · **En la app:** nuevo · **Provisorio**
-- **Dónde:** Capturar › Foto con “Destilar la imagen”.
+- **Dónde:** Capturar › Foto con “Conceptualizar la imagen”.
 - **Lo dispara:** 422 `needs_thesis` con `reason` `no_idea`: un paisaje, una foto personal.
 - **Ilustración:** Ninguna · **Ícono iOS / Android:** exclamationmark.bubble / feedback
-- **Comportamiento:** Aviso arriba de la sheet; el interruptor de destilar se apaga, el foco va a “¿Qué idea te deja esto?” y se anuncia el aviso. La fuente queda adjunta y se guarda con la neurona. La prueba de destilación se devuelve. Nunca describimos a las personas de la foto.
+- **Comportamiento:** Aviso arriba de la sheet; el interruptor de conceptualizar se apaga, el foco va a “¿Qué idea te deja esto?” y se anuncia el aviso. La fuente queda adjunta y se guarda con la neurona. La prueba de conceptualización se devuelve. Nunca describimos a las personas de la foto.
 
 | Campo | En la app hoy | Propuesto (es) | en | Estado | Clave |
 |---|---|---|---|---|---|
@@ -1283,24 +1283,24 @@ Links, fotos, PDFs y audios de los que no se puede sacar una idea. El contenido 
 - **Dónde:** Capturar › Foto, captura de pantalla o página escaneada.
 - **Lo dispara:** El OCR del teléfono (VisionKit / ML Kit) no encontró texto.
 - **Ilustración:** Ninguna · **Ícono iOS / Android:** info.circle / info
-- **Comportamiento:** Texto de ayuda debajo de la imagen, antes de guardar. Sin pruebas o como invitado, la variante sin “destilá la imagen”.
+- **Comportamiento:** Texto de ayuda debajo de la imagen, antes de guardar. Sin pruebas o como invitado, la variante sin “conceptualizá la imagen”.
 
 | Campo | En la app hoy | Propuesto (es) | en | Estado | Clave |
 |---|---|---|---|---|---|
-| Ayuda | No encontramos texto. Escribí qué idea te deja o destilá la imagen. | No encontramos texto. Escribí qué idea te deja o destilá la imagen. | We didn't find any text. Write what idea it leaves you with, or distill the image. | igual | `capturar.no_text_found` |
-| Sin destilación | — | No encontramos texto. Escribí qué idea te deja. | We didn't find any text. Write what idea it leaves you with. | nuevo | nueva |
+| Ayuda | No encontramos texto. Escribí qué idea te deja o conceptualizá la imagen. | No encontramos texto. Escribí qué idea te deja o conceptualizá la imagen. | We didn't find any text. Write what idea it leaves you with, or conceptualize the image. | igual | `capturar.no_text_found` |
+| Sin conceptualización | — | No encontramos texto. Escribí qué idea te deja. | We didn't find any text. Write what idea it leaves you with. | nuevo | nueva |
 
-- **Por qué cambia:** Sugerir destilar cuando no se puede manda a un callejón.
+- **Por qué cambia:** Sugerir conceptualizar cuando no se puede manda a un callejón.
 - **Accesibilidad:** Al aparecer se anuncia el título (VoiceOver: anuncio; Android: live region educada). El ícono es decorativo.
 - **iOS y Android:** Dentro de la sheet de Capturar. iOS: aviso arriba del campo. Android: igual, dentro de la ModalBottomSheet; el teclado no tapa el aviso.
 
 ### `inaccessible.pdf_no_text` · PDF sin texto
 
 - **Forma:** Inline en la sheet · **En la app:** nuevo
-- **Dónde:** Capturar › PDF sin destilación (free sin pruebas, invitado).
+- **Dónde:** Capturar › PDF sin conceptualización (free sin pruebas, invitado).
 - **Lo dispara:** El PDF no tiene capa de texto (escaneado).
 - **Ilustración:** Ninguna · **Ícono iOS / Android:** doc / description
-- **Comportamiento:** Aviso debajo del adjunto. Con destilación (Pro o con pruebas) no aparece: la IA lee el PDF como imagen.
+- **Comportamiento:** Aviso debajo del adjunto. Con conceptualización (Pro o con pruebas) no aparece: la IA lee el PDF como imagen.
 
 | Campo | En la app hoy | Propuesto (es) | en | Estado | Clave |
 |---|---|---|---|---|---|
@@ -1365,7 +1365,7 @@ Links, fotos, PDFs y audios de los que no se puede sacar una idea. El contenido 
 ### `inaccessible.draft_medium` · Borrador para confirmar (confianza media)
 
 - **Forma:** Pantalla en la sheet · **En la app:** en la app
-- **Dónde:** Capturar, después de destilar; Red (sección de borradores) y detalle de neurona.
+- **Dónde:** Capturar, después de conceptualizar; Red (sección de borradores) y detalle de neurona.
 - **Lo dispara:** `distillation = medium`: la neurona se guarda con `status = draft`.
 - **Ilustración:** Ninguna · **Ícono iOS / Android:** info.circle / info
 - **Comportamiento:** Confirmar la pasa a `ready`; Editar abre el editor; Descartar pide confirmación y la borra. Los borradores no entran en las chispas hasta confirmarlos.
@@ -1387,14 +1387,14 @@ Links, fotos, PDFs y audios de los que no se puede sacar una idea. El contenido 
 
 1. `LumbreAPIError.offline` dice “Sin conexión. Lo guardamos y lo mandamos cuando vuelva.” y se muestra también en cargas (`LoadErrorView`) y en escrituras que no se encolan (editar, mover, renombrar): promete algo que no pasa. Ver `error.load_offline` y `offline.write_failed`.
 2. `ai_unavailable` (503) no está en `LumbreAPIError`: cae en “Algo salió mal. Probá de nuevo.” y no dice que el crédito se devolvió. Ver `error.ai_spark`, `error.ai_distill`.
-3. `quota_exceeded` siempre muestra “Llegaste al límite de hoy”, también para cupos del mes (destilación, planificador). El texto tiene que salir de la operación, no del código.
-4. “Con Lumbre Pro destilás links, fotos y PDFs sin límite”: Pro tiene 300 por mes en `plan_limits`.
+3. `quota_exceeded` siempre muestra “Llegaste al límite de hoy”, también para cupos del mes (conceptualización, planificador). El texto tiene que salir de la operación, no del código.
+4. “Con Lumbre Pro conceptualizás links, fotos y PDFs sin límite”: Pro tiene 300 por mes en `plan_limits`.
 5. Circuitos usa “Aceptar” en la alerta; el resto de la app, “Entendido”.
 6. El paywall muestra `error.localizedDescription` de StoreKit al usuario.
-7. Backend, `/capture`: si la persona escribió su idea y la destilación sale con confianza baja, se guarda con sus palabras pero la prueba no se devuelve (el `refund_credit` solo corre cuando no hay tesis).
+7. Backend, `/capture`: si la persona escribió su idea y la conceptualización sale con confianza baja, se guarda con sus palabras pero la prueba no se devuelve (el `refund_credit` solo corre cuando no hay tesis).
 8. Backend, `/planner`: si la salida no pasa la moderación, manda `ai_unavailable` sin devolver el cupo.
-9. Backend: el 422 `needs_thesis` no dice por qué. La destilación ya devuelve `reason` en su JSON (plan.md §5); pasarlo permite los textos específicos de `inaccessible.*`.
-10. Capturar con `distillation = unavailable` y la idea escrita cierra con “Neurona guardada”: la persona cree que se destiló.
+9. Backend: el 422 `needs_thesis` no dice por qué. La conceptualización ya devuelve `reason` en su JSON (plan.md §5); pasarlo permite los textos específicos de `inaccessible.*`.
+10. Capturar con `distillation = unavailable` y la idea escrita cierra con “Neurona guardada”: la persona cree que se conceptualizó.
 11. `paywall_shown` con trigger `projects` (Circuitos) no está en la lista de `docs/analytics.md`. Faltan también `no_consent` en `spark_empty_state_shown` y `unavailable` en `distill_fallback_shown` si se adoptan estos estados.
 
 ## Decisiones provisorias
@@ -1410,8 +1410,8 @@ Links, fotos, PDFs y audios de los que no se puede sacar una idea. El contenido 
 - `offline.reveal`: Revelar desde la caché sin red y mandar el estado después es una decisión técnica que no está en plan.md.
 - `offline.search`: Un filtro local por palabras como respaldo sin red sería útil, pero no está en plan.md; queda como idea.
 - `inaccessible.audio_no_speech`: La captura de audios largos todavía no tiene pantalla en la app; el texto queda listo.
-- `inaccessible.paywall_link`: Requiere que el servidor mande el motivo (`reason`) en el 422; la destilación ya lo devuelve en su JSON. Sin motivo, cae a `inaccessible.generic`.
-- `inaccessible.social_login`: Detectar por host y apagar la destilación antes de guardar es una decisión de comportamiento que no está en plan.md.
+- `inaccessible.paywall_link`: Requiere que el servidor mande el motivo (`reason`) en el 422; la conceptualización ya lo devuelve en su JSON. Sin motivo, cae a `inaccessible.generic`.
+- `inaccessible.social_login`: Detectar por host y apagar la conceptualización antes de guardar es una decisión de comportamiento que no está en plan.md.
 - `inaccessible.private_doc`: Igual que el muro de pago: necesita `reason` en el 422.
 - `inaccessible.unreachable`: Necesita `reason` en el 422.
 - `inaccessible.image_no_idea`: Necesita `reason` en el 422.

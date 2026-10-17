@@ -32,7 +32,7 @@ struct ConceptEditSheet: View {
                             .foregroundStyle(Palette.danger)
                     }
                     if concept.principle != nil {
-                        Text("El principio lo saca la destilación y no se edita.")
+                        Text("El principio lo saca la conceptualización y no se edita.")
                             .font(.footnote)
                             .foregroundStyle(Palette.inkMuted)
                     }

@@ -22,7 +22,7 @@ Cambio de copy propuesto: el secundario hoy dice "Ya tengo cuenta", pero tambié
 | | Invitado | Free (con cuenta) | Pro |
 |---|---|---|---|
 | Capturar texto, voz, OCR, link o foto con su frase | **Sí, 10 por día** | 30 por día | 200 por día |
-| Destilación automática (links, fotos, PDFs) | No: se cae a "¿Qué idea te deja esto?" | 3–5 pruebas por mes | 300 por mes |
+| Conceptualización automática (links, fotos, PDFs) | No: se cae a "¿Qué idea te deja esto?" | 3–5 pruebas por mes | 300 por mes |
 | Chispa diaria con reveal y aviso | **Sí** | Sí | Sí |
 | Chispas extra ganadas (3 neuronas = 1 extra) | No | Hasta 2 por día | Hasta 10 por día a pedido |
 | Guardar la chispa, "No me sirve", compartir la tarjeta, widget | **Sí** | Sí | Sí |
@@ -44,7 +44,7 @@ Una hoja "Esto es con cuenta" con el motivo, **Crear cuenta** (principal) y **Ah
 | Disparador | Texto de la hoja (`copy.json`) |
 |---|---|
 | Pedir otra chispa | `cuenta.gate.spark_extra` |
-| Prender "Destilar automáticamente" | `cuenta.gate.distill` |
+| Prender "Conceptualizar automáticamente" | `cuenta.gate.distill` |
 | Planificar una chispa | `cuenta.gate.planner` |
 | "Probar 7 días gratis" o suscribirse en el paywall | `cuenta.gate.pro` |
 | La captura 11 del día | `cuenta.gate.limit` |
@@ -68,7 +68,7 @@ El job `limpiar-invitados` borra al invitado sin sesión en 30 días. Propuesta:
 
 ## Qué pasa al crear la cuenta
 
-- Mismo usuario (`updateUser({ email })` o `linkIdentity()`): conserva neuronas, chispas, circuitos, perfil y hora. `effective_plan()` pasa a free y se habilitan las extras y las pruebas de destilación.
+- Mismo usuario (`updateUser({ email })` o `linkIdentity()`): conserva neuronas, chispas, circuitos, perfil y hora. `effective_plan()` pasa a free y se habilitan las extras y las pruebas de conceptualización.
 - Toast: **"Listo: tu red ya está en tu cuenta"** (`cuenta.created`).
 - Si el email ya tiene una cuenta: aviso `cuenta.email_in_use` y la opción de entrar con esa cuenta, perdiendo lo del invitado (ya lo hace `AccountSheet.swift`).
 

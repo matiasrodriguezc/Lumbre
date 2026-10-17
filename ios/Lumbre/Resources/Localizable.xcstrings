@@ -329,7 +329,7 @@
     "Chispas extra de hoy" : {
 
     },
-    "Chispas y destilación con IA" : {
+    "Chispas y conceptualización con IA" : {
 
     },
     "Ciencia" : {
@@ -381,6 +381,27 @@
 
     },
     "Con tres la primera chispa sale mejor, pero podés seguir y sumar más después." : {
+
+    },
+    "Conceptualizaciones del mes" : {
+
+    },
+    "Conceptualización automática de links, fotos y PDFs" : {
+
+    },
+    "Conceptualizado por Lumbre" : {
+
+    },
+    "Conceptualizando…" : {
+
+    },
+    "Conceptualizar automáticamente" : {
+
+    },
+    "Conceptualizar el PDF" : {
+
+    },
+    "Conceptualizar la imagen" : {
 
     },
     "Confirmar" : {
@@ -459,27 +480,6 @@
 
     },
     "Después, %@ por año. Cancelás cuando quieras." : {
-
-    },
-    "Destilaciones del mes" : {
-
-    },
-    "Destilación automática de links, fotos y PDFs" : {
-
-    },
-    "Destilado por Lumbre" : {
-
-    },
-    "Destilando…" : {
-
-    },
-    "Destilar automáticamente" : {
-
-    },
-    "Destilar el PDF" : {
-
-    },
-    "Destilar la imagen" : {
 
     },
     "Detener respuesta" : {
@@ -578,7 +578,7 @@
     "El planificador está escribiendo" : {
 
     },
-    "El principio lo saca la destilación y no se edita." : {
+    "El principio lo saca la conceptualización y no se edita." : {
 
     },
     "El sueño en una frase, el plan en cinco pasos, los tres agujeros y el cuarto que salteás." : {
@@ -773,7 +773,7 @@
     "Hacé de abogado del diablo: ¿por qué podría fallar esta idea?" : {
 
     },
-    "Hasta 10 chispas por día, destilación automática y el planificador" : {
+    "Hasta 10 chispas por día, conceptualización automática y el planificador" : {
 
     },
     "Hasta 10 chispas por día, y elegís qué neuronas se conectan" : {
@@ -836,7 +836,7 @@
     "La compra espera una aprobación. Cuando se apruebe, Pro se activa solo." : {
 
     },
-    "La destilación es con cuenta. Creala desde Perfil y probala gratis." : {
+    "La conceptualización es con cuenta. Creala desde Perfil y probala gratis." : {
 
     },
     "La idea tiene que tener entre 1 y 600 caracteres." : {
@@ -899,7 +899,7 @@
     "Llevalo más grande todavía." : {
 
     },
-    "Lo guardamos sin destilar" : {
+    "Lo guardamos sin conceptualizar" : {
 
     },
     "Lo que dictes aparece acá. Podés corregirlo." : {
@@ -1029,7 +1029,7 @@
     "No acepto" : {
 
     },
-    "No encontramos texto. Escribí qué idea te deja o destilá la imagen." : {
+    "No encontramos texto. Escribí qué idea te deja o conceptualizá la imagen." : {
 
     },
     "No encontramos una suscripción a Lumbre Pro en esta cuenta de Apple." : {
@@ -1128,7 +1128,7 @@
     "Onda verde de semáforos" : {
 
     },
-    "Opcional: si la escribís, la destilación la usa" : {
+    "Opcional: si la escribís, la conceptualización la usa" : {
 
     },
     "Opciones de %@" : {
@@ -1149,13 +1149,13 @@
     "Palabra de confirmación" : {
 
     },
+    "Para conceptualizar lo que guardás y encender las chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic." : {
+
+    },
+    "Para conceptualizar tus ideas y encender las chispas, Lumbre manda el texto de tus ideas y tu perfil creativo a Claude, una IA de Anthropic. Sin este permiso podés guardar neuronas, pero no se conceptualizan ni se encienden chispas, y el planificador no responde." : {
+
+    },
     "Para confirmar, escribí %@" : {
-
-    },
-    "Para destilar lo que guardás y encender las chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic." : {
-
-    },
-    "Para destilar tus ideas y encender las chispas, Lumbre manda el texto de tus ideas y tu perfil creativo a Claude, una IA de Anthropic. Sin este permiso podés guardar neuronas, pero no se destilan ni se encienden chispas, y el planificador no responde." : {
 
     },
     "Para dictar, Lumbre necesita el micrófono y el reconocimiento de voz. Activalos en Ajustes." : {
@@ -1397,7 +1397,7 @@
     "Si entrás con esa cuenta, lo que guardaste como invitado en este teléfono no pasa a ella." : {
 
     },
-    "Si no aceptás, podés guardar ideas igual, pero las chispas y la destilación necesitan este permiso." : {
+    "Si no aceptás, podés guardar ideas igual, pero las chispas y la conceptualización necesitan este permiso." : {
 
     },
     "Si preferís sin avisos, la chispa te espera igual en Hoy." : {
@@ -1647,7 +1647,7 @@
     "Usaste las chispas de hoy" : {
 
     },
-    "Usaste las pruebas de destilación de este mes. Con Lumbre Pro destilás links, fotos y PDFs sin límite." : {
+    "Usaste las pruebas de conceptualización de este mes. Con Lumbre Pro conceptualizás links, fotos y PDFs sin límite." : {
 
     },
     "Usaste las pruebas de este mes. Escribí qué idea te deja esto y lo guardamos igual." : {

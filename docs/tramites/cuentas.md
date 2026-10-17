@@ -20,7 +20,7 @@ Para H1 (MAT-216). El orden importa: algunas tardan semanas y otras dependen de 
 | 6 | **Reservar el nombre en App Store Connect** | Crear el registro de la app con el nombre elegido, aunque no se publique | Minutos | — | 3 y el nombre confirmado |
 | 7 | **Google Play Console** | Publicar en Android, prueba cerrada, Play Integrity | Verificación de identidad: 2–7 días | US$ 25 una vez | Documento de identidad; D-U-N-S si es organización |
 | 8 | **Perfil de pagos de Google** | Cobrar suscripciones en Play | 1–3 días | — | 7 |
-| 9 | **Anthropic** (Console) | API de Claude: destilación, chispas, planificador, demo web | Minutos; cargar crédito | Uso (empezar con US$ 20–50) | Email del dominio |
+| 9 | **Anthropic** (Console) | API de Claude: conceptualización, chispas, planificador, demo web | Minutos; cargar crédito | Uso (empezar con US$ 20–50) | Email del dominio |
 | 10 | **Proveedor de embeddings** (probablemente Voyage AI) | Embeddings reales (paso 22) | Minutos | Uso; tiene capa gratis | — |
 | 11 | **Proveedor de email transaccional** (Resend, Postmark o similar) | Links mágicos de Supabase Auth, confirmación de la waitlist, demo web | 1 día (DNS: SPF, DKIM) | Gratis al principio | 1 y 2 |
 | 12 | **Supabase** (ya existe, organización Lumbre) | Staging y prod (paso 41); pasar a Pro antes de abrir la beta (backups diarios, sin pausa por inactividad) | Minutos | US$ 25/mes | Elegir la región de prod |

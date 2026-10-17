@@ -28,8 +28,8 @@ comun.category,Comunes,Categoría,Category,,,ambas,app,
 comun.category_label,Comunes,Categoría: %@,Category: %@,,,ambas,app,Accesibilidad. %@ es el nombre de la categoría.
 comun.title,Comunes,Título,Title,,,ambas,app,
 comun.thesis,Comunes,Tesis,Thesis,,,ambas,app,La idea de la neurona en una frase.
-comun.principle,Comunes,Principio,Principle,,,ambas,app,El mecanismo de fondo que sale de la destilación.
-comun.what_idea,Comunes,¿Qué idea te deja esto?,What idea does this leave you with?,,,ambas,app,Pedido de una línea propia cuando no se puede (o no se quiere) destilar.
+comun.principle,Comunes,Principio,Principle,,,ambas,app,El mecanismo de fondo que sale de la conceptualización.
+comun.what_idea,Comunes,¿Qué idea te deja esto?,What idea does this leave you with?,,,ambas,app,Pedido de una línea propia cuando no se puede (o no se quiere) conceptualizar.
 comun.one_line,Comunes,"En una línea, con tus palabras","In one line, in your own words",,,ambas,app,
 comun.plan,Comunes,Plan,Plan,,,ambas,app,
 comun.pro,Comunes,Pro,Pro,,,ambas,app,Etiqueta de Pro. No se traduce.
@@ -82,10 +82,10 @@ onboarding.welcome.example_cat_a,Onboarding,Urbanismo,Urbanism,,,ambas,app,
 onboarding.welcome.example_a,Onboarding,Onda verde de semáforos,Green-wave traffic lights,,,ambas,app,
 onboarding.welcome.example_b,Onboarding,Code review,Code review,,,ambas,app,
 onboarding.consent.title,Onboarding,Tus ideas y la IA,Your ideas and AI,,,ambas,app,
-onboarding.consent.body,Onboarding,"Para destilar lo que guardás y encender las chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic.","To distill what you save and light your sparks, Lumbre sends the text of your ideas to Claude, an AI by Anthropic.",,,ambas,app,
+onboarding.consent.body,Onboarding,"Para conceptualizar lo que guardás y encender las chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic.","To conceptualize what you save and light your sparks, Lumbre sends the text of your ideas to Claude, an AI by Anthropic.",,,ambas,app,
 onboarding.consent.scope,Onboarding,Solo se manda lo necesario para cada chispa: tus ideas y tu perfil creativo.,Only what each spark needs is sent: your ideas and your creative profile.,,,ambas,app,
 onboarding.consent.change,Onboarding,Podés cambiar esto cuando quieras en Perfil > Privacidad.,You can change this anytime in Profile > Privacy.,,,ambas,app,
-onboarding.consent.decline_note,Onboarding,"Si no aceptás, podés guardar ideas igual, pero las chispas y la destilación necesitan este permiso.","If you decline, you can still save ideas, but sparks and distilling need this permission.",,,ambas,app,
+onboarding.consent.decline_note,Onboarding,"Si no aceptás, podés guardar ideas igual, pero las chispas y la conceptualización necesitan este permiso.","If you decline, you can still save ideas, but sparks and conceptualizing need this permission.",,,ambas,app,
 onboarding.consent.read_policy,Onboarding,Leer la política de privacidad,Read the privacy policy,,,ambas,app,
 onboarding.consent.accept,Onboarding,Acepto,I agree,,,ambas,app,
 onboarding.consent.decline,Onboarding,No acepto,I don't agree,,,ambas,app,
@@ -177,7 +177,7 @@ cuenta.signout_account,Cuenta e invitado,Tus ideas quedan guardadas en tu cuenta
 cuenta.account,Cuenta e invitado,Cuenta,Account,,,ambas,app,
 cuenta.gate.title,Cuenta e invitado,Esto es con cuenta,This needs an account,,,ambas,nuevo,Hoja que aparece cuando un invitado toca algo que necesita cuenta (ver design/prototipo/invitado.md).
 cuenta.gate.spark_extra,Cuenta e invitado,"Las chispas extra se ganan guardando neuronas, y se guardan en tu cuenta. Creala gratis: lo que ya guardaste pasa con vos.","Extra sparks are earned by saving neurons, and they're kept in your account. Create one for free: what you've saved comes with you.",,,ambas,nuevo,
-cuenta.gate.distill,Cuenta e invitado,"Destilar lee links, fotos y PDFs y saca las neuronas por vos. Con una cuenta gratis tenés pruebas todos los meses.","Distilling reads links, photos and PDFs and pulls out the neurons for you. A free account gets you trials every month.",,,ambas,nuevo,
+cuenta.gate.distill,Cuenta e invitado,"Conceptualizar lee links, fotos y PDFs y saca las neuronas por vos. Con una cuenta gratis tenés pruebas todos los meses.","Conceptualizing reads links, photos and PDFs and pulls out the neurons for you. A free account gets you trials every month.",,,ambas,nuevo,
 cuenta.gate.planner,Cuenta e invitado,"El planificador es parte de Lumbre Pro, y Pro va con una cuenta. Creala primero: lo que guardaste pasa con vos.","The planner is part of Lumbre Pro, and Pro needs an account. Create one first: what you've saved comes with you.",,,ambas,nuevo,
 cuenta.gate.pro,Cuenta e invitado,"Para suscribirte a Lumbre Pro necesitás una cuenta, así Pro te sigue a cualquier teléfono.","To subscribe to Lumbre Pro you need an account, so Pro follows you to any phone.",,,ambas,nuevo,
 cuenta.gate.limit,Cuenta e invitado,Llegaste a las 10 neuronas de hoy como invitado. Con una cuenta gratis guardás hasta 30 por día.,You've saved today's 10 neurons as a guest. A free account lets you save up to 30 a day.,,,ambas,nuevo,
@@ -313,17 +313,17 @@ capturar.kind.pdf,Capturar,PDF,PDF,,,ambas,app,
 capturar.placeholder,Capturar,¿Qué idea te quedó dando vueltas?,What idea has been on your mind?,,,ambas,app,
 capturar.idea,Capturar,Idea,Idea,,,ambas,app,Accesibilidad del campo de texto.
 capturar.link_invalid,Capturar,Revisá el link: no parece válido.,Check the link: it doesn't look valid.,,,ambas,app,
-capturar.optional_distill,Capturar,"Opcional: si la escribís, la destilación la usa","Optional: if you write it, distilling uses it",,,ambas,app,
-capturar.distill_pdf,Capturar,Destilar el PDF,Distill the PDF,,,ambas,app,
-capturar.distill_image,Capturar,Destilar la imagen,Distill the image,,,ambas,app,
-capturar.distill_auto,Capturar,Destilar automáticamente,Distill automatically,,,ambas,app,
+capturar.optional_distill,Capturar,"Opcional: si la escribís, la conceptualización la usa","Optional: if you write it, conceptualizing uses it",,,ambas,app,
+capturar.distill_pdf,Capturar,Conceptualizar el PDF,Conceptualize the PDF,,,ambas,app,
+capturar.distill_image,Capturar,Conceptualizar la imagen,Conceptualize the image,,,ambas,app,
+capturar.distill_auto,Capturar,Conceptualizar automáticamente,Conceptualize automatically,,,ambas,app,
 capturar.over_limit,Capturar,Te pasaste por %lld caracteres. Dejá solo la idea (hasta 600).,You're %lld characters over. Keep just the idea (up to 600).,,,ambas,app,
 capturar.char_count,Capturar,%lld de 600 caracteres,%lld of 600 characters,,,ambas,app,
 capturar.looks_like_link,Capturar,Parece un link. Guardalo como link para que quede la fuente.,Looks like a link. Save it as a link so the source is kept.,,,ambas,app,
 capturar.switch_to_link,Capturar,Pasar a Link,Switch to Link,,,ambas,app,
 capturar.save,Capturar,Guardar neurona,Save neuron,,,ambas,app,
 capturar.saved,Capturar,Neurona guardada,Neuron saved,,,ambas,app,
-capturar.distilling,Capturar,Destilando…,Distilling…,,,ambas,app,
+capturar.distilling,Capturar,Conceptualizando…,Conceptualizing…,,,ambas,app,
 capturar.distilling_body,Capturar,Lumbre lee el contenido y saca las neuronas. Puede tardar unos segundos.,Lumbre reads the content and pulls out the neurons. It may take a few seconds.,,,ambas,app,
 capturar.no_idea_found,Capturar,No pudimos sacar una idea de esto. Escribí qué idea te deja y lo guardamos con tus palabras.,We couldn't get an idea out of this. Write what idea it leaves you with and we'll save it in your words.,,,ambas,app,
 capturar.no_idea_found_short,Capturar,No pudimos sacar una idea de esto. Escribí qué idea te deja.,We couldn't get an idea out of this. Write what idea it leaves you with.,,,ambas,app,
@@ -358,7 +358,7 @@ capturar.keep_relevant,Capturar,Dejá solo la parte que te importa,Keep just the
 capturar.scanned_one,Capturar,Página escaneada,Scanned page,,,ambas,app,
 capturar.scanned_many,Capturar,%lld páginas escaneadas,%lld scanned pages,,,ambas,app,
 capturar.pdf_pages,Capturar,%lld páginas. El archivo no se guarda: solo la idea.,%lld pages. The file isn't saved: only the idea.,,,ambas,app,
-capturar.no_text_found,Capturar,No encontramos texto. Escribí qué idea te deja o destilá la imagen.,"We didn't find any text. Write what idea it leaves you with, or distill the image.",,,ambas,app,
+capturar.no_text_found,Capturar,No encontramos texto. Escribí qué idea te deja o conceptualizá la imagen.,"We didn't find any text. Write what idea it leaves you with, or conceptualize the image.",,,ambas,app,
 capturar.ocr_on_device,Capturar,Texto sacado en el teléfono. La foto queda en tu fototeca.,Text pulled out on your phone. The photo stays in your library.,Texto sacado en el teléfono. La foto queda en tu galería.,Text pulled out on your phone. The photo stays in your gallery.,ambas,app,
 capturar.image_failed,Capturar,No pudimos abrir esa imagen. Probá con otra.,We couldn't open that image. Try another one.,,,ambas,app,
 capturar.pdf_failed,Capturar,No pudimos abrir ese PDF. Probá con otro.,We couldn't open that PDF. Try another one.,,,ambas,app,
@@ -366,7 +366,7 @@ capturar.pdf_too_big,Capturar,El PDF pesa más de 20 MB. Probá con uno más liv
 capturar.trials.checking,Capturar,Revisando tus pruebas…,Checking your trials…,,,ambas,app,
 capturar.trials.what,Capturar,Lumbre lee el contenido y saca de 1 a 3 neuronas.,Lumbre reads the content and pulls out 1 to 3 neurons.,,,ambas,app,
 capturar.trials.used,Capturar,Usaste las pruebas de este mes. Escribí qué idea te deja esto y lo guardamos igual.,You've used this month's trials. Write what idea it leaves you with and we'll save it anyway.,,,ambas,app,
-capturar.trials.guest,Capturar,La destilación es con cuenta. Creala desde Perfil y probala gratis.,Distilling needs an account. Create one from Profile and try it for free.,,,ambas,app,
+capturar.trials.guest,Capturar,La conceptualización es con cuenta. Creala desde Perfil y probala gratis.,Conceptualizing needs an account. Create one from Profile and try it for free.,,,ambas,app,
 capturar.trials.one_left,Capturar,Te queda 1 prueba este mes.,You have 1 trial left this month.,,,ambas,app,
 capturar.trials.many_left,Capturar,Te quedan %lld pruebas este mes.,You have %lld trials left this month.,,,ambas,app,
 capturar.trials.unlimited_pro,Capturar,Ilimitado en Pro,Unlimited with Pro,,,ambas,app,
@@ -390,8 +390,8 @@ capturar.draft.discard_body,Capturar,La neurona no se guarda en tu red.,The neur
 capturar.draft.save_changes,Capturar,Guardar cambios,Save changes,,,ambas,app,
 capturar.draft.saved_many,Capturar,Guardamos %lld neuronas,We saved %lld neurons,,,ambas,app,
 capturar.draft.saved_many_body,Capturar,Salieron de lo que capturaste. Ya están en tu red.,They came from what you captured. They're already in your network.,,,ambas,app,
-capturar.draft.saved_raw,Capturar,Lo guardamos sin destilar,We saved it without distilling,,,ambas,app,
-capturar.draft.saved_raw_body,Capturar,"Usaste las pruebas de destilación de este mes. Con Lumbre Pro destilás links, fotos y PDFs sin límite.","You've used this month's distilling trials. With Lumbre Pro you distill links, photos and PDFs with no limit.",,,ambas,app,
+capturar.draft.saved_raw,Capturar,Lo guardamos sin conceptualizar,We saved it without conceptualizing,,,ambas,app,
+capturar.draft.saved_raw_body,Capturar,"Usaste las pruebas de conceptualización de este mes. Con Lumbre Pro conceptualizás links, fotos y PDFs sin límite.","You've used this month's conceptualization trials. With Lumbre Pro you conceptualize links, photos and PDFs with no limit.",,,ambas,app,
 red.search,Red,"Buscar ideas, no palabras","Search ideas, not words",,,ambas,app,
 red.categories,Red,Categorías,Categories,,,ambas,app,
 red.drafts.title,Red,Borradores para confirmar,Drafts to confirm,,,ambas,app,
@@ -432,7 +432,7 @@ neurona.delete_q,Detalle de neurona,¿Borrar esta neurona?,Delete this neuron?,,
 neurona.delete,Detalle de neurona,Borrar neurona,Delete neuron,,,ambas,app,
 neurona.delete_body,Detalle de neurona,Sale de tu red y de las próximas chispas. No se puede deshacer.,It leaves your network and future sparks. This can't be undone.,,,ambas,app,
 neurona.saved_on,Detalle de neurona,Guardado el %@,Saved on %@,,,ambas,app,
-neurona.distilled,Detalle de neurona,Destilado por Lumbre,Distilled by Lumbre,,,ambas,app,
+neurona.distilled,Detalle de neurona,Conceptualizado por Lumbre,Conceptualized by Lumbre,,,ambas,app,
 neurona.from_library,Detalle de neurona,De la biblioteca de Lumbre,From the Lumbre library,,,ambas,app,
 neurona.draft_notice,Detalle de neurona,Borrador. Lumbre no estaba del todo seguro de esta idea: confirmala o corregila.,Draft. Lumbre wasn't quite sure about this idea: confirm it or fix it.,,,ambas,app,
 neurona.source,Detalle de neurona,Fuente,Source,,,ambas,app,
@@ -445,7 +445,7 @@ neurona.combine,Detalle de neurona,Combinar con…,Combine with…,,,ambas,app,
 neurona.combine_body,Detalle de neurona,Elegí otra neurona y Lumbre enciende una chispa con las dos.,Pick another neuron and Lumbre lights a spark with both.,,,ambas,app,
 neurona.combine_pro,Detalle de neurona,Con Lumbre Pro elegís qué neuronas se conectan.,With Lumbre Pro you choose which neurons connect.,,,ambas,app,
 neurona.thesis_limit,Detalle de neurona,La tesis puede tener hasta 600 caracteres.,The thesis can be up to 600 characters.,,,ambas,app,
-neurona.principle_locked,Detalle de neurona,El principio lo saca la destilación y no se edita.,The principle comes from distilling and can't be edited.,,,ambas,app,
+neurona.principle_locked,Detalle de neurona,El principio lo saca la conceptualización y no se edita.,The principle comes from conceptualization and can't be edited.,,,ambas,app,
 neurona.edit_title,Detalle de neurona,Editar neurona,Edit neuron,,,ambas,app,
 neurona.try_other_words,Detalle de neurona,Probá con otras palabras.,Try other words.,,,ambas,app,
 neurona.filter,Detalle de neurona,Filtrar neuronas,Filter neurons,,,ambas,app,
@@ -461,7 +461,7 @@ circuitos.detail.empty_body,Circuitos,"Cuando guardes una chispa, elegí este ci
 circuitos.detail.go_today,Circuitos,Ir a Hoy,Go to Today,,,ambas,app,
 circuitos.export_empty,Circuitos,Todavía no hay ideas en este circuito.,There are no ideas in this circuit yet.,,,ambas,app,Va dentro del Markdown exportado.
 perfil.subscription,Perfil y ajustes,Suscripción,Subscription,,,ambas,app,
-perfil.pro_pitch,Perfil y ajustes,"Hasta 10 chispas por día, destilación automática y el planificador","Up to 10 sparks a day, automatic distilling and the planner",,,ambas,app,
+perfil.pro_pitch,Perfil y ajustes,"Hasta 10 chispas por día, conceptualización automática y el planificador","Up to 10 sparks a day, automatic conceptualization and the planner",,,ambas,app,
 perfil.your_spark,Perfil y ajustes,Tu chispa,Your spark,,,ambas,app,
 perfil.your_spark_body,Perfil y ajustes,La chispa del día te espera a esta hora. El perfil creativo es la lente con la que se eligen las ideas.,Your daily spark waits for you at this time. Your creative profile is the lens used to pick the ideas.,,,ambas,app,
 perfil.notifications,Perfil y ajustes,Avisos,Notifications,,,ambas,app,
@@ -482,7 +482,7 @@ perfil.version,Perfil y ajustes,Lumbre %@ (%@),Lumbre %@ (%@),,,ambas,app,Versi�
 perfil.quota_value,Perfil y ajustes,%lld de %lld,%lld of %lld,,,ambas,app,
 perfil.quota_a11y,Perfil y ajustes,Te quedan %lld de %lld,%lld of %lld left,,,ambas,app,
 perfil.quota.captures,Perfil y ajustes,Capturas de hoy,Captures today,,,ambas,app,
-perfil.quota.distill,Perfil y ajustes,Destilaciones del mes,Distills this month,,,ambas,app,
+perfil.quota.distill,Perfil y ajustes,Conceptualizaciones del mes,Conceptualizations this month,,,ambas,app,
 perfil.quota.extra,Perfil y ajustes,Chispas extra de hoy,Extra sparks today,,,ambas,app,
 perfil.quota.planner,Perfil y ajustes,Planificador este mes,Planner this month,,,ambas,app,
 perfil.quota.deep,Perfil y ajustes,Planes profundos este mes,Deep plans this month,,,ambas,app,
@@ -490,8 +490,8 @@ perfil.theme.graphite,Perfil y ajustes,Grafito,Graphite,,,ambas,app,Tema oscuro.
 perfil.theme.gray,Perfil y ajustes,Gris,Gray,,,ambas,app,"Tema claro, el de marca."
 perfil.theme.system,Perfil y ajustes,Como el sistema,Match system,,,ambas,app,
 perfil.creative.subtitle,Perfil y ajustes,Elegí hasta dos. Son la lente con la que se eligen y escriben tus chispas.,Pick up to two. They're the lens used to choose and write your sparks.,,,ambas,app,
-perfil.ai.title,Perfil y ajustes,Chispas y destilación con IA,Sparks and distilling with AI,,,ambas,app,
-perfil.ai.body,Perfil y ajustes,"Para destilar tus ideas y encender las chispas, Lumbre manda el texto de tus ideas y tu perfil creativo a Claude, una IA de Anthropic. Sin este permiso podés guardar neuronas, pero no se destilan ni se encienden chispas, y el planificador no responde.","To distill your ideas and light your sparks, Lumbre sends the text of your ideas and your creative profile to Claude, an AI by Anthropic. Without this permission you can still save neurons, but nothing gets distilled, no sparks are lit and the planner won't reply.",,,ambas,app,
+perfil.ai.title,Perfil y ajustes,Chispas y conceptualización con IA,Sparks and conceptualizing with AI,,,ambas,app,
+perfil.ai.body,Perfil y ajustes,"Para conceptualizar tus ideas y encender las chispas, Lumbre manda el texto de tus ideas y tu perfil creativo a Claude, una IA de Anthropic. Sin este permiso podés guardar neuronas, pero no se conceptualizan ni se encienden chispas, y el planificador no responde.","To conceptualize your ideas and light your sparks, Lumbre sends the text of your ideas and your creative profile to Claude, an AI by Anthropic. Without this permission you can still save neurons, but nothing gets conceptualized, no sparks are lit and the planner won't reply.",,,ambas,app,
 perfil.export,Perfil y ajustes,Exportar mis datos,Export my data,,,ambas,app,
 perfil.export_body,Perfil y ajustes,"Un archivo JSON con tu perfil, categorías, neuronas, chispas, circuitos y conversaciones del planificador.","A JSON file with your profile, categories, neurons, sparks, circuits and planner conversations.",,,ambas,app,
 perfil.delete_body,Perfil y ajustes,Borra tu cuenta y todo lo que guardaste. No se puede deshacer.,Deletes your account and everything you saved. This can't be undone.,,,ambas,app,
@@ -506,7 +506,7 @@ perfil.delete.button,Perfil y ajustes,Borrar mi cuenta,Delete my account,,,ambas
 perfil.delete.failed,Perfil y ajustes,No se pudo borrar la cuenta,We couldn't delete the account,,,ambas,app,
 paywall.subtitle,Paywall,Más chispas por día y un plan para cada idea.,More sparks a day and a plan for every idea.,,,ambas,app,
 paywall.benefit.sparks,Paywall,"Hasta 10 chispas por día, y elegís qué neuronas se conectan","Up to 10 sparks a day, and you choose which neurons connect",,,ambas,app,
-paywall.benefit.distill,Paywall,"Destilación automática de links, fotos y PDFs","Automatic distilling of links, photos and PDFs",,,ambas,app,
+paywall.benefit.distill,Paywall,"Conceptualización automática de links, fotos y PDFs","Automatic conceptualization of links, photos and PDFs",,,ambas,app,
 paywall.benefit.planner,Paywall,Planificador para bajar cada idea a tareas,A planner to turn each idea into tasks,,,ambas,app,
 paywall.benefit.circuits,Paywall,Circuitos ilimitados,Unlimited circuits,,,ambas,app,
 paywall.loading,Paywall,Cargando los precios,Loading prices,,,ambas,app,
@@ -564,7 +564,7 @@ estados.not_found_titulo,"Estados vacíos, error, offline y contenido inaccesibl
 estados.not_found_cuerpo,"Estados vacíos, error, offline y contenido inaccesible",Puede que se haya borrado desde otro dispositivo.,It may have been deleted on another device.,,,ambas,nuevo,Estado error.not_found (Cuerpo). Ver design/estados/README.md.
 estados.not_found_secundaria,"Estados vacíos, error, offline y contenido inaccesible",Volver,Go back,,,ambas,nuevo,Estado error.not_found (Secundaria). Ver design/estados/README.md.
 estados.load_offline_cuerpo,"Estados vacíos, error, offline y contenido inaccesible",Revisá tu conexión y probá de nuevo. Lo que captures mientras tanto queda guardado en el teléfono.,Check your connection and try again. Anything you capture in the meantime stays saved on your phone.,,,ambas,nuevo,Estado error.load_offline (Cuerpo). Ver design/estados/README.md.
-estados.quota_distill_pro_cuerpo,"Estados vacíos, error, offline y contenido inaccesible",Llegaste al uso justo de destilación de este mes. Se renueva el mes que viene.,You've reached this month's fair use for distilling. It renews next month.,,,ambas,nuevo,Estado error.quota_distill_pro (Cuerpo). Ver design/estados/README.md.
+estados.quota_distill_pro_cuerpo,"Estados vacíos, error, offline y contenido inaccesible",Llegaste al uso justo de conceptualización de este mes. Se renueva el mes que viene.,You've reached this month's fair use for conceptualization. It renews next month.,,,ambas,nuevo,Estado error.quota_distill_pro (Cuerpo). Ver design/estados/README.md.
 estados.store_failed_cuerpo,"Estados vacíos, error, offline y contenido inaccesible",La tienda no respondió. Probá de nuevo en un rato.,The store didn't respond. Try again in a bit.,,,ambas,nuevo,Estado error.store_failed (Cuerpo). Ver design/estados/README.md.
 estados.ai_spark_titulo,"Estados vacíos, error, offline y contenido inaccesible",No se pudo encender la chispa,Couldn't light the spark,,,ambas,nuevo,Estado error.ai_spark (Título). Ver design/estados/README.md.
 estados.ai_planner_titulo,"Estados vacíos, error, offline y contenido inaccesible",La respuesta no llegó,The reply didn't come through,,,ambas,nuevo,Estado error.ai_planner (Título). Ver design/estados/README.md.
@@ -586,11 +586,11 @@ estados.audio_no_speech_aviso,"Estados vacíos, error, offline y contenido inacc
 estados.paywall_link_aviso,"Estados vacíos, error, offline y contenido inaccesible",Esta nota tiene muro de pago: solo pudimos leer el título. Escribí qué idea te deja y la guardamos con el link.,This article is behind a paywall: we could only read the title. Write what idea it leaves you with and we'll save it with the link.,,,ambas,nuevo,Estado inaccessible.paywall_link (Aviso). Ver design/estados/README.md.
 estados.paywall_link_variante_solo_titulo,"Estados vacíos, error, offline y contenido inaccesible",Solo pudimos leer el título y la descripción. Escribí qué idea te deja y la guardamos con el link.,We could only read the title and description. Write what idea it leaves you with and we'll save it with the link.,,,ambas,nuevo,"Estado inaccessible.paywall_link (Variante: solo título y descripción (por ejemplo, un video sin transcripción)). Ver design/estados/README.md."
 estados.social_login_aviso,"Estados vacíos, error, offline y contenido inaccesible","%@ no deja leer publicaciones sin iniciar sesión. Si tiene texto, copialo y pegalo; si no, escribí qué idea te deja.","%@ doesn't let us read posts without signing in. If it has text, copy and paste it; if not, write what idea it leaves you with.",,,ambas,nuevo,Estado inaccessible.social_login (Aviso). Ver design/estados/README.md.
-estados.social_login_nota_del_interruptor,"Estados vacíos, error, offline y contenido inaccesible",No se puede destilar este link.,This link can't be distilled.,,,ambas,nuevo,Estado inaccessible.social_login (Nota del interruptor). Ver design/estados/README.md.
+estados.social_login_nota_del_interruptor,"Estados vacíos, error, offline y contenido inaccesible",No se puede conceptualizar este link.,This link can't be conceptualized.,,,ambas,nuevo,Estado inaccessible.social_login (Nota del interruptor). Ver design/estados/README.md.
 estados.private_doc_aviso,"Estados vacíos, error, offline y contenido inaccesible","Este documento es privado: Lumbre no puede abrirlo. Escribí qué idea te deja, o compartilo como PDF.","This document is private: Lumbre can't open it. Write what idea it leaves you with, or share it as a PDF.",,,ambas,nuevo,Estado inaccessible.private_doc (Aviso). Ver design/estados/README.md.
 estados.unreachable_aviso,"Estados vacíos, error, offline y contenido inaccesible",No pudimos abrir esta página. Escribí qué idea te deja y la guardamos con el link. No se descontó la prueba.,We couldn't open this page. Write what idea it leaves you with and we'll save it with the link. It didn't use a trial.,,,ambas,nuevo,Estado inaccessible.unreachable (Aviso). Ver design/estados/README.md.
 estados.image_no_idea_aviso,"Estados vacíos, error, offline y contenido inaccesible",En esta foto no encontramos una idea para guardar. Escribí qué te deja y la guardamos con la foto.,We didn't find an idea to save in this photo. Write what it leaves you with and we'll save it with the photo.,,,ambas,nuevo,Estado inaccessible.image_no_idea (Aviso). Ver design/estados/README.md.
-estados.ocr_no_text_sin_destilacion,"Estados vacíos, error, offline y contenido inaccesible",No encontramos texto. Escribí qué idea te deja.,We didn't find any text. Write what idea it leaves you with.,,,ambas,nuevo,Estado inaccessible.ocr_no_text (Sin destilación). Ver design/estados/README.md.
+estados.ocr_no_text_sin_conceptualizacion,"Estados vacíos, error, offline y contenido inaccesible",No encontramos texto. Escribí qué idea te deja.,We didn't find any text. Write what idea it leaves you with.,,,ambas,nuevo,Estado inaccessible.ocr_no_text (Sin conceptualización). Ver design/estados/README.md.
 estados.pdf_no_text_aviso,"Estados vacíos, error, offline y contenido inaccesible","Este PDF no tiene texto seleccionable. Escaneá las páginas que te importan con Escanear página, o escribí qué idea te deja.","This PDF has no selectable text. Scan the pages you care about with Scan page, or write what idea it leaves you with.",,,ambas,nuevo,Estado inaccessible.pdf_no_text (Aviso). Ver design/estados/README.md.
 estados.file_unreadable_pdf_con_contrasena,"Estados vacíos, error, offline y contenido inaccesible",Este PDF tiene contraseña. Sacásela o probá con otro.,This PDF is password-protected. Remove the password or try another one.,,,ambas,nuevo,Estado inaccessible.file_unreadable (PDF con contraseña). Ver design/estados/README.md.
 estados.unsupported_format_aviso,"Estados vacíos, error, offline y contenido inaccesible","Lumbre no lee archivos de Word, PowerPoint ni videos. Guardá un PDF o el link, o escribí qué idea te deja.","Lumbre doesn't read Word, PowerPoint or video files. Save a PDF or the link, or write what idea it leaves you with.",,,ambas,nuevo,Estado inaccessible.unsupported_format (Aviso). Ver design/estados/README.md.

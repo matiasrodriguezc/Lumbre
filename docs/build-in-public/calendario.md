@@ -27,7 +27,7 @@ Las chispas son las de `chispas-del-dia.md`, en orden. Las plantillas de cada fo
 | Día | X | LinkedIn | TikTok / Reels |
 |---|---|---|---|
 | Lun | Chispa 6 · Proceso: por qué las dos ideas tienen que ser de mundos distintos | — | Video 4: "Le pedí ideas a mis notas viejas" (guion 3) |
-| Mar | Chispa 7 | Post 3: destilar, o cómo una nota de 800 palabras se vuelve una idea de una línea | — |
+| Mar | Chispa 7 | Post 3: conceptualizar, o cómo una nota de 800 palabras se vuelve una idea de una línea | — |
 | Mié | Chispa 8 · Proceso: ni las más cercanas ni las más lejanas, la banda del medio | — | Video 5: chispa del día (chispa 8) |
 | Jue | Chispa 9 | Post 4: cuánto cuesta por día una chispa (y por qué importa para el precio) | — |
 | Vie | Chispa 10 · Números de la semana | Mejor chispa de la semana | Video 6: chispa del día (chispa 10) |

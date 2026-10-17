@@ -26,9 +26,9 @@ Lumbre te deja guardar ideas (texto, voz dictada, links, capturas, imágenes y P
 
 ## 4. Planes y suscripciones
 
-**Gratis.** Captura de texto y voz ilimitada, una chispa por día (más hasta dos que se ganan guardando ideas), una cantidad limitada de destilaciones automáticas por mes, un circuito y export a Markdown.
+**Gratis.** Captura de texto y voz ilimitada, una chispa por día (más hasta dos que se ganan guardando ideas), una cantidad limitada de conceptualizaciones automáticas por mes, un circuito y export a Markdown.
 
-**Pro.** Suscripción mensual o anual con más chispas por día, destilación automática, planificador y circuitos sin límite, según lo que muestra la pantalla de Pro al momento de suscribirte.
+**Pro.** Suscripción mensual o anual con más chispas por día, conceptualización automática, planificador y circuitos sin límite, según lo que muestra la pantalla de Pro al momento de suscribirte.
 
 - **Cobro.** La suscripción se compra y se cobra a través del App Store de Apple o de Google Play, con la forma de pago de tu cuenta en esa tienda. Los precios se muestran en la app antes de comprar, con los impuestos que correspondan en tu país.
 - **Renovación automática.** La suscripción se renueva sola al final de cada período, al mismo precio, salvo que la canceles al menos 24 horas antes de que termine.
@@ -36,23 +36,23 @@ Lumbre te deja guardar ideas (texto, voz dictada, links, capturas, imágenes y P
 - **Cancelación.** Se cancela desde los ajustes de suscripciones de tu cuenta de Apple o Google. Seguís teniendo Pro hasta el final del período pagado. Borrar tu cuenta de Lumbre **no** cancela la suscripción.
 - **Reembolsos.** Los maneja la tienda, según sus políticas. Esto no afecta los derechos que te da la ley de tu país, incluido el derecho de revocación de la Ley 24.240 en Argentina [revisar con el abogado cómo se instrumenta cuando cobra la tienda].
 - **Cambios de precio.** Si cambiamos el precio de Pro, te avisamos con anticipación y la tienda te pide confirmación cuando la ley lo exige. El precio nuevo se aplica desde la siguiente renovación.
-- **Uso justo.** Pro tiene límites de uso razonables para que el servicio sea sostenible (por ejemplo, una cantidad de destilaciones y de mensajes del planificador por mes). Los límites vigentes se ven en la app. Podemos ajustarlos, sin bajar lo que te prometimos al suscribirte durante el período ya pagado.
+- **Uso justo.** Pro tiene límites de uso razonables para que el servicio sea sostenible (por ejemplo, una cantidad de conceptualizaciones y de mensajes del planificador por mes). Los límites vigentes se ven en la app. Podemos ajustarlos, sin bajar lo que te prometimos al suscribirte durante el período ya pagado.
 
 ## 5. Tu contenido
 
 - **Es tuyo.** Lo que guardás en Lumbre (tus textos, links, imágenes, notas y mensajes) sigue siendo tuyo.
-- **Nos das permiso para procesarlo** solo para darte el servicio: guardarlo, destilarlo, mandarlo a los proveedores de IA, generar tus chispas, mostrártelo en tus dispositivos y hacer copias de seguridad. Este permiso termina cuando lo borrás o borrás tu cuenta, salvo por las copias de seguridad, que se renuevan en pocos días.
+- **Nos das permiso para procesarlo** solo para darte el servicio: guardarlo, conceptualizarlo, mandarlo a los proveedores de IA, generar tus chispas, mostrártelo en tus dispositivos y hacer copias de seguridad. Este permiso termina cuando lo borrás o borrás tu cuenta, salvo por las copias de seguridad, que se renuevan en pocos días.
 - **Tenés que tener derecho a usarlo.** No guardes contenido que no puedas usar o que viole derechos de otras personas. Guardar un link o un fragmento para tu uso personal está bien; publicarlo es responsabilidad tuya.
 - **Lo que no tenés que subir:** contenido ilegal, material de abuso sexual infantil, contenido que incite a la violencia, datos personales de terceros sin su permiso, ni malware.
 
 ## 6. Contenido generado por IA
 
-- Las neuronas destiladas, las chispas y las respuestas del planificador las genera una inteligencia artificial (hoy, Claude, de Anthropic) a partir de tu contenido.
+- Las neuronas conceptualizadas, las chispas y las respuestas del planificador las genera una inteligencia artificial (hoy, Claude, de Anthropic) a partir de tu contenido.
 - **Podés usarlas como quieras**, también con fines comerciales. En la medida en que tengamos algún derecho sobre ellas, te lo cedemos.
 - **No hay garantía.** Pueden ser imprecisas, incompletas, obvias o parecidas a ideas que ya existen o que la IA le propuso a otra persona. Antes de invertir tiempo o plata en una idea, verificala. Nada de lo que genera Lumbre es consejo profesional (legal, financiero, médico ni de otro tipo).
 - **No garantizamos que sean originales** ni que se puedan proteger como propiedad intelectual.
 - **Reportes.** Si una chispa o una respuesta te parece ofensiva, peligrosa o equivocada, reportala desde la app. Revisamos los reportes y podemos ajustar el servicio en consecuencia.
-- **Consentimiento.** Antes de mandar tu contenido a la IA te pedimos permiso. Si no lo das, podés guardar ideas pero no se destilan ni se generan chispas.
+- **Consentimiento.** Antes de mandar tu contenido a la IA te pedimos permiso. Si no lo das, podés guardar ideas pero no se conceptualizan ni se generan chispas.
 
 ## 7. Uso aceptable
 

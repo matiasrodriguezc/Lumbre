@@ -29,10 +29,10 @@ Para cada tipo recolectado: **Collected** = Yes · **Shared** = No · **Processe
 | Financial info | Payment info, Credit score, Other | No | | Lo procesa Google Play |
 | Health and fitness | — | No | | |
 | Messages | — | No | | |
-| Photos and videos | **Photos** | Sí | Opcional | App functionality. Las imágenes que se destilan se suben y se borran enseguida; se declara igual porque pasan por un tercero (Anthropic) y el resultado se guarda |
-| Audio | Voice or sound recordings | No (provisorio) | | El dictado se transcribe en el teléfono. Pasa a Sí si se suben audios para destilar |
+| Photos and videos | **Photos** | Sí | Opcional | App functionality. Las imágenes que se conceptualizan se suben y se borran enseguida; se declara igual porque pasan por un tercero (Anthropic) y el resultado se guarda |
+| Audio | Voice or sound recordings | No (provisorio) | | El dictado se transcribe en el teléfono. Pasa a Sí si se suben audios para conceptualizar |
 | Audio | Music files, Other audio | No | | |
-| Files and docs | **Files and docs** | Sí | Opcional | App functionality (PDFs a destilar; se borran enseguida) |
+| Files and docs | **Files and docs** | Sí | Opcional | App functionality (PDFs a conceptualizar; se borran enseguida) |
 | Calendar | — | No | | |
 | Contacts | — | No | | |
 | App activity | **App interactions** | Sí | Obligatorio | Analytics |

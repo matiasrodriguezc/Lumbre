@@ -47,7 +47,7 @@ Pantallas: comunes, navegación, onboarding, perfiles creativos, cuenta e invita
 ## Voz en los dos idiomas
 
 - Español rioplatense con voseo, sentence case, sin emoji. En inglés, el mismo tono: directo y cálido, frases cortas, sentence case.
-- Vocabulario neuronal fijo: neurona / *neuron*, Red / *Network* ("tu red" / *your network*), Circuitos / *Circuits*, chispa / *spark*. Encender una chispa / *light a spark* ("Encender la chispa" → *Light the spark*, "Encendiendo…" → *Lighting…*). Destilar / *distill*. Capturar / *Capture*. Invitado / *guest*. "Sinapsis", "axón" y "dendrita" no van en la interfaz en ningún idioma.
+- Vocabulario neuronal fijo: neurona / *neuron*, Red / *Network* ("tu red" / *your network*), Circuitos / *Circuits*, chispa / *spark*. Encender una chispa / *light a spark* ("Encender la chispa" → *Light the spark*, "Encendiendo…" → *Lighting…*). Conceptualizar / *conceptualize*. Capturar / *Capture*. Invitado / *guest*. "Sinapsis", "axón" y "dendrita" no van en la interfaz en ningún idioma.
 - La chispa se escribe "A × B" en los dos idiomas.
 - Rutas del sistema: iOS dice **Ajustes**, Android **Configuración** (en inglés, *Settings* en los dos). La tienda: cuenta de Apple en iOS, Google Play en Android. Esos textos llevan su reemplazo en `android`.
 

@@ -17,13 +17,13 @@ A few things I learned building it that might be useful to others:
 
 2. Pairing is SQL, not AI. Embeddings in pgvector, a percentile band per user, pairs that never repeat and a 3-day rest per idea. The AI only writes the spark at the end. That keeps a daily spark at around [costo real] per user.
 
-3. Distilling first matters more than the model. Each saved thing becomes one line with the underlying principle before it's embedded. Matching on principles instead of words is what makes "traffic lights × code review" possible.
+3. Conceptualizing first matters more than the model. Each saved thing becomes one line with the underlying principle before it's embedded. Matching on principles instead of words is what makes "traffic lights × code review" possible.
 
-4. Free has to be genuinely useful. Capture is unlimited and you get a spark a day. Pro (US$ 6.99/month or US$ 49.99/year) adds automatic distillation, more sparks and a planner.
+4. Free has to be genuinely useful. Capture is unlimited and you get a spark a day. Pro (US$ 6.99/month or US$ 49.99/year) adds automatic conceptualization, more sparks and a planner.
 
 Numbers so far: [waitlist], [beta D7], [descargas de la primera semana].
 
-Stack: SwiftUI, Supabase (Postgres + pgvector + Edge Functions), Claude Haiku for distilling and sparks, RevenueCat.
+Stack: SwiftUI, Supabase (Postgres + pgvector + Edge Functions), Claude Haiku for conceptualizing and sparks, RevenueCat.
 
 It's live on the App Store: [link]. I'd love feedback on the onboarding, and happy to answer anything about the pairing logic or the costs.
 ```
@@ -39,7 +39,7 @@ Like a lot of people, I have hundreds of saved articles, screenshots and notes I
 
 How it works:
 - Save anything from any app (share sheet, voice, screenshots, book pages)
-- It distills each one into a single line with the principle behind it
+- It conceptualizes each one into a single line with the principle behind it
 - Every morning, two of them from different domains connect into a "spark"
 
 Example from my own notes: "Traffic lights in a green wave" × "Pull requests waiting for review" → staggered review windows so a PR never stops at a red light.

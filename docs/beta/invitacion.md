@@ -92,4 +92,4 @@ Lumbre
 
 ## Decisión provisoria
 
-"Pro gratis durante la beta" no está en plan.md. Es lo más simple para que prueben el planificador y la destilación, y se implementa con el `plan` del perfil (o una oferta de RevenueCat) sin tocar precios. Si no lo querés, sacar esa línea.
+"Pro gratis durante la beta" no está en plan.md. Es lo más simple para que prueben el planificador y la conceptualización, y se implementa con el `plan` del perfil (o una oferta de RevenueCat) sin tocar precios. Si no lo querés, sacar esa línea.

@@ -1057,13 +1057,13 @@
         }
       }
     },
-    "Chispas y destilación con IA" : {
+    "Chispas y conceptualización con IA" : {
       "comment" : "[perfil.ai.title]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sparks and distilling with AI"
+            "value" : "Sparks and conceptualizing with AI"
           }
         }
       }
@@ -1251,6 +1251,94 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Three make a better first spark, but you can keep going and add more later."
+          }
+        }
+      }
+    },
+    "Conceptualizaciones del mes" : {
+      "comment" : "[perfil.quota.distill]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conceptualizations this month"
+          }
+        }
+      }
+    },
+    "Conceptualización automática de links, fotos y PDFs" : {
+      "comment" : "[paywall.benefit.distill]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatic conceptualization of links, photos and PDFs"
+          }
+        }
+      }
+    },
+    "Conceptualizado por Lumbre" : {
+      "comment" : "[neurona.distilled]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conceptualized by Lumbre"
+          }
+        }
+      }
+    },
+    "Conceptualizando…" : {
+      "comment" : "[capturar.distilling]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conceptualizing…"
+          }
+        }
+      }
+    },
+    "Conceptualizar automáticamente" : {
+      "comment" : "[capturar.distill_auto]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conceptualize automatically"
+          }
+        }
+      }
+    },
+    "Conceptualizar el PDF" : {
+      "comment" : "[capturar.distill_pdf]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conceptualize the PDF"
+          }
+        }
+      }
+    },
+    "Conceptualizar la imagen" : {
+      "comment" : "[capturar.distill_image]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conceptualize the image"
+          }
+        }
+      }
+    },
+    "Conceptualizar lee links, fotos y PDFs y saca las neuronas por vos. Con una cuenta gratis tenés pruebas todos los meses." : {
+      "comment" : "[cuenta.gate.distill]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conceptualizing reads links, photos and PDFs and pulls out the neurons for you. A free account gets you trials every month."
           }
         }
       }
@@ -1592,94 +1680,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Then %@ a year. Cancel anytime."
-          }
-        }
-      }
-    },
-    "Destilaciones del mes" : {
-      "comment" : "[perfil.quota.distill]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Distills this month"
-          }
-        }
-      }
-    },
-    "Destilación automática de links, fotos y PDFs" : {
-      "comment" : "[paywall.benefit.distill]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Automatic distilling of links, photos and PDFs"
-          }
-        }
-      }
-    },
-    "Destilado por Lumbre" : {
-      "comment" : "[neurona.distilled]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Distilled by Lumbre"
-          }
-        }
-      }
-    },
-    "Destilando…" : {
-      "comment" : "[capturar.distilling]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Distilling…"
-          }
-        }
-      }
-    },
-    "Destilar automáticamente" : {
-      "comment" : "[capturar.distill_auto]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Distill automatically"
-          }
-        }
-      }
-    },
-    "Destilar el PDF" : {
-      "comment" : "[capturar.distill_pdf]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Distill the PDF"
-          }
-        }
-      }
-    },
-    "Destilar la imagen" : {
-      "comment" : "[capturar.distill_image]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Distill the image"
-          }
-        }
-      }
-    },
-    "Destilar lee links, fotos y PDFs y saca las neuronas por vos. Con una cuenta gratis tenés pruebas todos los meses." : {
-      "comment" : "[cuenta.gate.distill]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Distilling reads links, photos and PDFs and pulls out the neurons for you. A free account gets you trials every month."
           }
         }
       }
@@ -2069,13 +2069,13 @@
         }
       }
     },
-    "El principio lo saca la destilación y no se edita." : {
+    "El principio lo saca la conceptualización y no se edita." : {
       "comment" : "[neurona.principle_locked]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The principle comes from distilling and can't be edited."
+            "value" : "The principle comes from conceptualization and can't be edited."
           }
         }
       }
@@ -2905,13 +2905,13 @@
         }
       }
     },
-    "Hasta 10 chispas por día, destilación automática y el planificador" : {
+    "Hasta 10 chispas por día, conceptualización automática y el planificador" : {
       "comment" : "[perfil.pro_pitch]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Up to 10 sparks a day, automatic distilling and the planner"
+            "value" : "Up to 10 sparks a day, automatic conceptualization and the planner"
           }
         }
       }
@@ -3136,13 +3136,13 @@
         }
       }
     },
-    "La destilación es con cuenta. Creala desde Perfil y probala gratis." : {
+    "La conceptualización es con cuenta. Creala desde Perfil y probala gratis." : {
       "comment" : "[capturar.trials.guest]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Distilling needs an account. Create one from Profile and try it for free."
+            "value" : "Conceptualizing needs an account. Create one from Profile and try it for free."
           }
         }
       }
@@ -3400,13 +3400,13 @@
         }
       }
     },
-    "Llegaste al uso justo de destilación de este mes. Se renueva el mes que viene." : {
+    "Llegaste al uso justo de conceptualización de este mes. Se renueva el mes que viene." : {
       "comment" : "Estado error.quota_distill_pro (Cuerpo). Ver design/estados/README.md. [estados.quota_distill_pro_cuerpo]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You've reached this month's fair use for distilling. It renews next month."
+            "value" : "You've reached this month's fair use for conceptualization. It renews next month."
           }
         }
       }
@@ -3444,13 +3444,13 @@
         }
       }
     },
-    "Lo guardamos sin destilar" : {
+    "Lo guardamos sin conceptualizar" : {
       "comment" : "[capturar.draft.saved_raw]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "We saved it without distilling"
+            "value" : "We saved it without conceptualizing"
           }
         }
       }
@@ -3961,19 +3961,19 @@
         }
       }
     },
-    "No encontramos texto. Escribí qué idea te deja o destilá la imagen." : {
+    "No encontramos texto. Escribí qué idea te deja o conceptualizá la imagen." : {
       "comment" : "[capturar.no_text_found]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "We didn't find any text. Write what idea it leaves you with, or distill the image."
+            "value" : "We didn't find any text. Write what idea it leaves you with, or conceptualize the image."
           }
         }
       }
     },
     "No encontramos texto. Escribí qué idea te deja." : {
-      "comment" : "Estado inaccessible.ocr_no_text (Sin destilación). Ver design/estados/README.md. [estados.ocr_no_text_sin_destilacion]",
+      "comment" : "Estado inaccessible.ocr_no_text (Sin conceptualización). Ver design/estados/README.md. [estados.ocr_no_text_sin_conceptualizacion]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4258,13 +4258,13 @@
         }
       }
     },
-    "No se puede destilar este link." : {
+    "No se puede conceptualizar este link." : {
       "comment" : "Estado inaccessible.social_login (Nota del interruptor). Ver design/estados/README.md. [estados.social_login_nota_del_interruptor]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This link can't be distilled."
+            "value" : "This link can't be conceptualized."
           }
         }
       }
@@ -4379,13 +4379,13 @@
         }
       }
     },
-    "Opcional: si la escribís, la destilación la usa" : {
+    "Opcional: si la escribís, la conceptualización la usa" : {
       "comment" : "[capturar.optional_distill]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Optional: if you write it, distilling uses it"
+            "value" : "Optional: if you write it, conceptualizing uses it"
           }
         }
       }
@@ -4456,6 +4456,28 @@
         }
       }
     },
+    "Para conceptualizar lo que guardás y encender las chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic." : {
+      "comment" : "[onboarding.consent.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To conceptualize what you save and light your sparks, Lumbre sends the text of your ideas to Claude, an AI by Anthropic."
+          }
+        }
+      }
+    },
+    "Para conceptualizar tus ideas y encender las chispas, Lumbre manda el texto de tus ideas y tu perfil creativo a Claude, una IA de Anthropic. Sin este permiso podés guardar neuronas, pero no se conceptualizan ni se encienden chispas, y el planificador no responde." : {
+      "comment" : "[perfil.ai.body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To conceptualize your ideas and light your sparks, Lumbre sends the text of your ideas and your creative profile to Claude, an AI by Anthropic. Without this permission you can still save neurons, but nothing gets conceptualized, no sparks are lit and the planner won't reply."
+          }
+        }
+      }
+    },
     "Para confirmar, escribí %@" : {
       "comment" : "[perfil.delete.type_to_confirm]",
       "localizations" : {
@@ -4463,28 +4485,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "To confirm, type %@"
-          }
-        }
-      }
-    },
-    "Para destilar lo que guardás y encender las chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic." : {
-      "comment" : "[onboarding.consent.body]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "To distill what you save and light your sparks, Lumbre sends the text of your ideas to Claude, an AI by Anthropic."
-          }
-        }
-      }
-    },
-    "Para destilar tus ideas y encender las chispas, Lumbre manda el texto de tus ideas y tu perfil creativo a Claude, una IA de Anthropic. Sin este permiso podés guardar neuronas, pero no se destilan ni se encienden chispas, y el planificador no responde." : {
-      "comment" : "[perfil.ai.body]",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "To distill your ideas and light your sparks, Lumbre sends the text of your ideas and your creative profile to Claude, an AI by Anthropic. Without this permission you can still save neurons, but nothing gets distilled, no sparks are lit and the planner won't reply."
           }
         }
       }
@@ -4831,7 +4831,7 @@
       }
     },
     "Principio" : {
-      "comment" : "El mecanismo de fondo que sale de la destilación. [comun.principle]",
+      "comment" : "El mecanismo de fondo que sale de la conceptualización. [comun.principle]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5446,13 +5446,13 @@
         }
       }
     },
-    "Si no aceptás, podés guardar ideas igual, pero las chispas y la destilación necesitan este permiso." : {
+    "Si no aceptás, podés guardar ideas igual, pero las chispas y la conceptualización necesitan este permiso." : {
       "comment" : "[onboarding.consent.decline_note]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "If you decline, you can still save ideas, but sparks and distilling need this permission."
+            "value" : "If you decline, you can still save ideas, but sparks and conceptualizing need this permission."
           }
         }
       }
@@ -6414,13 +6414,13 @@
         }
       }
     },
-    "Usaste las pruebas de destilación de este mes. Con Lumbre Pro destilás links, fotos y PDFs sin límite." : {
+    "Usaste las pruebas de conceptualización de este mes. Con Lumbre Pro conceptualizás links, fotos y PDFs sin límite." : {
       "comment" : "[capturar.draft.saved_raw_body]",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You've used this month's distilling trials. With Lumbre Pro you distill links, photos and PDFs with no limit."
+            "value" : "You've used this month's conceptualization trials. With Lumbre Pro you conceptualize links, photos and PDFs with no limit."
           }
         }
       }
@@ -6767,7 +6767,7 @@
       }
     },
     "¿Qué idea te deja esto?" : {
-      "comment" : "Pedido de una línea propia cuando no se puede (o no se quiere) destilar. [comun.what_idea]",
+      "comment" : "Pedido de una línea propia cuando no se puede (o no se quiere) conceptualizar. [comun.what_idea]",
       "localizations" : {
         "en" : {
           "stringUnit" : {

@@ -218,7 +218,7 @@ private struct DraftCard: View {
     }
 }
 
-/// Cuando una destilación deja varios conceptos (hasta 3), se muestran antes de cerrar.
+/// Cuando una conceptualización deja varios conceptos (hasta 3), se muestran antes de cerrar.
 struct CaptureResultsView: View {
     let concepts: [Concept]
     let onDone: () -> Void
@@ -249,7 +249,7 @@ struct CaptureResultsView: View {
     }
 }
 
-/// Se guardó sin destilar porque no quedaban pruebas: oferta de Pro, sin cortar el flujo.
+/// Se guardó sin conceptualizar porque no quedaban pruebas: oferta de Pro, sin cortar el flujo.
 struct SavedWithoutDistillView: View {
     let onPro: () -> Void
     let onDone: () -> Void
@@ -259,10 +259,10 @@ struct SavedWithoutDistillView: View {
             Label("Neurona guardada", systemImage: "checkmark.circle")
                 .font(.headline)
                 .foregroundStyle(Palette.success)
-            Text("Lo guardamos sin destilar")
+            Text("Lo guardamos sin conceptualizar")
                 .lumbreDisplay(.title2)
                 .accessibilityAddTraits(.isHeader)
-            Text("Usaste las pruebas de destilación de este mes. Con Lumbre Pro destilás links, fotos y PDFs sin límite.")
+            Text("Usaste las pruebas de conceptualización de este mes. Con Lumbre Pro conceptualizás links, fotos y PDFs sin límite.")
                 .font(.body)
                 .fixedSize(horizontal: false, vertical: true)
             Spacer()

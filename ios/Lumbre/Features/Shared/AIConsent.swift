@@ -7,7 +7,7 @@ import SwiftUI
 /// Vive en el teléfono (`@AppStorage("aiConsent")`, nil = todavía no respondió) y se copia a la cuenta con
 /// `LumbreAPI.setAIConsent` para que el servidor también lo respete.
 ///
-/// Sin un "Acepto" explícito la app no pide nada que use IA: ni destilar, ni chispas extra o elegidas, ni el
+/// Sin un "Acepto" explícito la app no pide nada que use IA: ni conceptualizar, ni chispas extra o elegidas, ni el
 /// planificador, ni la chispa del día (`/today` la genera si falta). Guardar ideas sigue andando.
 enum AIConsent {
     static let storageKey = "aiConsent"

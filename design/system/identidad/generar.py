@@ -474,7 +474,7 @@ def write_previews(frag):
             f'<div class="ch-col"><span class="ch-lbl">En espera</span>{syn_off.replace("ch-syn", "ch-syn ch-syn--lg")}</div>'
             '</div>')),
         "ImpulseLoader": ('<!-- @dsCard group="Identidad" height=120 -->', (
-            f'<div class="ch-pad"><div class="ch-pulse" role="status">{frag["axon"]}<span>Destilando…</span></div></div>')),
+            f'<div class="ch-pad"><div class="ch-pulse" role="status">{frag["axon"]}<span>Conceptualizando…</span></div></div>')),
         "NeuralIllustration": ('<!-- @dsCard group="Identidad" height=260 -->', (
             '<div class="ch-pad">'
             f'<div class="ch-empty">{frag["empty-vault"]}<b>Todavía no hay neuronas</b>'
@@ -596,7 +596,7 @@ def main():
     art["synapseFullLeft"], art["synapseFullRight"] = (240, 80, [("active", full_l)]), (240, 80, [("active", full_r)])
     frag["synapse-full"] = svg(240, 80, f'<path class="n-active" d="{path_d(full_l)}"/><path class="n-active" d="{path_d(full_r)}"/>'
                                         + star(120, 40, 22))
-    # Axón para el pulso de carga ("Destilando…"): el impulso viaja por la línea central.
+    # Axón para el pulso de carga ("Conceptualizando…"): el impulso viaja por la línea central.
     axon_line = [(6, 12), (40, 9), (80, 14), (114, 11)]
     axon = organic([taper(axon_line, 5, 4), Point(6, 12).buffer(4.5, 8), Point(114, 11).buffer(4.5, 8)], 1, 0.3)
     frag["axon"] = svg(120, 24, f'<path class="n-dormant" d="{path_d(axon)}"/>'

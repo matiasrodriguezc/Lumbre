@@ -7,7 +7,7 @@ import Foundation
 ///   excerpt y la URL de origen (plan.md §4).
 /// - Solo una URL web: `link`, con el título de la página.
 /// - Texto suelto: `text`. Si es solo una URL, cuenta como link.
-/// - PDF: viaja como fuente. Imagen: queda en la otra app y se guarda la idea (sin destilar, como una foto en free).
+/// - PDF: viaja como fuente. Imagen: queda en la otra app y se guarda la idea (sin conceptualizar, como una foto en free).
 public struct SharedDraft: Sendable, Equatable {
     public enum Kind: String, Sendable, Equatable {
         case text, selection, link, image, pdf
@@ -75,7 +75,7 @@ public struct SharedDraft: Sendable, Equatable {
         }
     }
 
-    /// Siempre con la idea escrita por el usuario: desde la extensión no se destila (provisorio, ver ios/README.md).
+    /// Siempre con la idea escrita por el usuario: desde la extensión no se conceptualiza (provisorio, ver ios/README.md).
     public func request(thesis: String, category: String) -> CaptureRequest? {
         let thesis = thesis.trimmingCharacters(in: .whitespacesAndNewlines)
         let category = category.trimmingCharacters(in: .whitespacesAndNewlines)

@@ -40,7 +40,7 @@
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Hasta 10 chispas por día, destilación automática y el planificador.",
+              "description" : "Hasta 10 chispas por día, conceptualización automática y el planificador.",
               "displayName" : "Lumbre Pro mensual",
               "locale" : "es_MX"
             },
@@ -77,7 +77,7 @@
           },
           "localizations" : [
             {
-              "description" : "Hasta 10 chispas por día, destilación automática y el planificador. 7 días gratis.",
+              "description" : "Hasta 10 chispas por día, conceptualización automática y el planificador. 7 días gratis.",
               "displayName" : "Lumbre Pro anual",
               "locale" : "es_MX"
             },

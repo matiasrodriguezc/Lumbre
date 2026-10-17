@@ -15,7 +15,7 @@ Una app de creatividad por recombinación, basada en el método de *idea stackin
 El loop tiene cuatro pasos:
 
 1. **Absorber.** El usuario guarda lo que lee, escucha o piensa, desde cualquier app.
-2. **Destilar.** La IA convierte lo guardado en un concepto atómico: título, tesis, principio y dominio.
+2. **Conceptualizar.** La IA convierte lo guardado en un concepto atómico: título, tesis, principio y dominio.
 3. **Chocar.** Cada mañana, dos conceptos de dominios distintos chocan y aparece una chispa (la idea del día).
 4. **Crear.** La idea baja a un proyecto, un plan y un export a las herramientas del usuario.
 
@@ -42,8 +42,8 @@ La app se llama **Lumbre**. Lo que genera cada día se llama **chispa**. De la c
 - Versiones anteriores descartadas: estrella de cuatro puntas (época Chispa), dos llamas cruzadas, filamento con red de nodos y filamento con espiral. Quedan en `design/system/logo/anteriores/`.
 
 ### Mundo neuronal
-- Toda la identidad sale de la misma metáfora, y se ve y se dice. Vocabulario de la interfaz (decidido el 2026-10-13): la unidad que se guarda es una **neurona** (antes concepto), la sección donde viven es la **Red** (antes Bóveda), los proyectos son **Circuitos** y la **chispa** se mantiene: es la sinapsis que se enciende entre dos neuronas. Destilar sigue siendo destilar (visualmente, un impulso). En el código, las APIs y la base los nombres técnicos no cambian (`concepts`, `projects`, `vault`).
-- Piezas: la sinapsis (dos terminales con la estrella en el hueco) entre los conceptos de la chispa; la red de neuronas dormidas como fondo de splash, onboarding, Hoy, tarjeta para compartir y estados vacíos; el pulso como indicador de carga al destilar; y el reveal contado como sinapsis.
+- Toda la identidad sale de la misma metáfora, y se ve y se dice. Vocabulario de la interfaz (decidido el 2026-10-13): la unidad que se guarda es una **neurona** (antes concepto), la sección donde viven es la **Red** (antes Bóveda), los proyectos son **Circuitos** y la **chispa** se mantiene: es la sinapsis que se enciende entre dos neuronas. Destilar pasa a llamarse **conceptualizar** (decidido el 2026-10-17; visualmente sigue siendo un impulso). En el código, las APIs y la base los nombres técnicos no cambian (`concepts`, `projects`, `vault`).
+- Piezas: la sinapsis (dos terminales con la estrella en el hueco) entre los conceptos de la chispa; la red de neuronas dormidas como fondo de splash, onboarding, Hoy, tarjeta para compartir y estados vacíos; el pulso como indicador de carga al conceptualizar; y el reveal contado como sinapsis.
 - Sin colores nuevos: dormida `surface-alt`, conexión `border`, encendida `ink`, impulso `info-text`, sinapsis `spark`.
 - Guía completa en `design/system/identidad.html` y reglas en `design/system/README.md`.
 
@@ -80,7 +80,7 @@ Reglas clave (decidido el 2026-10-13, reemplaza a Sunset Nebula):
 - **Texto seleccionado desde otra app:** llega el fragmento más la URL de origen.
 - **Capturas de pantalla y escaneo de páginas de libro:** OCR en el teléfono (VisionKit / ML Kit Document Scanner), entran como texto, gratis.
 - **Adjuntos en free:** link, imagen, PDF o audio quedan como fuente y el usuario escribe "¿Qué idea te deja esto?" en una línea.
-- **Destilación automática (Pro, con 3 a 5 pruebas por mes en free):** la IA lee links, imágenes, PDFs y audios largos y saca de 1 a 3 conceptos.
+- **Conceptualización automática (Pro, con 3 a 5 pruebas por mes en free):** la IA lee links, imágenes, PDFs y audios largos y saca de 1 a 3 conceptos.
 - **Categorías propias** (decisión del 27/9/2026): cada usuario arranca sin categorías y las crea al guardar conceptos. La app le sugiere las que ya tiene, y "Economía", "economia" y "ECONOMÍA" cuentan como la misma. Hasta 50 por usuario. Por debajo, cada categoría se asocia a un dominio de la lista cerrada (ver §5), que es lo que usa el emparejamiento.
 - **Chispa diaria:** 1 gratis por día, generada de noche, notificada a la hora elegida. Guardar 3 conceptos nuevos da 1 chispa extra, hasta 2 extra por día.
 - **Feedback "No me sirve":** con motivo (obvia, irrelevante, ya la tuve), ajusta los próximos emparejamientos.
@@ -115,8 +115,8 @@ Archivos de video subidos (caros, y el valor está en el audio) y formatos de of
 
 ## 5. Motor de IA
 
-### Captura y destilación
-- La destilación usa **Claude Haiku 4.5** con salida JSON estructurada:
+### Captura y conceptualización
+- La conceptualización usa **Claude Haiku 4.5** con salida JSON estructurada:
 
 ```json
 {
@@ -131,8 +131,8 @@ Archivos de video subidos (caros, y el valor está en el audio) y formatos de of
 
 - El dominio sale de una **lista cerrada de 25 dominios**, que el usuario no ve: Tecnología, Ingeniería, Física y astronomía, Química y materiales, Biología y naturaleza, Salud y medicina, Psicología y comportamiento, Economía y finanzas, Negocios y emprendimiento, Marketing y comunicación, Diseño, Arquitectura y urbanismo, Arte, Música y sonido, Cine y narrativa audiovisual, Literatura y escritura, Historia y arqueología, Filosofía y ética, Sociedad y política, Educación y aprendizaje, Deporte y movimiento, Juegos y videojuegos, Cocina y gastronomía, Clima y medio ambiente, Matemáticas y lógica. Cada uno tiene una descripción con los mecanismos y el vocabulario típico, que es lo que se embebe para clasificar. Está en la migración `20260927230000_dominios.sql`. Si fuera libre, "Ingeniería" e "Ingeniería mecánica" quedarían separadas y se rompería el cruce.
 - **Confianza:** alta, se guarda directo; media, queda como borrador para confirmar; baja o contenido inaccesible, se cae al flujo de "¿Qué idea te deja esto?".
-- **Textos de menos de 30 palabras** se embeben directo, sin destilar.
-- **Qué aporta la destilación:** matches entre mundos distintos (se embebe el mecanismo, no las palabras), conceptos atómicos (un link puede dar 2 o 3), chispas más baratas y mejores (60 tokens en vez de 800 por concepto), categoría más precisa, una bóveda legible, idioma unificado y una diferencia visible para vender Pro.
+- **Textos de menos de 30 palabras** se embeben directo, sin conceptualizar.
+- **Qué aporta la conceptualización:** matches entre mundos distintos (se embebe el mecanismo, no las palabras), conceptos atómicos (un link puede dar 2 o 3), chispas más baratas y mejores (60 tokens en vez de 800 por concepto), categoría más precisa, una bóveda legible, idioma unificado y una diferencia visible para vender Pro.
 
 ### Qué se puede extraer de cada fuente
 | Fuente | Resultado |
@@ -152,10 +152,10 @@ Archivos de video subidos (caros, y el valor está en el audio) y formatos de of
 - Descargar transcripciones de YouTube o redes tiene restricciones en sus términos: usar APIs oficiales y revisar qué permiten.
 
 ### Embeddings
-- Siempre en el servidor, con **un único modelo para todo** (usuarios, destilados y crudos). Los vectores de modelos distintos no se pueden comparar.
+- Siempre en el servidor, con **un único modelo para todo** (usuarios, conceptualizados y crudos). Los vectores de modelos distintos no se pueden comparar.
 - No usar los embeddings nativos del teléfono: iOS y Android darían vectores incompatibles.
-- Con destilación se embebe "principio + tesis"; sin destilación, el texto limpio (sin emojis, URLs sueltas ni espacios de más, cortado a unas 500 palabras).
-- Sin destilación, el dominio se asigna por cercanía a los vectores de cada dominio.
+- Con conceptualización se embebe "principio + tesis"; sin conceptualización, el texto limpio (sin emojis, URLs sueltas ni espacios de más, cortado a unas 500 palabras).
+- Sin conceptualización, el dominio se asigna por cercanía a los vectores de cada dominio.
 - **Dominios y categorías:** el usuario ve y elige sus categorías; la lista cerrada de dominios queda por debajo y no se muestra. Cada categoría se clasifica en un dominio por el embedding de su nombre (y de sus conceptos), y el concepto hereda ese dominio. Si todavía no tiene dominio, el emparejamiento cruza categorías distintas del usuario.
 - Se guarda el nombre del modelo junto al vector. Si se cambia de modelo, se re-embebe toda la base en un job nocturno.
 - Van en **pgvector**, como columna de `concepts` en el mismo Postgres. No hace falta una base vectorial aparte.
@@ -218,8 +218,8 @@ Las apps son clientes finos: ninguna clave de IA vive en el binario. Kotlin Mult
 | | Free | Pro |
 |---|---|---|
 | Precio | US$ 0 | US$ 6,99/mes o US$ 49,99/año (7 días de prueba en el anual) |
-| Captura | Texto y voz ilimitados; adjuntos con tu frase | Todo, con destilación automática |
-| Destilación automática | 3–5 pruebas por mes | Uso justo: 300/mes |
+| Captura | Texto y voz ilimitados; adjuntos con tu frase | Todo, con conceptualización automática |
+| Conceptualización automática | 3–5 pruebas por mes | Uso justo: 300/mes |
 | Chispas | 1 por día + hasta 2 ganadas | Hasta 10 por día, con modos elegir y problema |
 | Red (neuronas guardadas) | Ilimitada | Ilimitada |
 | Planificador | — | 300 mensajes/mes (60 de plan profundo) |
@@ -234,9 +234,9 @@ Las apps son clientes finos: ninguna clave de IA vive en el binario. Kotlin Mult
 |---|---|
 | Chispa diaria (batch) | US$ 0,002 |
 | Chispa extra (tiempo real) | US$ 0,004 |
-| Destilar texto largo | US$ 0,002 |
-| Destilar link | US$ 0,006 |
-| Destilar imagen | < US$ 0,003 |
+| Conceptualizar texto largo | US$ 0,002 |
+| Conceptualizar link | US$ 0,006 |
+| Conceptualizar imagen | < US$ 0,003 |
 | Embedding | menos de una milésima de centavo |
 | Buscar pares | US$ 0 (SQL) |
 | Mensaje rápido del planificador | US$ 0,005 |
@@ -337,6 +337,6 @@ Supuesto: 1 dev, unas 20 horas por semana. Cada fase tiene un criterio de salida
 - [ ] Test del ícono solo (sin wordmark) con 5 personas: qué ven.
 - [x] Lista cerrada de dominios con descripción de cada uno para los embeddings (25, el 28/9/2026).
 - [ ] Elegir el modelo de embeddings multilingüe.
-- [ ] Prompt de destilación y set de evaluación de 100 pares.
+- [ ] Prompt de conceptualización y set de evaluación de 100 pares.
 - [ ] Biblioteca de conceptos invitados por perfil.
 - [ ] Confirmar con contador cómo cobrar y quién publica en las tiendas.

@@ -47,7 +47,7 @@ Un PR pasa más tiempo esperando revisión que siendo revisado.
 
 3/ El método: las ideas nuevas casi siempre son dos viejas que se cruzan. Se llama idea stacking.
 
-4/ Cómo funciona: guardás lo que te inspira, Lumbre lo destila en una idea de una línea y cada mañana conecta dos de mundos distintos. Salta una chispa.
+4/ Cómo funciona: guardás lo que te inspira, Lumbre lo conceptualiza en una idea de una línea y cada mañana conecta dos de mundos distintos. Salta una chispa.
 
 5/ Ejemplo de hoy: [chispa 1 en dos líneas]
 
@@ -105,7 +105,7 @@ No me falta información. Me falta que se cruce.
 
 Las ideas que más me sirvieron nunca salieron de una nota sola. Salieron de juntar dos que no tenían nada que ver: un artículo de urbanismo con un problema del trabajo, una receta con una forma de escribir.
 
-Por eso estoy construyendo Lumbre: guardás lo que te inspira, cada idea queda destilada en una línea y cada mañana dos de mundos distintos se conectan. Lo que sale es la chispa del día.
+Por eso estoy construyendo Lumbre: guardás lo que te inspira, cada idea queda conceptualizada en una línea y cada mañana dos de mundos distintos se conectan. Lo que sale es la chispa del día.
 
 Voy a contar todo el proceso acá. Si te interesa probarla antes: [link]
 

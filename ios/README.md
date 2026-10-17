@@ -50,7 +50,7 @@ Esquema → Run → Arguments, o `xcrun simctl launch booted com.matiasrodriguez
 | Argumento | Qué hace |
 |---|---|
 | `-mock` | `MockLumbreAPI`: datos de prueba, sin red, plan free |
-| `-mockPro` | Lo mismo, en Pro (planificador, chispas elegidas, destilación) |
+| `-mockPro` | Lo mismo, en Pro (planificador, chispas elegidas, conceptualización) |
 | `-mockGuest` | Lo mismo, como invitado nuevo: arranca en el onboarding |
 | `-remote` | Solo Debug: `lumbre-dev` en vez del Supabase local |
 | `-seedUser` | Solo Debug y local: entra como Ana, la usuaria de `backend/supabase/seed.sql` |
@@ -70,11 +70,11 @@ En Debug la app usa el Supabase local (`cd backend && supabase start`); con `-re
 - **Caché offline:** `CachedLumbreAPI` guarda en SwiftData la última respuesta de perfil, Hoy, chispas, neuronas, categorías y circuitos, y la devuelve sin red. Se borra al cerrar sesión, al borrar la cuenta y al entrar a otra cuenta. También deja la chispa de hoy en el App Group para el widget.
 - **Cola offline:** una captura sin red queda en el teléfono y se manda sola cuando vuelve (`CaptureQueue`).
 - **App Attest:** `AppAttestor` firma los pedidos a las funciones de IA con headers `X-Lumbre-Attest-*` (protocolo en `AppAttest.swift`, lo verifica `backend/supabase/functions/_shared/attest/`). Donde no hay App Attest (simulador, o sin el entitlement de Apple Developer) el pedido sale sin firma. Si el servidor responde `attestation_failed`, descarta la clave y reintenta una vez.
-- **Consentimiento para IA:** "Tus ideas y la IA" se pide en el onboarding y se cambia en Perfil > Privacidad (`AIConsent`). Sin un "Acepto", la app no destila, no pide chispas (ni la del día: `/today` la generaría) y el planificador no responde; guardar neuronas sigue andando. La respuesta se copia a la cuenta con `setAIConsent` en `profiles.ai_consent_at` (fecha del "Acepto", null si no aceptó); si la columna todavía no existe, queda en `user_metadata.ai_consent` de Auth y se reintenta en el próximo arranque.
+- **Consentimiento para IA:** "Tus ideas y la IA" se pide en el onboarding y se cambia en Perfil > Privacidad (`AIConsent`). Sin un "Acepto", la app no conceptualiza, no pide chispas (ni la del día: `/today` la generaría) y el planificador no responde; guardar neuronas sigue andando. La respuesta se copia a la cuenta con `setAIConsent` en `profiles.ai_consent_at` (fecha del "Acepto", null si no aceptó); si la columna todavía no existe, queda en `user_metadata.ai_consent` de Auth y se reintenta en el próximo arranque.
 
 ## Privacidad
 
-`Lumbre/Resources/PrivacyInfo.xcprivacy`: sin tracking; API de razón requerida solo UserDefaults (CA92.1); datos vinculados a la cuenta para que la app funcione (email, ideas, fotos y PDFs que se mandan a destilar, id de usuario, compras) y la interacción para analytics. Si se suma un SDK (PostHog, Sentry, RevenueCat) o un dato nuevo, se actualiza junto con las etiquetas de App Store Connect.
+`Lumbre/Resources/PrivacyInfo.xcprivacy`: sin tracking; API de razón requerida solo UserDefaults (CA92.1); datos vinculados a la cuenta para que la app funcione (email, ideas, fotos y PDFs que se mandan a conceptualizar, id de usuario, compras) y la interacción para analytics. Si se suma un SDK (PostHog, Sentry, RevenueCat) o un dato nuevo, se actualiza junto con las etiquetas de App Store Connect.
 
 ## Extensiones: Share Extension, widget y App Intents
 
@@ -103,7 +103,7 @@ xcrun simctl openurl booted "lumbre://capture?entry=widget"
 xcrun simctl launch booted com.matiasrodriguezc.lumbre -checkExternalCapture
 ```
 
-Provisorio (decisiones conservadoras, a confirmar): desde la Share Extension y Siri no se destila, siempre se escribe la idea; una imagen compartida queda en la otra app y se guarda solo la idea (como una foto en free); el widget de una chispa sin revelar muestra las dos neuronas pero no el título, para no arruinar el reveal. Con cuenta de Apple Developer (H1) hay que registrar el App Group para los tres bundle IDs.
+Provisorio (decisiones conservadoras, a confirmar): desde la Share Extension y Siri no se conceptualiza, siempre se escribe la idea; una imagen compartida queda en la otra app y se guarda solo la idea (como una foto en free); el widget de una chispa sin revelar muestra las dos neuronas pero no el título, para no arruinar el reveal. Con cuenta de Apple Developer (H1) hay que registrar el App Group para los tres bundle IDs.
 
 ## Pendientes conocidos
 

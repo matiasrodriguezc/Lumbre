@@ -1,4 +1,4 @@
-Lumbre es una app de creatividad por recombinación: absorbés ideas, la IA las destila en neuronas (ideas atómicas) y todos los días conecta dos de ellas para que salte una chispa. La app se llama Lumbre; lo que genera cada día es una chispa. El sistema existe para que ese choque sea lo único que brilla. Todo lo demás es noche tranquila.
+Lumbre es una app de creatividad por recombinación: absorbés ideas, la IA las conceptualiza en neuronas (ideas atómicas) y todos los días conecta dos de ellas para que salte una chispa. La app se llama Lumbre; lo que genera cada día es una chispa. El sistema existe para que ese choque sea lo único que brilla. Todo lo demás es noche tranquila.
 
 ## Principios
 
@@ -15,7 +15,7 @@ Lumbre es una app de creatividad por recombinación: absorbés ideas, la IA las 
 - La chispa se escribe como un choque: "Podcast × ruinas", "Ciclones × aspiradoras". Usá el signo × entre las dos neuronas, con espacios.
 - Vacíos y errores dan dirección, no disculpas: "Todavía no hay neuronas. Guardá una frase, un link o una nota de voz para tener material que conectar."
 - Sin emoji decorativos en UI. Los perfiles se identifican con íconos del sistema (SF Symbols / Material Symbols), no con emoji.
-- La palabra "IA" se usa poco: el usuario "destila" una neurona y "enciende" una chispa.
+- La palabra "IA" se usa poco: el usuario "conceptualiza" una neurona y "enciende" una chispa.
 - Vocabulario neuronal: **neurona** (la idea guardada, femenino: "la neurona", "Neurona guardada"), **Red** (todas sus neuronas; antes Bóveda), **Circuitos** (antes Proyectos), **chispa** (la sinapsis que se enciende). Dos neuronas "se conectan"; no se usan "axón", "dendrita" ni vocabulario médico en la interfaz.
 
 ## Color
@@ -55,7 +55,7 @@ Paleta "Gris neurona": casi monocroma, con un solo color. Sale del logo: una neu
 ## Movimiento y háptica
 
 - Un solo momento coreografiado: el reveal de la chispa, contado como una sinapsis. Pasa en un modal a pantalla completa: el resto de la app (incluida la barra) queda desenfocado detrás de un velo `neuron` al 22%, y la chispa es lo único visible, en un panel `surface` con `radius-lg` y `glow-spark`. Se abre sin deslizar (el panel aparece en su lugar con un fundido) y se cierra con la cruz o tocando afuera, solo una vez revelada; al cerrarlo, la chispa queda en Hoy. Las dos neuronas entran desde los costados (0–250ms), cada uno estira su terminal hacia el centro (150–550ms), un impulso `info-text` cruza cada terminal (450–650ms) y a los 650ms se enciende la estrella con `glow-spark` y un háptico `.success` (iOS) / `CONFIRM` (Android). El título sube hasta los 900ms.
-- El pulso: indicador de carga propio solo para destilar y encender. Un impulso recorre un axón en 1,2s. Para cualquier otra carga, el spinner del sistema.
+- El pulso: indicador de carga propio solo para conceptualizar y encender. Un impulso recorre un axón en 1,2s. Para cualquier otra carga, el spinner del sistema.
 - Resto de transiciones: las del sistema (push, sheet, predictive back). No inventes transiciones propias para navegación. La red de fondo nunca se anima.
 - Con Reducir movimiento activado, el reveal es un fundido de 200ms sin escala ni rebote, y el pulso queda quieto.
 
@@ -76,7 +76,7 @@ Paleta "Gris neurona": casi monocroma, con un solo color. Sale del logo: una neu
 
 ## Mundo neuronal
 
-La identidad sale de una sola metáfora: idea guardada = neurona, Red = todas tus neuronas, chispa = sinapsis que se enciende, destilar = un impulso que recorre un axón, Circuito = proyecto. La guía visual completa, con ejemplos en los dos temas, está en `identidad.html`.
+La identidad sale de una sola metáfora: idea guardada = neurona, Red = todas tus neuronas, chispa = sinapsis que se enciende, conceptualizar = un impulso que recorre un axón, Circuito = proyecto. La guía visual completa, con ejemplos en los dos temas, está en `identidad.html`.
 
 - **La metáfora se ve y se dice.** Neurona, Red y Circuitos son los nombres de la interfaz (ver Voz y contenido). "Chispa" se mantiene; "sinapsis", "axón" y "dendrita" quedan para el sistema gráfico, no para el copy.
 - **Facetado orgánico.** Todo lo gráfico se dibuja como el símbolo: ramas que nacen gruesas y se afinan o terminan en un botón redondo, uniones blandas y un contorno hecho de tramos rectos cortos. Solo rellenos planos: sin degradés, brillos ni contornos.

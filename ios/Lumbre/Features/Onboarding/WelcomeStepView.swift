@@ -188,14 +188,14 @@ struct AIConsentSheet: View {
                         .lumbreDisplay(.title1)
                         .foregroundStyle(Palette.ink)
                         .accessibilityAddTraits(.isHeader)
-                    Text("Para destilar lo que guardás y encender las chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic.")
+                    Text("Para conceptualizar lo que guardás y encender las chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic.")
                         .font(.body)
                         .foregroundStyle(Palette.ink)
                         .fixedSize(horizontal: false, vertical: true)
                     VStack(alignment: .leading, spacing: Space.s3) {
                         point("Solo se manda lo necesario para cada chispa: tus ideas y tu perfil creativo.", symbol: "text.quote")
                         point("Podés cambiar esto cuando quieras en Perfil > Privacidad.", symbol: "slider.horizontal.3")
-                        point("Si no aceptás, podés guardar ideas igual, pero las chispas y la destilación necesitan este permiso.", symbol: "info.circle")
+                        point("Si no aceptás, podés guardar ideas igual, pero las chispas y la conceptualización necesitan este permiso.", symbol: "info.circle")
                     }
                     Button("Leer la política de privacidad") { openURL(LegalLinks.privacy) }
                         .font(.callout.weight(.medium))

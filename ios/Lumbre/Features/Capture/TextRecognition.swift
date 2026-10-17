@@ -61,7 +61,7 @@ enum TextRecognition {
         return text
     }
 
-    /// JPEG para destilar: lado mayor de hasta 1568 px (lo que la IA aprovecha sin gastar de más).
+    /// JPEG para conceptualizar: lado mayor de hasta 1568 px (lo que la IA aprovecha sin gastar de más).
     static func jpegForUpload(_ image: UIImage, maxSide: CGFloat = 1568, quality: CGFloat = 0.8) -> Data? {
         let size = image.size
         let longest = max(size.width, size.height)

@@ -31,7 +31,7 @@ Esta política se aplica a la app de Lumbre para iOS y Android, al sitio [DOMINI
 - Tus circuitos y tus conversaciones con el planificador.
 - Los reportes que hagas sobre contenido generado por la IA.
 
-**Archivos.** Si mandás una imagen o un PDF para destilar, se guarda en un almacenamiento temporal, se procesa y **se borra enseguida**, haya salido bien o no. No guardamos tus archivos, audios ni páginas completas.
+**Archivos.** Si mandás una imagen o un PDF para conceptualizar, se guarda en un almacenamiento temporal, se procesa y **se borra enseguida**, haya salido bien o no. No guardamos tus archivos, audios ni páginas completas.
 
 **Voz.** El dictado por voz se transcribe en tu teléfono con las funciones del sistema. A Lumbre llega solo el texto.
 
@@ -51,7 +51,7 @@ Esta política se aplica a la app de Lumbre para iOS y Android, al sitio [DOMINI
 
 | Para qué | Datos | Base legal |
 |---|---|---|
-| Darte el servicio: guardar tus ideas, destilarlas, generar chispas, buscar, el planificador, sincronizar entre dispositivos | Cuenta, perfil, lo que guardás | Ejecución del contrato (los términos) y tu consentimiento para la IA (sección 4) |
+| Darte el servicio: guardar tus ideas, conceptualizarlas, generar chispas, buscar, el planificador, sincronizar entre dispositivos | Cuenta, perfil, lo que guardás | Ejecución del contrato (los términos) y tu consentimiento para la IA (sección 4) |
 | Mandarte la chispa a la hora que elegiste | Token de push, hora, zona horaria | Ejecución del contrato; podés apagarlas en el teléfono |
 | Cobrar y activar Pro | Compras | Ejecución del contrato |
 | Aplicar los límites de cada plan y evitar abusos | Cupos, registro de llamadas a la IA, IP cifrada (web) | Interés legítimo en que el servicio funcione y no se abuse |
@@ -64,13 +64,13 @@ No usamos tus datos para publicidad, no los vendemos, no hacemos perfiles para t
 ## 4. La inteligencia artificial
 
 Lumbre usa **Claude**, de **Anthropic, PBC** (Estados Unidos), para:
-- **Destilar:** convertir lo que guardás (un texto, un link, una imagen o un PDF) en una neurona con título, tesis y principio.
+- **Conceptualizar:** convertir lo que guardás (un texto, un link, una imagen o un PDF) en una neurona con título, tesis y principio.
 - **Generar chispas:** a partir de dos de tus neuronas y tu perfil creativo.
 - **El planificador** (Pro): tus mensajes, la chispa, las dos neuronas que la originaron y tu perfil creativo.
 
 Para buscar y emparejar ideas, el texto de cada neurona y de cada búsqueda se manda a un proveedor de embeddings, [PROVEEDOR DE EMBEDDINGS] (Estados Unidos), que lo convierte en números.
 
-Antes de mandar tu contenido a la IA te pedimos permiso en la app. Si no aceptás, podés usar Lumbre para guardar ideas, pero no se destilan ni se generan chispas. Podés cambiar tu respuesta cuando quieras en Perfil › Privacidad y datos.
+Antes de mandar tu contenido a la IA te pedimos permiso en la app. Si no aceptás, podés usar Lumbre para guardar ideas, pero no se conceptualizan ni se generan chispas. Podés cambiar tu respuesta cuando quieras en Perfil › Privacidad y datos.
 
 Se manda solo lo necesario para cada tarea. Según sus términos comerciales vigentes, Anthropic no usa los datos que recibe por su API para entrenar sus modelos y los conserva por un plazo limitado para seguridad. [VERIFICAR el texto y el plazo vigentes antes de publicar.]
 
@@ -83,7 +83,7 @@ Solo con proveedores que los tratan por cuenta nuestra, para dar el servicio, co
 | Proveedor | Para qué | Dónde |
 |---|---|---|
 | Supabase | Base de datos, autenticación y almacenamiento temporal | [REGIÓN DE PROD] |
-| Anthropic | IA: destilación, chispas, planificador, demo web | Estados Unidos |
+| Anthropic | IA: conceptualización, chispas, planificador, demo web | Estados Unidos |
 | [PROVEEDOR DE EMBEDDINGS] | Embeddings para búsqueda y emparejamiento | Estados Unidos |
 | PostHog | Analítica de uso, sin contenido | Unión Europea |
 | Sentry | Informes de errores | Estados Unidos |
@@ -97,8 +97,8 @@ Además, podemos revelar datos si una autoridad competente lo exige por ley, o p
 
 | Dato | Plazo |
 |---|---|
-| Archivos para destilar (imágenes, PDFs) | Se borran apenas se procesan |
-| Texto completo de cada captura | 30 días; después queda solo la neurona destilada |
+| Archivos para conceptualizar (imágenes, PDFs) | Se borran apenas se procesan |
+| Texto completo de cada captura | 30 días; después queda solo la neurona conceptualizada |
 | Cuenta y todo lo que guardaste | Hasta que lo borres o borres la cuenta |
 | Cuentas de invitado | Se borran solas a los 30 días sin usarlas |
 | Registros de uso de la IA y de suscripciones | Se conservan para contabilidad y control de costos, sin tu id después de borrar la cuenta |

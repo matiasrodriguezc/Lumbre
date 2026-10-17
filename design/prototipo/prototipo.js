@@ -57,7 +57,7 @@
   ];
   var GATES = { // cuenta.gate.*
     spark_extra: 'Las chispas extra se ganan guardando neuronas, y se guardan en tu cuenta. Creala gratis: lo que ya guardaste pasa con vos.',
-    distill: 'Destilar lee links, fotos y PDFs y saca las neuronas por vos. Con una cuenta gratis tenés pruebas todos los meses.',
+    distill: 'Conceptualizar lee links, fotos y PDFs y saca las neuronas por vos. Con una cuenta gratis tenés pruebas todos los meses.',
     planner: 'El planificador es parte de Lumbre Pro, y Pro va con una cuenta. Creala primero: lo que guardaste pasa con vos.',
     pro: 'Para suscribirte a Lumbre Pro necesitás una cuenta, así Pro te sigue a cualquier teléfono.',
     limit: 'Llegaste a las 10 neuronas de hoy como invitado. Con una cuenta gratis guardás hasta 30 por día.'
@@ -317,10 +317,10 @@
         '<button class="ch-btn ch-btn--primary" data-act="account-create" data-arg="profile">Crear cuenta</button></div>';
     }
     h += '<p class="section-label">Suscripción</p><div class="list-group"><div class="li">Plan<small>' + planName + '</small></div>' +
-      (S.plan === 'pro' ? '<button class="li">Administrar suscripción' + I.chevR + '</button>' : '<button class="li" data-act="paywall"><span><b style="font-weight:600">Lumbre Pro</b><br><small style="text-align:left;display:block">Hasta 10 chispas por día, destilación automática y el planificador</small></span>' + I.chevR + '</button>') + '</div>';
+      (S.plan === 'pro' ? '<button class="li">Administrar suscripción' + I.chevR + '</button>' : '<button class="li" data-act="paywall"><span><b style="font-weight:600">Lumbre Pro</b><br><small style="text-align:left;display:block">Hasta 10 chispas por día, conceptualización automática y el planificador</small></span>' + I.chevR + '</button>') + '</div>';
     h += '<p class="section-label">Tu chispa</p><div class="list-group"><div class="li">Perfil creativo<small>' + esc(profNames) + '</small></div><div class="li">Hora de la chispa<small>' + hourText() + '</small></div><div class="li">Avisos<small>' + (S.push ? 'Activados' : isAndroid() ? 'Activalos en Configuración' : 'Activalos en Ajustes') + '</small></div></div>';
     h += '<p class="section-label">Tus cupos</p><div class="list-group"><div class="li">Capturas de hoy<small>' + (limit - S.captures) + ' de ' + limit + '</small></div>' +
-      (isGuest() ? '' : '<div class="li">Destilaciones del mes<small>' + (S.plan === 'pro' ? '300 de 300' : '3 de 3') + '</small></div>') +
+      (isGuest() ? '' : '<div class="li">Conceptualizaciones del mes<small>' + (S.plan === 'pro' ? '300 de 300' : '3 de 3') + '</small></div>') +
       '<div class="li">Circuitos<small>' + S.circuits.length + ' de ' + (S.plan === 'pro' ? '∞' : '1') + '</small></div></div>';
     h += '<p class="section-label">Apariencia</p><div class="list-group">' +
       [['light', 'Gris'], ['dark', 'Grafito']].map(function (t) { return '<button class="li" data-act="theme" data-arg="' + t[0] + '">' + t[1] + '<span class="radio' + (theme === t[0] ? ' is-on' : '') + '"></span></button>'; }).join('') + '</div>';
@@ -344,9 +344,9 @@
     return '<div class="scrim" data-act="close-overlay"></div><div class="sheet' + (full ? ' sheet--full' : '') + '" role="dialog" aria-modal="true"><div class="sheet__grab"></div>' + inner + '</div>';
   }
   function consentSheet() {
-    return sheet('<h2>Tus ideas y la IA</h2><div class="sheet-body"><p>Para destilar lo que guardás y encender las chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic.</p>' +
+    return sheet('<h2>Tus ideas y la IA</h2><div class="sheet-body"><p>Para conceptualizar lo que guardás y encender las chispas, Lumbre manda el texto de tus ideas a Claude, una IA de Anthropic.</p>' +
       '<p class="muted">Solo se manda lo necesario para cada chispa: tus ideas y tu perfil creativo.</p><p class="muted">Podés cambiar esto cuando quieras en Perfil &gt; Privacidad.</p>' +
-      '<p class="muted">Si no aceptás, podés guardar ideas igual, pero las chispas y la destilación necesitan este permiso.</p>' +
+      '<p class="muted">Si no aceptás, podés guardar ideas igual, pero las chispas y la conceptualización necesitan este permiso.</p>' +
       '<p><a href="#" data-act="noop" style="font-size:15px">Leer la política de privacidad</a></p></div>' +
       '<div class="btns">' + primary('Acepto', 'consent-yes') + secondary('No acepto', 'consent-no') + '</div>');
   }
@@ -422,8 +422,8 @@
     } else if (c.kind === 'link') {
       h += '<div class="field-wrap"><input class="field" id="curl" placeholder="https://" value="' + esc(c.url) + '" aria-label="Link"></div>' +
         '<p class="field-lbl">¿Qué idea te deja esto?</p><div class="field-wrap"><textarea class="field" id="ctext" placeholder="En una línea, con tus palabras">' + esc(c.text) + '</textarea></div>' +
-        '<div class="toggle-row"><span>Destilar automáticamente</span><button class="switch' + (c.distill ? ' is-on' : '') + '" data-act="distill" role="switch" aria-checked="' + c.distill + '" aria-label="Destilar automáticamente"></button></div>' +
-        '<p class="tip">' + (isGuest() ? 'La destilación es con cuenta. Creala desde Perfil y probala gratis.' : S.plan === 'pro' ? 'Ilimitado en Pro' : 'Lumbre lee el contenido y saca de 1 a 3 neuronas. Te quedan 3 pruebas este mes.') + '</p>';
+        '<div class="toggle-row"><span>Conceptualizar automáticamente</span><button class="switch' + (c.distill ? ' is-on' : '') + '" data-act="distill" role="switch" aria-checked="' + c.distill + '" aria-label="Conceptualizar automáticamente"></button></div>' +
+        '<p class="tip">' + (isGuest() ? 'La conceptualización es con cuenta. Creala desde Perfil y probala gratis.' : S.plan === 'pro' ? 'Ilimitado en Pro' : 'Lumbre lee el contenido y saca de 1 a 3 neuronas. Te quedan 3 pruebas este mes.') + '</p>';
     } else if (c.kind === 'photo') {
       h += '<div class="row-actions" style="padding:0 16px"><button class="ch-btn ch-btn--secondary" data-act="noop">' + I.photo + 'Elegir foto</button><button class="ch-btn ch-btn--secondary" data-act="noop">Escanear página</button></div>' +
         '<p class="field-lbl">¿Qué idea te deja esto?</p><div class="field-wrap"><textarea class="field" id="ctext" placeholder="En una línea, con tus palabras">' + esc(c.text) + '</textarea></div>' +
@@ -441,7 +441,7 @@
   }
   function paywallSheet() {
     var annual = S.planChoice !== 'monthly';
-    var benefits = ['Hasta 10 chispas por día, y elegís qué neuronas se conectan', 'Destilación automática de links, fotos y PDFs', 'Planificador para bajar cada idea a tareas', 'Circuitos ilimitados'];
+    var benefits = ['Hasta 10 chispas por día, y elegís qué neuronas se conectan', 'Conceptualización automática de links, fotos y PDFs', 'Planificador para bajar cada idea a tareas', 'Circuitos ilimitados'];
     var h = '<div class="sheet-nav"><span></span><button class="circlebtn" data-act="close-overlay" aria-label="Cerrar">' + I.close + '</button></div><div class="paywall">';
     if (S.plan === 'pro') {
       return sheet(h + '<h1>Ya tenés Lumbre Pro</h1><p class="lead2">Gracias por bancar Lumbre. Tu suscripción se administra desde ' + (isAndroid() ? 'Google Play.' : 'tu cuenta de Apple.') + '</p>' + primary('Listo', 'close-overlay') + '</div>', true);
@@ -583,7 +583,7 @@
     if (S.captures >= limit) { if (isGuest()) needAccount('limit'); else toastWarn('Llegaste al límite de hoy. Mañana podés seguir.'); return; }
     S.captures++; S.savedToday++;
     var src = { text: 'Texto', voice: 'Nota de voz', link: 'De un link', photo: 'Imagen' }[c.kind];
-    S.neurons.unshift({ id: 'n' + Date.now(), title: titleOf(text), thesis: text, cat: cat, source: src, when: 'recién', principle: c.distill ? 'Destilado por Lumbre (simulado en el prototipo).' : null });
+    S.neurons.unshift({ id: 'n' + Date.now(), title: titleOf(text), thesis: text, cat: cat, source: src, when: 'recién', principle: c.distill ? 'Conceptualizado por Lumbre (simulado en el prototipo).' : null });
     S.overlay = null;
     log('neuron_saved', src + (cat ? ' · ' + cat : ''));
     render();

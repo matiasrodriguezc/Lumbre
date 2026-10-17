@@ -90,10 +90,10 @@
     <string name="onboarding_welcome_example_a">Green-wave traffic lights</string>
     <string name="onboarding_welcome_example_b">Code review</string>
     <string name="onboarding_consent_title">Your ideas and AI</string>
-    <string name="onboarding_consent_body">To distill what you save and light your sparks, Lumbre sends the text of your ideas to Claude, an AI by Anthropic.</string>
+    <string name="onboarding_consent_body">To conceptualize what you save and light your sparks, Lumbre sends the text of your ideas to Claude, an AI by Anthropic.</string>
     <string name="onboarding_consent_scope">Only what each spark needs is sent: your ideas and your creative profile.</string>
     <string name="onboarding_consent_change">You can change this anytime in Profile &gt; Privacy.</string>
-    <string name="onboarding_consent_decline_note">If you decline, you can still save ideas, but sparks and distilling need this permission.</string>
+    <string name="onboarding_consent_decline_note">If you decline, you can still save ideas, but sparks and conceptualizing need this permission.</string>
     <string name="onboarding_consent_read_policy">Read the privacy policy</string>
     <string name="onboarding_consent_accept">I agree</string>
     <string name="onboarding_consent_decline">I don\'t agree</string>
@@ -187,7 +187,7 @@
     <string name="cuenta_account">Account</string>
     <string name="cuenta_gate_title">This needs an account</string>
     <string name="cuenta_gate_spark_extra">Extra sparks are earned by saving neurons, and they\'re kept in your account. Create one for free: what you\'ve saved comes with you.</string>
-    <string name="cuenta_gate_distill">Distilling reads links, photos and PDFs and pulls out the neurons for you. A free account gets you trials every month.</string>
+    <string name="cuenta_gate_distill">Conceptualizing reads links, photos and PDFs and pulls out the neurons for you. A free account gets you trials every month.</string>
     <string name="cuenta_gate_planner">The planner is part of Lumbre Pro, and Pro needs an account. Create one first: what you\'ve saved comes with you.</string>
     <string name="cuenta_gate_pro">To subscribe to Lumbre Pro you need an account, so Pro follows you to any phone.</string>
     <string name="cuenta_gate_limit">You\'ve saved today\'s 10 neurons as a guest. A free account lets you save up to 30 a day.</string>
@@ -330,17 +330,17 @@
     <string name="capturar_placeholder">What idea has been on your mind?</string>
     <string name="capturar_idea">Idea</string>
     <string name="capturar_link_invalid">Check the link: it doesn\'t look valid.</string>
-    <string name="capturar_optional_distill">Optional: if you write it, distilling uses it</string>
-    <string name="capturar_distill_pdf">Distill the PDF</string>
-    <string name="capturar_distill_image">Distill the image</string>
-    <string name="capturar_distill_auto">Distill automatically</string>
+    <string name="capturar_optional_distill">Optional: if you write it, conceptualizing uses it</string>
+    <string name="capturar_distill_pdf">Conceptualize the PDF</string>
+    <string name="capturar_distill_image">Conceptualize the image</string>
+    <string name="capturar_distill_auto">Conceptualize automatically</string>
     <string name="capturar_over_limit">You\'re %d characters over. Keep just the idea (up to 600).</string>
     <string name="capturar_char_count">%d of 600 characters</string>
     <string name="capturar_looks_like_link">Looks like a link. Save it as a link so the source is kept.</string>
     <string name="capturar_switch_to_link">Switch to Link</string>
     <string name="capturar_save">Save neuron</string>
     <string name="capturar_saved">Neuron saved</string>
-    <string name="capturar_distilling">Distilling…</string>
+    <string name="capturar_distilling">Conceptualizing…</string>
     <string name="capturar_distilling_body">Lumbre reads the content and pulls out the neurons. It may take a few seconds.</string>
     <string name="capturar_no_idea_found">We couldn\'t get an idea out of this. Write what idea it leaves you with and we\'ll save it in your words.</string>
     <string name="capturar_no_idea_found_short">We couldn\'t get an idea out of this. Write what idea it leaves you with.</string>
@@ -375,7 +375,7 @@
     <string name="capturar_scanned_one">Scanned page</string>
     <string name="capturar_scanned_many">%d scanned pages</string>
     <string name="capturar_pdf_pages">%d pages. The file isn\'t saved: only the idea.</string>
-    <string name="capturar_no_text_found">We didn\'t find any text. Write what idea it leaves you with, or distill the image.</string>
+    <string name="capturar_no_text_found">We didn\'t find any text. Write what idea it leaves you with, or conceptualize the image.</string>
     <string name="capturar_ocr_on_device">Text pulled out on your phone. The photo stays in your gallery.</string>
     <string name="capturar_image_failed">We couldn\'t open that image. Try another one.</string>
     <string name="capturar_pdf_failed">We couldn\'t open that PDF. Try another one.</string>
@@ -383,7 +383,7 @@
     <string name="capturar_trials_checking">Checking your trials…</string>
     <string name="capturar_trials_what">Lumbre reads the content and pulls out 1 to 3 neurons.</string>
     <string name="capturar_trials_used">You\'ve used this month\'s trials. Write what idea it leaves you with and we\'ll save it anyway.</string>
-    <string name="capturar_trials_guest">Distilling needs an account. Create one from Profile and try it for free.</string>
+    <string name="capturar_trials_guest">Conceptualizing needs an account. Create one from Profile and try it for free.</string>
     <string name="capturar_trials_one_left">You have 1 trial left this month.</string>
     <string name="capturar_trials_many_left">You have %d trials left this month.</string>
     <string name="capturar_trials_unlimited_pro">Unlimited with Pro</string>
@@ -410,8 +410,8 @@
     <string name="capturar_draft_save_changes">Save changes</string>
     <string name="capturar_draft_saved_many">We saved %d neurons</string>
     <string name="capturar_draft_saved_many_body">They came from what you captured. They\'re already in your network.</string>
-    <string name="capturar_draft_saved_raw">We saved it without distilling</string>
-    <string name="capturar_draft_saved_raw_body">You\'ve used this month\'s distilling trials. With Lumbre Pro you distill links, photos and PDFs with no limit.</string>
+    <string name="capturar_draft_saved_raw">We saved it without conceptualizing</string>
+    <string name="capturar_draft_saved_raw_body">You\'ve used this month\'s conceptualization trials. With Lumbre Pro you conceptualize links, photos and PDFs with no limit.</string>
     <!-- Red -->
     <string name="red_search">Search ideas, not words</string>
     <string name="red_categories">Categories</string>
@@ -454,7 +454,7 @@
     <string name="neurona_delete">Delete neuron</string>
     <string name="neurona_delete_body">It leaves your network and future sparks. This can\'t be undone.</string>
     <string name="neurona_saved_on">Saved on %s</string>
-    <string name="neurona_distilled">Distilled by Lumbre</string>
+    <string name="neurona_distilled">Conceptualized by Lumbre</string>
     <string name="neurona_from_library">From the Lumbre library</string>
     <string name="neurona_draft_notice">Draft. Lumbre wasn\'t quite sure about this idea: confirm it or fix it.</string>
     <string name="neurona_source">Source</string>
@@ -467,7 +467,7 @@
     <string name="neurona_combine_body">Pick another neuron and Lumbre lights a spark with both.</string>
     <string name="neurona_combine_pro">With Lumbre Pro you choose which neurons connect.</string>
     <string name="neurona_thesis_limit">The thesis can be up to 600 characters.</string>
-    <string name="neurona_principle_locked">The principle comes from distilling and can\'t be edited.</string>
+    <string name="neurona_principle_locked">The principle comes from conceptualization and can\'t be edited.</string>
     <string name="neurona_edit_title">Edit neuron</string>
     <string name="neurona_try_other_words">Try other words.</string>
     <string name="neurona_filter">Filter neurons</string>
@@ -485,7 +485,7 @@
     <string name="circuitos_export_empty">There are no ideas in this circuit yet.</string>
     <!-- Perfil y ajustes -->
     <string name="perfil_subscription">Subscription</string>
-    <string name="perfil_pro_pitch">Up to 10 sparks a day, automatic distilling and the planner</string>
+    <string name="perfil_pro_pitch">Up to 10 sparks a day, automatic conceptualization and the planner</string>
     <string name="perfil_your_spark">Your spark</string>
     <string name="perfil_your_spark_body">Your daily spark waits for you at this time. Your creative profile is the lens used to pick the ideas.</string>
     <string name="perfil_notifications">Notifications</string>
@@ -506,7 +506,7 @@
     <string name="perfil_quota_value">%1$d of %2$d</string>
     <string name="perfil_quota_a11y">%1$d of %2$d left</string>
     <string name="perfil_quota_captures">Captures today</string>
-    <string name="perfil_quota_distill">Distills this month</string>
+    <string name="perfil_quota_distill">Conceptualizations this month</string>
     <string name="perfil_quota_extra">Extra sparks today</string>
     <string name="perfil_quota_planner">Planner this month</string>
     <string name="perfil_quota_deep">Deep plans this month</string>
@@ -514,8 +514,8 @@
     <string name="perfil_theme_gray">Gray</string>
     <string name="perfil_theme_system">Match system</string>
     <string name="perfil_creative_subtitle">Pick up to two. They\'re the lens used to choose and write your sparks.</string>
-    <string name="perfil_ai_title">Sparks and distilling with AI</string>
-    <string name="perfil_ai_body">To distill your ideas and light your sparks, Lumbre sends the text of your ideas and your creative profile to Claude, an AI by Anthropic. Without this permission you can still save neurons, but nothing gets distilled, no sparks are lit and the planner won\'t reply.</string>
+    <string name="perfil_ai_title">Sparks and conceptualizing with AI</string>
+    <string name="perfil_ai_body">To conceptualize your ideas and light your sparks, Lumbre sends the text of your ideas and your creative profile to Claude, an AI by Anthropic. Without this permission you can still save neurons, but nothing gets conceptualized, no sparks are lit and the planner won\'t reply.</string>
     <string name="perfil_export">Export my data</string>
     <string name="perfil_export_body">A JSON file with your profile, categories, neurons, sparks, circuits and planner conversations.</string>
     <string name="perfil_delete_body">Deletes your account and everything you saved. This can\'t be undone.</string>
@@ -531,7 +531,7 @@
     <!-- Paywall -->
     <string name="paywall_subtitle">More sparks a day and a plan for every idea.</string>
     <string name="paywall_benefit_sparks">Up to 10 sparks a day, and you choose which neurons connect</string>
-    <string name="paywall_benefit_distill">Automatic distilling of links, photos and PDFs</string>
+    <string name="paywall_benefit_distill">Automatic conceptualization of links, photos and PDFs</string>
     <string name="paywall_benefit_planner">A planner to turn each idea into tasks</string>
     <string name="paywall_benefit_circuits">Unlimited circuits</string>
     <string name="paywall_loading">Loading prices</string>
@@ -591,7 +591,7 @@
     <string name="estados_not_found_cuerpo">It may have been deleted on another device.</string>
     <string name="estados_not_found_secundaria">Go back</string>
     <string name="estados_load_offline_cuerpo">Check your connection and try again. Anything you capture in the meantime stays saved on your phone.</string>
-    <string name="estados_quota_distill_pro_cuerpo">You\'ve reached this month\'s fair use for distilling. It renews next month.</string>
+    <string name="estados_quota_distill_pro_cuerpo">You\'ve reached this month\'s fair use for conceptualization. It renews next month.</string>
     <string name="estados_store_failed_cuerpo">The store didn\'t respond. Try again in a bit.</string>
     <string name="estados_ai_spark_titulo">Couldn\'t light the spark</string>
     <string name="estados_ai_planner_titulo">The reply didn\'t come through</string>
@@ -613,11 +613,11 @@
     <string name="estados_paywall_link_aviso">This article is behind a paywall: we could only read the title. Write what idea it leaves you with and we\'ll save it with the link.</string>
     <string name="estados_paywall_link_variante_solo_titulo">We could only read the title and description. Write what idea it leaves you with and we\'ll save it with the link.</string>
     <string name="estados_social_login_aviso">%s doesn\'t let us read posts without signing in. If it has text, copy and paste it; if not, write what idea it leaves you with.</string>
-    <string name="estados_social_login_nota_del_interruptor">This link can\'t be distilled.</string>
+    <string name="estados_social_login_nota_del_interruptor">This link can\'t be conceptualized.</string>
     <string name="estados_private_doc_aviso">This document is private: Lumbre can\'t open it. Write what idea it leaves you with, or share it as a PDF.</string>
     <string name="estados_unreachable_aviso">We couldn\'t open this page. Write what idea it leaves you with and we\'ll save it with the link. It didn\'t use a trial.</string>
     <string name="estados_image_no_idea_aviso">We didn\'t find an idea to save in this photo. Write what it leaves you with and we\'ll save it with the photo.</string>
-    <string name="estados_ocr_no_text_sin_destilacion">We didn\'t find any text. Write what idea it leaves you with.</string>
+    <string name="estados_ocr_no_text_sin_conceptualizacion">We didn\'t find any text. Write what idea it leaves you with.</string>
     <string name="estados_pdf_no_text_aviso">This PDF has no selectable text. Scan the pages you care about with Scan page, or write what idea it leaves you with.</string>
     <string name="estados_file_unreadable_pdf_con_contrasena">This PDF is password-protected. Remove the password or try another one.</string>
     <string name="estados_unsupported_format_aviso">Lumbre doesn\'t read Word, PowerPoint or video files. Save a PDF or the link, or write what idea it leaves you with.</string>

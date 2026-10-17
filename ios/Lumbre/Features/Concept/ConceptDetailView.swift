@@ -175,7 +175,7 @@ struct ConceptDetailView: View {
         VStack(alignment: .leading, spacing: Space.s1) {
             Text("Guardado el \(concept.createdAt.formatted(date: .long, time: .omitted))")
             if concept.distilled {
-                Label("Destilado por Lumbre", systemImage: "wand.and.sparkles")
+                Label("Conceptualizado por Lumbre", systemImage: "wand.and.sparkles")
             }
             if concept.fromLibrary {
                 Label("De la biblioteca de Lumbre", systemImage: "books.vertical")

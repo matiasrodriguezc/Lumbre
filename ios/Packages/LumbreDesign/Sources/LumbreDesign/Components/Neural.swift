@@ -345,7 +345,7 @@ public struct SynapseReveal: View {
 
 // MARK: Pulso
 
-/// Indicador de carga propio para destilar y encender: un impulso recorre un axón en 1,2 s.
+/// Indicador de carga propio para conceptualizar y encender: un impulso recorre un axón en 1,2 s.
 /// Para cualquier otra carga, el `ProgressView` del sistema. Con Reducir movimiento, el impulso queda quieto.
 public struct ImpulseLoader: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion

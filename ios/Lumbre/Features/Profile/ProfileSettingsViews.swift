@@ -77,12 +77,12 @@ struct PrivacyView: View {
     var body: some View {
         List {
             Section {
-                Toggle("Chispas y destilación con IA", isOn: Binding(
+                Toggle("Chispas y conceptualización con IA", isOn: Binding(
                     get: { aiConsent ?? false },
                     set: { granted in AIConsent.record(granted, api: api) }
                 ))
             } footer: {
-                Text("Para destilar tus ideas y encender las chispas, Lumbre manda el texto de tus ideas y tu perfil creativo a Claude, una IA de Anthropic. Sin este permiso podés guardar neuronas, pero no se destilan ni se encienden chispas, y el planificador no responde.")
+                Text("Para conceptualizar tus ideas y encender las chispas, Lumbre manda el texto de tus ideas y tu perfil creativo a Claude, una IA de Anthropic. Sin este permiso podés guardar neuronas, pero no se conceptualizan ni se encienden chispas, y el planificador no responde.")
             }
             .listRowBackground(Palette.surface)
 

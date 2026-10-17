@@ -32,10 +32,10 @@ Sacado de `backend/README.md` y de las migraciones de `backend/supabase/migratio
 | Preferencia aprendida de distancia entre ideas | `profiles.target_distance` | Ajustar las chispas con el feedback | Hasta borrar la cuenta |
 | Neuronas: tesis (hasta 600 caracteres), título, principio, dominio, categoría | `concepts`, `categories` | El contenido del usuario | Hasta que la borre o borre la cuenta |
 | Fuente: tipo, URL, título (hasta 300), fragmento (hasta 500) | `concepts` | Mostrar de dónde salió | Ídem |
-| Texto crudo de lo capturado | `concepts.raw_text` | Destilar y reprocesar | **30 días** (job diario `vencer-texto-crudo`) |
-| Referencia a la foto en el teléfono | `concepts.local_asset_id` | Volver a mostrarla en ese teléfono. La foto no sale del teléfono salvo para destilarla | Ídem neuronas |
+| Texto crudo de lo capturado | `concepts.raw_text` | Conceptualizar y reprocesar | **30 días** (job diario `vencer-texto-crudo`) |
+| Referencia a la foto en el teléfono | `concepts.local_asset_id` | Volver a mostrarla en ese teléfono. La foto no sale del teléfono salvo para conceptualizarla | Ídem neuronas |
 | Embedding (vector numérico) y modelo | `concepts` | Búsqueda y emparejamiento | Ídem neuronas; no se exporta |
-| Adjuntos (imagen JPEG/PNG o PDF) | Storage `capture-temp` | Destilar | **Se borran apenas se procesan**, salga bien o mal |
+| Adjuntos (imagen JPEG/PNG o PDF) | Storage `capture-temp` | Conceptualizar | **Se borran apenas se procesan**, salga bien o mal |
 | Chispas: el par, título, texto, estado, feedback | `sparks` | La chispa del día y el historial | Hasta borrar la cuenta |
 | Circuitos: nombre | `projects` | Organizar | Ídem |
 | Planificador: mensajes (hasta 20.000 caracteres) y resumen | `planner_threads`, `planner_messages` | Conversación con la IA | Ídem |
@@ -59,7 +59,7 @@ Sacado de `backend/README.md` y de las migraciones de `backend/supabase/migratio
 | Proveedor | Qué recibe | País |
 |---|---|---|
 | Supabase | Todo lo de la base y los adjuntos temporales | [REGIÓN DE PROD]; empresa de EE. UU. |
-| Anthropic (Claude) | Texto de las neuronas, adjuntos para destilar, perfil creativo, las dos neuronas de cada chispa, mensajes del planificador, las ideas de la demo web | EE. UU. |
+| Anthropic (Claude) | Texto de las neuronas, adjuntos para conceptualizar, perfil creativo, las dos neuronas de cada chispa, mensajes del planificador, las ideas de la demo web | EE. UU. |
 | Proveedor de embeddings (a definir en el paso 22; hoy el código soporta Voyage AI) | Texto de cada neurona y de cada búsqueda | EE. UU. |
 | PostHog | Eventos sin contenido, id de usuario | UE |
 | Sentry | Diagnóstico de errores | EE. UU. |
@@ -75,4 +75,4 @@ Sacado de `backend/README.md` y de las migraciones de `backend/supabase/migratio
 2. **Ley y jurisdicción:** Argentina, tribunales ordinarios de la Ciudad de Buenos Aires, sin perjuicio de los derechos del consumidor.
 3. **Anthropic:** se afirma que, según sus términos comerciales, no usa los datos de la API para entrenar. Verificar el texto vigente de sus términos antes de publicar, y evaluar pedir retención cero.
 4. **Waitlist:** se borra [6 meses] después del lanzamiento si la persona no crea cuenta. El plazo es una propuesta.
-5. **El consentimiento para IA se guarda en el servidor** (`profiles.ai_consent_at`, desde el 2026-10-16) y las Edge Functions lo respetan: sin él no se destila, no se generan chispas y el planificador no responde. Para demostrarlo (GDPR, art. 7.1) falta guardar también la versión del texto aceptado.
+5. **El consentimiento para IA se guarda en el servidor** (`profiles.ai_consent_at`, desde el 2026-10-16) y las Edge Functions lo respetan: sin él no se conceptualiza, no se generan chispas y el planificador no responde. Para demostrarlo (GDPR, art. 7.1) falta guardar también la versión del texto aceptado.

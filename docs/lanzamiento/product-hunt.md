@@ -22,7 +22,7 @@ Paso 68 (MAT-301). Todo listo para cargar en el borrador del lanzamiento. Produc
 **Description** (≤ 260):
 
 ```
-Save what inspires you: quotes, links, voice notes, screenshots. Lumbre distills each into a one-line idea, and every morning connects two from different worlds into a spark: a concrete new idea. Not the closest pair, not the farthest. Free on iPhone.
+Save what inspires you: quotes, links, voice notes, screenshots. Lumbre conceptualizes each into a one-line idea, and every morning connects two from different worlds into a spark: a concrete new idea. Not the closest pair, not the farthest. Free on iPhone.
 ```
 
 (251 caracteres)
@@ -41,12 +41,12 @@ I save a lot: articles, quotes, screenshots of tweets, voice notes at 1 a.m. Lik
 So Lumbre does it for you:
 
 → You save anything, from any app (Share sheet, voice, screenshots, book pages).
-→ It distills each thing into a "neuron": one line with the principle behind it.
+→ It conceptualizes each thing into a "neuron": one line with the principle behind it.
 → Every morning, two neurons from different domains connect and you get a "spark": a concrete idea, like "Green-wave code reviews: staggered review windows so a PR never waits at a red light."
 
 The part I'm proudest of is what it doesn't do. It doesn't pair your most similar notes (you'd get "coffee × tea") or your most distant ones (nonsense). It learns the middle distance that works for you every time you tap "Not useful".
 
-Free: unlimited capture, one spark a day plus two you can earn. Pro adds automatic distillation of links and PDFs, up to 10 sparks a day, and a planner that takes a spark through three rooms (dreamer, realist, critic) into a five-step plan.
+Free: unlimited capture, one spark a day plus two you can earn. Pro adds automatic conceptualization of links and PDFs, up to 10 sparks a day, and a planner that takes a spark through three rooms (dreamer, realist, critic) into a five-step plan.
 
 Privacy: no ads, no tracking, uploaded files are deleted right after processing, and the AI (Claude, by Anthropic) only gets your content after you say yes.
 
@@ -60,7 +60,7 @@ I'd love to know: what are the two ideas you'd want to see collide? Drop them be
 | # | Qué muestra | Texto en la imagen |
 |---|---|---|
 | 1 | El reveal de la chispa (captura 1 de `docs/tiendas/capturas.md`) al lado de las dos neuronas | Two ideas meet. A spark lights up. |
-| 2 | Video de 30 s: capturar desde Safari → neurona destilada → push a la mañana → reveal | (el video de vista previa) |
+| 2 | Video de 30 s: capturar desde Safari → neurona conceptualizada → push a la mañana → reveal | (el video de vista previa) |
 | 3 | Hoy con la chispa del día | A new spark every morning |
 | 4 | Una nota larga y la neurona de una línea que sale | Everything you save, in one line |
 | 5 | Diagrama simple: neuronas muy cercanas (obvio) · banda media (chispa) · muy lejanas (disparate) | Not obvious. Not random. |

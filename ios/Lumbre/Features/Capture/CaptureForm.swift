@@ -32,7 +32,7 @@ final class CaptureForm {
 
         let kind: Kind
         let preview: UIImage?
-        /// JPEG reducido (lado mayor ≤ 1568 px), para destilar la imagen.
+        /// JPEG reducido (lado mayor ≤ 1568 px), para conceptualizar la imagen.
         let jpeg: Data?
         let pdf: Data?
         let fileName: String?
@@ -51,7 +51,7 @@ final class CaptureForm {
     var attachment: Attachment?
     /// El OCR está corriendo.
     var isRecognizing = false
-    /// La destilación no sacó una idea: hay que escribirla.
+    /// La conceptualización no sacó una idea: hay que escribirla.
     var needsThesis = false
 
     var trimmedThesis: String { thesis.trimmingCharacters(in: .whitespacesAndNewlines) }
@@ -66,7 +66,7 @@ final class CaptureForm {
         return url
     }
 
-    /// Link y adjuntos se pueden destilar; texto y voz no (se guardan tal cual).
+    /// Link y adjuntos se pueden conceptualizar; texto y voz no (se guardan tal cual).
     var acceptsDistill: Bool {
         switch kind {
         case .text, .voice: false
@@ -140,7 +140,7 @@ final class CaptureForm {
     var words: Int { TextRecognition.wordCount(thesis) }
 }
 
-/// Si el usuario puede destilar ahora (Pro, pruebas del mes en free, nada para invitados).
+/// Si el usuario puede conceptualizar ahora (Pro, pruebas del mes en free, nada para invitados).
 enum DistillAccess: Equatable {
     case loading
     case pro
@@ -157,7 +157,7 @@ enum DistillAccess: Equatable {
         }
     }
 
-    /// - Parameter aiConsent: lo que respondió en "Tus ideas y la IA". Sin un "Acepto", no se ofrece destilar
+    /// - Parameter aiConsent: lo que respondió en "Tus ideas y la IA". Sin un "Acepto", no se ofrece conceptualizar
     ///   (el contenido no sale hacia la IA desde la captura).
     static func resolve(isPro: Bool, isGuest: Bool, credits: [Credit]?, aiConsent: Bool?) -> DistillAccess {
         guard FeatureFlag.distillation.isEnabled, aiConsent == true else { return .off }

@@ -7,7 +7,7 @@ y con la política de privacidad. Si se suma un SDK o un dato nuevo (PostHog y S
 - API de razón requerida: solo UserDefaults (CA92.1, preferencias propias de la app: tema, consentimiento, última categoría,
   id de la clave de App Attest). La caché y la cola offline son archivos propios; no se leen fechas de archivos ni del sistema.
 - Datos que salen del teléfono y quedan en el servidor, todos vinculados a la cuenta y solo para que la app funcione:
-  email (cuenta), las ideas guardadas (contenido del usuario), las fotos y PDFs que se mandan a destilar (se borran apenas
+  email (cuenta), las ideas guardadas (contenido del usuario), las fotos y PDFs que se mandan a conceptualizar (se borran apenas
   se extrae la neurona, pero se declaran por prudencia), el id de usuario, las compras (plan Pro) y la interacción con la app
   (eventos de servidor de docs/analytics.md, sin contenido de las notas).
 -->

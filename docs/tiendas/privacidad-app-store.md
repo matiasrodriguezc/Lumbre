@@ -27,8 +27,8 @@ Para cada uno: **Linked to the user** = Yes (todo se asocia al id de la cuenta).
 | Location | Precise / Coarse | No | — | Solo zona horaria, que Apple no considera ubicación |
 | Sensitive Info | — | No | — | No se pide. Si alguien escribe algo sensible en una nota, es User Content |
 | Contacts | — | No | — | — |
-| User Content | **Photos or Videos** | Sí | App Functionality | Las imágenes que se mandan a destilar se suben y se procesan en el servidor (se borran enseguida, pero salen del teléfono y pasan por Anthropic) |
-| User Content | **Audio Data** | No (provisorio) | — | El dictado se transcribe en el teléfono. Pasa a **Sí** el día que la destilación de audios largos (Pro) suba audio al servidor |
+| User Content | **Photos or Videos** | Sí | App Functionality | Las imágenes que se mandan a conceptualizar se suben y se procesan en el servidor (se borran enseguida, pero salen del teléfono y pasan por Anthropic) |
+| User Content | **Audio Data** | No (provisorio) | — | El dictado se transcribe en el teléfono. Pasa a **Sí** el día que la conceptualización de audios largos (Pro) suba audio al servidor |
 | User Content | Emails or Text Messages | No | — | — |
 | User Content | Gameplay Content | No | — | — |
 | User Content | Customer Support | No (provisorio) | — | Pasa a Sí si se agrega un formulario de soporte dentro de la app |

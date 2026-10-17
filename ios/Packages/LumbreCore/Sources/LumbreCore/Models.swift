@@ -143,7 +143,7 @@ public enum SourceType: String, Sendable, CaseIterable, Codable {
     case text, voice, selection, screenshot, scan, link, image, pdf, audio
 }
 
-/// Mismos valores que `concepts.status`: un borrador es una destilación de confianza media que falta confirmar.
+/// Mismos valores que `concepts.status`: un borrador es una conceptualización de confianza media que falta confirmar.
 public enum ConceptStatus: String, Sendable, Codable {
     case draft, ready
 }
@@ -157,7 +157,7 @@ public struct Concept: Identifiable, Hashable, Sendable {
     public var category: Category?
     public var title: String
     public var thesis: String
-    /// El mecanismo de fondo. Solo si se destiló.
+    /// El mecanismo de fondo. Solo si se conceptualizó.
     public var principle: String?
     public var status: ConceptStatus
     public let distilled: Bool
@@ -220,7 +220,7 @@ public enum CaptureSource: Sendable, Equatable {
     /// Texto sacado con OCR de una página escaneada.
     case scan
     case link(URL)
-    /// Imagen (JPEG ya reducido). Solo se destila con IA; el archivo se borra al procesarse.
+    /// Imagen (JPEG ya reducido). Solo se conceptualiza con IA; el archivo se borra al procesarse.
     case image(Data)
     case pdf(Data)
 
@@ -239,7 +239,7 @@ public enum CaptureSource: Sendable, Equatable {
 }
 
 public struct CaptureRequest: Sendable, Equatable {
-    /// La idea en palabras del usuario. Puede faltar en links, imágenes y PDFs si se pide destilar.
+    /// La idea en palabras del usuario. Puede faltar en links, imágenes y PDFs si se pide conceptualizar.
     public var thesis: String?
     public var category: String
     public var source: CaptureSource
@@ -248,7 +248,7 @@ public struct CaptureRequest: Sendable, Equatable {
     public var excerpt: String?
     /// Identificador de la foto en la fototeca, que queda en el teléfono.
     public var localAssetID: String?
-    /// Pedir destilación automática (Pro, o las pruebas del mes en free).
+    /// Pedir conceptualización automática (Pro, o las pruebas del mes en free).
     public var distill: Bool
 
     public init(thesis: String?, category: String, source: CaptureSource, sourceTitle: String? = nil, excerpt: String? = nil, localAssetID: String? = nil, distill: Bool = false) {
@@ -262,7 +262,7 @@ public struct CaptureRequest: Sendable, Equatable {
     }
 }
 
-/// Qué pasó con la destilación al guardar.
+/// Qué pasó con la conceptualización al guardar.
 public enum DistillationOutcome: String, Sendable, Codable {
     /// No se pidió o no hacía falta (texto corto).
     case none
@@ -272,9 +272,9 @@ public enum DistillationOutcome: String, Sendable, Codable {
     case medium
     /// No se pudo sacar una idea: hay que escribir "¿Qué idea te deja esto?".
     case needsThesis = "needs_thesis"
-    /// Sin cupo de destilación este mes.
+    /// Sin cupo de conceptualización este mes.
     case quotaExceeded = "quota_exceeded"
-    /// La IA no respondió; se guardó sin destilar.
+    /// La IA no respondió; se guardó sin conceptualizar.
     case unavailable
 }
 
@@ -284,7 +284,7 @@ public struct CaptureResult: Sendable, Equatable {
     public let categoryID: UUID
     /// La categoría no existía y se creó con este concepto.
     public let categoryCreated: Bool
-    /// Conceptos que quedaron (1 a 3 si se destiló un link o un archivo).
+    /// Conceptos que quedaron (1 a 3 si se conceptualizó un link o un archivo).
     public let concepts: [Concept]
     public let distillation: DistillationOutcome
 
