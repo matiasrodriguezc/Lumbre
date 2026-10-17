@@ -575,21 +575,30 @@ private actor MockStore {
 }
 
 public enum MockData {
+    /// Los datos de prueba en inglés, para las capturas de tienda en inglés: `-mockLanguage en` al lanzar la app.
+    /// Por defecto (y en los tests) quedan en español.
+    public static let isEnglish = UserDefaults.standard.string(forKey: "mockLanguage") == "en"
+
+    /// El texto en el idioma de los datos de prueba.
+    static func t(_ es: String, _ en: String) -> String { isEnglish ? en : es }
+
     public static let domains: [Domain] = [
-        Domain(slug: "arquitectura", name: "Arquitectura y urbanismo", symbol: "building.2"),
-        Domain(slug: "tecnologia", name: "Tecnología", symbol: "cpu"),
-        Domain(slug: "ingenieria", name: "Ingeniería", symbol: "gearshape.2"),
-        Domain(slug: "marketing", name: "Marketing y comunicación", symbol: "megaphone"),
-        Domain(slug: "historia", name: "Historia y arqueología", symbol: "building.columns"),
-        Domain(slug: "cocina", name: "Cocina y gastronomía", symbol: "fork.knife"),
-        Domain(slug: "economia", name: "Economía y finanzas", symbol: "chart.line.uptrend.xyaxis"),
-        Domain(slug: "biologia", name: "Biología y naturaleza", symbol: "leaf"),
+        Domain(slug: "arquitectura", name: t("Arquitectura y urbanismo", "Architecture and urbanism"), symbol: "building.2"),
+        Domain(slug: "tecnologia", name: t("Tecnología", "Technology"), symbol: "cpu"),
+        Domain(slug: "ingenieria", name: t("Ingeniería", "Engineering"), symbol: "gearshape.2"),
+        Domain(slug: "marketing", name: t("Marketing y comunicación", "Marketing and communication"), symbol: "megaphone"),
+        Domain(slug: "historia", name: t("Historia y arqueología", "History and archaeology"), symbol: "building.columns"),
+        Domain(slug: "cocina", name: t("Cocina y gastronomía", "Cooking and gastronomy"), symbol: "fork.knife"),
+        Domain(slug: "economia", name: t("Economía y finanzas", "Economics and finance"), symbol: "chart.line.uptrend.xyaxis"),
+        Domain(slug: "biologia", name: t("Biología y naturaleza", "Biology and nature"), symbol: "leaf"),
     ]
 
     /// Nombres cortos, como los escribiría un usuario; mismos que el seed de la base.
     public static let categories: [Category] = zip(
         ["arquitectura", "tecnologia", "ingenieria", "marketing", "historia", "cocina", "economia", "biologia"],
-        ["Urbanismo", "Software", "Ingeniería", "Marketing", "Historia", "Cocina", "Economía", "Biología"]
+        isEnglish
+            ? ["Urban planning", "Software", "Engineering", "Marketing", "History", "Cooking", "Economics", "Biology"]
+            : ["Urbanismo", "Software", "Ingeniería", "Marketing", "Historia", "Cocina", "Economía", "Biología"]
     )
     .map { slug, name in Category(name: name, domain: domains.first { $0.slug == slug }) }
     .sorted { $0.name < $1.name }
@@ -601,7 +610,7 @@ public enum MockData {
         creativeProfiles: [.software, .curiosity],
         sparkTime: .default,
         timezone: "America/Argentina/Buenos_Aires",
-        locale: "es",
+        locale: isEnglish ? "en" : "es",
         plan: .free,
         email: "ana@lumbre.test",
         isOnboarded: true
@@ -616,60 +625,60 @@ public enum MockData {
     }
 
     public static let concepts: [Concept] = [
-        Concept(category: category("marketing"), title: "Escasez intencional",
-                thesis: "Limitar la oferta sube el valor percibido y la atención.",
+        Concept(category: category("marketing"), title: t("Escasez intencional", "Intentional scarcity"),
+                thesis: t("Limitar la oferta sube el valor percibido y la atención.", "Limiting supply raises perceived value and attention."),
                 sourceType: .voice, createdAt: daysAgo(0.1)),
-        Concept(category: category("arquitectura"), title: "Onda verde de semáforos",
-                thesis: "Sincronizar semáforos crea un flujo continuo a velocidad constante.",
-                principle: "Coordinar los tiempos de varias etapas evita las esperas entre ellas.",
+        Concept(category: category("arquitectura"), title: t("Onda verde de semáforos", "Green wave traffic lights"),
+                thesis: t("Sincronizar semáforos crea un flujo continuo a velocidad constante.", "Syncing traffic lights creates a continuous flow at a steady speed."),
+                principle: t("Coordinar los tiempos de varias etapas evita las esperas entre ellas.", "Coordinating the timing of several stages removes the waits between them."),
                 distilled: true, confidence: .high,
                 sourceType: .text, createdAt: daysAgo(1)),
-        Concept(category: category("ingenieria"), title: "Separación ciclónica",
-                thesis: "Un flujo en espiral separa partículas por fuerza centrífuga, sin filtro.",
-                principle: "Un movimiento rotatorio ordena elementos por su masa.",
+        Concept(category: category("ingenieria"), title: t("Separación ciclónica", "Cyclonic separation"),
+                thesis: t("Un flujo en espiral separa partículas por fuerza centrífuga, sin filtro.", "A spiral flow separates particles by centrifugal force, with no filter."),
+                principle: t("Un movimiento rotatorio ordena elementos por su masa.", "A rotating motion sorts things by their mass."),
                 distilled: true, confidence: .high,
                 sourceType: .link, sourceURL: URL(string: "https://example.com/ciclones"),
-                sourceTitle: "Cómo funcionan los ciclones industriales", createdAt: daysAgo(2)),
+                sourceTitle: t("Cómo funcionan los ciclones industriales", "How industrial cyclones work"), createdAt: daysAgo(2)),
         Concept(category: category("tecnologia"), title: "Code review",
-                thesis: "Revisar cambios en pares reduce errores y reparte el conocimiento del código.",
+                thesis: t("Revisar cambios en pares reduce errores y reparte el conocimiento del código.", "Reviewing changes in pairs cuts bugs and spreads knowledge of the code."),
                 sourceType: .selection, sourceTitle: "Engineering practices",
                 excerpt: "Code review is the single biggest thing you can do to improve your code.", createdAt: daysAgo(3)),
-        Concept(category: category("cocina"), title: "Fermentación lenta",
-                thesis: "El tiempo transforma ingredientes simples en sabores complejos sin agregar nada.",
+        Concept(category: category("cocina"), title: t("Fermentación lenta", "Slow fermentation"),
+                thesis: t("El tiempo transforma ingredientes simples en sabores complejos sin agregar nada.", "Time turns simple ingredients into complex flavors without adding anything."),
                 sourceType: .screenshot, createdAt: daysAgo(5)),
-        Concept(category: category("historia"), title: "Ruinas como archivo",
-                thesis: "Lo que queda de una ciudad cuenta cómo vivía la gente mejor que sus documentos.",
+        Concept(category: category("historia"), title: t("Ruinas como archivo", "Ruins as an archive"),
+                thesis: t("Lo que queda de una ciudad cuenta cómo vivía la gente mejor que sus documentos.", "What remains of a city tells how people lived better than its records do."),
                 sourceType: .link, sourceURL: URL(string: "https://example.com/pompeya"),
-                sourceTitle: "Pompeya, capa por capa", createdAt: daysAgo(8)),
-        Concept(category: category("economia"), title: "Interés compuesto",
-                thesis: "Pequeñas ganancias que se reinvierten crecen de forma exponencial con el tiempo.",
+                sourceTitle: t("Pompeya, capa por capa", "Pompeii, layer by layer"), createdAt: daysAgo(8)),
+        Concept(category: category("economia"), title: t("Interés compuesto", "Compound interest"),
+                thesis: t("Pequeñas ganancias que se reinvierten crecen de forma exponencial con el tiempo.", "Small gains that get reinvested grow exponentially over time."),
                 sourceType: .scan, createdAt: daysAgo(12)),
-        Concept(category: category("biologia"), title: "Micorrizas",
-                thesis: "Los hongos conectan las raíces de un bosque y reparten nutrientes entre árboles.",
+        Concept(category: category("biologia"), title: t("Micorrizas", "Mycorrhizae"),
+                thesis: t("Los hongos conectan las raíces de un bosque y reparten nutrientes entre árboles.", "Fungi link a forest’s roots and share nutrients between trees."),
                 status: .draft, distilled: true, confidence: .medium,
-                sourceType: .pdf, sourceTitle: "Redes subterráneas.pdf", createdAt: daysAgo(20)),
+                sourceType: .pdf, sourceTitle: t("Redes subterráneas.pdf", "Underground networks.pdf"), createdAt: daysAgo(20)),
     ] + bridgeConcepts
 
     public static let todaySpark = Spark(
         conceptA: concepts[1],
         conceptB: concepts[3],
-        title: "Semáforos × code review",
-        body: "Si un PR se aprueba rápido, los siguientes del mismo autor entran en una “onda verde” con revisión prioritaria. Premia los PR chicos sin reglas nuevas.",
+        title: t("Semáforos × code review", "Traffic lights × code review"),
+        body: t("Si un PR se aprueba rápido, los siguientes del mismo autor entran en una “onda verde” con revisión prioritaria. Premia los PR chicos sin reglas nuevas.", "When a PR gets approved fast, the same author’s next ones ride a “green wave” with priority review. It rewards small PRs without new rules."),
         status: .pending,
         scheduledFor: Calendar.current.startOfDay(for: .now),
         createdAt: .now
     )
 
-    public static let project = Project(name: "Canal de YouTube", createdAt: daysAgo(4))
+    public static let project = Project(name: t("Canal de YouTube", "YouTube channel"), createdAt: daysAgo(4))
 
     public static let recentSparks: [Spark] = [
         Spark(
-            conceptA: Concept(category: category("marketing"), title: "Formato podcast",
-                              thesis: "Una conversación larga genera confianza que un anuncio no logra.",
+            conceptA: Concept(category: category("marketing"), title: t("Formato podcast", "Podcast format"),
+                              thesis: t("Una conversación larga genera confianza que un anuncio no logra.", "A long conversation builds trust an ad never will."),
                               sourceType: .audio, createdAt: daysAgo(9)),
             conceptB: concepts[5],
-            title: "Podcast × ruinas",
-            body: "Un episodio por capa de excavación: cada uno cuenta una época de la misma ciudad con lo que quedó enterrado.",
+            title: t("Podcast × ruinas", "Podcast × ruins"),
+            body: t("Un episodio por capa de excavación: cada uno cuenta una época de la misma ciudad con lo que quedó enterrado.", "One episode per excavation layer: each tells one era of the same city through what stayed buried."),
             status: .saved,
             projectID: project.id,
             projectName: project.name,
@@ -679,8 +688,8 @@ public enum MockData {
         Spark(
             conceptA: concepts[4],
             conceptB: concepts[6],
-            title: "Fermentación × interés compuesto",
-            body: "Un newsletter que no se promociona: cada edición recupera y mejora una idea vieja en vez de buscar una nueva.",
+            title: t("Fermentación × interés compuesto", "Fermentation × compound interest"),
+            body: t("Un newsletter que no se promociona: cada edición recupera y mejora una idea vieja en vez de buscar una nueva.", "A newsletter that never promotes itself: each issue brings back and improves an old idea instead of chasing a new one."),
             status: .revealed,
             scheduledFor: Calendar.current.startOfDay(for: daysAgo(2)),
             createdAt: daysAgo(2)
@@ -688,8 +697,8 @@ public enum MockData {
     ]
 
     public static let plannerThread: [PlannerMessage] = [
-        PlannerMessage(id: 1, role: .user, content: "Armame un backlog para el primer mes.", createdAt: daysAgo(1)),
-        PlannerMessage(id: 2, role: .assistant, content: "1. Elegir la ciudad y 4 capas de excavación.\n2. Guion del episodio piloto.\n3. Grabar con un arqueólogo invitado.\n4. Publicar y medir retención al minuto 3.", createdAt: daysAgo(1)),
+        PlannerMessage(id: 1, role: .user, content: t("Armame un backlog para el primer mes.", "Build me a backlog for the first month."), createdAt: daysAgo(1)),
+        PlannerMessage(id: 2, role: .assistant, content: t("1. Elegir la ciudad y 4 capas de excavación.\n2. Guion del episodio piloto.\n3. Grabar con un arqueólogo invitado.\n4. Publicar y medir retención al minuto 3.", "1. Pick the city and 4 excavation layers.\n2. Script the pilot episode.\n3. Record with a guest archaeologist.\n4. Publish and measure retention at minute 3."), createdAt: daysAgo(1)),
     ]
 
     public static let quota: SparkQuota = SparkQuota(

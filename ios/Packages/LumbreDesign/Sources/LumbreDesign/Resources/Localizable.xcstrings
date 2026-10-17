@@ -1,0 +1,17 @@
+{
+  "sourceLanguage" : "es",
+  "strings" : {
+    "Planificador" : {
+      "comment" : "Etiqueta de la burbuja de respuesta del planificador en el chat.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planner"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

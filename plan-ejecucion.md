@@ -174,7 +174,7 @@ Adelantado: se hace con datos de prueba. Las pantallas llaman a `LumbreAPI`; hoy
 - [x] **64. Borradores de términos, privacidad y consentimiento para IA** · MAT-295 · ✅ 2026-10-16: `docs/legal/`: borradores es/en de privacidad, términos y consentimiento para IA, coherentes con el backend. Esperan al abogado (H3).
   Para que los revise el abogado (H3).
 - [x] **65. Privacy manifest, etiquetas de App Store y Data safety de Play** · MAT-296 · ✅ 2026-10-16: `PrivacyInfo.xcprivacy` y las respuestas de App Privacy y Data safety en `docs/tiendas/`.
-- [ ] **66. Fichas de tienda es/en y capturas de iOS** · MAT-297 · Adelantado el 2026-10-16: fichas es/en y guion de 7 capturas en `docs/tiendas/`. 2026-10-17: las 7 capturas de iOS en español (1320×2868) en `design/tiendas/capturas/es/`, compuestas con `componer.sh`. Falta el set en inglés, que necesita datos de prueba en inglés.
+- [x] **66. Fichas de tienda es/en y capturas de iOS** · MAT-297 · ✅ 2026-10-17: fichas es/en y guion en `docs/tiendas/`; las 7 capturas de iOS en español y en inglés (1320×2868) en `design/tiendas/capturas/`, compuestas con `componer.sh`. Para el inglés, los datos de prueba se pasan con `-mockLanguage en`. De paso: el título de la chispa en Hoy ya no se corta y "Planificador" tiene su traducción.
   Las capturas muestran el choque, no la lista. Las de Android se hacen en el paso 86.
 
 **Compuerta F6:** checklist de deploy de App Store de `plan.md` §10 completo.

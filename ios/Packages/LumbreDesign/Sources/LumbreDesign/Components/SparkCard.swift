@@ -46,6 +46,8 @@ public struct SparkCard<Actions: View>: View {
                 Text(title)
                     .lumbreDisplay(.sparkHero)
                     .foregroundStyle(Palette.ink)
+                    // Sin esto, un título largo (en inglés, sobre todo) se corta con "…" en vez de pasar a dos líneas.
+                    .fixedSize(horizontal: false, vertical: true)
                     .accessibilityAddTraits(.isHeader)
                 Text(explanation)
                     .font(.body)
@@ -74,6 +76,8 @@ public struct SparkCard<Actions: View>: View {
                 Text(title)
                     .lumbreDisplay(.sparkHero)
                     .foregroundStyle(Palette.ink)
+                    // Sin esto, un título largo (en inglés, sobre todo) se corta con "…" en vez de pasar a dos líneas.
+                    .fixedSize(horizontal: false, vertical: true)
                     .accessibilityAddTraits(.isHeader)
                 Text(explanation)
                     .font(.body)
