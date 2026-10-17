@@ -30,6 +30,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case notificationOpened(type: String, minutesAfterSent: Int?)
     case sparkRevealed(mode: SparkMode, isFirst: Bool, entry: String, reduceMotion: Bool)
     case sparkExtraRequested(mode: SparkMode, source: String)
+    /// Swipe en el reveal (flag `reveal_swipe`): `direction` es `save` o `dismiss`; `input`, `gesture` o `accessibility_action`.
+    case sparkSwiped(mode: SparkMode, direction: String, input: String)
     case sparkEmptyStateShown(reason: String)
     /// `format`: `story` (1080 × 1920) o `feed` (1080 × 1350).
     case shareCardCreated(mode: SparkMode, format: String)
@@ -79,6 +81,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .notificationOpened: "notification_opened"
         case .sparkRevealed: "spark_revealed"
         case .sparkExtraRequested: "spark_extra_requested"
+        case .sparkSwiped: "spark_swiped"
         case .sparkEmptyStateShown: "spark_empty_state_shown"
         case .shareCardCreated: "share_card_created"
         case .sparkShared: "spark_shared"
@@ -146,6 +149,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
             ["mode": .string(mode.rawValue), "is_first": .bool(isFirst), "entry": .string(entry), "reduce_motion": .bool(reduceMotion)]
         case let .sparkExtraRequested(mode, source):
             ["mode": .string(mode.rawValue), "source": .string(source)]
+        case let .sparkSwiped(mode, direction, input):
+            ["mode": .string(mode.rawValue), "direction": .string(direction), "input": .string(input)]
         case let .sparkEmptyStateShown(reason):
             ["reason": .string(reason)]
         case let .shareCardCreated(mode, format):
@@ -305,6 +310,9 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     case shareCardSafeZones = "share_card_safe_zones"
     /// Formato feed (1080 × 1350) como segunda opción en la hoja de compartir; historias sigue siendo el de siempre.
     case shareCardFeed = "share_card_feed"
+    /// Swipe en el modal del reveal (design/reveal §12): a la derecha guarda, a la izquierda "No me sirve",
+    /// con acciones de VoiceOver equivalentes. Necesita `reveal_synapse`.
+    case revealSwipe = "reveal_swipe"
 
     public var defaultValue: Bool { true }
 

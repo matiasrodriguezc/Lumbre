@@ -294,10 +294,11 @@ Que el gesto cierre el modal y el botón no es a propósito: deslizar es sacar l
 
 ### SwiftUI
 
-- `DragGesture(minimumDistance: 10)` como `.simultaneousGesture` del panel, para no bloquear el scroll del `ScrollView`. El eje se decide en el primer `onChanged`; con swipe, `.scrollDisabled(true)` hasta `onEnded`.
+- Un `DragGesture` dentro del `ScrollView` del modal le gana al scroll en iOS 18 o más, aunque vaya como `.simultaneousGesture`: con texto grande el panel deja de scrollear. Por eso el swipe es un `UIPanGestureRecognizer` que se instala en el `UIScrollView` que contiene al panel (`ScrollSwipeRecognizer`, una vista vacía detrás del panel que lo busca al entrar en la ventana). Solo empieza si el toque cae sobre el panel y el desplazamiento está a menos de 30° de la horizontal; `panGestureRecognizer.require(toFail:)` hace que el scroll espere a que falle. Mientras dura el swipe, `.scrollDisabled(true)`.
 - `offset(x:)` y `rotationEffect` del panel desde un `@State` de arrastre; el indicador vive en el fondo del modal, detrás del `ScrollView`.
 - `.sensoryFeedback(trigger: isArmed) { _, armed in armed ? .impact(weight: .medium) : .impact(weight: .light) }`.
-- El gesto le pide la acción a `SparkActions` (la misma hoja, el mismo diálogo y el mismo guardado de los botones) y `SparkActions` avisa si terminó bien o se canceló.
+- El gesto le pide la acción a `SparkActions` (`SparkActionRequest`: la misma hoja, el mismo diálogo y el mismo guardado de los botones) y `SparkActions` avisa si terminó bien o se canceló.
+- En iOS 26 el diálogo del motivo es un popover anclado al botón "No me sirve": con la tarjeta afuera, la flecha apunta al lugar vacío donde estaba. Se lee bien, pero es **provisorio, a confirmar**.
 
 ### Decisiones provisorias (a confirmar)
 
@@ -307,3 +308,4 @@ Que el gesto cierre el modal y el botón no es a propósito: deslizar es sacar l
 4. Umbral del 30 % del ancho (mínimo 96 pt), tirón desde 48 pt a 700 pt/s, ángulo de 30°.
 5. Hápticos `.impact` medio y liviano (iOS) y `GESTURE_THRESHOLD_*` / `CLOCK_TICK` (Android).
 6. Con Reducir movimiento: la tarjeta sigue al dedo (es movimiento que hace la persona) pero sin rotación, sin rebote y sin salida.
+7. El popover del motivo (iOS 26) queda anclado al lugar del botón cuando la tarjeta ya salió.

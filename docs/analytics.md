@@ -143,6 +143,7 @@ Fuente: **A** = app (iOS y Android), **S** = servidor (Edge Functions o webhook)
 | `spark_revealed` | A | `mode`, `is_first`, `entry`: `push`, `widget`, `app`; `minutes_since_available`, `reduce_motion` | Termina el reveal |
 | `spark_saved` | S | `mode`, `entry` (lo manda la app en la llamada), `is_first`, `has_project` | La chispa pasa a guardada. **Evento de la métrica norte** |
 | `spark_feedback_given` | S | `mode`, `reason`: `obvious`, `irrelevant`, `already_had`; `distance_percentile`, `uses_library_concept` | "No me sirve" con motivo |
+| `spark_swiped` | A | `mode`, `direction`: `save`, `dismiss`; `input`: `gesture`, `accessibility_action` | En el modal del reveal, suelta la tarjeta pasado el umbral o usa la acción de VoiceOver, antes de que se abra la acción (flag `reveal_swipe`, design/reveal §12). El resultado sigue en `spark_saved` y `spark_feedback_given` |
 | `spark_extra_requested` | A | `mode`, `source`: `earned`, `pro` | Pide una chispa más |
 | `spark_empty_state_shown` | A | `reason`: `used_today`, `no_candidates`, `few_concepts` | Hoy no tiene chispa para mostrar |
 | `share_card_created` | A | `mode`, `format`: `story`, `feed` | Se genera la tarjeta para compartir (historias o publicaciones) |
