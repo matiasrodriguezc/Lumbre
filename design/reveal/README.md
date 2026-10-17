@@ -2,7 +2,7 @@
 
 Paso 12 de `plan-ejecucion.md` · MAT-225. Tiempos, curvas, hápticos y accesibilidad del reveal de la chispa, para quien lo implemente en SwiftUI y en Compose.
 
-- `index.html`: el documento visual con el prototipo animado (Hoy desenfocado + modal, dentro de un teléfono). Tiene velocidad 1× / 0,5× / 0,25×, Reducir movimiento (arranca según `prefers-reduced-motion`), tema gris o grafito, iOS o Android, una línea de tiempo dibujada con cursor, un deslizador para congelar cualquier instante y un registro de eventos (háptico, anuncio, `spark_revealed`). Para verlo: `python3 -m http.server -d design` y abrir `/reveal/`. Un instante se puede enlazar con `?t=650&tema=dark&rm=1&plataforma=android`.
+- `index.html`: el documento visual con el prototipo animado (Hoy desenfocado + modal, dentro de un teléfono), con el swipe del §12. Tiene velocidad 1× / 0,5× / 0,25×, Reducir movimiento (arranca según `prefers-reduced-motion`), tema gris o grafito, iOS o Android, una línea de tiempo dibujada con cursor, un deslizador para congelar cualquier instante y un registro de eventos (háptico, anuncio, `spark_revealed`). Para verlo: `python3 -m http.server -d design` y abrir `/reveal/`. Un instante se puede enlazar con `?t=650&tema=dark&rm=1&plataforma=android`.
 - Este README: la especificación en texto. Manda `design/system/README.md` ("Movimiento y háptica"); lo que acá se agrega y no está ahí va marcado como **provisorio, a confirmar**.
 
 ## 1. Idea
@@ -230,3 +230,80 @@ No están en `plan.md` ni en `design/system/README.md`:
 ## 11. Copy
 
 No hay copy nuevo de interfaz. El prototipo usa el que ya está en el código: "Encender la chispa", "Tu chispa de hoy está lista", "Dos neuronas tuyas de mundos distintos están por conectarse.", "Tu chispa de hoy" / "Tu chispa extra", "Guardar idea", "Planificar", "No me sirve", "Compartir", "Más acciones", "Cerrar", "1 chispa para encender", "Usaste las chispas de hoy", y el resumen de `accessibilitySummary`.
+
+## 12. Swipe en el reveal (flag `reveal_swipe`)
+
+Paso 93 de `plan-ejecucion.md` (`plan.md` §4, versión 1.1). En el modal, con la chispa ya revelada, deslizar la tarjeta a la derecha la guarda y a la izquierda abre "No me sirve". Es un atajo: los botones siguen en su lugar y hacen lo mismo. En el prototipo (`index.html`, sección "Swipe") se prueba con el mouse o el dedo sobre el panel. Lo que no está en `plan.md` va marcado como **provisorio, a confirmar**.
+
+### Cuándo se puede
+
+- Desde que la chispa queda revelada: 900 ms desde el toque (200 con Reducir movimiento), el mismo momento en que se habilitan la cruz y el toque afuera. Antes, el panel no se mueve.
+- Solo en el modal de la sinapsis (flag `reveal_synapse`). El reveal anterior y la chispa en Hoy no tienen gesto.
+- Con el flag apagado no hay gesto ni acciones de VoiceOver: quedan solo los botones.
+- Mientras corre una acción que salió del gesto (la hoja de circuitos, el diálogo del motivo o el guardado), el panel no se puede volver a deslizar.
+
+### Qué hace cada lado
+
+| Lado | Acción | Igual que |
+|---|---|---|
+| Derecha | Guarda. Con `projects`, abre la hoja "Dónde la guardás"; sin `projects`, guarda directo sin circuito | "Guardar idea" |
+| Izquierda | Abre "¿Por qué no te sirve?" con los tres motivos | "No me sirve" |
+
+Si el lado no aplica (la chispa ya está guardada, por ejemplo porque se tocó "Guardar idea" antes, o ya se descartó), el panel se resiste: se mueve un cuarto de lo que se mueve el dedo, hasta 32 pt, sin indicador ni háptico, y vuelve.
+
+### Reconocimiento y convivencia con el scroll
+
+- El gesto es del panel, no del fondo. Arranca a los 10 pt de movimiento y se decide una sola vez, en ese momento: si el desplazamiento está a menos de 30° de la horizontal (|y| ≤ 0,58 · |x|), es un swipe; si no, es scroll y el panel no se mueve en todo ese gesto.
+- Una vez decidido como swipe, el scroll del modal se apaga hasta soltar: con texto grande el panel scrollea (§6) y un swipe un poco diagonal no lo puede mover.
+- Empezar sobre un botón vale: el botón se cancela al moverse el dedo, como en cualquier lista de iOS.
+
+### La tarjeta sigue al dedo
+
+- x = desplazamiento del dedo, 1:1; y = 0. Rotación de x / ancho del panel × 4°, con tope de ±4°, sobre el centro. **La rotación es provisoria, a confirmar**; con Reducir movimiento no hay rotación.
+- Detrás del panel, sobre el velo, aparece el indicador del lado que el panel deja al descubierto (como las acciones de una fila de iOS): "Guardar idea" con el ícono de marcador a la izquierda al deslizar a la derecha, y "No me sirve" a la derecha al deslizar a la izquierda. Va centrado en el alto de la pantalla (no del panel), a 16 pt del borde.
+- El indicador es una pastilla `radius-full`. Antes del umbral, `surface` con borde `border` y texto `ink`, con opacidad proporcional al recorrido (0 → 1 hasta el umbral). Al cruzarlo, se llena de `accent` con texto `on-accent`, como el botón principal (negro en gris, hueso en grafito), sin animación de escala. No lleva rosa: el único rosa del modal sigue siendo la estrella. **Provisorio, a confirmar.**
+
+### Umbral y háptico
+
+- Umbral: 30 % del ancho del panel, con un mínimo de 96 pt (122 pt en un iPhone de 440 pt de ancho, con el panel de 408).
+- Al cruzarlo hacia afuera, el indicador se llena y suena `.impact(weight: .medium)` (iOS) / `GESTURE_THRESHOLD_ACTIVATE` (Android, API 34+). Al volver hacia adentro sin soltar, se vacía y suena `.impact(weight: .light)` / `GESTURE_THRESHOLD_DEACTIVATE`. En Android 28–33, `CLOCK_TICK` para los dos. **Los hápticos son provisorios, a confirmar.** No es el háptico del reveal: aquel es uno solo y de la coreografía; este responde a la mano.
+- También se acepta un tirón: si se suelta antes del umbral pero con más de 48 pt de recorrido y más de 700 pt/s hacia el mismo lado, cuenta como cruzado.
+
+### Al soltar
+
+| Caso | Con movimiento | Con Reducir movimiento |
+|---|---|---|
+| Antes del umbral (o hacia un lado que no aplica) | Vuelve al centro con `.spring(duration: 0.3, bounce: 0.2)`; la rotación vuelve con él | Vuelve al centro en 200 ms con el fundido sereno, sin rebote |
+| Pasado el umbral | Sale por ese lado: x hasta el borde de la pantalla más 40 pt y opacidad 0, en 220 ms con la curva fundido (el impulso del dedo se nota porque arranca rápido) | Sin salida: el panel se funde en su lugar en 200 ms (fundido sereno) |
+| Después de salir | Se abre la acción: la hoja de circuitos o el diálogo del motivo; sin `projects`, se guarda directo | Igual |
+| Termina bien (eligió circuito o motivo, o se guardó) | El modal se cierra con su fundido de 200 ms (§7, "Cierre"). La chispa queda en Hoy con su estado nuevo | Igual |
+| Se cancela (cerró la hoja, canceló el diálogo) o falla | El panel vuelve desde el lado por el que salió: x a 0 y opacidad 1 en 300 ms con la curva entrada. Si falló, el aviso de error de las acciones queda a la vista | Aparece en el centro con un fundido sereno de 200 ms |
+
+Que el gesto cierre el modal y el botón no es a propósito: deslizar es sacar la tarjeta de encima; tocar el botón deja ver "Idea guardada" y seguir con Planificar o Compartir. **Provisorio, a confirmar.**
+
+### Accesibilidad
+
+- VoiceOver no usa el gesto. El título y el cuerpo, que son los elementos que toman el foco (a los 900 ms el foco va al título), tienen dos acciones personalizadas con `accessibilityAction(named:)`: "Guardar idea" y "No me sirve". Hacen lo mismo que el swipe, sin mover el panel: abren la hoja o el diálogo, y al terminar bien se cierra el modal. Solo aparecen con el flag, ya revelada, y la de cada lado solo si aplica.
+- En Android, `CustomAccessibilityAction` con los mismos nombres en `semantics { customActions = … }`.
+- Los botones siguen siendo el camino principal: el gesto no se anuncia ni tiene hint, y nada depende de él.
+- Control por botón y Control por voz usan los botones.
+
+### Analytics
+
+`spark_swiped` (app) cuando se suelta pasado el umbral o se usa la acción de VoiceOver, antes de abrir la acción: `mode`, `direction` (`save`, `dismiss`) e `input` (`gesture`, `accessibility_action`). El resultado se sigue midiendo con `spark_saved` y `spark_feedback_given` (servidor), como con los botones.
+
+### SwiftUI
+
+- `DragGesture(minimumDistance: 10)` como `.simultaneousGesture` del panel, para no bloquear el scroll del `ScrollView`. El eje se decide en el primer `onChanged`; con swipe, `.scrollDisabled(true)` hasta `onEnded`.
+- `offset(x:)` y `rotationEffect` del panel desde un `@State` de arrastre; el indicador vive en el fondo del modal, detrás del `ScrollView`.
+- `.sensoryFeedback(trigger: isArmed) { _, armed in armed ? .impact(weight: .medium) : .impact(weight: .light) }`.
+- El gesto le pide la acción a `SparkActions` (la misma hoja, el mismo diálogo y el mismo guardado de los botones) y `SparkActions` avisa si terminó bien o se canceló.
+
+### Decisiones provisorias (a confirmar)
+
+1. El swipe exitoso cierra el modal; el botón no.
+2. Rotación de hasta ±4° y salida por el borde en 220 ms.
+3. Indicador detrás del panel, en `surface` antes del umbral y en `accent` después, sin rosa.
+4. Umbral del 30 % del ancho (mínimo 96 pt), tirón desde 48 pt a 700 pt/s, ángulo de 30°.
+5. Hápticos `.impact` medio y liviano (iOS) y `GESTURE_THRESHOLD_*` / `CLOCK_TICK` (Android).
+6. Con Reducir movimiento: la tarjeta sigue al dedo (es movimiento que hace la persona) pero sin rotación, sin rebote y sin salida.
