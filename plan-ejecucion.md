@@ -30,15 +30,15 @@ Reglas:
   `docs/analytics.md`: métrica norte, eventos con propiedades y nombres idénticos en iOS y Android, funnels de activación y de Pro.
 - [x] **3. Kit de entrevistas** · prep MAT-212 · ✅ 2026-09-27: guía, reclutamiento y plantilla en `docs/entrevistas/`. Además, 12 entrevistas simuladas para ensayar la guía (no cuentan para la compuerta); la guía quedó en versión 2 con lo aprendido.
   Guion, filtro de reclutamiento (4 devs, 4 creadores, 4 emprendedores), mensaje de invitación y plantilla de síntesis.
-- [ ] **4. Paquete de trámites** · MAT-214, prep MAT-213, MAT-216, MAT-217
+- [x] **4. Paquete de trámites** · MAT-214, prep MAT-213, MAT-216, MAT-217 · ✅ 2026-10-16: Chequeo del 13/10 en `docs/tramites/`: el nombre está tomado en casi todos lados y hay tres Lumbre de software (diario iOS, tutor de IA argentino, SaaS inmobiliario); lumbre.app es de un tercero. Brief para el abogado, cuentas en orden y preguntas al contador listos.
   Chequeo real de dominios, handles y nombre en tiendas (cierra MAT-214); brief para el abogado (INPI, USPTO, EUIPO, clases 9 y 42, alternativas); lista de cuentas en orden, con el D-U-N-S primero porque tarda; preguntas para el contador.
-- [ ] **5. Landing con waitlist y referidos** · MAT-215 (parte 1), MAT-220
+- [ ] **5. Landing con waitlist y referidos** · MAT-215 (parte 1), MAT-220 · Adelantado el 2026-10-16: landing estática en `web/` con fila, referidos confirmados (+10 puestos), doble opt-in y anti-abuso, probada en local. Falta publicar (H1).
   Sitio en `/web` con la marca, tabla `waitlist` con código de referido y posición en la fila, email de confirmación.
   Necesita: H1 para publicarla (se puede construir en local antes).
-- [ ] **6. Demo web de chispa** · MAT-215 (parte 2)
+- [ ] **6. Demo web de chispa** · MAT-215 (parte 2) · Adelantado el 2026-10-16: Edge Function `demo-spark` con el prompt `demo_spark.v0`, una chispa por email por día y límites por IP, probada en local. Faltan la clave de Anthropic y publicar (H1).
   Pegás dos ideas y aparece una chispa. Edge Function con un prompt v0, límite por email y por IP, una chispa por día por email.
   Necesita: H1 (clave de Anthropic y proveedor de email).
-- [ ] **7. Kit de build in public** · prep MAT-219
+- [x] **7. Kit de build in public** · prep MAT-219 · ✅ 2026-10-16: `docs/build-in-public/`: calendario de 4 semanas, 20 chispas del día, plantillas por red y plantilla visual HTML con 3 formatos.
   Calendario de 4 semanas, 20 "chispas del día" escritas, plantillas de post por red y plantilla visual.
 
 **Compuerta F0:** Lumbre confirmado como marca, 150+ en la waitlist, 3 dolores repetidos en las entrevistas.
@@ -47,19 +47,19 @@ Reglas:
 
 - [x] **8. Wordmark en curvas y exportes del ícono** · MAT-222 · ✅ 2026-10-13: con la identidad neuronal nueva. Wordmark en curvas desde la Fraunces variable (ahora empaquetada en LumbreDesign); PNG de iOS en el AppIcon del proyecto y en `design/system/logo/exportes/`, Android adaptive + monochrome por densidad y Google Play 512. Todo sale de `design/system/identidad/generar.py`.
   Wordmark pasado a trazos con Fraunces; PNG de iOS 1024 (claro, dark y tinted) y de Android (adaptive foreground/background y monochrome).
-- [ ] **9. Tokens listos para Figma** · prep MAT-221
+- [x] **9. Tokens listos para Figma** · prep MAT-221 · ✅ 2026-10-16: `design/figma/`: plugin "Lumbre tokens" y JSON DTCG desde `tokens.json` (Gris/Grafito, tipografía iOS/Android). Falta importarlo en Figma (H5).
   `tokens.json` exportado como variables de Figma con modos oscuro y claro, más instrucciones de importación.
-- [ ] **10. Copy es/en de todas las pantallas** · MAT-226
+- [x] **10. Copy es/en de todas las pantallas** · MAT-226 · ✅ 2026-10-16: `design/copy/`: 621 textos es/en y `copy.py` para String Catalog y `strings.xml`. El catálogo de iOS estaba vacío (el copy vive en los .swift): se carga cuando la app lo adopte.
   Archivo de claves en `design/copy/` que después alimenta los String Catalogs y `strings.xml`.
-- [ ] **11. Estados vacíos, error, offline y contenido inaccesible** · MAT-227
+- [x] **11. Estados vacíos, error, offline y contenido inaccesible** · MAT-227 · ✅ 2026-10-16: `design/estados/`: 67 estados con especificación, copy es/en y mockups iOS/Android.
   Especificación, copy y mockups HTML de cada estado.
-- [ ] **12. Coreografía del reveal** · MAT-225
+- [x] **12. Coreografía del reveal** · MAT-225 · ✅ 2026-10-16: `design/reveal/`: línea de tiempo de 900 ms con háptico a los 650, prototipo animado con Reducir movimiento y las diferencias con `SparkReveal.swift`.
   Tiempos, curvas y hápticos del reveal de 900 ms, más un prototipo HTML animado con la variante de Reducir movimiento.
-- [ ] **13. Tarjeta para compartir y widget** · MAT-228, MAT-229
+- [x] **13. Tarjeta para compartir y widget** · MAT-228, MAT-229 · ✅ 2026-10-16: `design/compartir/`: tarjeta 1080×1920 y widgets de iOS y Glance en tamaño real.
   Mockups HTML en tamaño real (historia 1080×1920; tamaños de widget de iOS y de Glance).
-- [ ] **14. Prototipo navegable del loop** · MAT-223
+- [x] **14. Prototipo navegable del loop** · MAT-223 · ✅ 2026-10-16: `design/prototipo/`: loop clickeable iOS/Android con los dos caminos de entrada y panel para el test. Lo que puede hacer el invitado está en `invitado.md`, a confirmar.
   HTML clickeable: onboarding → Hoy → Capturar → Bóveda → detalle → paywall, con selector iOS/Android. Incluye los dos caminos de entrada (crear cuenta o entrar como invitado) y define qué puede hacer el invitado y cuándo se le pide la cuenta. Se publica para el test.
-- [ ] **15. Kit de test del prototipo y del ícono** · prep MAT-224, MAT-210
+- [x] **15. Kit de test del prototipo y del ícono** · prep MAT-224, MAT-210 · ✅ 2026-10-16: `design/test/`: guion, test del ícono solo y planilla para 5 personas. El test lo corrés vos (H6).
   Guion de tareas, preguntas sobre el ícono solo y planilla de resultados.
 
 **Compuerta F1:** 4 de 5 testers completan el onboarding y guardan una idea sin ayuda.
@@ -158,7 +158,7 @@ Adelantado: se hace con datos de prueba. Las pantallas llaman a `LumbreAPI`; hoy
 
 ## E. Beta iOS (F4)
 
-- [ ] **60. Kit de beta** · prep MAT-273, MAT-274
+- [x] **60. Kit de beta** · prep MAT-273, MAT-274 · ✅ 2026-10-16: `docs/beta/`: invitación, notas de TestFlight, encuesta de los 7 días, guion de llamadas y tablero de D1/D7 definido.
   Invitación a la waitlist, notas de TestFlight, encuesta de los 7 días, guion de llamadas y tablero de D1/D7 en PostHog.
 - [ ] **61. Iterar con datos reales** · MAT-275
   Prompts, onboarding y hora de la chispa, a partir de los datos y el feedback de la beta.
@@ -171,19 +171,19 @@ Adelantado: se hace con datos de prueba. Las pantallas llaman a `LumbreAPI`; hoy
 - [ ] **62. Revisión de seguridad** · MAT-293
   RLS, claves, App Attest, rate limits y logs sin contenido de notas. La parte de Android se repite en el paso 86.
 - [ ] **63. Prueba de carga del batch (10x)** · MAT-294
-- [ ] **64. Borradores de términos, privacidad y consentimiento para IA** · MAT-295
+- [x] **64. Borradores de términos, privacidad y consentimiento para IA** · MAT-295 · ✅ 2026-10-16: `docs/legal/`: borradores es/en de privacidad, términos y consentimiento para IA, coherentes con el backend. Esperan al abogado (H3).
   Para que los revise el abogado (H3).
 - [ ] **65. Privacy manifest, etiquetas de App Store y Data safety de Play** · MAT-296
-- [ ] **66. Fichas de tienda es/en y capturas de iOS** · MAT-297
+- [ ] **66. Fichas de tienda es/en y capturas de iOS** · MAT-297 · Adelantado el 2026-10-16: fichas es/en y guion de 7 capturas en `docs/tiendas/`. Faltan las imágenes.
   Las capturas muestran el choque, no la lista. Las de Android se hacen en el paso 86.
 
 **Compuerta F6:** checklist de deploy de App Store de `plan.md` §10 completo.
 
 ## G. Lanzamiento iOS (F7)
 
-- [ ] **67. Paquete de revisión de App Store** · MAT-299
+- [ ] **67. Paquete de revisión de App Store** · MAT-299 · Adelantado el 2026-10-16: notas para el revisor, procedimiento de la cuenta demo y checklist de §10 en `docs/lanzamiento/revision-app-store.md`. Falta crear la cuenta.
   Cuenta demo con Pro, notas para el revisor y el checklist revisado.
-- [ ] **68. Kit de lanzamiento iOS** · MAT-301, prep MAT-300, MAT-302, MAT-303
+- [x] **68. Kit de lanzamiento iOS** · MAT-301, prep MAT-300, MAT-302, MAT-303 · ✅ 2026-10-16: `docs/lanzamiento/`: Product Hunt, comunidades, email a la waitlist, pitch de featuring y mensaje para los creadores.
   Product Hunt, posts para comunidades, email a la waitlist, pitch de featuring y mensaje para los 20 creadores.
 
 **Compuerta F7:** crash-free > 99,5% y costos de IA dentro de lo previsto.
