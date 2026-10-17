@@ -482,9 +482,26 @@ public enum PlannerRoom: String, Sendable, CaseIterable {
     }
 }
 
+/// Lentes del planificador (planner_lens.v1): convierten la chispa en un modelo de negocio, una trama o un post.
+/// La respuesta empieza con la marca `[[lens:…]]` en vez de la del cuarto (`PlannerRoom.split` también la oculta).
+public enum PlannerLens: String, Sendable, CaseIterable {
+    case businessModel = "business_model"
+    case plot
+    case post
+
+    /// La lente que marca una respuesta, si tiene marca.
+    public static func of(_ raw: String) -> PlannerLens? {
+        let trimmed = raw.drop { $0.isWhitespace }
+        guard trimmed.hasPrefix("[[lens:"), let close = trimmed.range(of: "]]") else { return nil }
+        return PlannerLens(rawValue: String(trimmed[trimmed.index(trimmed.startIndex, offsetBy: 7)..<close.lowerBound]))
+    }
+}
+
 extension PlannerMessage {
     /// Cuarto del método al que pertenece la respuesta, si tiene marca.
     public var room: PlannerRoom? { PlannerRoom.split(content).room }
+    /// Lente con la que se pidió la respuesta, si tiene marca.
+    public var lens: PlannerLens? { role == .assistant ? PlannerLens.of(content) : nil }
     /// El texto para mostrar, sin la marca del cuarto.
     public var displayText: String { role == .assistant ? PlannerRoom.split(content).text : content }
 }

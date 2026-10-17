@@ -221,7 +221,7 @@ public final class MockLumbreAPI: LumbreAPI {
         return await store.messages[sparkID] ?? []
     }
 
-    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod) -> AsyncThrowingStream<String, Error> {
+    public func sendPlannerMessage(sparkID: Spark.ID, text: String, mode: PlannerMode, method: PlannerMethod, lens: PlannerLens?) -> AsyncThrowingStream<String, Error> {
         let store = store
         let latency = latency
         return AsyncThrowingStream { continuation in
@@ -230,9 +230,13 @@ public final class MockLumbreAPI: LumbreAPI {
                     guard await store.profile.isPro else { throw LumbreAPIError.proRequired }
                     let history = await store.messages[sparkID] ?? []
                     await store.appendMessage(sparkID: sparkID, role: .user, content: text, mode: mode)
-                    let reply = method == .disney
-                        ? MockData.disneyReply(history: history, to: text)
-                        : MockData.plannerReply(to: text, mode: mode)
+                    let reply = if let lens {
+                        MockData.lensReply(lens, mode: mode)
+                    } else if method == .disney {
+                        MockData.disneyReply(history: history, to: text)
+                    } else {
+                        MockData.plannerReply(to: text, mode: mode)
+                    }
                     var sent = ""
                     for word in reply.split(separator: " ", omittingEmptySubsequences: false) {
                         try await Task.sleep(for: latency / 10)
@@ -673,11 +677,16 @@ public enum MockData {
     static func disneyReply(history: [PlannerMessage], to text: String) -> String {
         var current: PlannerRoom?
         var turns: [PlannerRoom: Int] = [:]
+        var lastCounted: PlannerRoom?
         for message in history {
             if message.role == .assistant {
+                // Un pedido de lente no cuenta como respuesta del cuarto.
+                if message.lens != nil, let lastCounted { turns[lastCounted, default: 0] -= 1 }
+                lastCounted = nil
                 current = message.room ?? current
             } else if let current {
                 turns[current, default: 0] += 1
+                lastCounted = current
             }
         }
         let folded = text.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil)
@@ -725,6 +734,52 @@ public enum MockData {
         case .plan:
             return mark(.plan, "Elegí una sola cosa del plan para esta semana y medí si cambia algo.")
         }
+    }
+
+    /// Las lentes con el formato de planner_lens.v1 (mismos títulos que el proveedor local del backend).
+    static func lensReply(_ lens: PlannerLens, mode: PlannerMode) -> String {
+        let body = switch lens {
+        case .businessModel: """
+            **Para quién**: quien hoy resuelve a mano lo que toca la primera neurona y lo sufre cada semana.
+            **El problema**: hay algo valioso en esa idea y hoy no hay una forma simple de aprovecharlo.
+            **La propuesta**: esta chispa, una forma de usar eso con la regla de la segunda neurona.
+            **Por qué estas dos neuronas**: una pone el mecanismo y la otra el detalle que lo hace distinto. Juntas son difíciles de copiar.
+            **Cómo llega**: una comunidad donde ya estén esas personas, un contenido que muestre el cruce y el boca a boca de las primeras diez.
+            **Cómo cobra**: suscripción mensual que paga quien lo usa. Precio: supuesto a validar.
+            **Qué cuesta**: tu tiempo para armar la primera versión y para hablar con las primeras personas.
+            **El experimento**: ofrecerlo a cinco personas esta semana, a mano, y ver si alguna paga o deja una seña.
+            """
+        case .plot: """
+            **Logline**: alguien que vive según la primera neurona descubre la segunda y tiene que elegir entre las dos antes de perder lo que más quiere.
+            **El mundo**: un lugar chico, hoy, donde todos hacen las cosas como siempre.
+            **Protagonista**: quiere que todo siga igual; necesita, aunque no lo sepa, que algo cambie.
+            **El conflicto**: la regla de la segunda neurona choca con todo lo que conoce.
+            **Tres actos**:
+            1. Planteo: la vida ordenada y la primera grieta.
+            2. Confrontación: prueba la regla nueva y le sale caro.
+            3. Desenlace: encuentra la forma de hacer las dos cosas a la vez.
+            **El giro**: lo que parecía la amenaza era la otra mitad de la idea.
+            **Primera escena**: abre en un día cualquiera, con un gesto repetido mil veces. Esta vez, algo no encaja.
+            """
+        case .post: """
+            **Gancho**: Junté dos ideas que no tenían nada que ver y no me lo esperaba.
+            **El post**: Hace un tiempo guardé una idea sobre cómo las ciudades esconden capas de historia.
+
+            Hace poco guardé otra sobre por qué una historia por capítulos retiene más que un dato suelto.
+
+            Cruzándolas salió esto: un podcast que baja una capa de la ciudad por episodio.
+
+            Todavía no sé si funciona, pero esta semana lo voy a probar en chico.
+            **Cierre**: ¿Qué dos ideas tuyas, que no tienen nada que ver, cruzarías?
+            **Otros dos ganchos**:
+            - Dos ideas que no tenían nada que ver, y una tercera que no puedo dejar de pensar.
+            - ¿Qué pasa si mirás un podcast con los ojos de un arqueólogo?
+            """
+        }
+        let deep = mode == .deep && lens != .post
+            ? "\n\nPara la versión larga: elegí una sola pieza de esto y bajala a una prueba de esta semana."
+            : ""
+        return "[[lens:\(lens.rawValue)]]\n\n" + body + deep
     }
 
     static func plannerReply(to text: String, mode: PlannerMode) -> String {

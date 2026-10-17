@@ -165,7 +165,8 @@ Fuente: **A** = app (iOS y Android), **S** = servidor (Edge Functions o webhook)
 | Evento | Fuente | Propiedades | Cuándo |
 |---|---|---|---|
 | `planner_opened` | A | `entry`: `spark_detail`, `project` | Abre el planificador (con o sin Pro) |
-| `planner_message_sent` | S | `mode`: `quick`, `deep`; `suggestion`: `backlog`, `devil_advocate`, `stack`, `none`; `method`: `free`, `disney`; `room`: `dreamer`, `realist`, `critic`, `plan`, `none` | Se procesa un mensaje |
+| `planner_message_sent` | S | `mode`: `quick`, `deep`; `suggestion`: `backlog`, `devil_advocate`, `stack`, `none`; `method`: `free`, `disney`; `room`: `dreamer`, `realist`, `critic`, `plan`, `none`; `lens`: `business_model`, `plot`, `post`, `none` | Se procesa un mensaje |
+| `planner_lens_used` | A | `lens`: `business_model`, `plot`, `post`; `mode`: `quick`, `deep`; `method`: `free`, `disney` | Toca una lente del planificador y el pedido sale (con el consentimiento para la IA; flag `planner_lenses`) |
 | `quota_reached` | S | `kind`: `capture`, `distill`, `spark_extra`, `planner`, `planner_deep` | `consume_credit()` devuelve false |
 | `markdown_exported` | A | `object`: `spark`, `project` | Exporta a Markdown |
 | `project_created` | S | `from`: `spark`, `manual` | Crea un proyecto (tablero en 1.1) |

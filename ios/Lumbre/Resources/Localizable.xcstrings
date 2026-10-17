@@ -1437,6 +1437,39 @@
         }
       }
     },
+    "Convertí esta chispa en un modelo de negocio." : {
+      "comment" : "Mensaje que manda la lente; el formato lo pide el servidor. [planificador.lens.business_model_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn this spark into a business model."
+          }
+        }
+      }
+    },
+    "Convertí esta chispa en un post." : {
+      "comment" : "[planificador.lens.post_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn this spark into a post."
+          }
+        }
+      }
+    },
+    "Convertí esta chispa en una trama." : {
+      "comment" : "[planificador.lens.plot_msg]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn this spark into a plot."
+          }
+        }
+      }
+    },
     "Copiar" : {
       "comment" : "[planificador.copy]",
       "localizations" : {
@@ -3128,6 +3161,17 @@
         }
       }
     },
+    "Lente: %@" : {
+      "comment" : "Sobre la respuesta de una lente y en la etiqueta de VoiceOver del atajo. [planificador.lens.label]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lens: %@"
+          }
+        }
+      }
+    },
     "Leyendo el texto…" : {
       "comment" : "[capturar.reading_text]",
       "localizations" : {
@@ -3471,6 +3515,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Meanwhile, you're using Lumbre as a guest. Everything you save stays in this session and moves to your account when you create it."
+          }
+        }
+      }
+    },
+    "Modelo de negocio" : {
+      "comment" : "[planificador.lens.business_model]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Business model"
           }
         }
       }
@@ -4047,6 +4102,17 @@
         }
       }
     },
+    "O mirala con una lente" : {
+      "comment" : "[planificador.lens.intro_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Or look at it through a lens"
+          }
+        }
+      }
+    },
     "Onda verde de semáforos" : {
       "comment" : "[onboarding.welcome.example_a]",
       "localizations" : {
@@ -4460,6 +4526,17 @@
         }
       }
     },
+    "Post" : {
+      "comment" : "[planificador.lens.post]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Post"
+          }
+        }
+      }
+    },
     "Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo o el stack que usarías." : {
       "comment" : "[planificador.intro]",
       "localizations" : {
@@ -4467,6 +4544,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ask anything about this idea or pick a shortcut: a backlog to get started, a devil's advocate or the stack you'd use."
+          }
+        }
+      }
+    },
+    "Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo, el stack que usarías o una lente para verla como modelo de negocio, trama o post." : {
+      "comment" : "Con el flag planner_lenses. [planificador.intro_lenses]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask anything about this idea or pick a shortcut: a backlog to get started, a devil's advocate, the stack you'd use or a lens to see it as a business model, a plot or a post."
           }
         }
       }
@@ -5649,6 +5737,17 @@
         }
       }
     },
+    "Trama" : {
+      "comment" : "[planificador.lens.plot]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plot"
+          }
+        }
+      }
+    },
     "Transcripción" : {
       "comment" : "[capturar.dictate.transcript]",
       "localizations" : {
@@ -5887,6 +5986,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A circuit gathers the ideas you want to move forward. Create one, or save a spark from Today and choose where to add it."
+          }
+        }
+      }
+    },
+    "Un modelo de negocio, una trama o un post, cada uno con su formato." : {
+      "comment" : "[planificador.lens.intro_body]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A business model, a plot or a post, each in its own format."
           }
         }
       }

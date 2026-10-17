@@ -386,7 +386,17 @@
         {"id": "planificador.shortcut.devil_msg", "es": "Hacé de abogado del diablo: ¿por qué podría fallar esta idea?", "en": "Play devil's advocate: why could this idea fail?"},
         {"id": "planificador.shortcut.stack_msg", "es": "¿Qué stack usarías para construir esto?", "en": "What stack would you use to build this?"},
         {"id": "planificador.room_current", "es": "Cuarto actual: %@", "en": "Current room: %@"},
-        {"id": "planificador.not_started", "es": "El método todavía no arrancó", "en": "The method hasn't started yet"}
+        {"id": "planificador.not_started", "es": "El método todavía no arrancó", "en": "The method hasn't started yet"},
+        {"id": "planificador.intro_lenses", "es": "Preguntá lo que quieras sobre esta idea o elegí un atajo: un backlog para arrancar, un abogado del diablo, el stack que usarías o una lente para verla como modelo de negocio, trama o post.", "en": "Ask anything about this idea or pick a shortcut: a backlog to get started, a devil's advocate, the stack you'd use or a lens to see it as a business model, a plot or a post.", "note": "Con el flag planner_lenses."},
+        {"id": "planificador.lens.business_model", "es": "Modelo de negocio", "en": "Business model"},
+        {"id": "planificador.lens.plot", "es": "Trama", "en": "Plot"},
+        {"id": "planificador.lens.post", "es": "Post", "en": "Post"},
+        {"id": "planificador.lens.business_model_msg", "es": "Convertí esta chispa en un modelo de negocio.", "en": "Turn this spark into a business model.", "note": "Mensaje que manda la lente; el formato lo pide el servidor."},
+        {"id": "planificador.lens.plot_msg", "es": "Convertí esta chispa en una trama.", "en": "Turn this spark into a plot."},
+        {"id": "planificador.lens.post_msg", "es": "Convertí esta chispa en un post.", "en": "Turn this spark into a post."},
+        {"id": "planificador.lens.label", "es": "Lente: %@", "en": "Lens: %@", "note": "Sobre la respuesta de una lente y en la etiqueta de VoiceOver del atajo."},
+        {"id": "planificador.lens.intro_title", "es": "O mirala con una lente", "en": "Or look at it through a lens"},
+        {"id": "planificador.lens.intro_body", "es": "Un modelo de negocio, una trama o un post, cada uno con su formato.", "en": "A business model, a plot or a post, each in its own format."}
       ]
     },
     {

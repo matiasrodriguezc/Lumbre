@@ -6,6 +6,7 @@
 // - Chispa: "A × B" y 1–2 oraciones que cruzan los principios con plantillas elegidas por hash del par.
 // - Planificador: plantilla según el atajo (backlog, abogado del diablo, stack) o genérica, en streaming.
 //   Con el método de los tres cuartos, recorre Soñador, Realista y Crítico según el estado del hilo y cierra con la síntesis.
+//   Con una lente (modelo de negocio, trama, post), responde con su formato y la marca [[lens:…]].
 
 import { clip, firstSentence, fnv1a, wordCount } from "../../text.ts";
 import {
@@ -96,6 +97,7 @@ export function localSpark(a: ConceptBrief, b: ConceptBrief) {
 // Planificador
 // ---------------------------------------------------------------
 export function localPlanner(task: Extract<CompletionRequest["local"], { kind: "planner" }>): string {
+  if (task.lens) return localLens(task);
   if (task.disney) return localDisney(task);
   const { spark, a, b, project, deep } = task;
   const where = project ? ` dentro de «${project}»` : "";
@@ -133,6 +135,55 @@ export function localPlanner(task: Extract<CompletionRequest["local"], { kind: "
         `Para avanzar, elegí una sola cosa concreta para probar esta semana y medí si cambia algo.`,
         deep ? `Si funciona, sumá lo de «${b.title}» como segunda capa y revisá qué parte se puede simplificar.` : "",
       ].filter(Boolean).join(" ");
+  }
+}
+
+/** Lentes sin modelo: el formato de planner_lens.v1 con plantillas que usan la chispa y las dos neuronas. */
+function localLens(task: Extract<CompletionRequest["local"], { kind: "planner" }>): string {
+  const { spark, a, b, deep } = task;
+  const mark = (lines: string[]) => `[[lens:${task.lens}]]\n\n${lines.join("\n")}`;
+  switch (task.lens!) {
+    case "business_model":
+      return mark([
+        `**Para quién**: quien hoy resuelve a mano lo que toca «${a.title}» y lo sufre cada semana.`,
+        `**El problema**: ${lowerFirst(stripEnd(a.thesis))}, y hoy no hay una forma simple de aprovecharlo.`,
+        `**La propuesta**: «${spark.title}», una forma de usar eso con la regla de «${b.title}».`,
+        `**Por qué estas dos neuronas**: de «${a.title}» sale que ${lowerFirst(core(a))}; de «${b.title}», que ${lowerFirst(core(b))}. Juntas son difíciles de copiar.`,
+        "**Cómo llega**: una comunidad donde ya estén esas personas, un contenido que muestre el cruce y el boca a boca de las primeras diez.",
+        "**Cómo cobra**: suscripción mensual que paga quien lo usa. Precio: supuesto a validar.",
+        "**Qué cuesta**: tu tiempo para armar la primera versión y para hablar con las primeras personas.",
+        "**El experimento**: ofrecerlo a cinco personas esta semana, a mano, y ver si alguna paga o deja una seña.",
+        ...(deep ? ["", "Si dos de cinco dicen que sí, armá la versión mínima; si nadie, cambiá el «para quién» antes que la propuesta."] : []),
+      ]);
+    case "plot":
+      return mark([
+        `**Logline**: alguien que vive según «${a.title}» descubre «${b.title}» y tiene que elegir entre los dos antes de perder lo que más quiere.`,
+        `**El mundo**: un lugar chico donde ${lowerFirst(stripEnd(a.thesis))}.`,
+        "**Protagonista**: quiere que todo siga igual; necesita, aunque no lo sepa, que algo cambie.",
+        `**El conflicto**: ${lowerFirst(core(b))}, y eso choca con todo lo que conoce.`,
+        "**Tres actos**:",
+        `1. Planteo: la vida ordenada por «${a.title}» y la primera grieta.`,
+        `2. Confrontación: prueba la regla de «${b.title}» y le sale caro.`,
+        `3. Desenlace: encuentra la forma de hacer las dos cosas a la vez: «${spark.title}».`,
+        `**El giro**: lo que parecía la amenaza era la otra mitad de la idea.`,
+        "**Primera escena**: abre en un día cualquiera, con un gesto repetido mil veces. Esta vez, algo no encaja.",
+        ...(deep ? ["", "Para la versión larga: un personaje secundario que encarne cada neurona y una escena donde discutan."] : []),
+      ]);
+    case "post":
+      return mark([
+        `**Gancho**: Junté «${shortTitle(a.title)}» con «${shortTitle(b.title)}» y no me lo esperaba.`,
+        `**El post**: Hace un tiempo guardé una idea: ${lowerFirst(stripEnd(a.thesis))}.`,
+        "",
+        `Hace poco guardé otra que no tenía nada que ver: ${lowerFirst(stripEnd(b.thesis))}.`,
+        "",
+        `Cruzándolas salió esto: ${stripEnd(spark.body || spark.title)}.`,
+        "",
+        "Todavía no sé si funciona, pero esta semana lo voy a probar en chico.",
+        "**Cierre**: ¿Qué dos ideas tuyas, que no tienen nada que ver, cruzarías?",
+        "**Otros dos ganchos**:",
+        "- Dos ideas que no tenían nada que ver, y una tercera que no puedo dejar de pensar.",
+        `- ¿Qué pasa si mirás «${shortTitle(b.title)}» con los ojos de «${shortTitle(a.title)}»?`,
+      ]);
   }
 }
 
