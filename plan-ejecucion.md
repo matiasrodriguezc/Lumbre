@@ -101,7 +101,7 @@ Todo arranca en local con Supabase CLI y Docker; los entornos remotos se conecta
 - [x] **29. Set de evaluación y harness** · MAT-243 (parte 1) · ✅ 2026-10-16: `backend/eval/`: 500 pares (100 por perfil), harness con el pedido de producción, planilla para puntuar y `score.ts`. Puntuar es el paso 30 (H6).
   100 pares por perfil, un script que genera las chispas y una planilla para puntuar "sorprende" y "sirve".
 - [ ] **30. Prompt de chispa** · MAT-243 (parte 2)
-  Iterar el prompt con tus puntajes hasta un promedio de 3,5 o más; prompt versionado.
+  Iterar el prompt con tus puntajes hasta un promedio de 3,5 o más; prompt versionado. Sumar un autochequeo de coherencia (el "guardián del absurdo", 2026-10-17): si la chispa no se sostiene, se descarta y se genera otra.
   Necesita: H6.
 - [x] **31. Biblioteca de conceptos invitados** · MAT-242 · ✅ 2026-10-16: biblioteca ampliada a ~30 conceptos por perfil, de al menos 14 dominios y sin el mundo propio del perfil.
 - [ ] **32. Batch nocturno y push** · MAT-244 · Adelantado el 2026-10-16: `daily-sparks` por zona horaria (local o Batches API), cada minuto desde la prueba de carga, y `send-pushes` que sin claves registra. Faltan claves de APNs (H1), Anthropic real y FCM con Android. Usa `spark_jobs` en vez de pgmq (a confirmar).
@@ -224,7 +224,30 @@ Necesita: H9 (Android Studio y SDK, que hoy no están instalados).
 
 **Compuerta F8:** ANR y crashes por debajo de los umbrales de Play Vitals.
 
-Lo de la versión 1.1 en adelante (F9) se planifica aparte después del lanzamiento. Si falta tiempo, se recorta en el orden de `plan.md` §4.
+## J. Ideas nuevas (agregadas el 2026-10-17)
+
+Salen de una lista de ideas revisada el 2026-10-17; las elegidas están en `plan.md` §4 (versión 1.1). Van en orden de valor. Cada una detrás de su feature flag, con sus eventos en `docs/analytics.md`, en iOS primero (Android las toma al llegar a su paso). Las que no dependen de cuentas (88, 90, 93) se pueden adelantar antes del lanzamiento si sobra tiempo.
+
+- [ ] **88. La chispa guardada se vuelve neurona** · flag `spark_neuron`
+  Al guardar una chispa se crea una neurona con su título y su cuerpo (embebidos en el servidor) y la referencia a sus dos neuronas de origen. El emparejamiento nunca la cruza con sus padres; no gasta cupo de captura ni suma para la chispa extra (si no, guardar chispas daría chispas). En la Red se ve con "Nació de una chispa" y desde ahí se llega a la chispa original. Migración, pgTAP y tests del emparejamiento.
+  Listo cuando: una chispa guardada aparece en la Red, puede salir en una chispa nueva con otra neurona y nunca con sus padres.
+- [ ] **89. Importar notas: Markdown y Apple Notes** · flag `import_notes`
+  Markdown: archivos `.md` sueltos o una carpeta de Obsidian (desde Archivos). Apple Notes: un atajo de Atajos que busca las notas y se las pasa a un App Intent de Lumbre (no hay API para leerlas en bloque). Cada nota entra por `/capture`, con la cola offline, y con los límites de §4: 50 en free, ilimitado en Pro. Vista previa antes de importar, con elegir y descartar.
+  A definir antes de empezar: qué tesis lleva una nota larga cuando no se conceptualiza (primera línea, o que el usuario elija), y si importar cuenta para el tope de 30 capturas por día.
+- [ ] **90. Lentes en el planificador** · flag `planner_lenses`
+  Tres atajos más en el planificador (Pro): "Modelo de negocio", "Trama" y "Post". Cada uno es un pedido con su formato de salida, sobre `planner.v2`. Evento con la lente elegida.
+  Listo cuando: los tres atajos responden con su formato y respetan el consentimiento para IA.
+- [ ] **91. Perilla de distancia** · flag `distance_dial`
+  Lineal, Serendipia (por defecto) y Caos al pedir una chispa a mano (extra y Pro); la diaria no cambia. Cada posición corre la banda de `pick_spark_pair` (provisorio: percentiles 20–50, 40–80 y 70–95, a calibrar con el set de evaluación). "Caos" se evalúa aparte con el harness del paso 29.
+  Necesita: paso 30 (prompt de chispa evaluado).
+- [ ] **92. Temas puente** · flag `bridge_topics`
+  Si la Red tiene mucho de dos dominios que casi no se cruzaron, Lumbre sugiere 2 o 3 temas para leer que los unan ("bioarte" entre biología y arte). Solo temas, nunca artículos ni links. Una llamada por semana como mucho; se puede sumar al resumen semanal. Se muestra en la Red, y en Hoy cuando quedan pocos pares buenos.
+  A definir: si es para todos o solo Pro.
+- [ ] **93. Swipe en el reveal** · flag `reveal_swipe`
+  En el modal, ya revelada (desde los 900 ms): deslizar a la derecha guarda (abre la elección de circuito si está `projects`) y a la izquierda abre "No me sirve" con su motivo. La tarjeta sigue al dedo, con umbral, háptico y vuelta si no llega al umbral; con Reducir movimiento, sin fling. Los botones se quedan y VoiceOver usa acciones (`accessibilityAction`). Primero el gesto en `design/reveal/`.
+  Listo cuando: el swipe funciona en los dos sentidos, no choca con el scroll del panel en AX5 y VoiceOver puede hacer lo mismo sin gesto.
+
+Lo demás de la versión 1.1 en adelante (F9) se planifica aparte después del lanzamiento. Si falta tiempo, se recorta en el orden de `plan.md` §4.
 
 ---
 
