@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Captura de tienda</title>
+<!-- Paso 66: compone una captura de App Store de 1320×2868 (6,9") a partir de la pantalla cruda del simulador.
+     La llama componer.sh con ?n=<número>&lang=<es|en>. Guion y títulos: docs/tiendas/capturas.md. -->
+<link rel="stylesheet" href="../system/tokens.css">
+<style>
+  @font-face { font-family: "Fraunces"; src: url("../../web/assets/fonts/fraunces-600-soft.woff") format("woff"); font-weight: 600; }
+  html, body { margin: 0; width: 1320px; height: 2868px; overflow: hidden; background: var(--gray); }
+  .red { position: absolute; inset: 0 0 auto 0; height: 1200px; background: url("../system/identidad/red-vertical.svg") top center / 1320px auto no-repeat; opacity: .55;
+         -webkit-mask-image: linear-gradient(#000 40%, transparent); mask-image: linear-gradient(#000 40%, transparent); }
+  h1 { position: absolute; left: 110px; right: 110px; top: 230px; margin: 0; color: var(--ink);
+       font: 600 104px/1.08 "Fraunces", serif; font-variation-settings: "SOFT" 100; letter-spacing: -1px; text-wrap: balance; }
+  .pantalla { position: absolute; left: 50%; top: 640px; width: 1000px; transform: translateX(-50%);
+              border-radius: 64px; overflow: hidden; box-shadow: 0 30px 80px rgba(14,14,16,.18), 0 0 0 2px rgba(14,14,16,.06); }
+  .pantalla img { display: block; width: 100%; }
+</style>
+</head>
+<body>
+  <div class="red"></div>
+  <h1 id="titulo"></h1>
+  <div class="pantalla"><img id="img" alt=""></div>
+<script>
+  const TITULOS = {
+    es: ["Dos ideas se cruzan. Salta una chispa.", "Una chispa nueva cada mañana", "Guardá lo que te inspira, desde cualquier app",
+         "Cada cosa que guardás, en una idea de una línea", "Encontrá ideas por lo que significan", "De la chispa a un plan para esta semana", "Compartí tus chispas"],
+    en: ["Two ideas meet. A spark lights up.", "A new spark every morning", "Save what inspires you, from any app",
+         "Everything you save, in one line", "Find ideas by what they mean", "From spark to a plan for this week", "Share your sparks"],
+  };
+  const ARCHIVOS = ["01-reveal", "02-hoy", "03-capturar", "04-neurona", "05-red", "06-planificador", "07-tarjeta"];
+  const q = new URLSearchParams(location.search);
+  const n = Math.min(Math.max(parseInt(q.get("n") || "1", 10), 1), 7);
+  const lang = q.get("lang") === "en" ? "en" : "es";
+  document.documentElement.lang = lang;
+  document.getElementById("titulo").textContent = TITULOS[lang][n - 1];
+  document.getElementById("img").src = `crudas/${lang}/${ARCHIVOS[n - 1]}.png`;
+</script>
+</body>
+</html>
