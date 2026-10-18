@@ -396,7 +396,10 @@ private actor MockStore {
         let quota = SparkQuota(
             available: dailyAvailable + extraRemaining,
             total: 1 + (profile.plan == .pro ? 10 : min(2, capturesToday / 3)),
-            refillsAt: MockData.nextOccurrence(of: profile.sparkTime),
+            // Como /today: con la diaria de hoy ya hecha, la próxima es la de mañana aunque no haya llegado la hora.
+            refillsAt: daily == nil
+                ? MockData.nextOccurrence(of: profile.sparkTime)
+                : MockData.nextOccurrence(of: profile.sparkTime, after: Calendar.current.date(byAdding: .day, value: 1, to: Calendar.current.startOfDay(for: .now)) ?? .now),
             conceptsUntilExtra: profile.plan == .free ? 3 - capturesToday % 3 : 0,
             extraRemaining: extraRemaining
         )

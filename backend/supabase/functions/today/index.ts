@@ -5,7 +5,7 @@
 //   Con el proveedor local no cuesta nada; con Anthropic cuenta para el tope diario en dólares.
 //   Sin consentimiento para la IA (profiles.ai_consent_at) no se genera: spark queda null.
 // - Cupo: la diaria cuenta como disponible mientras está pending o revealed, más las extra que quedan.
-// - refills_at: la próxima hora de la chispa en su zona. concepts_until_extra: lo que falta hoy para ganar una extra (free).
+// - refills_at: la próxima hora de la chispa en su zona (la de mañana si la de hoy ya salió). concepts_until_extra: lo que falta hoy para ganar una extra (free).
 
 import { requireDeviceIntegrity } from "../_shared/attest/guard.ts";
 import { Analytics } from "../_shared/analytics.ts";
@@ -19,6 +19,7 @@ interface Clock {
   day_started_at: string;
   spark_due: boolean;
   next_spark_at: string;
+  following_spark_at: string;
   timezone: string;
   plan: "guest" | "free" | "pro";
 }
@@ -96,7 +97,8 @@ Deno.serve(handler("today", async (req) => {
     quota: {
       available: dailyAvailable + extraRemaining,
       total: 1 + (extra?.available ?? 0),
-      refills_at: clock.next_spark_at,
+      // Con la diaria de hoy ya hecha (aunque sea antes de la hora), la próxima es la de mañana.
+      refills_at: spark ? clock.following_spark_at : clock.next_spark_at,
       concepts_until_extra: conceptsUntilExtra,
       extra_remaining: extraRemaining,
     },
