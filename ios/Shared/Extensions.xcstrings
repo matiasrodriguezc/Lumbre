@@ -177,6 +177,16 @@
         }
       }
     },
+    "Guardar idea" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save idea"
+          }
+        }
+      }
+    },
     "Guardar una idea" : {
       "comment" : "Nombre del widget de captura, su texto y el botón del widget grande. También título corto del atajo. [widget.capture_name]",
       "localizations" : {

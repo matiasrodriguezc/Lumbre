@@ -345,3 +345,7 @@ La tarjeta del reveal queda limpia: las dos neuronas, la sinapsis, el título y 
 - Planificar sale del reveal: sigue en la chispa de Hoy y en el detalle.
 - Reportar (obligatorio en Play para contenido de IA) queda con un toque largo sobre la tarjeta y como acción de VoiceOver.
 - La estrella de la sinapsis mide 46 u de alto y tapa el punto donde se juntan los conos.
+
+## 15. Swipe hacia arriba: compartir (2026-10-17)
+
+Además de izquierda (descartar) y derecha (guardar), arrastrar la tarjeta hacia arriba la comparte: pasado el umbral (110 pt, o un tirón de más de 700 pt/s) la tarjeta sale por arriba, se abre la tarjeta para compartir y, al cerrarla, vuelve a su lugar. Hacia abajo se resiste. Solo funciona cuando la tarjeta entra entera en la pantalla: con texto grande el panel scrollea y el gesto vertical es del scroll (queda el botón del medio).

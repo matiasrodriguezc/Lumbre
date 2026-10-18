@@ -85,6 +85,20 @@ struct OpenCaptureIntent: AppIntent {
     }
 }
 
+/// El botón "Guardar idea" del widget chico de la chispa (los widgets chicos no tienen links, pero sí botones con intent).
+/// Igual que `OpenCaptureIntent`, con la entrada `widget`; no aparece en Atajos.
+struct OpenCaptureFromWidgetIntent: AppIntent {
+    static let title = LocalizedStringResource("Guardar una idea", table: "Extensions")
+    static let openAppWhenRun = true
+    static let isDiscoverable = false
+
+    @MainActor
+    func perform() async throws -> some IntentResult {
+        DeepLinkInbox.post(.capture(entry: "widget"))
+        return .result()
+    }
+}
+
 /// Mensajes de error que Siri y Atajos muestran tal cual.
 enum IntentMessage: Error, CustomLocalizedStringResourceConvertible {
     case unavailable

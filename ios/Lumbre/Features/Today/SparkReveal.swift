@@ -467,6 +467,8 @@ private struct SynapseRevealModal: View {
     /// Flag `reveal_buttons`: la tarjeta queda limpia y abajo van los botones redondos (descartar, compartir, guardar).
     private let usesButtons = FeatureFlag.revealButtons.isEnabled
     @State private var dragX: CGFloat = 0
+    /// Hacia arriba es compartir (solo hacia arriba; hacia abajo se resiste).
+    @State private var dragY: CGFloat = 0
     /// Se decide una vez por gesto, a los 10 pt: horizontal es swipe; vertical, scroll.
     @State private var dragAxis: Axis?
     @State private var isArmed = false
@@ -515,9 +517,9 @@ private struct SynapseRevealModal: View {
                         panel(at: t, motion: motion)
                             .frame(maxWidth: 440)
                             .onGeometryChange(for: CGFloat.self, of: \.size.width) { panelWidth = $0 }
-                            .offset(x: dragX)
+                            .offset(x: dragX, y: dragY)
                             .rotationEffect(.degrees(reduceMotion ? 0 : swipeRotation)),
-                        screenWidth: proxy.size.width
+                        screenSize: proxy.size
                     )
                     .opacity(cardOpacity)
                     if usesButtons {
@@ -532,10 +534,10 @@ private struct SynapseRevealModal: View {
             }
             .scrollBounceBehavior(.basedOnSize)
             // Ya decidido como swipe, el panel no scrollea hasta soltar (con texto grande scrollea).
-            .scrollDisabled(dragAxis == .horizontal)
+            .scrollDisabled(dragAxis != nil)
         }
         .sensoryFeedback(trigger: isArmed) { _, armed in
-            guard dragAxis == .horizontal else { return nil }
+            guard dragAxis != nil else { return nil }
             return armed ? .impact(weight: .medium) : .impact(weight: .light)
         }
         .background { swipeHints }
@@ -712,41 +714,84 @@ private struct SynapseRevealModal: View {
 
     /// Un `DragGesture` dentro del `ScrollView` le gana al scroll (iOS 18 o más), aunque sea simultáneo. El swipe es
     /// un pan de UIKit en el propio scroll: solo empieza en horizontal y sobre el panel, y el scroll espera a que falle.
-    private func withSwipeGesture(_ content: some View, screenWidth: CGFloat) -> some View {
+    private func withSwipeGesture(_ content: some View, screenSize: CGSize) -> some View {
         content.background {
             ScrollSwipeRecognizer(
                 isEnabled: canSwipe,
+                allowsUp: FeatureFlag.shareCard.isEnabled,
                 onChanged: swipeChanged,
-                onEnded: { swipeEnded(velocity: $0, isCancelled: $1, screenWidth: screenWidth) }
+                onEnded: { swipeEnded(velocity: $0, isCancelled: $1, screenSize: screenSize) }
             )
             .accessibilityHidden(true)
         }
     }
 
-    private func swipeChanged(_ dx: CGFloat) {
-        if dragAxis == nil { dragAxis = .horizontal }
-        guard dragAxis == .horizontal else { return }
-        let action: SparkActionRequest.Action = dx >= 0 ? .save : .dismiss
-        // Hacia un lado que no aplica, se resiste: un cuarto del recorrido, hasta 32 pt.
-        dragX = allows(action) ? dx : (dx >= 0 ? 1 : -1) * min(abs(dx) * 0.25, 32)
-        isArmed = allows(action) && abs(dragX) >= swipeThreshold
+    /// Hacia arriba, el umbral es fijo: la tarjeta es alta y el pulgar recorre menos en vertical.
+    private let upThreshold: CGFloat = 110
+
+    private func swipeChanged(_ axis: Axis, _ translation: CGSize) {
+        if dragAxis == nil { dragAxis = axis }
+        switch dragAxis {
+        case .horizontal:
+            let dx = translation.width
+            let action: SparkActionRequest.Action = dx >= 0 ? .save : .dismiss
+            // Hacia un lado que no aplica, se resiste: un cuarto del recorrido, hasta 32 pt.
+            dragX = allows(action) ? dx : (dx >= 0 ? 1 : -1) * min(abs(dx) * 0.25, 32)
+            isArmed = allows(action) && abs(dragX) >= swipeThreshold
+        case .vertical:
+            let dy = translation.height
+            // Hacia abajo no hay acción: se resiste igual que un costado que no aplica.
+            dragY = dy <= 0 ? dy : min(dy * 0.25, 32)
+            isArmed = -dragY >= upThreshold
+        case nil:
+            break
+        }
     }
 
-    private func swipeEnded(velocity: CGFloat, isCancelled: Bool, screenWidth: CGFloat) {
-        guard dragAxis == .horizontal else {
-            dragAxis = nil
-            return
-        }
-        let action: SparkActionRequest.Action = dragX >= 0 ? .save : .dismiss
-        let isFling = abs(dragX) > 48 && abs(velocity) > 700 && (velocity >= 0) == (dragX >= 0)
+    private func swipeEnded(velocity: CGPoint, isCancelled: Bool, screenSize: CGSize) {
+        guard let axis = dragAxis else { return }
         // Sin háptico de "desarmado" al soltar: el disparador lo ignora sin eje.
         dragAxis = nil
         isArmed = false
+        let settle: Animation = reduceMotion ? .timingCurve(0.4, 0, 0.2, 1, duration: 0.2) : .spring(duration: 0.3, bounce: 0.2)
+        if axis == .vertical {
+            let isFling = dragY < -48 && velocity.y < -700
+            if !isCancelled && (-dragY >= upThreshold || isFling) {
+                commitSwipeUp(screenHeight: screenSize.height)
+            } else {
+                withAnimation(settle) { dragY = 0 }
+            }
+            return
+        }
+        let action: SparkActionRequest.Action = dragX >= 0 ? .save : .dismiss
+        let isFling = abs(dragX) > 48 && abs(velocity.x) > 700 && (velocity.x >= 0) == (dragX >= 0)
         if !isCancelled && allows(action) && (abs(dragX) >= swipeThreshold || isFling) {
-            commitSwipe(action, screenWidth: screenWidth)
+            commitSwipe(action, screenWidth: screenSize.width)
         } else {
-            withAnimation(reduceMotion ? .timingCurve(0.4, 0, 0.2, 1, duration: 0.2) : .spring(duration: 0.3, bounce: 0.2)) {
-                dragX = 0
+            withAnimation(settle) { dragX = 0 }
+        }
+    }
+
+    /// Hacia arriba pasado el umbral: la tarjeta sale por arriba, se abre la tarjeta para compartir y, al cerrarla, vuelve.
+    private func commitSwipeUp(screenHeight: CGFloat) {
+        isSwipeBusy = true
+        Analytics.track(.sparkSwiped(mode: spark.mode, direction: SparkActionRequest.Action.share.rawValue, input: "gesture"))
+        if reduceMotion {
+            exitX = 0
+            withAnimation(.timingCurve(0.4, 0, 0.2, 1, duration: 0.2)) {
+                cardOpacity = 0
+            } completion: {
+                dragY = 0
+                swipeRequest = SparkActionRequest(action: .share)
+            }
+        } else {
+            // Cualquier valor distinto de 0: la tarjeta se movió y vuelve deslizando.
+            exitX = 1
+            withAnimation(.timingCurve(0, 0, 0.2, 1, duration: 0.22)) {
+                dragY = -screenHeight
+                cardOpacity = 0
+            } completion: {
+                swipeRequest = SparkActionRequest(action: .share)
             }
         }
     }
@@ -808,6 +853,7 @@ private struct SynapseRevealModal: View {
         }
         if reduceMotion || exitX == 0 {
             dragX = 0
+            dragY = 0
             withAnimation(.timingCurve(0.4, 0, 0.2, 1, duration: 0.2)) {
                 cardOpacity = 1
             } completion: {
@@ -816,6 +862,7 @@ private struct SynapseRevealModal: View {
         } else {
             withAnimation(.timingCurve(0.2, 0.8, 0.2, 1, duration: 0.3)) {
                 dragX = 0
+                dragY = 0
                 cardOpacity = 1
             } completion: {
                 isSwipeBusy = false
@@ -835,6 +882,13 @@ private struct SynapseRevealModal: View {
             }
         }
         .padding(.horizontal, Space.s4)
+        // Hacia arriba, lo que la tarjeta deja al descubierto abajo.
+        .overlay(alignment: .bottom) {
+            if dragY < 0 {
+                swipeHint(Label("Compartir", systemImage: "square.and.arrow.up"))
+                    .padding(.bottom, Space.s8)
+            }
+        }
         // Al soltar pasado el umbral, el indicador se va con la tarjeta.
         .opacity(isSwipeBusy ? 0 : 1)
         .allowsHitTesting(false)
@@ -842,7 +896,7 @@ private struct SynapseRevealModal: View {
     }
 
     private func swipeHint(_ label: some View) -> some View {
-        let armed = isArmed && dragAxis == .horizontal
+        let armed = isArmed && dragAxis != nil
         return label
             .font(.subheadline.weight(.semibold))
             .dynamicTypeSize(...DynamicTypeSize.accessibility1)
@@ -852,7 +906,7 @@ private struct SynapseRevealModal: View {
             .padding(.vertical, 10)
             .background(armed ? Palette.accent : Palette.surface, in: Capsule())
             .overlay(Capsule().strokeBorder(Palette.border, lineWidth: armed ? 0 : 1))
-            .opacity(min(abs(dragX) / swipeThreshold, 1))
+            .opacity(dragAxis == .vertical || dragY < 0 ? min(-dragY / upThreshold, 1) : min(abs(dragX) / swipeThreshold, 1))
     }
 
     /// Fundido de 200 ms, sin deslizar; después se va el modal.
@@ -871,9 +925,12 @@ private struct SynapseRevealModal: View {
 /// espera a que falle, así un arrastre vertical scrollea como siempre (con texto grande el panel scrollea).
 private struct ScrollSwipeRecognizer: UIViewRepresentable {
     var isEnabled: Bool
-    var onChanged: (CGFloat) -> Void
-    /// Velocidad horizontal al soltar y si el sistema lo canceló.
-    var onEnded: (CGFloat, Bool) -> Void
+    /// También hacia arriba (compartir), pero solo si el scroll no tiene para dónde ir: si no, le ganaría al scroll.
+    var allowsUp: Bool
+    /// El eje (se decide al empezar) y cuánto se movió.
+    var onChanged: (Axis, CGSize) -> Void
+    /// Velocidad al soltar y si el sistema lo canceló.
+    var onEnded: (CGPoint, Bool) -> Void
 
     func makeCoordinator() -> Coordinator { Coordinator() }
 
@@ -888,6 +945,7 @@ private struct ScrollSwipeRecognizer: UIViewRepresentable {
     func updateUIView(_ view: AnchorView, context: Context) {
         context.coordinator.onChanged = onChanged
         context.coordinator.onEnded = onEnded
+        context.coordinator.allowsUp = allowsUp
         context.coordinator.pan.isEnabled = isEnabled
     }
 
@@ -913,8 +971,10 @@ private struct ScrollSwipeRecognizer: UIViewRepresentable {
     final class Coordinator: NSObject, UIGestureRecognizerDelegate {
         let pan = UIPanGestureRecognizer()
         weak var anchor: UIView?
-        var onChanged: (CGFloat) -> Void = { _ in }
-        var onEnded: (CGFloat, Bool) -> Void = { _, _ in }
+        var allowsUp = false
+        var axis: Axis = .horizontal
+        var onChanged: (Axis, CGSize) -> Void = { _, _ in }
+        var onEnded: (CGPoint, Bool) -> Void = { _, _ in }
 
         override init() {
             super.init()
@@ -925,11 +985,12 @@ private struct ScrollSwipeRecognizer: UIViewRepresentable {
         @objc private func handle(_ pan: UIPanGestureRecognizer) {
             switch pan.state {
             case .began, .changed:
-                onChanged(pan.translation(in: pan.view).x)
+                let t = pan.translation(in: pan.view)
+                onChanged(axis, CGSize(width: t.x, height: t.y))
             case .ended:
-                onEnded(pan.velocity(in: pan.view).x, false)
+                onEnded(pan.velocity(in: pan.view), false)
             case .cancelled, .failed:
-                onEnded(0, true)
+                onEnded(.zero, true)
             default:
                 break
             }
@@ -939,7 +1000,17 @@ private struct ScrollSwipeRecognizer: UIViewRepresentable {
             guard recognizer === pan, let anchor else { return true }
             guard anchor.bounds.contains(pan.location(in: anchor)) else { return false }
             let translation = pan.translation(in: pan.view)
-            return abs(translation.y) <= 0.58 * abs(translation.x)
+            if abs(translation.y) <= 0.58 * abs(translation.x) {
+                axis = .horizontal
+                return true
+            }
+            // Hacia arriba, solo si el contenido entra entero: con texto grande el panel scrollea y el gesto es del scroll.
+            guard allowsUp, translation.y < 0, abs(translation.x) <= 0.58 * abs(translation.y),
+                  let scrollView = pan.view as? UIScrollView else { return false }
+            let visible = scrollView.bounds.height - scrollView.adjustedContentInset.top - scrollView.adjustedContentInset.bottom
+            guard scrollView.contentSize.height <= visible + 1 else { return false }
+            axis = .vertical
+            return true
         }
     }
 }

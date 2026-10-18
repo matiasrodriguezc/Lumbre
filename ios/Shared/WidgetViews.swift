@@ -35,23 +35,49 @@ struct TodaySparkWidgetView: View {
 
     // MARK: Pantalla de inicio
 
+    /// El chico prioriza guardar: arriba, en chico, cómo está la chispa (tocar ahí abre Hoy); abajo, el botón grande
+    /// que abre Capturar. Guardar ideas es lo que alimenta la chispa de mañana.
     private var small: some View {
-        VStack(alignment: .leading, spacing: Space.s2) {
-            WidgetCaption(text: extensionsText("Chispa de hoy"))
-            Synapse(stage)
-                .frame(height: 20)
-            Spacer(minLength: 0)
-            headline(size: 20, lines: 3)
-            if let pair {
-                Text(pair)
-                    .font(.caption2)
-                    .foregroundStyle(Palette.inkMuted)
-                    .lineLimit(1)
-            } else {
-                detail.lineLimit(2)
+        VStack(alignment: .leading, spacing: Space.s1) {
+            HStack(spacing: Space.s1) {
+                MiniNeuron(isLit: isSparkLit)
+                    .frame(width: 16, height: 16)
+                WidgetCaption(text: extensionsText("Chispa de hoy"))
             }
+            smallStatus
+            Spacer(minLength: Space.s2)
+            Button(intent: OpenCaptureFromWidgetIntent()) {
+                Label(extensionsText("Guardar idea"), systemImage: "plus")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(Palette.onAccent)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                    .frame(maxWidth: .infinity, minHeight: 48)
+                    .background(Palette.accent, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(Text(extensionsText("Guardar una idea")))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    }
+
+    /// Una o dos líneas: el título de la chispa o en qué anda.
+    private var smallStatus: some View {
+        let text: String = switch state {
+        case .spark(let snapshot): snapshot.title
+        case .pending, .ready: extensionsText("Tu chispa está lista")
+        case .waiting: extensionsText("Tu próxima chispa")
+        case .empty: extensionsText("Tu chispa de hoy")
+        }
+        return Text(text)
+            .font(.footnote.weight(.semibold))
+            .foregroundStyle(Palette.ink)
+            .lineLimit(2)
+            .privacySensitive()
+    }
+
+    private var isSparkLit: Bool {
+        if case .spark = state { true } else { false }
     }
 
     private var medium: some View {
