@@ -4923,6 +4923,61 @@
         }
       }
     },
+    "Personalizado" : {
+      "comment" : "[profile.role.option]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom"
+          }
+        }
+      }
+    },
+    "Contá tu rol con tus palabras" : {
+      "comment" : "[profile.role.option_detail]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Describe your role in your own words"
+          }
+        }
+      }
+    },
+    "Contá a qué te dedicás o qué querés crear. Lo usamos solo para que las chispas y el planificador te hablen a vos." : {
+      "comment" : "[profile.role.editor_subtitle]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tell us what you do or what you want to create. We only use it so sparks and the planner speak to you."
+          }
+        }
+      }
+    },
+    "Ej.: Soy diseñadora de producto en una fintech y me interesan los servicios para gente que nunca tuvo una cuenta bancaria." : {
+      "comment" : "[profile.role.editor_placeholder]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g.: I’m a product designer at a fintech and I care about services for people who never had a bank account."
+          }
+        }
+      }
+    },
+    "Quitar mi rol" : {
+      "comment" : "[profile.role.remove]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove my role"
+          }
+        }
+      }
+    },
     "Onda verde de semáforos" : {
       "comment" : "[onboarding.welcome.example_a]",
       "localizations" : {

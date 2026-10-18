@@ -48,6 +48,8 @@ struct ProjectsView: View {
             .sparkDestinations()
             .task(id: dataVersion) { await load() }
             .refreshable { await load() }
+            // Con "tirar para actualizar" el rebote hace falta aunque el contenido entre.
+            .scrollBounceBehavior(.always)
             .onAppear { Analytics.screen("projects") }
             .projectEditor($editor) { await load() }
             .confirmationDialog(

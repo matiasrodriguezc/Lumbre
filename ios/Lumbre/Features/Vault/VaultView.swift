@@ -103,6 +103,8 @@ struct VaultView: View {
             .padding(.bottom, Space.s8)
         }
         .refreshable { await load() }
+        // Con "tirar para actualizar" el rebote hace falta aunque el contenido entre.
+        .scrollBounceBehavior(.always)
     }
 
     @ViewBuilder

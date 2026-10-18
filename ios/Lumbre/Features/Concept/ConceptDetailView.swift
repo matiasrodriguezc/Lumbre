@@ -139,6 +139,8 @@ struct ConceptDetailView: View {
             .padding(.bottom, Space.s10)
         }
         .refreshable { await load() }
+        // Con "tirar para actualizar" el rebote hace falta aunque el contenido entre.
+        .scrollBounceBehavior(.always)
     }
 
     private func header(_ concept: Concept) -> some View {

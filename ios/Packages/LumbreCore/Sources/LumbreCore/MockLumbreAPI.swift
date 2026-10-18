@@ -325,7 +325,7 @@ private actor MockStore {
         if let value = update.locale { profile.locale = value }
         if update.completeOnboarding { profile.isOnboarded = true }
         if let value = update.creativeRole {
-            let role = String(value.trimmingCharacters(in: .whitespacesAndNewlines).prefix(80))
+            let role = String(value.trimmingCharacters(in: .whitespacesAndNewlines).prefix(200))
             profile.creativeRole = role.isEmpty ? nil : role
         }
         return profile

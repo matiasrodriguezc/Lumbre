@@ -88,6 +88,8 @@ struct ProjectDetailView: View {
         }
         .task(id: dataVersion) { await load() }
         .refreshable { await load() }
+        // Con "tirar para actualizar" el rebote hace falta aunque el contenido entre.
+        .scrollBounceBehavior(.always)
         .onAppear { Analytics.screen("project_detail") }
         .projectEditor($editor) { await load() }
         .confirmationDialog("¿Borrar este circuito?", isPresented: $isDeleting, titleVisibility: .visible) {

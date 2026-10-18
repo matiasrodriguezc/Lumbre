@@ -22,6 +22,9 @@ struct LumbreApp: App {
                 .environment(\.growthCones, FeatureFlag.growthCones.isEnabled)
                 .preferredColorScheme(theme.colorScheme)
                 .tint(Palette.ink)
+                // Sin rebote cuando el contenido entra en la pantalla: no hay nada que scrollear.
+                // Las pantallas con "tirar para actualizar" lo vuelven a activar.
+                .scrollBounceBehavior(.basedOnSize)
         }
     }
 

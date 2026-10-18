@@ -16,6 +16,7 @@ struct ShareView: View {
     var body: some View {
         NavigationStack {
             content
+                .scrollBounceBehavior(.basedOnSize)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                 .background(Palette.bg)
                 .navigationTitle(Text("Guardar en Lumbre"))

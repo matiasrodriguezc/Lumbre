@@ -48,6 +48,8 @@ struct TodayView: View {
             .sparkDestinations()
             .task(id: "\(dataVersion)-\(aiConsent.map { String($0) } ?? "nil")") { await load() }
             .refreshable { await load() }
+            // Con "tirar para actualizar" el rebote hace falta aunque el contenido entre.
+            .scrollBounceBehavior(.always)
             .onAppear { Analytics.screen("today") }
             .onChange(of: appModel.pendingRoute, initial: true) { consumeRoute() }
         }

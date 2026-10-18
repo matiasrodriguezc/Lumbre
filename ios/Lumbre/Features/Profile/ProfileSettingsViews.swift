@@ -21,9 +21,7 @@ struct CreativeProfilesEditor: View {
                 Text("Elegí hasta dos. Son la lente con la que se eligen y escriben tus chispas.")
                     .font(.callout)
                     .foregroundStyle(Palette.inkMuted)
-                CreativeProfilePicker(selection: $selection)
-                CreativeRoleField(text: $role)
-                    .padding(.top, Space.s2)
+                CreativeProfilePicker(selection: $selection, role: $role)
             }
             .padding(Space.s4)
         }

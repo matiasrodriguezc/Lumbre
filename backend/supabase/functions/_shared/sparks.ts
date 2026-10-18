@@ -26,7 +26,7 @@ export async function creativeProfiles(userId: string): Promise<string[]> {
   const { data } = await admin().from("profiles").select("creative_profiles, creative_role").eq("id", userId).maybeSingle();
   const profiles = (data?.creative_profiles as string[] | undefined) ?? [];
   const role = (data?.creative_role as string | null | undefined)?.trim();
-  return role ? [...profiles, `rol propio «${asPromptData(role.slice(0, 80))}»`] : profiles;
+  return role ? [...profiles, `rol propio «${asPromptData(role.slice(0, 200))}»`] : profiles;
 }
 
 export interface CreatedSpark {

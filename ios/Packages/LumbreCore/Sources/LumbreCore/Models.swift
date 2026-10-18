@@ -72,7 +72,7 @@ public struct ProfileUpdate: Sendable, Equatable {
     public var locale: String?
     /// true marca el onboarding como terminado.
     public var completeOnboarding: Bool
-    /// Rol propio: nil no lo toca; vacío lo borra. Hasta 80 caracteres.
+    /// Rol propio: nil no lo toca; vacío lo borra. Hasta 200 caracteres.
     public var creativeRole: String?
 
     public init(creativeProfiles: [CreativeProfile]? = nil, sparkTime: SparkTime? = nil, timezone: String? = nil, locale: String? = nil,

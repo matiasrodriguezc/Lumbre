@@ -45,7 +45,8 @@ struct WelcomeStepView: View {
 
                 Spacer(minLength: 0)
             }
-            .frame(maxWidth: .infinity, minHeight: proxy.size.height, alignment: .leading)
+            // El alto mínimo descuenta el margen de abajo: si no, sobraba ese margen y la pantalla scrolleaba.
+            .frame(maxWidth: .infinity, minHeight: max(proxy.size.height - Space.s6, 0), alignment: .leading)
             .padding(.horizontal, Space.s4)
             .padding(.bottom, Space.s6)
         }

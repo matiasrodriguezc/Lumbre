@@ -95,7 +95,7 @@ public struct SupabaseLumbreAPI: LumbreAPI {
             if let value = update.locale { values["locale"] = .string(value) }
             if update.completeOnboarding { values["onboarded_at"] = .string(LumbreJSON.timestamp(.now)) }
             if let value = update.creativeRole {
-                let role = String(value.trimmingCharacters(in: .whitespacesAndNewlines).prefix(80))
+                let role = String(value.trimmingCharacters(in: .whitespacesAndNewlines).prefix(200))
                 values["creative_role"] = role.isEmpty ? .null : .string(role)
             }
             if !values.isEmpty {
