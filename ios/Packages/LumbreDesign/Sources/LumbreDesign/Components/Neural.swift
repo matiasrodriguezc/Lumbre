@@ -128,6 +128,15 @@ public struct LumbreMark: View {
         self.showsNucleus = showsNucleus
     }
 
+    /// El núcleo del símbolo largo dibujado a `width` de ancho: centro (desde la esquina de arriba a la izquierda),
+    /// radio y alto del símbolo. Para animar el punto rosa que sale de ahí (el splash).
+    public static func longNucleus(width: CGFloat) -> (center: CGPoint, radius: CGFloat, height: CGFloat) {
+        let art = NeuralArt.markLong
+        let scale = width / art.size.width
+        let c = NeuralAnchors.markLongNucleus
+        return (CGPoint(x: c.x * scale, y: c.y * scale), 8 * scale, art.size.height * scale)
+    }
+
     public var body: some View {
         let art = variant == .long ? NeuralArt.markLong : NeuralArt.markCompact
         ZStack {

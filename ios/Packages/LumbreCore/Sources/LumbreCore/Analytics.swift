@@ -336,6 +336,8 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     case growthCones = "growth_cones"
     /// En el reveal, la tarjeta limpia y abajo los botones redondos: descartar, compartir y guardar.
     case revealButtons = "reveal_buttons"
+    /// El splash animado: el punto rosa sale del núcleo de la neurona y escribe "Lumbre".
+    case splashDot = "splash_dot"
     /// La chispa guardada se vuelve neurona (paso 88): `save_spark` con `p_as_neuron`, "Nació de una chispa" en la Red
     /// y el camino a la chispa original. El servidor también lo apaga con `app_config.spark_neuron_enabled`.
     case sparkNeuron = "spark_neuron"
