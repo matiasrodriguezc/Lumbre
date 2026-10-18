@@ -266,7 +266,8 @@ struct PaywallView: View {
     }
 
     private var ctaTitle: Text {
-        guard let offer = selectedOffer else { return Text("Probar 7 días gratis") }
+        // Hasta que carga la tienda no se sabe si le corresponde la prueba gratis.
+        guard let offer = selectedOffer else { return Text("Suscribirme") }
         if let days = offer.trialDays { return Text("Probar \(days) días gratis") }
         return offer.period == .annual
             ? Text("Suscribirme por \(offer.displayPrice) al año")

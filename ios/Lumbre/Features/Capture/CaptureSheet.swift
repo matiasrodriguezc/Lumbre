@@ -194,9 +194,10 @@ struct CaptureSheet: View {
         if form.thesis.count > CaptureForm.thesisLimit - 100 {
             let over = form.isThesisTooLong
             Label {
-                Text(over
-                     ? "Te pasaste por \(form.thesis.count - CaptureForm.thesisLimit) caracteres. Dejá solo la idea (hasta 600)."
-                     : "\(form.thesis.count) de 600 caracteres")
+                let excess = form.thesis.count - CaptureForm.thesisLimit
+                Text(!over ? "\(form.thesis.count) de 600 caracteres"
+                     : excess == 1 ? "Te pasaste por 1 carácter. Dejá solo la idea (hasta 600)."
+                     : "Te pasaste por \(excess) caracteres. Dejá solo la idea (hasta 600).")
             } icon: {
                 Image(systemName: over ? "exclamationmark.circle" : "character.cursor.ibeam")
             }

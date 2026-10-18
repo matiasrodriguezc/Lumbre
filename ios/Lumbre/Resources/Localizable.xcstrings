@@ -4978,6 +4978,193 @@
         }
       }
     },
+    "Ya ganaste y usaste tus 2 chispas extra de hoy. Mañana podés ganar más." : {
+      "comment" : "[hoy.extra.earned_max]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You earned and used your 2 extra sparks today. You can earn more tomorrow."
+          }
+        }
+      }
+    },
+    "Guardá algunas neuronas más, de temas distintos, para que Lumbre encienda la próxima chispa." : {
+      "comment" : "[hoy.empty.few_concepts_again]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save a few more neurons on different topics so Lumbre can light your next spark."
+          }
+        }
+      }
+    },
+    "Conocer Lumbre Pro" : {
+      "comment" : "[perfil.suscripcion.cta]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Explore Lumbre Pro"
+          }
+        }
+      }
+    },
+    "Suscribirme" : {
+      "comment" : "[paywall.cta.loading]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscribe"
+          }
+        }
+      }
+    },
+    "Te pasaste por 1 carácter. Dejá solo la idea (hasta 600)." : {
+      "comment" : "[captura.tesis.excedida_uno]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You went over by 1 character. Keep just the idea (up to 600)."
+          }
+        }
+      }
+    },
+    "No te quedan este mes" : {
+      "comment" : "[planificador.cupo.cero]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "None left this month"
+          }
+        }
+      }
+    },
+    "Te queda 1 este mes" : {
+      "comment" : "[planificador.cupo.uno]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 left this month"
+          }
+        }
+      }
+    },
+    "No te quedan profundos" : {
+      "comment" : "[planificador.cupo.profundo_cero]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No deep plans left"
+          }
+        }
+      }
+    },
+    "Te queda 1 profundo" : {
+      "comment" : "[planificador.cupo.profundo_uno]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 deep plan left"
+          }
+        }
+      }
+    },
+    "Te queda 1 conceptualización este mes: 1 nota larga entra con su primera línea." : {
+      "comment" : "[importar.largas.uno_uno]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 conceptualization left this month: 1 long note comes in with its first line."
+          }
+        }
+      }
+    },
+    "Te queda 1 conceptualización este mes: %lld notas largas entran con su primera línea." : {
+      "comment" : "[importar.largas.uno_varias]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 conceptualization left this month: %lld long notes come in with their first line."
+          }
+        }
+      }
+    },
+    "Ya importaste todas las notas del plan gratis." : {
+      "comment" : "[importar.limite.cero]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've imported all the notes the free plan allows."
+          }
+        }
+      }
+    },
+    "Con el plan gratis te queda 1 nota para importar. Sacá las otras o elegí la primera." : {
+      "comment" : "[importar.limite.uno]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The free plan lets you import 1 more note. Remove the others or pick the first one."
+          }
+        }
+      }
+    },
+    "Elegir la primera" : {
+      "comment" : "[importar.limite.elegir_una]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick the first one"
+          }
+        }
+      }
+    },
+    "Hoy te queda 1 captura: entra 1 nota y la otra sigue mañana." : {
+      "comment" : "[importar.capturas.uno_uno]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have 1 capture left today: 1 note comes in and the other one follows tomorrow."
+          }
+        }
+      }
+    },
+    "Hoy te queda 1 captura: entra 1 nota y las otras %lld siguen mañana." : {
+      "comment" : "[importar.capturas.uno_varias]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have 1 capture left today: 1 note comes in and the other %lld follow tomorrow."
+          }
+        }
+      }
+    },
+    "Hoy te quedan %lld capturas: entran %lld notas y la otra sigue mañana." : {
+      "comment" : "[importar.capturas.varias_uno]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have %lld captures left today: %lld notes come in and the other one follows tomorrow."
+          }
+        }
+      }
+    },
     "Onda verde de semáforos" : {
       "comment" : "[onboarding.welcome.example_a]",
       "localizations" : {

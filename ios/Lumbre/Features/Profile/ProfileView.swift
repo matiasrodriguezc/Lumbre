@@ -132,7 +132,7 @@ struct ProfileView: View {
                 Button {
                     appModel.presentPaywall(trigger: "settings")
                 } label: {
-                    Label("Probar 7 días gratis", systemImage: "arrow.up.circle")
+                    Label("Conocer Lumbre Pro", systemImage: "arrow.up.circle")
                         .foregroundStyle(Palette.proText)
                 }
             }

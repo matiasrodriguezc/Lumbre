@@ -333,10 +333,18 @@ struct PlannerView: View {
         switch mode {
         case .quick:
             guard let quick else { return nil }
-            return Text("Te quedan \(quick.remaining) este mes")
+            switch quick.remaining {
+            case 0: return Text("No te quedan este mes")
+            case 1: return Text("Te queda 1 este mes")
+            default: return Text("Te quedan \(quick.remaining) este mes")
+            }
         case .deep:
             guard let deep else { return nil }
-            return Text("Te quedan \(deep.remaining) profundos")
+            switch deep.remaining {
+            case 0: return Text("No te quedan profundos")
+            case 1: return Text("Te queda 1 profundo")
+            default: return Text("Te quedan \(deep.remaining) profundos")
+            }
         }
     }
 

@@ -318,9 +318,12 @@ struct ImportNotesView: View {
                     }
                 }
                 if batch.distillLongNotes && batch.longNotesWithoutDistill > 0 {
-                    notice(batch.longNotesWithoutDistill == 1
-                           ? "Te quedan \(credits?.distill ?? 0) conceptualizaciones este mes: 1 nota larga entra con su primera línea."
-                           : "Te quedan \(credits?.distill ?? 0) conceptualizaciones este mes: \(batch.longNotesWithoutDistill) notas largas entran con su primera línea.",
+                    let left = credits?.distill ?? 0
+                    let plain = batch.longNotesWithoutDistill
+                    notice(left == 1 && plain == 1 ? "Te queda 1 conceptualización este mes: 1 nota larga entra con su primera línea."
+                           : left == 1 ? "Te queda 1 conceptualización este mes: \(plain) notas largas entran con su primera línea."
+                           : plain == 1 ? "Te quedan \(left) conceptualizaciones este mes: 1 nota larga entra con su primera línea."
+                           : "Te quedan \(left) conceptualizaciones este mes: \(plain) notas largas entran con su primera línea.",
                            systemImage: "info.circle")
                 }
             }
@@ -431,17 +434,21 @@ struct ImportNotesView: View {
         return VStack(spacing: Space.s2) {
             if count > limit {
                 VStack(spacing: Space.s1) {
-                    Text(appModel.isPro
-                         ? "Podés importar hasta \(limit) notas por vez."
+                    Text(appModel.isPro ? "Podés importar hasta \(limit) notas por vez."
+                         : limit == 0 ? "Ya importaste todas las notas del plan gratis."
+                         : limit == 1 ? "Con el plan gratis te queda 1 nota para importar. Sacá las otras o elegí la primera."
                          : "Con el plan gratis te quedan \(limit) notas para importar. Sacá algunas o elegí las primeras.")
                         .font(.footnote)
                         .foregroundStyle(Palette.ink)
                         .multilineTextAlignment(.center)
                     HStack(spacing: Space.s3) {
-                        Button("Elegir las primeras \(limit)") {
-                            self.batch?.selected = Set(batch.selectedNotes.prefix(limit).map(\.id))
+                        // Con 0 libres no hay primeras para elegir: solo queda Pro.
+                        if limit > 0 {
+                            Button(limit == 1 ? "Elegir la primera" : "Elegir las primeras \(limit)") {
+                                self.batch?.selected = Set(batch.selectedNotes.prefix(limit).map(\.id))
+                            }
+                            .buttonStyle(.lumbre(.ghost))
                         }
-                        .buttonStyle(.lumbre(.ghost))
                         if !appModel.isPro && FeatureFlag.paywall.isEnabled {
                             Button("Ver Pro") { appModel.presentPaywall(trigger: "import_notes") }
                                 .buttonStyle(.lumbre(.ghost))
@@ -449,9 +456,12 @@ struct ImportNotesView: View {
                     }
                 }
             } else if let today = credits?.capturesToday, count > today {
-                Text(today == 0
-                     ? "Hoy ya usaste tus capturas: las notas entran mañana."
-                     : "Hoy te quedan \(today) capturas: entran \(today) notas y las otras \(count - today) siguen mañana.")
+                let rest = count - today
+                Text(today == 0 ? "Hoy ya usaste tus capturas: las notas entran mañana."
+                     : today == 1 && rest == 1 ? "Hoy te queda 1 captura: entra 1 nota y la otra sigue mañana."
+                     : today == 1 ? "Hoy te queda 1 captura: entra 1 nota y las otras \(rest) siguen mañana."
+                     : rest == 1 ? "Hoy te quedan \(today) capturas: entran \(today) notas y la otra sigue mañana."
+                     : "Hoy te quedan \(today) capturas: entran \(today) notas y las otras \(rest) siguen mañana.")
                     .font(.footnote)
                     .foregroundStyle(Palette.inkMuted)
                     .multilineTextAlignment(.center)

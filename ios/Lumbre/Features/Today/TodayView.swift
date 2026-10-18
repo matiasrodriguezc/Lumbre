@@ -217,10 +217,18 @@ struct TodayView: View {
                     .font(.callout)
                     .foregroundStyle(Palette.inkMuted)
             } else if !appModel.isGuest {
-                Text("Cada 3 neuronas que guardás hoy ganás una chispa extra, hasta 2 por día.")
-                    .font(.callout)
-                    .foregroundStyle(Palette.inkMuted)
-                    .fixedSize(horizontal: false, vertical: true)
+                // Sin neuronas por guardar para la próxima: ya ganó (y usó) el máximo de hoy.
+                if quota.conceptsUntilExtra == 0 {
+                    Text("Ya ganaste y usaste tus 2 chispas extra de hoy. Mañana podés ganar más.")
+                        .font(.callout)
+                        .foregroundStyle(Palette.inkMuted)
+                        .fixedSize(horizontal: false, vertical: true)
+                } else {
+                    Text("Cada 3 neuronas que guardás hoy ganás una chispa extra, hasta 2 por día.")
+                        .font(.callout)
+                        .foregroundStyle(Palette.inkMuted)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
                 if FeatureFlag.paywall.isEnabled {
                     Button {
                         appModel.presentPaywall(trigger: "extra_sparks")
@@ -351,8 +359,11 @@ struct TodayView: View {
             EmptyStateLabel(fewConcepts ? "Todavía no hay material para conectar" : "Hoy no encontramos un buen par", systemImage: "sparkles",
                             illustration: fewConcepts ? .emptyVault : .beforeSpark)
         } description: {
-            if fewConcepts {
+            if fewConcepts && recent.isEmpty {
                 Text("Guardá algunas neuronas de temas distintos: una frase, un link o una nota de voz. Con eso Lumbre enciende tu primera chispa.")
+            } else if fewConcepts {
+                // Ya tuvo chispas: no es la primera.
+                Text("Guardá algunas neuronas más, de temas distintos, para que Lumbre encienda la próxima chispa.")
             } else {
                 Text("Guardá neuronas de otros temas. Las conexiones entre mundos distintos dan las mejores chispas.")
             }
