@@ -4824,6 +4824,61 @@
         }
       }
     },
+    "Elegí hasta dos, o contá tu rol. Lo podés cambiar cuando quieras." : {
+      "comment" : "[onboarding.profile.subtitle_role]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick up to two, or tell us your role. You can change it anytime."
+          }
+        }
+      }
+    },
+    "O contá tu rol, con tus palabras" : {
+      "comment" : "[profile.role.label]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Or describe your role, in your own words"
+          }
+        }
+      }
+    },
+    "Ej.: diseñadora de producto, docente, productor musical" : {
+      "comment" : "[profile.role.placeholder]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g.: product designer, teacher, music producer"
+          }
+        }
+      }
+    },
+    "Opcional. Lo usamos solo para que las chispas y el planificador te hablen a vos." : {
+      "comment" : "[profile.role.hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optional. We only use it so sparks and the planner speak to you."
+          }
+        }
+      }
+    },
+    "Tu rol" : {
+      "comment" : "[profile.role.a11y]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your role"
+          }
+        }
+      }
+    },
     "Onda verde de semáforos" : {
       "comment" : "[onboarding.welcome.example_a]",
       "localizations" : {

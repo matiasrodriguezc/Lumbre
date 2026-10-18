@@ -45,9 +45,13 @@ public struct Profile: Hashable, Sendable {
     public let email: String?
     /// Terminó el onboarding (`profiles.onboarded_at`).
     public var isOnboarded: Bool
+    /// Rol propio, en sus palabras (`profiles.creative_role`): contexto para las chispas y el planificador.
+    public var creativeRole: String?
 
-    public init(creativeProfiles: [CreativeProfile], sparkTime: SparkTime, timezone: String, locale: String, plan: Plan, email: String?, isOnboarded: Bool) {
+    public init(creativeProfiles: [CreativeProfile], sparkTime: SparkTime, timezone: String, locale: String, plan: Plan, email: String?,
+                isOnboarded: Bool, creativeRole: String? = nil) {
         self.creativeProfiles = creativeProfiles
+        self.creativeRole = creativeRole
         self.sparkTime = sparkTime
         self.timezone = timezone
         self.locale = locale
@@ -68,9 +72,13 @@ public struct ProfileUpdate: Sendable, Equatable {
     public var locale: String?
     /// true marca el onboarding como terminado.
     public var completeOnboarding: Bool
+    /// Rol propio: nil no lo toca; vacío lo borra. Hasta 80 caracteres.
+    public var creativeRole: String?
 
-    public init(creativeProfiles: [CreativeProfile]? = nil, sparkTime: SparkTime? = nil, timezone: String? = nil, locale: String? = nil, completeOnboarding: Bool = false) {
+    public init(creativeProfiles: [CreativeProfile]? = nil, sparkTime: SparkTime? = nil, timezone: String? = nil, locale: String? = nil,
+                completeOnboarding: Bool = false, creativeRole: String? = nil) {
         self.creativeProfiles = creativeProfiles
+        self.creativeRole = creativeRole
         self.sparkTime = sparkTime
         self.timezone = timezone
         self.locale = locale

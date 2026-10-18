@@ -324,6 +324,10 @@ private actor MockStore {
         if let value = update.timezone { profile.timezone = value }
         if let value = update.locale { profile.locale = value }
         if update.completeOnboarding { profile.isOnboarded = true }
+        if let value = update.creativeRole {
+            let role = String(value.trimmingCharacters(in: .whitespacesAndNewlines).prefix(80))
+            profile.creativeRole = role.isEmpty ? nil : role
+        }
         return profile
     }
 
@@ -332,7 +336,8 @@ private actor MockStore {
         switch purpose {
         case .createAccount:
             profile = Profile(creativeProfiles: profile.creativeProfiles, sparkTime: profile.sparkTime, timezone: profile.timezone,
-                              locale: profile.locale, plan: profile.plan == .guest ? .free : profile.plan, email: email, isOnboarded: profile.isOnboarded)
+                              locale: profile.locale, plan: profile.plan == .guest ? .free : profile.plan, email: email, isOnboarded: profile.isOnboarded,
+                              creativeRole: profile.creativeRole)
         case .signIn:
             reset(onboarded: true)
             profile = Profile(creativeProfiles: profile.creativeProfiles, sparkTime: profile.sparkTime, timezone: profile.timezone,
@@ -346,7 +351,7 @@ private actor MockStore {
     }
 
     private static func profile(_ profile: Profile, with plan: Plan) -> Profile {
-        Profile(creativeProfiles: profile.creativeProfiles, sparkTime: profile.sparkTime, timezone: profile.timezone, locale: profile.locale, plan: plan, email: plan == .guest ? nil : (profile.email ?? "ana@lumbre.test"), isOnboarded: profile.isOnboarded)
+        Profile(creativeProfiles: profile.creativeProfiles, sparkTime: profile.sparkTime, timezone: profile.timezone, locale: profile.locale, plan: plan, email: plan == .guest ? nil : (profile.email ?? "ana@lumbre.test"), isOnboarded: profile.isOnboarded, creativeRole: profile.creativeRole)
     }
 
     func credits() -> [Credit] {

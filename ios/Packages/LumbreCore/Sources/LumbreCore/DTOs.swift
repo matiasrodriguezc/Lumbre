@@ -291,6 +291,7 @@ struct ProfileRowDTO: Decodable, Sendable {
     let locale: String
     let plan: String
     let onboardedAt: Date?
+    let creativeRole: String?
 
     func model(email: String?, isAnonymous: Bool) -> Profile {
         Profile(
@@ -300,7 +301,8 @@ struct ProfileRowDTO: Decodable, Sendable {
             locale: locale,
             plan: isAnonymous ? .guest : Plan(rawValue: plan) ?? .free,
             email: isAnonymous ? nil : email,
-            isOnboarded: onboardedAt != nil
+            isOnboarded: onboardedAt != nil,
+            creativeRole: creativeRole
         )
     }
 }
@@ -314,6 +316,7 @@ struct ProfileDTO: Codable, Sendable {
     let plan: String
     let email: String?
     let isOnboarded: Bool
+    let creativeRole: String?
 
     init(_ model: Profile) {
         creativeProfiles = model.creativeProfiles.map(\.rawValue)
@@ -323,6 +326,7 @@ struct ProfileDTO: Codable, Sendable {
         plan = model.plan.rawValue
         email = model.email
         isOnboarded = model.isOnboarded
+        creativeRole = model.creativeRole
     }
 
     var model: Profile {
@@ -333,7 +337,8 @@ struct ProfileDTO: Codable, Sendable {
             locale: locale,
             plan: Plan(rawValue: plan) ?? .guest,
             email: email,
-            isOnboarded: isOnboarded
+            isOnboarded: isOnboarded,
+            creativeRole: creativeRole
         )
     }
 }

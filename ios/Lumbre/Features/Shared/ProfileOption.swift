@@ -88,6 +88,38 @@ struct CreativeProfilePicker: View {
     }
 }
 
+/// El rol con palabras propias, debajo de los perfiles: "diseñadora de producto", "docente de secundaria".
+/// Solo se usa como contexto para escribir las chispas y en el planificador.
+struct CreativeRoleField: View {
+    @Binding var text: String
+    @FocusState private var isFocused: Bool
+    static let maxLength = 80
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Space.s2) {
+            Text("O contá tu rol, con tus palabras")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(Palette.ink)
+            TextField("Ej.: diseñadora de producto, docente, productor musical", text: Binding(
+                get: { text },
+                set: { text = String($0.prefix(Self.maxLength)) }
+            ))
+            .font(.body)
+            .textInputAutocapitalization(.sentences)
+            .focused($isFocused)
+            .submitLabel(.done)
+            .padding(Space.s3)
+            .background(Palette.surface, in: RoundedRectangle(cornerRadius: Radius.sm, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: Radius.sm, style: .continuous)
+                .strokeBorder(isFocused ? Palette.focusRing : Palette.borderStrong, lineWidth: isFocused ? 2 : 1))
+            .accessibilityLabel(Text("Tu rol"))
+            Text("Opcional. Lo usamos solo para que las chispas y el planificador te hablen a vos.")
+                .font(.footnote)
+                .foregroundStyle(Palette.inkMuted)
+        }
+    }
+}
+
 extension CreativeProfile {
     var symbol: String {
         switch self {

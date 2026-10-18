@@ -11,6 +11,7 @@ struct CreativeProfilesEditor: View {
     @Environment(\.api) private var api
     @Environment(\.dismiss) private var dismiss
     @State private var selection: [CreativeProfile] = []
+    @State private var role = ""
     @State private var isSaving = false
     @State private var errorMessage: String?
 
@@ -21,6 +22,8 @@ struct CreativeProfilesEditor: View {
                     .font(.callout)
                     .foregroundStyle(Palette.inkMuted)
                 CreativeProfilePicker(selection: $selection)
+                CreativeRoleField(text: $role)
+                    .padding(.top, Space.s2)
             }
             .padding(Space.s4)
         }
@@ -33,13 +36,14 @@ struct CreativeProfilesEditor: View {
                     ProgressView()
                 } else {
                     Button("Guardar") { Task { await save() } }
-                        .disabled(selection.isEmpty || selection == appModel.profile?.creativeProfiles)
+                        .disabled((selection.isEmpty && trimmedRole.isEmpty) || !hasChanges)
                 }
             }
         }
         .onAppear {
             Analytics.screen("settings")
             selection = appModel.profile?.creativeProfiles ?? []
+            role = appModel.profile?.creativeRole ?? ""
         }
         .alert("No se pudo guardar", isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
             Button("Entendido", role: .cancel) {}
@@ -48,11 +52,17 @@ struct CreativeProfilesEditor: View {
         }
     }
 
+    private var trimmedRole: String { role.trimmingCharacters(in: .whitespacesAndNewlines) }
+
+    private var hasChanges: Bool {
+        selection != appModel.profile?.creativeProfiles || trimmedRole != (appModel.profile?.creativeRole ?? "")
+    }
+
     private func save() async {
         isSaving = true
         defer { isSaving = false }
         do {
-            let profile = try await api.updateProfile(ProfileUpdate(creativeProfiles: selection))
+            let profile = try await api.updateProfile(ProfileUpdate(creativeProfiles: selection, creativeRole: trimmedRole))
             appModel.setProfile(profile)
             Analytics.track(.settingsChanged(setting: "profiles"))
             dismiss()

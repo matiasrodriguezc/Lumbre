@@ -5,6 +5,7 @@ import type { Analytics } from "./analytics.ts";
 import { writeSpark } from "./ai/tasks.ts";
 import { conceptBriefs } from "./data.ts";
 import { admin, rpc } from "./supabase.ts";
+import { asPromptData } from "./text.ts";
 
 export interface PickedPair {
   concept_lo: string;
@@ -20,9 +21,12 @@ export async function pickPair(userId: string, mode: "daily" | "extra"): Promise
   return rows[0] ?? null;
 }
 
+/** Los perfiles creativos y, si lo escribió, el rol propio (va como un perfil más, delimitado como dato). */
 export async function creativeProfiles(userId: string): Promise<string[]> {
-  const { data } = await admin().from("profiles").select("creative_profiles").eq("id", userId).maybeSingle();
-  return (data?.creative_profiles as string[] | undefined) ?? [];
+  const { data } = await admin().from("profiles").select("creative_profiles, creative_role").eq("id", userId).maybeSingle();
+  const profiles = (data?.creative_profiles as string[] | undefined) ?? [];
+  const role = (data?.creative_role as string | null | undefined)?.trim();
+  return role ? [...profiles, `rol propio «${asPromptData(role.slice(0, 80))}»`] : profiles;
 }
 
 export interface CreatedSpark {

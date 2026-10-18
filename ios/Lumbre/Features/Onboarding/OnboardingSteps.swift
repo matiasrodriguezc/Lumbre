@@ -10,12 +10,14 @@ struct ProfileStepView: View {
 
     var body: some View {
         @Bindable var model = model
-        OnboardingScaffold(step: .profile, title: "¿Qué querés crear?", subtitle: "Elegí hasta dos. Lo podés cambiar cuando quieras.") {
+        OnboardingScaffold(step: .profile, title: "¿Qué querés crear?", subtitle: "Elegí hasta dos, o contá tu rol. Lo podés cambiar cuando quieras.") {
             CreativeProfilePicker(selection: $model.profiles)
+            CreativeRoleField(text: $model.role)
+                .padding(.top, Space.s2)
         } footer: {
             Button("Continuar") { model.complete(.profile) }
                 .buttonStyle(.lumbre(.primary, fullWidth: true))
-                .disabled(model.profiles.isEmpty)
+                .disabled(model.profiles.isEmpty && model.trimmedRole.isEmpty)
         }
     }
 }

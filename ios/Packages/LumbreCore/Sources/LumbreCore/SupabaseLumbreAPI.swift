@@ -94,6 +94,10 @@ public struct SupabaseLumbreAPI: LumbreAPI {
             if let value = update.timezone { values["timezone"] = .string(value) }
             if let value = update.locale { values["locale"] = .string(value) }
             if update.completeOnboarding { values["onboarded_at"] = .string(LumbreJSON.timestamp(.now)) }
+            if let value = update.creativeRole {
+                let role = String(value.trimmingCharacters(in: .whitespacesAndNewlines).prefix(80))
+                values["creative_role"] = role.isEmpty ? .null : .string(role)
+            }
             if !values.isEmpty {
                 let userID = try await client.auth.session.user.id
                 try await client.from("profiles").update(values).eq("id", value: userID).execute()
@@ -699,7 +703,7 @@ enum QueryColumns {
         + "concept_a:concepts!sparks_concept_lo_fkey(\(concept)),concept_b:concepts!sparks_concept_hi_fkey(\(concept))"
     static let project = "id,name,created_at,sparks(count)"
     static let plannerMessage = "id,role,content,mode,created_at,thread:planner_threads!inner(spark_id)"
-    static let profile = "creative_profiles,spark_hour,timezone,locale,plan,onboarded_at"
+    static let profile = "creative_profiles,spark_hour,timezone,locale,plan,onboarded_at,creative_role"
 }
 
 // MARK: - Cuerpos y parámetros

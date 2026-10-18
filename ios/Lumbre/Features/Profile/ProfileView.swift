@@ -145,7 +145,11 @@ struct ProfileView: View {
     private func creativeSection(_ profile: Profile) -> some View {
         Section {
             NavigationLink(value: ProfileDestination.creativeProfiles) {
-                LabeledContent("Perfil creativo", value: profile.creativeProfiles.summary)
+                // Los perfiles y, si lo escribió, su rol.
+                LabeledContent("Perfil creativo", value: [
+                    profile.creativeProfiles.isEmpty && profile.creativeRole != nil ? nil : profile.creativeProfiles.summary,
+                    profile.creativeRole,
+                ].compactMap { $0 }.joined(separator: " · "))
             }
             DatePicker("Hora de la chispa", selection: $sparkTime, displayedComponents: .hourAndMinute)
                 .onChange(of: sparkTime) { _, newValue in scheduleSparkTimeSave(newValue) }

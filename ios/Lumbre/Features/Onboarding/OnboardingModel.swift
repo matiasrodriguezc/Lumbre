@@ -40,6 +40,9 @@ final class OnboardingModel {
         didSet { refreshSuggestedCategories() }
     }
     var seeds: [SeedIdea]
+    /// Rol propio (opcional), en sus palabras.
+    var role: String
+    var trimmedRole: String { role.trimmingCharacters(in: .whitespacesAndNewlines) }
     var sparkTime: Date
     private(set) var isSavingSeeds = false
     private(set) var isFinishing = false
@@ -49,6 +52,7 @@ final class OnboardingModel {
     init(profile: Profile?) {
         let existing = profile?.creativeProfiles ?? []
         profiles = existing
+        role = profile?.creativeRole ?? ""
         seeds = (0..<Self.seedCount).map { _ in SeedIdea() }
         let time = profile?.sparkTime ?? .default
         sparkTime = Calendar.current.date(bySettingHour: time.hour, minute: time.minute, second: 0, of: .now) ?? .now
@@ -167,7 +171,8 @@ final class OnboardingModel {
             sparkTime: selectedSparkTime,
             timezone: TimeZone.current.identifier,
             locale: language,
-            completeOnboarding: true
+            completeOnboarding: true,
+            creativeRole: trimmedRole
         ))
         Analytics.track(.onboardingStepCompleted(step: OnboardingStep.push.rawValue, index: OnboardingStep.push.index))
         Analytics.track(.onboardingCompleted(
