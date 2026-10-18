@@ -4780,6 +4780,28 @@
         }
       }
     },
+    "Semáforos × code review" : {
+      "comment" : "[onboarding.welcome.example_spark]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traffic lights × code review"
+          }
+        }
+      }
+    },
+    "Si un PR se aprueba rápido, los siguientes del mismo autor entran en una “onda verde”." : {
+      "comment" : "[onboarding.welcome.example_idea]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When a PR gets approved fast, the same author’s next ones ride a “green wave”."
+          }
+        }
+      }
+    },
     "Onda verde de semáforos" : {
       "comment" : "[onboarding.welcome.example_a]",
       "localizations" : {

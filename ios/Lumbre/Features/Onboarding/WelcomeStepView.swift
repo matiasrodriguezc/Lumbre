@@ -14,10 +14,14 @@ struct WelcomeStepView: View {
     @State private var signedInProfile: Profile?
 
     var body: some View {
+        GeometryReader { proxy in
         ScrollView {
             VStack(alignment: .leading, spacing: Space.s8) {
                 Wordmark(style: .title2)
                     .padding(.top, Space.s4)
+
+                // La demo y la propuesta van centradas en lo que queda (en pantallas altas sobraba abajo).
+                Spacer(minLength: 0)
 
                 CollisionIllustration()
 
@@ -32,10 +36,13 @@ struct WelcomeStepView: View {
                         .foregroundStyle(Palette.ink)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+
+                Spacer(minLength: 0)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity, minHeight: proxy.size.height, alignment: .leading)
             .padding(.horizontal, Space.s4)
             .padding(.bottom, Space.s6)
+        }
         }
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: Space.s2) {
@@ -120,38 +127,88 @@ struct WelcomeStepView: View {
     }
 }
 
-/// Dos conceptos que chocan: lo que hace Lumbre, sin la estrella (que es solo de la chispa del día).
+/// Lo que hace Lumbre, contado en bucle con la misma sinapsis de la chispa: dos neuronas de mundos distintos se
+/// tantean, se conectan, salta la chispa y aparece la idea. Con Reducir movimiento, quieta y ya conectada.
+/// Sin la identidad neuronal, las dos tarjetas con una "×".
 private struct CollisionIllustration: View {
     @Environment(\.neuralIdentity) private var neuralIdentity
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @State private var start = Date.now
+
+    /// Un ciclo: se tantean (0 – 1,6 s), avanzan y se tocan (1,6 – 2,2), salta la chispa y se agarran (2,2 – 2,6),
+    /// aparece la idea (2,4 – 2,9), queda a la vista y se funde (5,8 – 6,3) para volver a empezar.
+    private static let cycle = 6.6
 
     var body: some View {
-        ViewThatFits(in: .horizontal) {
-            HStack(spacing: Space.s2) { cards(vertical: false) }
-            VStack(alignment: .leading, spacing: Space.s2) { cards(vertical: true) }
+        Group {
+            if neuralIdentity {
+                TimelineView(.animation(paused: reduceMotion)) { context in
+                    let elapsed = context.date.timeIntervalSince(start)
+                    demo(t: reduceMotion ? 4 : elapsed.truncatingRemainder(dividingBy: Self.cycle))
+                }
+            } else {
+                cardsFallback
+            }
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text("Ejemplo: onda verde de semáforos por code review"))
     }
 
-    @ViewBuilder
-    private func cards(vertical: Bool) -> some View {
-        miniCard(category: "Urbanismo", symbol: "building.2", title: "Onda verde de semáforos")
-        Group {
-            if neuralIdentity {
-                // Sin estrella: el único magenta de esta pantalla es "Empezar". Apiladas, la sinapsis va vertical.
-                Synapse(.reaching)
-                    .frame(width: 56)
-                    .rotationEffect(.degrees(vertical ? 90 : 0))
-                    .frame(height: vertical ? 56 : nil)
-            } else {
-                Text(verbatim: "×")
-                    .font(.title2.weight(.semibold))
+    private func demo(t: Double) -> some View {
+        let approach = ease(progress(t, 1.6, 2.2))
+        let grip = ease(progress(t, 2.15, 2.6))
+        let starOpacity = progress(t, 2.15, 2.25)
+        // Rebote corto de la estrella: pasa un 15 % y vuelve.
+        let pop = progress(t, 2.15, 2.5)
+        let star = pop < 1 ? 0.2 + 0.95 * sin(pop * .pi * 0.62) / sin(.pi * 0.62) : 1
+        let idea = ease(progress(t, 2.4, 2.9))
+        let fadeOut = 1 - progress(t, 5.8, 6.3)
+        return VStack(alignment: .leading, spacing: Space.s4) {
+            SparkPairHeader(
+                a: SparkSide(category: String(localized: "Urbanismo"), categorySymbol: "building.2",
+                             title: String(localized: "Onda verde de semáforos")),
+                b: SparkSide(category: String(localized: "Software"), categorySymbol: "chevron.left.forwardslash.chevron.right",
+                             title: String(localized: "Code review"))
+            )
+            GrowthConeSynapse(approach: 0.12 + 0.88 * approach, grip: grip, star: star, starOpacity: starOpacity, live: !reduceMotion)
+                .frame(maxWidth: 340)
+                .frame(maxWidth: .infinity)
+            VStack(alignment: .leading, spacing: Space.s2) {
+                Text("Semáforos × code review")
+                    .lumbreDisplay(.title2)
+                    .foregroundStyle(Palette.ink)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text("Si un PR se aprueba rápido, los siguientes del mismo autor entran en una “onda verde”.")
+                    .font(.callout)
                     .foregroundStyle(Palette.inkMuted)
+                    .fixedSize(horizontal: false, vertical: true)
             }
+            .opacity(idea)
+            .offset(y: reduceMotion ? 0 : 8 * (1 - idea))
         }
-        .frame(maxWidth: vertical ? 220 : .infinity)
-        .layoutPriority(-1)
+        .padding(Space.s5)
+        .background(Palette.surface, in: RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous).strokeBorder(Palette.border, lineWidth: 1))
+        .opacity(reduceMotion ? 1 : 0.15 + 0.85 * fadeOut)
+    }
+
+    private func progress(_ t: Double, _ a: Double, _ b: Double) -> Double { min(max((t - a) / (b - a), 0), 1) }
+    private func ease(_ u: Double) -> Double { u < 0.5 ? 4 * u * u * u : 1 - pow(-2 * u + 2, 3) / 2 }
+
+    private var cardsFallback: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: Space.s2) { cards }
+            VStack(alignment: .leading, spacing: Space.s2) { cards }
+        }
+    }
+
+    @ViewBuilder
+    private var cards: some View {
+        miniCard(category: "Urbanismo", symbol: "building.2", title: "Onda verde de semáforos")
+        Text(verbatim: "×")
+            .font(.title2.weight(.semibold))
+            .foregroundStyle(Palette.inkMuted)
         miniCard(category: "Software", symbol: "chevron.left.forwardslash.chevron.right", title: "Code review")
     }
 
@@ -166,7 +223,6 @@ private struct CollisionIllustration: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(Space.s4)
-        // Con tamaños de accesibilidad, a todo el ancho: en 220 pt, "Urbanismo" y "semáforos" se cortaban por sílabas.
         .frame(minWidth: 140, maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : 220, alignment: .leading)
         .background(Palette.surface, in: RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: Radius.md, style: .continuous).strokeBorder(Palette.border, lineWidth: 1))
