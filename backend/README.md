@@ -151,7 +151,7 @@ Supabase da permisos completos sobre las tablas a `anon` y `authenticated`. Por 
 
 | Tabla | El usuario puede | Solo el servidor (service role) |
 |---|---|---|
-| `profiles` | Leer el suyo; editar perfiles creativos, hora, zona horaria, idioma, `onboarded_at` y `ai_consent_at` (la fecha la pone un trigger) | Crear, cambiar `plan` y `target_distance` (lo mueve el feedback con un trigger) |
+| `profiles` | Leer el suyo; editar perfiles creativos, rol propio (`creative_role`, hasta 80 caracteres), hora, zona horaria, idioma, `onboarded_at` y `ai_consent_at` (la fecha la pone un trigger) | Crear, cambiar `plan` y `target_distance` (lo mueve el feedback con un trigger) |
 | `categories` | Leer, renombrar y borrar las suyas | Crear (pasa por `capture_concept()`), asignar el dominio |
 | `concepts` | Leer, corregir título, tesis, dominio y estado, y borrar los suyos; crear con `capture_concept()`; mover de categoría con `move_concept()` | Escribir el embedding y la destilación |
 | `sparks` | Leer las suyas; cambiar `status`, `feedback` y `project_id` | Crear y escribir el contenido, `notified_at` |
