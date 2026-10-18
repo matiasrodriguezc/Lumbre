@@ -94,32 +94,38 @@ struct SparkActions: View {
         }
     }
 
+    /// Una sola acción principal según el estado, y lo demás abajo:
+    /// - sin guardar: Guardar idea; abajo Planificar, Compartir y el menú;
+    /// - guardada: la línea "Guardada en … · Cambiar" y Planificar (el paso siguiente); abajo Compartir y el menú;
+    /// - descartada: Guardar idea igual; abajo Compartir y el menú.
+    /// "No me sirve", Reportar y Exportar van en el menú: son acciones de una vez, no del día a día.
     @ViewBuilder
     private var buttons: some View {
-            saveRow
-            pairLayout(spacing: Space.s2) {
-                if FeatureFlag.planner.isEnabled {
-                    planButton
-                        .labelStyle(ActionLabelStyle())
-                }
-                if spark.status != .discarded {
-                    Button("No me sirve") { isAskingFeedback = true }
-                        .buttonStyle(.lumbre(.ghost, fullWidth: true))
-                }
+        VStack(alignment: .leading, spacing: Space.s3) {
+            if spark.status == .saved { savedLine }
+            if spark.status == .saved && FeatureFlag.planner.isEnabled {
+                planButton(.primary)
+                    .labelStyle(ActionLabelStyle())
+            } else if spark.status != .saved {
+                saveButton
             }
             pairLayout(spacing: Space.s2) {
+                if spark.status != .saved && FeatureFlag.planner.isEnabled {
+                    planButton(.secondary)
+                        .labelStyle(ActionLabelStyle())
+                }
                 if FeatureFlag.shareCard.isEnabled {
                     Button {
                         isSharing = true
                     } label: {
                         Label("Compartir", systemImage: "square.and.arrow.up")
                     }
-                    .buttonStyle(.lumbre(.secondary))
+                    .buttonStyle(.lumbre(.secondary, fullWidth: true))
                     .labelStyle(ActionLabelStyle())
                 }
-                Spacer(minLength: 0)
                 moreMenu
             }
+        }
     }
 
     /// Dos acciones lado a lado; con tamaños de accesibilidad, una abajo de la otra: al lado, "Planificar",
@@ -131,52 +137,55 @@ struct SparkActions: View {
         return layout { content() }
     }
 
-    @ViewBuilder
-    private var saveRow: some View {
-        if spark.status == .saved {
-            pairLayout(spacing: Space.s3) {
-                Label {
-                    spark.statusLine
-                } icon: {
-                    Image(systemName: "bookmark.fill")
-                }
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(Palette.ink)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                if FeatureFlag.projects.isEnabled {
-                    Button("Mover") { isChoosingProject = true }
-                        .accessibilityLabel("Mover a otro circuito")
-                        .buttonStyle(.lumbre(.secondary))
-                }
+    /// Dónde quedó guardada y, al lado, el link para cambiar de circuito.
+    private var savedLine: some View {
+        HStack(alignment: .firstTextBaseline, spacing: Space.s2) {
+            Label {
+                spark.statusLine
+            } icon: {
+                Image(systemName: "bookmark.fill")
             }
-        } else {
-            Button {
-                if FeatureFlag.projects.isEnabled {
-                    isChoosingProject = true
-                } else {
-                    saveWithoutProject()
-                }
-            } label: {
-                Label("Guardar idea", systemImage: "bookmark")
+            .font(.subheadline.weight(.semibold))
+            .foregroundStyle(Palette.ink)
+            if FeatureFlag.projects.isEnabled {
+                Text("·").foregroundStyle(Palette.inkMuted).accessibilityHidden(true)
+                Button("Cambiar") { isChoosingProject = true }
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(Palette.ink)
+                    .underline()
+                    .accessibilityLabel("Mover a otro circuito")
             }
-            .buttonStyle(.lumbre(.primary, fullWidth: true))
-            .labelStyle(ActionLabelStyle())
-            .disabled(isSaving)
+            Spacer(minLength: 0)
         }
     }
 
+    private var saveButton: some View {
+        Button {
+            if FeatureFlag.projects.isEnabled {
+                isChoosingProject = true
+            } else {
+                saveWithoutProject()
+            }
+        } label: {
+            Label("Guardar idea", systemImage: "bookmark")
+        }
+        .buttonStyle(.lumbre(.primary, fullWidth: true))
+        .labelStyle(ActionLabelStyle())
+        .disabled(isSaving)
+    }
+
     @ViewBuilder
-    private var planButton: some View {
+    private func planButton(_ role: LumbreButtonStyle.Variant) -> some View {
         if appModel.isPro, let onPlan {
             Button(action: onPlan) {
                 Label("Planificar", systemImage: "text.bubble")
             }
-            .buttonStyle(.lumbre(.secondary, fullWidth: true))
+            .buttonStyle(.lumbre(role, fullWidth: true))
         } else if appModel.isPro {
             NavigationLink(value: SparkRoute.planner(spark.id, entry: "spark_detail")) {
                 Label("Planificar", systemImage: "text.bubble")
             }
-            .buttonStyle(.lumbre(.secondary, fullWidth: true))
+            .buttonStyle(.lumbre(role, fullWidth: true))
         } else {
             Button {
                 Analytics.track(.plannerOpened(entry: "spark_detail"))
@@ -184,7 +193,7 @@ struct SparkActions: View {
             } label: {
                 Label("Planificar", systemImage: "text.bubble")
             }
-            .buttonStyle(.lumbre(.secondary, fullWidth: true))
+            .buttonStyle(.lumbre(role, fullWidth: true))
         }
     }
 
@@ -193,6 +202,13 @@ struct SparkActions: View {
             if showsExport {
                 ShareLink(item: MarkdownDocument.spark(spark), preview: SharePreview(spark.title)) {
                     Label("Exportar a Markdown", systemImage: "doc.text")
+                }
+            }
+            if spark.status != .saved && spark.status != .discarded {
+                Button {
+                    isAskingFeedback = true
+                } label: {
+                    Label("No me sirve", systemImage: "hand.thumbsdown")
                 }
             }
             Button {
