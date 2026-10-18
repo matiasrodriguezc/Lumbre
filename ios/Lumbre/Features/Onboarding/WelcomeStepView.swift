@@ -12,6 +12,10 @@ struct WelcomeStepView: View {
     @State private var isAskingConsent = false
     /// Entró a una cuenta ya configurada y falta el consentimiento para IA en este teléfono.
     @State private var signedInProfile: Profile?
+    /// Los botones aparecen recién cuando terminó la conexión (enseguida con Reducir movimiento o VoiceOver).
+    @State private var showsButtons = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityVoiceOverEnabled) private var voiceOverEnabled
 
     var body: some View {
         GeometryReader { proxy in
@@ -23,7 +27,9 @@ struct WelcomeStepView: View {
                 // La demo y la propuesta van centradas en lo que queda (en pantallas altas sobraba abajo).
                 Spacer(minLength: 0)
 
-                CollisionIllustration()
+                CollisionIllustration {
+                    withAnimation(.easeOut(duration: 0.35)) { showsButtons = true }
+                }
 
                 VStack(alignment: .leading, spacing: Space.s3) {
                     Text("Donde se encienden las ideas")
@@ -59,10 +65,15 @@ struct WelcomeStepView: View {
             .padding(.top, Space.s3)
             .padding(.bottom, Space.s2)
             .background(Palette.bg)
+            .opacity(showsButtons ? 1 : 0)
+            .offset(y: showsButtons || reduceMotion ? 0 : 16)
+            .allowsHitTesting(showsButtons)
+            .accessibilityHidden(!showsButtons)
         }
         .neuralBackground()
         .toolbar(.hidden, for: .navigationBar)
         .onAppear {
+            if reduceMotion || voiceOverEnabled { showsButtons = true }
             Analytics.screen(OnboardingStep.welcome.screenName)
             model.trackStartIfNeeded()
         }
@@ -127,25 +138,35 @@ struct WelcomeStepView: View {
     }
 }
 
-/// Lo que hace Lumbre, contado en bucle con la misma sinapsis de la chispa: dos neuronas de mundos distintos se
-/// tantean, se conectan, salta la chispa y aparece la idea. Con Reducir movimiento, quieta y ya conectada.
+/// Lo que hace Lumbre, contado una vez con la misma sinapsis de la chispa: dos neuronas de mundos distintos se
+/// tantean, se conectan, salta la chispa y aparece la idea; después queda conectada. Con Reducir movimiento, ya
+/// conectada desde el principio.
 /// Sin la identidad neuronal, las dos tarjetas con una "×".
 private struct CollisionIllustration: View {
+    /// Cuando terminó (aparece la idea): ahí entran los botones.
+    var onFinished: () -> Void = {}
+
     @Environment(\.neuralIdentity) private var neuralIdentity
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var start = Date.now
 
-    /// Un ciclo: se tantean (0 – 1,6 s), avanzan y se tocan (1,6 – 2,2), salta la chispa y se agarran (2,2 – 2,6),
-    /// aparece la idea (2,4 – 2,9), queda a la vista y se funde (5,8 – 6,3) para volver a empezar.
-    private static let cycle = 6.6
+    /// Se tantean (0 – 1,4 s), avanzan y se tocan (1,4 – 2,0), salta la chispa y se agarran (1,95 – 2,4) y aparece
+    /// la idea (2,2 – 2,7). Después queda quieta, conectada.
+    private static let end = 2.7
+    private static let shift = -0.2
 
     var body: some View {
         Group {
             if neuralIdentity {
                 TimelineView(.animation(paused: reduceMotion)) { context in
-                    let elapsed = context.date.timeIntervalSince(start)
-                    demo(t: reduceMotion ? 4 : elapsed.truncatingRemainder(dividingBy: Self.cycle))
+                    let elapsed = context.date.timeIntervalSince(start) - Self.shift
+                    demo(t: reduceMotion ? 4 : elapsed)
+                }
+                .task {
+                    guard !reduceMotion else { return onFinished() }
+                    try? await Task.sleep(for: .seconds(Self.end + Self.shift))
+                    onFinished()
                 }
             } else {
                 cardsFallback
@@ -163,7 +184,6 @@ private struct CollisionIllustration: View {
         let pop = progress(t, 2.15, 2.5)
         let star = pop < 1 ? 0.2 + 0.95 * sin(pop * .pi * 0.62) / sin(.pi * 0.62) : 1
         let idea = ease(progress(t, 2.4, 2.9))
-        let fadeOut = 1 - progress(t, 5.8, 6.3)
         return VStack(alignment: .leading, spacing: Space.s4) {
             SparkPairHeader(
                 a: SparkSide(category: String(localized: "Urbanismo"), categorySymbol: "building.2",
@@ -190,7 +210,6 @@ private struct CollisionIllustration: View {
         .padding(Space.s5)
         .background(Palette.surface, in: RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous).strokeBorder(Palette.border, lineWidth: 1))
-        .opacity(reduceMotion ? 1 : 0.15 + 0.85 * fadeOut)
     }
 
     private func progress(_ t: Double, _ a: Double, _ b: Double) -> Double { min(max((t - a) / (b - a), 0), 1) }
