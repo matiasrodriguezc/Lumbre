@@ -4879,6 +4879,50 @@
         }
       }
     },
+    "¿Te avisamos cuando esté lista?" : {
+      "comment" : "[onboarding.push.title_question]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Should we let you know when it’s ready?"
+          }
+        }
+      }
+    },
+    "Un aviso por día, cuando sale tu chispa. Nada más." : {
+      "comment" : "[onboarding.push.subtitle_v2]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One notification a day, when your spark is out. That’s it."
+          }
+        }
+      }
+    },
+    "¿A qué hora te avisamos?" : {
+      "comment" : "[onboarding.spark_hour.title_v2]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What time should we let you know?"
+          }
+        }
+      }
+    },
+    "Todos los días, a esta hora, te llega el aviso de tu chispa." : {
+      "comment" : "[onboarding.spark_hour.subtitle_v2]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every day at this time, you’ll get your spark notification."
+          }
+        }
+      }
+    },
     "Onda verde de semáforos" : {
       "comment" : "[onboarding.welcome.example_a]",
       "localizations" : {

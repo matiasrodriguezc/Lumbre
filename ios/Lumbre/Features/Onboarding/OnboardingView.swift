@@ -84,7 +84,7 @@ struct OnboardingScaffold<Content: View, Footer: View>: View {
 /// Barra de progreso de los pasos 2 a 5.
 struct OnboardingProgress: View {
     let step: OnboardingStep
-    private let steps: [OnboardingStep] = [.profile, .seeds, .sparkHour, .push]
+    private let steps: [OnboardingStep] = [.profile, .seeds, .push, .sparkHour]
 
     var body: some View {
         HStack(spacing: Space.s1) {

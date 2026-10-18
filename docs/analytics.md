@@ -104,7 +104,7 @@ Fuente: **A** = app (iOS y Android), **S** = servidor (Edge Functions o webhook)
 | Evento | Fuente | Propiedades | Cuándo |
 |---|---|---|---|
 | `onboarding_started` | A | — | Se muestra la bienvenida |
-| `onboarding_step_completed` | A | `step`: `welcome`, `profile`, `seeds`, `spark_hour`, `push`; `step_index` | Se avanza de paso |
+| `onboarding_step_completed` | A | `step`: `welcome`, `profile`, `seeds`, `push`, `spark_hour` (este último solo si quiso el aviso; desde el 2026-10-18); `step_index` | Se avanza de paso |
 | `seed_idea_added` | A | `index` (1–3), `input`: `text`, `voice` | Se carga una idea semilla |
 | `spark_hour_set` | A | `hour`, `is_default`, `context`: `onboarding`, `settings` | Se elige o cambia la hora |
 | `push_permission_prompted` | A | `context`: `onboarding`, `settings`, `today` | Se muestra el pedido previo con contexto |

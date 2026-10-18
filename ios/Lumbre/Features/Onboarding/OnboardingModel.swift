@@ -3,10 +3,11 @@ import LumbreCore
 import Observation
 
 /// Pasos del onboarding, en orden. El `rawValue` es el `step` de `onboarding_step_completed`.
+/// Primero se pregunta si quiere el aviso y, solo si dice que sí, a qué hora (decidido el 2026-10-18).
 enum OnboardingStep: String, CaseIterable, Hashable {
     case welcome, profile, seeds
-    case sparkHour = "spark_hour"
     case push
+    case sparkHour = "spark_hour"
 
     /// 1 a 5.
     var index: Int { (Self.allCases.firstIndex(of: self) ?? 0) + 1 }
@@ -161,8 +162,8 @@ final class OnboardingModel {
 
     // MARK: Fin
 
-    /// Guarda el perfil y marca el onboarding como terminado.
-    func finish(api: any LumbreAPI) async throws -> Profile {
+    /// Guarda el perfil y marca el onboarding como terminado. `lastStep`: el aviso (si dijo que no) o la hora.
+    func finish(api: any LumbreAPI, lastStep: OnboardingStep) async throws -> Profile {
         isFinishing = true
         defer { isFinishing = false }
         let language = Locale.current.language.languageCode?.identifier == "en" ? "en" : "es"
@@ -174,7 +175,7 @@ final class OnboardingModel {
             completeOnboarding: true,
             creativeRole: trimmedRole
         ))
-        Analytics.track(.onboardingStepCompleted(step: OnboardingStep.push.rawValue, index: OnboardingStep.push.index))
+        Analytics.track(.onboardingStepCompleted(step: lastStep.rawValue, index: lastStep.index))
         Analytics.track(.onboardingCompleted(
             durationSeconds: Int(Date.now.timeIntervalSince(startedAt)),
             profilesCount: profiles.count,

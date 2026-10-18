@@ -184,13 +184,16 @@ private struct SeedCard: View {
 
 // MARK: - Hora de la chispa
 
-/// Paso 4: a qué hora llega la chispa (08:00 por defecto).
+/// Último paso, solo si quiso el aviso: a qué hora llega (08:00 por defecto). Al seguir, termina el onboarding.
 struct SparkHourStepView: View {
     @Environment(OnboardingModel.self) private var model
+    @Environment(AppModel.self) private var appModel
+    @Environment(\.api) private var api
+    @State private var finishError: String?
 
     var body: some View {
         @Bindable var model = model
-        OnboardingScaffold(step: .sparkHour, title: "¿A qué hora querés tu chispa?", subtitle: "Todos los días, a esta hora, dos de tus neuronas se conectan y salta una chispa.") {
+        OnboardingScaffold(step: .sparkHour, title: "¿A qué hora te avisamos?", subtitle: "Todos los días, a esta hora, te llega el aviso de tu chispa.") {
             DatePicker("Hora de la chispa", selection: $model.sparkTime, displayedComponents: .hourAndMinute)
                 .datePickerStyle(.wheel)
                 .labelsHidden()
@@ -201,11 +204,36 @@ struct SparkHourStepView: View {
                 .font(.footnote)
                 .foregroundStyle(Palette.inkMuted)
         } footer: {
-            Button("Continuar") {
+            Button {
                 model.trackSparkHour()
-                model.complete(.sparkHour)
+                Task { await finish() }
+            } label: {
+                if model.isFinishing {
+                    ProgressView()
+                        .tint(Palette.onAccent)
+                        .accessibilityLabel(Text("Guardando"))
+                } else {
+                    Text("Listo")
+                }
             }
             .buttonStyle(.lumbre(.primary, fullWidth: true))
+            .disabled(model.isFinishing)
+        }
+        .alert("No pudimos guardar tu perfil", isPresented: Binding(get: { finishError != nil }, set: { if !$0 { finishError = nil } })) {
+            Button("Reintentar") { Task { await finish() } }
+            Button("Cancelar", role: .cancel) {}
+        } message: {
+            Text(finishError ?? "")
+        }
+    }
+
+    private func finish() async {
+        do {
+            let profile = try await model.finish(api: api, lastStep: .sparkHour)
+            await SparkReminder.schedule(at: profile.sparkTime)
+            appModel.completeOnboarding(with: profile)
+        } catch {
+            finishError = error.localizedDescription
         }
     }
 }
@@ -224,7 +252,7 @@ struct PushStepView: View {
     @ScaledMetric(relativeTo: .title3) private var iconBox: CGFloat = 36
 
     var body: some View {
-        OnboardingScaffold(step: .push, title: "Te avisamos cuando esté lista", subtitle: "Un aviso por día, a la hora que elegiste. Nada más.") {
+        OnboardingScaffold(step: .push, title: "¿Te avisamos cuando esté lista?", subtitle: "Un aviso por día, cuando sale tu chispa. Nada más.") {
             VStack(alignment: .leading, spacing: Space.s4) {
                 notificationPreview
                 Label("Si preferís sin avisos, la chispa te espera igual en Hoy.", systemImage: "sparkles")
@@ -307,17 +335,23 @@ struct PushStepView: View {
         .accessibilityElement(children: .combine)
     }
 
+    /// Si da el permiso, sigue a elegir la hora; si el sistema lo rechaza, no tiene sentido elegirla y termina.
     private func allow() async {
         isRequesting = true
         let result = await PushPermission.request()
         Analytics.track(.pushPermissionResponded(granted: result.granted, systemPromptShown: result.systemPromptShown))
         isRequesting = false
-        await finish()
+        if result.granted {
+            model.complete(.push)
+        } else {
+            await finish()
+        }
     }
 
+    /// Sin aviso: termina con la hora por defecto (la chispa igual sale y espera en Hoy).
     private func finish() async {
         do {
-            let profile = try await model.finish(api: api)
+            let profile = try await model.finish(api: api, lastStep: .push)
             await SparkReminder.schedule(at: profile.sparkTime)
             appModel.completeOnboarding(with: profile)
         } catch {
