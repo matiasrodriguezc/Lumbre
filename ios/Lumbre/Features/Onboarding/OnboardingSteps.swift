@@ -22,7 +22,7 @@ struct ProfileStepView: View {
 
 // MARK: - Ideas semilla
 
-/// Paso 3: tres ideas con su categoría. Se puede seguir con una.
+/// Paso 3: hasta tres ideas con su categoría. Es opcional: se puede saltear y guardarlas después.
 struct SeedsStepView: View {
     @Environment(OnboardingModel.self) private var model
     @Environment(\.api) private var api
@@ -39,19 +39,28 @@ struct SeedsStepView: View {
                 }
             }
         } footer: {
-            Button {
-                Task { await saveAndContinue() }
-            } label: {
-                if model.isSavingSeeds {
-                    ProgressView()
-                        .tint(Palette.onAccent)
-                        .accessibilityLabel(Text("Guardando"))
-                } else {
-                    Text(buttonTitle)
+            if model.filledSeedCount == 0 {
+                Button("Saltear por ahora") { model.complete(.seeds) }
+                    .buttonStyle(.lumbre(.secondary, fullWidth: true))
+                Text("Podés guardar tus primeras neuronas cuando quieras, desde Capturar.")
+                    .font(.footnote)
+                    .foregroundStyle(Palette.inkMuted)
+                    .multilineTextAlignment(.center)
+            } else {
+                Button {
+                    Task { await saveAndContinue() }
+                } label: {
+                    if model.isSavingSeeds {
+                        ProgressView()
+                            .tint(Palette.onAccent)
+                            .accessibilityLabel(Text("Guardando"))
+                    } else {
+                        Text(buttonTitle)
+                    }
                 }
+                .buttonStyle(.lumbre(.primary, fullWidth: true))
+                .disabled(model.isSavingSeeds)
             }
-            .buttonStyle(.lumbre(.primary, fullWidth: true))
-            .disabled(model.filledSeedCount == 0 || model.isSavingSeeds)
 
             if model.filledSeedCount > 0 && model.filledSeedCount < OnboardingModel.seedCount {
                 Text("Con tres la primera chispa sale mejor, pero podés seguir y sumar más después.")
@@ -158,7 +167,9 @@ private struct SeedCard: View {
                             }
                         }
                     }
-                    .scrollClipDisabled()
+                    // Scrollea de borde a borde de la tarjeta y se corta ahí (antes se salía de la tarjeta).
+                    .contentMargins(.horizontal, Space.s4, for: .scrollContent)
+                    .padding(.horizontal, -Space.s4)
                     .accessibilityLabel(Text("Categorías sugeridas"))
                 }
             }

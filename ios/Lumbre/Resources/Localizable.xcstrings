@@ -4802,6 +4802,28 @@
         }
       }
     },
+    "Saltear por ahora" : {
+      "comment" : "[onboarding.seeds.skip]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip for now"
+          }
+        }
+      }
+    },
+    "Podés guardar tus primeras neuronas cuando quieras, desde Capturar." : {
+      "comment" : "[onboarding.seeds.skip_hint]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can save your first neurons anytime from Capture."
+          }
+        }
+      }
+    },
     "Onda verde de semáforos" : {
       "comment" : "[onboarding.welcome.example_a]",
       "localizations" : {
