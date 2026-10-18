@@ -28,7 +28,8 @@ enum WidgetGallery {
         )
         let next = Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: .now.addingTimeInterval(86_400))!
         let states: [(String, TodayWidgetState)] = [
-            ("spark", .spark(snapshot)), ("pending", .pending(pending)), ("waiting", .waiting(next)), ("empty", .empty),
+            ("spark", .spark(snapshot)), ("pending", .pending(pending)), ("waiting", .waiting(next)),
+            ("material", .noSpark(needsMaterial: true)), ("nopair", .noSpark(needsMaterial: false)), ("empty", .empty),
         ]
         let families: [(String, WidgetFamily, CGSize)] = [
             ("small", .systemSmall, CGSize(width: 170, height: 170)),

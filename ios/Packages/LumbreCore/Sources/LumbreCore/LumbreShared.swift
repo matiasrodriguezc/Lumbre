@@ -33,6 +33,8 @@ public enum LumbreShared {
 
     private enum Key {
         static let nextSparkAt = "shared.nextSparkAt"
+        static let noSparkOn = "shared.noSparkOn"
+        static let needsMaterial = "shared.needsMaterial"
         static let categories = "shared.categories"
         static let backend = "shared.backend"
         static let theme = "shared.theme"
@@ -121,11 +123,24 @@ public enum LumbreShared {
     /// Guarda lo que devolvió Hoy: la chispa del día (o nada) y cuándo llega la próxima.
     public static func writeToday(_ state: TodayState) {
         defaults.set(state.quota.refillsAt, forKey: Key.nextSparkAt)
+        // Sin chispa hoy, el widget no promete una: dice que faltan neuronas o que hoy no salió.
+        defaults.set(state.spark == nil ? Date.now : nil, forKey: Key.noSparkOn)
+        defaults.set(state.spark == nil && state.hasTooFewConcepts, forKey: Key.needsMaterial)
         if let spark = state.spark {
             writeTodaySnapshot(.init(spark: spark))
         } else {
             clearTodaySnapshot()
         }
+    }
+
+    /// El día en que Hoy cargó sin chispa (nil si la hubo).
+    public static var noSparkOn: Date? {
+        defaults.object(forKey: Key.noSparkOn) as? Date
+    }
+
+    /// En la última carga de Hoy faltaban neuronas para conectar.
+    public static var needsMaterial: Bool {
+        defaults.bool(forKey: Key.needsMaterial)
     }
 
     /// Próxima chispa diaria (la hora elegida por el usuario), según la última carga de Hoy.
@@ -199,6 +214,8 @@ public enum LumbreShared {
     public static func clearUserData() {
         clearTodaySnapshot()
         defaults.removeObject(forKey: Key.nextSparkAt)
+        defaults.removeObject(forKey: Key.noSparkOn)
+        defaults.removeObject(forKey: Key.needsMaterial)
         defaults.removeObject(forKey: Key.categories)
         defaults.removeObject(forKey: Key.lastCategory)
     }

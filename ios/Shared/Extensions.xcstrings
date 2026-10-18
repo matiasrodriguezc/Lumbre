@@ -352,6 +352,83 @@
         }
       }
     },
+    "Faltan neuronas para conectar" : {
+      "comment" : "Sin material para la chispa: título. [widget.material_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not enough neurons to connect"
+          }
+        }
+      }
+    },
+    "Hoy no salió chispa" : {
+      "comment" : "Hoy no hubo un buen par: título. [widget.nopair_title]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No spark today"
+          }
+        }
+      }
+    },
+    "Faltan neuronas" : {
+      "comment" : "Pantalla bloqueada, sin material. [widget.material_short]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Need more neurons"
+          }
+        }
+      }
+    },
+    "Hoy no salió" : {
+      "comment" : "Pantalla bloqueada, sin buen par. [widget.nopair_short]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "None today"
+          }
+        }
+      }
+    },
+    "Faltan neuronas para tu chispa" : {
+      "comment" : "Línea de la pantalla bloqueada, sin material. [widget.material_inline]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your spark needs more neurons"
+          }
+        }
+      }
+    },
+    "Guardá ideas de temas distintos" : {
+      "comment" : "Sin material: detalle. [widget.material_detail]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save ideas on different topics"
+          }
+        }
+      }
+    },
+    "Guardá neuronas de otros temas" : {
+      "comment" : "Sin buen par: detalle. [widget.nopair_detail]",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save neurons on other topics"
+          }
+        }
+      }
+    },
     "Tu próxima chispa" : {
       "comment" : "Esperando la chispa de mañana: título. [widget.next_title]",
       "localizations" : {

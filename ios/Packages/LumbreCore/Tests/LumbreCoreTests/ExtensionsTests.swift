@@ -212,6 +212,18 @@ import Testing
         #expect(TodayWidgetState(snapshot: yesterday, nextSparkAt: sparkTime, now: morning, calendar: calendar) == .waiting(sparkTime))
         #expect(TodayWidgetState(snapshot: yesterday, nextSparkAt: sparkTime, now: sparkTime.addingTimeInterval(60), calendar: calendar) == .ready)
         #expect(TodayWidgetState(snapshot: nil, nextSparkAt: nil, now: morning, calendar: calendar) == .empty)
+        // Sin chispa hoy no se promete una a la hora de siempre.
+        #expect(TodayWidgetState(snapshot: nil, nextSparkAt: sparkTime, needsMaterial: true, now: sparkTime.addingTimeInterval(60),
+                                 calendar: calendar) == .noSpark(needsMaterial: true))
+        #expect(TodayWidgetState(snapshot: nil, nextSparkAt: sparkTime, noSparkOn: morning, now: sparkTime.addingTimeInterval(60),
+                                 calendar: calendar) == .noSpark(needsMaterial: false))
+        // "Hoy no salió" vale solo ese día; faltar neuronas sigue hasta que la app vuelva a cargar Hoy.
+        let tomorrow = calendar.date(byAdding: .day, value: 1, to: sparkTime)!
+        #expect(TodayWidgetState(snapshot: nil, nextSparkAt: tomorrow, noSparkOn: morning, now: tomorrow.addingTimeInterval(60),
+                                 calendar: calendar) == .ready)
+        // Con la chispa de hoy, manda la chispa.
+        #expect(TodayWidgetState(snapshot: pending, nextSparkAt: sparkTime, needsMaterial: true, now: morning,
+                                 calendar: calendar) == .pending(pending))
 
         let dates = TodayWidgetState.refreshDates(after: morning, nextSparkAt: sparkTime, calendar: calendar)
         #expect(dates == [sparkTime, calendar.date(byAdding: .day, value: 1, to: today)!])

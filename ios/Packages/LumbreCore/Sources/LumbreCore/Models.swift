@@ -420,6 +420,9 @@ public struct TodayState: Hashable, Sendable {
 
     public var needsMoreConcepts: Bool { runwayDays < 7 }
 
+    /// Con menos de 4 neuronas no hay material para conectar: Hoy y el widget lo dicen en vez de esperar una chispa.
+    public var hasTooFewConcepts: Bool { conceptCount < 4 }
+
     /// Chispas que quedan para encender hoy (el contador de Hoy): la diaria si sigue por encender y las extras que
     /// todavía se pueden pedir. `quota.available` cuenta también la diaria ya revelada, así que después del reveal
     /// el contador seguiría en "1 chispa para encender".

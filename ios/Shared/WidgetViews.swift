@@ -67,6 +67,8 @@ struct TodaySparkWidgetView: View {
         case .spark(let snapshot): snapshot.title
         case .pending, .ready: extensionsText("Tu chispa está lista")
         case .waiting: extensionsText("Tu próxima chispa")
+        case .noSpark(true): extensionsText("Faltan neuronas para conectar")
+        case .noSpark(false): extensionsText("Hoy no salió chispa")
         case .empty: extensionsText("Tu chispa de hoy")
         }
         return Text(text)
@@ -156,6 +158,8 @@ struct TodaySparkWidgetView: View {
                 case .pending: Text(extensionsText("Lista para encender"))
                 case .ready: Text(extensionsText("Ya está lista"))
                 case .waiting(let date): Text(date, style: .time)
+                case .noSpark(true): Text(extensionsText("Faltan neuronas"))
+                case .noSpark(false): Text(extensionsText("Hoy no salió"))
                 case .empty: Text(extensionsText("Abrí Lumbre"))
                 }
             }
@@ -178,6 +182,8 @@ struct TodaySparkWidgetView: View {
             case .spark(let snapshot): Text(snapshot.title).privacySensitive()
             case .pending, .ready: Text(extensionsText("Tu chispa está lista"))
             case .waiting(let date): Text(extensionsText("Próxima chispa")) + Text(" ") + Text(date, style: .time)
+            case .noSpark(true): Text(extensionsText("Faltan neuronas para tu chispa"))
+            case .noSpark(false): Text(extensionsText("Hoy no salió chispa"))
             case .empty: Text(extensionsText("Chispa de hoy"))
             }
         } icon: {
@@ -211,6 +217,8 @@ struct TodaySparkWidgetView: View {
         case .pending: extensionsText("Tu chispa está lista")
         case .ready: extensionsText("Tu chispa de hoy ya está lista")
         case .waiting: extensionsText("Tu próxima chispa")
+        case .noSpark(true): extensionsText("Faltan neuronas para conectar")
+        case .noSpark(false): extensionsText("Hoy no salió chispa")
         case .empty: extensionsText("Tu chispa de hoy")
         }
         Text(text)
@@ -229,6 +237,8 @@ struct TodaySparkWidgetView: View {
             case .spark, .pending: Text(extensionsText("Tocá para encenderla"))
             case .ready: Text(extensionsText("Abrí Lumbre para encenderla"))
             case .waiting(let date): Text(extensionsText("Llega a las")) + Text(" ") + Text(date, style: .time)
+            case .noSpark(true): Text(extensionsText("Guardá ideas de temas distintos"))
+            case .noSpark(false): Text(extensionsText("Guardá neuronas de otros temas"))
             case .empty: Text(extensionsText("Abrí Lumbre para ver la chispa del día"))
             }
         }

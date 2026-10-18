@@ -354,7 +354,7 @@ struct TodayView: View {
 
     @ViewBuilder
     private func emptyState(_ today: TodayState) -> some View {
-        let fewConcepts = today.conceptCount < 4
+        let fewConcepts = today.hasTooFewConcepts
         ContentUnavailableView {
             EmptyStateLabel(fewConcepts ? "Todavía no hay material para conectar" : "Hoy no encontramos un buen par", systemImage: "sparkles",
                             illustration: fewConcepts ? .emptyVault : .beforeSpark)

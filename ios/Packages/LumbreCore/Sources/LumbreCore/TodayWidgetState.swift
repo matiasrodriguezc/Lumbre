@@ -11,12 +11,20 @@ public enum TodayWidgetState: Hashable, Sendable {
     case ready
     /// La próxima chispa llega a esta hora.
     case waiting(Date)
+    /// Hoy no hay chispa: faltan neuronas para conectar (`needsMaterial`) o no salió un buen par.
+    /// Faltar neuronas no depende del día: sigue hasta que la app vuelva a cargar Hoy.
+    case noSpark(needsMaterial: Bool)
     /// Sin datos (nunca se abrió la app, o se cerró la sesión).
     case empty
 
-    public init(snapshot: LumbreShared.TodaySnapshot?, nextSparkAt: Date?, now: Date = .now, calendar: Calendar = .current) {
+    public init(snapshot: LumbreShared.TodaySnapshot?, nextSparkAt: Date?, noSparkOn: Date? = nil, needsMaterial: Bool = false,
+                now: Date = .now, calendar: Calendar = .current) {
         if let snapshot, snapshot.isCurrent(at: now, calendar: calendar) {
             self = snapshot.isPending ? .pending(snapshot) : .spark(snapshot)
+        } else if needsMaterial {
+            self = .noSpark(needsMaterial: true)
+        } else if let noSparkOn, calendar.isDate(noSparkOn, inSameDayAs: now) {
+            self = .noSpark(needsMaterial: false)
         } else if let nextSparkAt {
             self = nextSparkAt <= now ? .ready : .waiting(nextSparkAt)
         } else {
@@ -26,14 +34,15 @@ public enum TodayWidgetState: Hashable, Sendable {
 
     /// Lee el App Group.
     public static func current(now: Date = .now) -> TodayWidgetState {
-        TodayWidgetState(snapshot: LumbreShared.readTodaySnapshot(), nextSparkAt: LumbreShared.nextSparkAt, now: now)
+        TodayWidgetState(snapshot: LumbreShared.readTodaySnapshot(), nextSparkAt: LumbreShared.nextSparkAt,
+                         noSparkOn: LumbreShared.noSparkOn, needsMaterial: LumbreShared.needsMaterial, now: now)
     }
 
     /// La chispa que abre el widget al tocarlo, si hay una de hoy.
     public var sparkID: UUID? {
         switch self {
         case .spark(let snapshot), .pending(let snapshot): snapshot.sparkID
-        case .ready, .waiting, .empty: nil
+        case .ready, .waiting, .noSpark, .empty: nil
         }
     }
 
