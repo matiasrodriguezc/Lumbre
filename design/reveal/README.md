@@ -330,3 +330,18 @@ En Lumbre la neurona estática (soma y dendritas, del arte de `generar.py`) qued
 - Con Reducir movimiento los filopodios quedan quietos (el reveal ya es un fundido de 200 ms).
 - Sin el flag, vuelven las terminales fijas de §2.
 - El prototipo `index.html` todavía muestra la versión de §2.
+
+## 14. Botones de abajo (flag `reveal_buttons`, 2026-10-17)
+
+La tarjeta del reveal queda limpia: las dos neuronas, la sinapsis, el título y la idea. Las acciones salen de la tarjeta y van abajo, como botones redondos de las apps de swipe:
+
+| Botón | Qué hace |
+|---|---|
+| Izquierda, ✕ (64 pt, contorno) | "No me sirve": la tarjeta sale por la izquierda, igual que el swipe, y pide el motivo |
+| Medio, compartir (52 pt, contorno) | La tarjeta para compartir; al volver, la tarjeta sigue en su lugar |
+| Derecha, guardar (64 pt, negro) | La tarjeta sale por la derecha y se elige el circuito, igual que el swipe |
+
+- Aparecen con las acciones (750 → 900 ms) y se encogen un 8 % al tocarlos (sin escala con Reducir movimiento).
+- Planificar sale del reveal: sigue en la chispa de Hoy y en el detalle.
+- Reportar (obligatorio en Play para contenido de IA) queda con un toque largo sobre la tarjeta y como acción de VoiceOver.
+- La estrella de la sinapsis creció a 38 u de alto para tapar el cruce de los filopodios.

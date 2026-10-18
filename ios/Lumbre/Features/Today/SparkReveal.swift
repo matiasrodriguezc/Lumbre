@@ -464,6 +464,8 @@ private struct SynapseRevealModal: View {
 
     // Swipe (flag `reveal_swipe`, design/reveal §12): a la derecha guarda, a la izquierda "No me sirve".
     private let isSwipeOn = FeatureFlag.revealSwipe.isEnabled
+    /// Flag `reveal_buttons`: la tarjeta queda limpia y abajo van los botones redondos (descartar, compartir, guardar).
+    private let usesButtons = FeatureFlag.revealButtons.isEnabled
     @State private var dragX: CGFloat = 0
     /// Se decide una vez por gesto, a los 10 pt: horizontal es swipe; vertical, scroll.
     @State private var dragAxis: Axis?
@@ -505,19 +507,28 @@ private struct SynapseRevealModal: View {
         typealias T = SynapseRevealTimeline
         let motion = !reduceMotion
         let modal = motion ? T.track(t, from: 0, length: 0.2, .fade) : T.track(t, from: 0, length: T.reducedDuration, .calm)
+        let actions = motion ? T.track(t, from: 0.75, length: 0.15, .fade) : 1
         return GeometryReader { proxy in
             ScrollView {
-                withSwipeGesture(
-                    panel(at: t, motion: motion)
-                        .frame(maxWidth: 440)
-                        .onGeometryChange(for: CGFloat.self, of: \.size.width) { panelWidth = $0 }
-                        .offset(x: dragX)
-                        .rotationEffect(.degrees(reduceMotion ? 0 : swipeRotation)),
-                    screenWidth: proxy.size.width
-                )
+                VStack(spacing: Space.s6) {
+                    withSwipeGesture(
+                        panel(at: t, motion: motion)
+                            .frame(maxWidth: 440)
+                            .onGeometryChange(for: CGFloat.self, of: \.size.width) { panelWidth = $0 }
+                            .offset(x: dragX)
+                            .rotationEffect(.degrees(reduceMotion ? 0 : swipeRotation)),
+                        screenWidth: proxy.size.width
+                    )
                     .opacity(cardOpacity)
-                    .padding(.horizontal, Space.s4)
-                    .frame(maxWidth: .infinity, minHeight: proxy.size.height)
+                    if usesButtons {
+                        revealButtons(screenWidth: proxy.size.width)
+                            .opacity(actions)
+                            .allowsHitTesting(actions > 0)
+                            .accessibilityHidden(!isRevealed)
+                    }
+                }
+                .padding(.horizontal, Space.s4)
+                .frame(maxWidth: .infinity, minHeight: proxy.size.height)
             }
             .scrollBounceBehavior(.basedOnSize)
             // Ya decidido como swipe, el panel no scrollea hasta soltar (con texto grande scrollea).
@@ -600,11 +611,14 @@ private struct SynapseRevealModal: View {
                     .opacity(bodyText)
             }
             .accessibilityHidden(!isRevealed)
-            SparkActions(spark: spark, onChange: onChange, onPlan: { close(then: onPlan) }, request: swipeRequest, onRequestFinished: swipeFinished)
-                .opacity(actions)
-                // Se pueden tocar desde que se ven (750 ms); VoiceOver las encuentra a los 900.
-                .allowsHitTesting(actions > 0)
-                .accessibilityHidden(!isRevealed)
+            if !usesButtons {
+                SparkActions(spark: spark, onChange: onChange, onPlan: { close(then: onPlan) }, request: swipeRequest,
+                             onRequestFinished: swipeFinished)
+                    .opacity(actions)
+                    // Se pueden tocar desde que se ven (750 ms); VoiceOver las encuentra a los 900.
+                    .allowsHitTesting(actions > 0)
+                    .accessibilityHidden(!isRevealed)
+            }
         }
         .padding(Space.s5)
         .background {
@@ -622,6 +636,57 @@ private struct SynapseRevealModal: View {
         .accessibilityElement(children: .contain)
         .accessibilityAddTraits(.isModal)
         .accessibilityAction(.escape) { if isRevealed { close(then: onClose) } }
+        // Reportar (lo exige Play para el contenido de IA) sin ensuciar la tarjeta: con un toque largo.
+        .contextMenu {
+            if usesButtons && isRevealed {
+                Button("Reportar", systemImage: "flag") { swipeRequest = SparkActionRequest(action: .report) }
+            }
+        }
+    }
+
+    // MARK: Botones de abajo
+
+    /// Como en las apps de swipe: descartar a la izquierda, compartir en el medio y guardar a la derecha.
+    /// Descartar y guardar hacen lo mismo que el gesto (la tarjeta sale por ese lado).
+    private func revealButtons(screenWidth: CGFloat) -> some View {
+        VStack(spacing: Space.s4) {
+            roundButtons(screenWidth: screenWidth)
+            // Sin botones propios: las hojas, los diálogos y los avisos (si guardar falla, el aviso sale acá).
+            SparkActions(spark: spark, onChange: onChange, request: swipeRequest, onRequestFinished: swipeFinished,
+                         showsButtons: false)
+                .frame(maxWidth: 440)
+        }
+    }
+
+    private func roundButtons(screenWidth: CGFloat) -> some View {
+        HStack(spacing: Space.s6) {
+            RevealRoundButton(symbol: "xmark", size: 64, isFilled: false) { buttonSwipe(.dismiss, screenWidth: screenWidth) }
+                .accessibilityLabel(Text("No me sirve"))
+                .disabled(!allows(.dismiss))
+            if FeatureFlag.shareCard.isEnabled {
+                RevealRoundButton(symbol: "square.and.arrow.up", size: 52, isFilled: false) { share() }
+                    .accessibilityLabel(Text("Compartir"))
+            }
+            RevealRoundButton(symbol: spark.status == .saved ? "bookmark.fill" : "bookmark", size: 64, isFilled: true) {
+                buttonSwipe(.save, screenWidth: screenWidth)
+            }
+            .accessibilityLabel(Text("Guardar idea"))
+            .disabled(!allows(.save))
+        }
+        .disabled(!isRevealed || isClosing || isSwipeBusy)
+        .frame(maxWidth: .infinity)
+    }
+
+    private func buttonSwipe(_ action: SparkActionRequest.Action, screenWidth: CGFloat) {
+        guard isRevealed, !isClosing, !isSwipeBusy, allows(action) else { return }
+        commitSwipe(action, screenWidth: screenWidth, input: "button")
+    }
+
+    private func share() {
+        guard isRevealed, !isClosing, !isSwipeBusy else { return }
+        isSwipeBusy = true
+        exitX = 0
+        swipeRequest = SparkActionRequest(action: .share)
     }
 
     // MARK: Swipe
@@ -632,6 +697,7 @@ private struct SynapseRevealModal: View {
         switch action {
         case .save: spark.status != .saved
         case .dismiss: spark.status != .discarded
+        case .share, .report: true
         }
     }
 
@@ -685,9 +751,9 @@ private struct SynapseRevealModal: View {
     }
 
     /// Pasado el umbral: la tarjeta sale por ese lado (con Reducir movimiento se funde en su lugar) y se abre la acción.
-    private func commitSwipe(_ action: SparkActionRequest.Action, screenWidth: CGFloat) {
+    private func commitSwipe(_ action: SparkActionRequest.Action, screenWidth: CGFloat, input: String = "gesture") {
         isSwipeBusy = true
-        Analytics.track(.sparkSwiped(mode: spark.mode, direction: action.rawValue, input: "gesture"))
+        Analytics.track(.sparkSwiped(mode: spark.mode, direction: action.rawValue, input: input))
         if reduceMotion {
             exitX = 0
             withAnimation(.timingCurve(0.4, 0, 0.2, 1, duration: 0.2)) {
@@ -718,6 +784,10 @@ private struct SynapseRevealModal: View {
             if allows(.dismiss) {
                 Button("No me sirve") { accessibilitySwipe(.dismiss) }
             }
+        }
+        if usesButtons && isRevealed {
+            Button("Compartir") { share() }
+            Button("Reportar") { swipeRequest = SparkActionRequest(action: .report) }
         }
     }
 
@@ -870,5 +940,42 @@ private struct ScrollSwipeRecognizer: UIViewRepresentable {
             let translation = pan.translation(in: pan.view)
             return abs(translation.y) <= 0.58 * abs(translation.x)
         }
+    }
+}
+
+/// Botón redondo de abajo del reveal. Guardar va lleno (negro, como el botón principal); los otros, de contorno.
+private struct RevealRoundButton: View {
+    let symbol: String
+    let size: CGFloat
+    let isFilled: Bool
+    let action: () -> Void
+
+    @Environment(\.isEnabled) private var isEnabled
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: symbol)
+                .font(.system(size: size * 0.36, weight: .semibold))
+                .foregroundStyle(isFilled ? Palette.onAccent : Palette.ink)
+                .frame(width: size, height: size)
+                .background {
+                    Circle().fill(isFilled ? Palette.ink : Palette.surface)
+                        .shadow(color: Palette.neuron.opacity(0.14), radius: 10, y: 4)
+                }
+                .overlay { if !isFilled { Circle().strokeBorder(Palette.border, lineWidth: 1.5) } }
+                .opacity(isEnabled ? 1 : 0.4)
+                .contentShape(Circle())
+        }
+        .buttonStyle(RevealRoundButtonStyle())
+    }
+}
+
+private struct RevealRoundButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.92 : 1)
+            .animation(reduceMotion ? nil : .spring(duration: 0.2, bounce: 0.4), value: configuration.isPressed)
     }
 }

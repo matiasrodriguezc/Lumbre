@@ -16,6 +16,8 @@ struct SparkActions: View {
     var request: SparkActionRequest? = nil
     /// Cuando termina el `request`: `true` si guardó o mandó el motivo; `false` si se canceló o falló.
     var onRequestFinished: (Bool) -> Void = { _ in }
+    /// Sin los botones: solo las hojas, los diálogos y los avisos, manejados por `request` (el reveal pone los suyos).
+    var showsButtons = true
 
     @Environment(\.api) private var api
     @Environment(AppModel.self) private var appModel
@@ -37,30 +39,7 @@ struct SparkActions: View {
 
     var body: some View {
         VStack(spacing: Space.s2) {
-            saveRow
-            pairLayout(spacing: Space.s2) {
-                if FeatureFlag.planner.isEnabled {
-                    planButton
-                        .labelStyle(ActionLabelStyle())
-                }
-                if spark.status != .discarded {
-                    Button("No me sirve") { isAskingFeedback = true }
-                        .buttonStyle(.lumbre(.ghost, fullWidth: true))
-                }
-            }
-            pairLayout(spacing: Space.s2) {
-                if FeatureFlag.shareCard.isEnabled {
-                    Button {
-                        isSharing = true
-                    } label: {
-                        Label("Compartir", systemImage: "square.and.arrow.up")
-                    }
-                    .buttonStyle(.lumbre(.secondary))
-                    .labelStyle(ActionLabelStyle())
-                }
-                Spacer(minLength: 0)
-                moreMenu
-            }
+            if showsButtons { buttons }
             if let notice {
                 noticeView(notice)
             }
@@ -107,9 +86,40 @@ struct SparkActions: View {
                 onChange(updated)
             }
         }
-        .sheet(isPresented: $isSharing) {
+        // Compartir no cierra nada: al volver de la hoja, la tarjeta sigue ahí.
+        .sheet(isPresented: $isSharing, onDismiss: {
+            if activeRequest == .share { finishRequest(false) }
+        }) {
             ShareCardSheet(spark: spark)
         }
+    }
+
+    @ViewBuilder
+    private var buttons: some View {
+            saveRow
+            pairLayout(spacing: Space.s2) {
+                if FeatureFlag.planner.isEnabled {
+                    planButton
+                        .labelStyle(ActionLabelStyle())
+                }
+                if spark.status != .discarded {
+                    Button("No me sirve") { isAskingFeedback = true }
+                        .buttonStyle(.lumbre(.ghost, fullWidth: true))
+                }
+            }
+            pairLayout(spacing: Space.s2) {
+                if FeatureFlag.shareCard.isEnabled {
+                    Button {
+                        isSharing = true
+                    } label: {
+                        Label("Compartir", systemImage: "square.and.arrow.up")
+                    }
+                    .buttonStyle(.lumbre(.secondary))
+                    .labelStyle(ActionLabelStyle())
+                }
+                Spacer(minLength: 0)
+                moreMenu
+            }
     }
 
     /// Dos acciones lado a lado; con tamaños de accesibilidad, una abajo de la otra: al lado, "Planificar",
@@ -222,6 +232,13 @@ struct SparkActions: View {
             }
         case .dismiss:
             isAskingFeedback = true
+        case .share:
+            isSharing = true
+        case .report:
+            // Reportar no mueve la tarjeta: se libera enseguida y el diálogo sigue solo.
+            activeRequest = nil
+            onRequestFinished(false)
+            isAskingReport = true
         }
     }
 
@@ -286,7 +303,7 @@ struct SparkActions: View {
 /// Lo que el swipe del reveal le pide a `SparkActions`. Cada pedido es nuevo (su `id`), así el mismo lado se puede repetir.
 struct SparkActionRequest: Equatable {
     enum Action: String {
-        case save, dismiss
+        case save, dismiss, share, report
     }
 
     let action: Action

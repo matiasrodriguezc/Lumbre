@@ -44,7 +44,8 @@ public struct GrowthConeSynapse: View {
                 draw(side: .right, in: &context, frame: frame, t: t, shift: shift)
                 context.opacity = 1
                 if starOpacity > 0 {
-                    let r = 11 * max(star, 0) * frame.scale
+                    // Grande: tapa el cruce de los filopodios, que queda debajo de la chispa.
+                    let r = 19 * max(star, 0) * frame.scale
                     let c = frame.point(Self.mid, Self.contactY)
                     context.opacity = starOpacity
                     context.fill(SparkStar().path(in: CGRect(x: c.x - r, y: c.y - r, width: r * 2, height: r * 2)),
@@ -155,7 +156,7 @@ public struct GrowthConeSynapse: View {
             var length = f.length * 1.3 * probe
             if abs(f.angle) < 45 {
                 // Hasta pasar el centro y meterse entre los filopodios del otro cono.
-                let reach = (Self.mid - coneX + 7 + 3 * sin(f.phase)) / max(cos(angle), 0.4)
+                let reach = (Self.mid - coneX + 3 + 2 * sin(f.phase)) / max(cos(angle), 0.4)
                 length += (reach - length) * g
             } else {
                 length *= 1 - 0.3 * g
