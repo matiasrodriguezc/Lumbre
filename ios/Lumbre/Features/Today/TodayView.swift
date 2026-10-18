@@ -59,7 +59,11 @@ struct TodayView: View {
 
     @ViewBuilder
     private func content(_ today: TodayState) -> some View {
-        meter(today)
+        // Sin chispa del día (cuenta nueva o sin un buen par) no hubo nada que usar: el contador diría
+        // "Usaste las chispas de hoy". El estado vacío ya dice qué hacer.
+        if today.spark != nil || !today.extras.isEmpty {
+            meter(today)
+        }
 
         if let hero = hero(in: today) {
             if hero.status == .discarded {
