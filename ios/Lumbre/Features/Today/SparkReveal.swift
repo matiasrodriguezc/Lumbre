@@ -83,7 +83,8 @@ struct SparkHero: View {
     private var neuralStage: some View {
         VStack(spacing: Space.s4) {
             SparkPairHeader(a: SparkSide(spark.conceptA), b: SparkSide(spark.conceptB))
-            Synapse(phase >= .collided ? .lit : phase >= .approaching ? .reaching : .apart, full: true)
+            // Mientras espera, los conos de crecimiento se tantean de lejos.
+            Synapse(phase >= .collided ? .lit : phase >= .approaching ? .reaching : .apart, full: true, live: phase == .idle)
                 .frame(maxWidth: 320)
                 .frame(maxWidth: .infinity)
                 .scaleEffect(phase >= .collided ? 1.08 : 1)
@@ -433,11 +434,13 @@ enum SynapseRevealTimeline {
         let sinceIgnition = max(t - ignition, 0)
         return SynapseProgress(
             enter: track(t, from: 0, length: 0.25, .enter),
-            reach: track(t, from: 0.15, length: 0.4, .reach),
+            // Con los conos de crecimiento, `reach` es el avance: se tocan justo antes de la estrella.
+            reach: track(t, from: 0.15, length: 0.45, .reach),
             impulse: track(t, from: 0.45, length: 0.2, .impulse),
             impulseOpacity: impulseOpacity,
             star: 0.1 + ignite.value(target: 0.9, time: sinceIgnition),
-            starOpacity: linear(t, from: ignition, length: 0.07)
+            starOpacity: linear(t, from: ignition, length: 0.07),
+            grip: track(t, from: ignition - 0.05, length: 0.3, .calm)
         )
     }
 }

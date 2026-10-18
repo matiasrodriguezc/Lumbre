@@ -19,6 +19,7 @@ struct LumbreApp: App {
                 .environment(\.purchases, appDelegate.purchases)
                 .environment(appDelegate.appModel)
                 .environment(\.neuralIdentity, FeatureFlag.neuralIdentity.isEnabled)
+                .environment(\.growthCones, FeatureFlag.growthCones.isEnabled)
                 .preferredColorScheme(theme.colorScheme)
                 .tint(Palette.ink)
         }

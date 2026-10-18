@@ -208,13 +208,26 @@ public struct Synapse: View {
 
     let stage: Stage
     let full: Bool
+    let live: Bool
+    @Environment(\.growthCones) private var growthCones
 
-    public init(_ stage: Stage = .lit, full: Bool = false) {
+    /// `live`: con los conos de crecimiento, los filopodios tantean solos (para el estado previo de Hoy).
+    public init(_ stage: Stage = .lit, full: Bool = false, live: Bool = false) {
         self.stage = stage
         self.full = full
+        self.live = live
     }
 
     public var body: some View {
+        if full && growthCones {
+            GrowthConeSynapse(approach: stage == .apart ? 0.12 : 1, grip: stage == .lit ? 1 : 0,
+                              starOpacity: stage == .lit ? 1 : 0, live: live)
+        } else {
+            terminals
+        }
+    }
+
+    @ViewBuilder private var terminals: some View {
         let left = full ? NeuralArt.synapseFullLeft : NeuralArt.synapseLeft
         let right = full ? NeuralArt.synapseFullRight : NeuralArt.synapseRight
         let canvas = left.size
@@ -267,30 +280,44 @@ public struct SynapseProgress: Sendable, Equatable {
     public var impulseOpacity: Double
     public var star: Double
     public var starOpacity: Double
+    /// Con los conos de crecimiento: los filopodios de adelante se entrelazan después de tocarse.
+    public var grip: Double
 
-    public init(enter: Double, reach: Double, impulse: Double, impulseOpacity: Double, star: Double, starOpacity: Double) {
+    public init(enter: Double, reach: Double, impulse: Double, impulseOpacity: Double, star: Double, starOpacity: Double, grip: Double = 0) {
         self.enter = enter
         self.reach = reach
         self.impulse = impulse
         self.impulseOpacity = impulseOpacity
         self.star = star
         self.starOpacity = starOpacity
+        self.grip = grip
     }
 
     public static let start = SynapseProgress(enter: 0, reach: 0, impulse: 0, impulseOpacity: 0, star: 0.1, starOpacity: 0)
-    public static let end = SynapseProgress(enter: 1, reach: 1, impulse: 1, impulseOpacity: 0, star: 1, starOpacity: 1)
+    public static let end = SynapseProgress(enter: 1, reach: 1, impulse: 1, impulseOpacity: 0, star: 1, starOpacity: 1, grip: 1)
 }
 
 /// La sinapsis completa en un instante del reveal: las neuronas entran, estiran sus terminales, cruza un impulso
 /// por cada una y salta la chispa. Sin escala del conjunto: el rebote es solo de la estrella.
 public struct SynapseReveal: View {
     let progress: SynapseProgress
+    @Environment(\.growthCones) private var growthCones
 
     public init(_ progress: SynapseProgress) {
         self.progress = progress
     }
 
     public var body: some View {
+        if growthCones {
+            // Los conos avanzan con `reach`, se tocan cuando salta la estrella y se agarran con `grip`. Sin impulso.
+            GrowthConeSynapse(approach: progress.reach, grip: progress.grip, enter: progress.enter,
+                              star: progress.star, starOpacity: progress.starOpacity, live: true)
+        } else {
+            terminals
+        }
+    }
+
+    @ViewBuilder private var terminals: some View {
         let left = NeuralArt.synapseFullLeft, right = NeuralArt.synapseFullRight
         let canvas = left.size
         let mid = canvas.width / 2

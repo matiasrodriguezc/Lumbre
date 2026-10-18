@@ -332,6 +332,8 @@ public enum FeatureFlag: String, Sendable, CaseIterable {
     /// Reveal de 900 ms con la coreografía de design/reveal: la sinapsis entra, cruza el impulso y salta la chispa;
     /// cierre con fundido. Apagado, queda el reveal anterior (~1.200 ms).
     case revealSynapse = "reveal_synapse"
+    /// La sinapsis con conos de crecimiento que se tantean y se agarran, en vez de terminales fijas.
+    case growthCones = "growth_cones"
     /// La chispa guardada se vuelve neurona (paso 88): `save_spark` con `p_as_neuron`, "Nació de una chispa" en la Red
     /// y el camino a la chispa original. El servidor también lo apaga con `app_config.spark_neuron_enabled`.
     case sparkNeuron = "spark_neuron"

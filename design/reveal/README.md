@@ -309,3 +309,24 @@ Que el gesto cierre el modal y el botón no es a propósito: deslizar es sacar l
 5. Hápticos `.impact` medio y liviano (iOS) y `GESTURE_THRESHOLD_*` / `CLOCK_TICK` (Android).
 6. Con Reducir movimiento: la tarjeta sigue al dedo (es movimiento que hace la persona) pero sin rotación, sin rebote y sin salida.
 7. El popover del motivo (iOS 26) queda anclado al lugar del botón cuando la tarjeta ya salió.
+
+## 13. Conos de crecimiento (flag `growth_cones`, 2026-10-17)
+
+Referencia: microscopía de dos neuronas a punto de conectarse ("Dos NEURONAS a punto de CONECTARSE", La Hiperactina). En la punta de cada axón hay un **cono de crecimiento**: un cuerpo chico con filopodios que se estiran y se retraen todo el tiempo, tanteando. Los dos conos avanzan despacio, se tocan primero con las puntas y después se entrelazan, como un apretón de manos.
+
+En Lumbre la neurona estática (soma y dendritas, del arte de `generar.py`) queda igual hasta x = 56 del lienzo de 240 × 80; de ahí sale un axón vivo que se afina hasta el cono. Componente: `GrowthConeSynapse` (LumbreDesign, `GrowthCones.swift`).
+
+| Momento | Qué pasa |
+|---|---|
+| **Antes** (Hoy, chispa sin encender) | Los conos están separados (x 80 y 160). Los 8 filopodios de cada uno se estiran y se retraen a destiempo (fases propias, 0,7 a 1,4 rad/s), el axón ondula y el cono deriva un poco en vertical. En bucle, sin fin |
+| **0 – 250 ms** | Entran las neuronas desde los costados (como antes) |
+| **150 – 600 ms** | Los conos avanzan hasta quedar a 16 u del centro; el abanico de filopodios se cierra un 30 % hacia el otro |
+| **600 – 650 ms** | Se tocan las puntas |
+| **650 ms** | Salta la estrella con su resorte, el háptico y el glow (sin cambios) |
+| **600 – 900 ms** | Los filopodios de adelante se estiran hasta cruzar el centro y meterse entre los del otro (arriba y abajo de la estrella); los de los costados se acortan. El movimiento baja un 80 %: quedan agarrados |
+| **Después** (tarjeta, compartir) | La misma pose de agarre, quieta |
+
+- Ya no cruza el impulso: en el video no hay nada parecido y competía con el contacto.
+- Con Reducir movimiento los filopodios quedan quietos (el reveal ya es un fundido de 200 ms).
+- Sin el flag, vuelven las terminales fijas de §2.
+- El prototipo `index.html` todavía muestra la versión de §2.
