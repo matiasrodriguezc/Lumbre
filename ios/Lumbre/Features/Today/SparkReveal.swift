@@ -667,7 +667,8 @@ private struct SynapseRevealModal: View {
                 RevealRoundButton(symbol: "square.and.arrow.up", size: 52, isFilled: false) { share() }
                     .accessibilityLabel(Text("Compartir"))
             }
-            RevealRoundButton(symbol: spark.status == .saved ? "bookmark.fill" : "bookmark", size: 64, isFilled: true) {
+            // El tick va en rosa: es el único botón negro, y el rosa siempre va apoyado en negro.
+            RevealRoundButton(symbol: "checkmark", size: 64, isFilled: true) {
                 buttonSwipe(.save, screenWidth: screenWidth)
             }
             .accessibilityLabel(Text("Guardar idea"))
@@ -943,7 +944,8 @@ private struct ScrollSwipeRecognizer: UIViewRepresentable {
     }
 }
 
-/// Botón redondo de abajo del reveal. Guardar va lleno (negro, como el botón principal); los otros, de contorno.
+/// Botón redondo de abajo del reveal. Guardar va lleno (negro con el tick rosa, como el botón principal con su punto);
+/// los otros, de contorno.
 private struct RevealRoundButton: View {
     let symbol: String
     let size: CGFloat
@@ -956,7 +958,7 @@ private struct RevealRoundButton: View {
         Button(action: action) {
             Image(systemName: symbol)
                 .font(.system(size: size * 0.36, weight: .semibold))
-                .foregroundStyle(isFilled ? Palette.onAccent : Palette.ink)
+                .foregroundStyle(isFilled ? Palette.spark : Palette.ink)
                 .frame(width: size, height: size)
                 .background {
                     Circle().fill(isFilled ? Palette.ink : Palette.surface)

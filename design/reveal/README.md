@@ -323,8 +323,8 @@ En Lumbre la neurona estática (soma y dendritas, del arte de `generar.py`) qued
 | **150 – 600 ms** | Los conos avanzan hasta quedar a 16 u del centro; el abanico de filopodios se cierra un 30 % hacia el otro |
 | **600 – 650 ms** | Se tocan las puntas |
 | **650 ms** | Salta la estrella con su resorte, el háptico y el glow (sin cambios) |
-| **600 – 900 ms** | Los filopodios de adelante se estiran hasta cruzar el centro y meterse entre los del otro (arriba y abajo de la estrella); los de los costados se acortan. El movimiento baja un 80 %: quedan agarrados |
-| **Después** (tarjeta, compartir) | La misma pose de agarre, quieta |
+| **600 – 900 ms** | Ya conectados: los conos terminan de juntarse debajo de la estrella (x 114 y 126) y los filopodios se retraen y se apagan. Queda la unión limpia, tapada por la estrella |
+| **Después** (tarjeta, compartir) | La misma pose, quieta: los dos axones unidos debajo de la estrella, sin filopodios |
 
 - Ya no cruza el impulso: en el video no hay nada parecido y competía con el contacto.
 - Con Reducir movimiento los filopodios quedan quietos (el reveal ya es un fundido de 200 ms).
@@ -339,9 +339,9 @@ La tarjeta del reveal queda limpia: las dos neuronas, la sinapsis, el título y 
 |---|---|
 | Izquierda, ✕ (64 pt, contorno) | "No me sirve": la tarjeta sale por la izquierda, igual que el swipe, y pide el motivo |
 | Medio, compartir (52 pt, contorno) | La tarjeta para compartir; al volver, la tarjeta sigue en su lugar |
-| Derecha, guardar (64 pt, negro) | La tarjeta sale por la derecha y se elige el circuito, igual que el swipe |
+| Derecha, guardar (64 pt, negro, tick rosa) | La tarjeta sale por la derecha y se elige el circuito, igual que el swipe. El tick va en `spark`: es el único botón negro y el rosa siempre va apoyado en negro (compartir queda neutro: rosa sobre gris no se puede) |
 
 - Aparecen con las acciones (750 → 900 ms) y se encogen un 8 % al tocarlos (sin escala con Reducir movimiento).
 - Planificar sale del reveal: sigue en la chispa de Hoy y en el detalle.
 - Reportar (obligatorio en Play para contenido de IA) queda con un toque largo sobre la tarjeta y como acción de VoiceOver.
-- La estrella de la sinapsis creció a 38 u de alto para tapar el cruce de los filopodios.
+- La estrella de la sinapsis mide 46 u de alto y tapa el punto donde se juntan los conos.

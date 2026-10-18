@@ -11,7 +11,8 @@ extension EnvironmentValues {
 
 /// Las dos neuronas con conos de crecimiento, en el lienzo de 240 × 80 de la sinapsis.
 /// - `approach`: 0 separadas (se tantean de lejos), 1 tocándose.
-/// - `grip`: 0 → 1, los filopodios de adelante se estiran hasta cruzarse con los del otro cono.
+/// - `grip`: 0 → 1, ya conectados: los conos terminan de juntarse debajo de la estrella y los filopodios se retraen
+///   hasta desaparecer.
 /// - `live`: los filopodios se mueven solos (con Reducir movimiento, nunca).
 public struct GrowthConeSynapse: View {
     var approach: Double
@@ -44,8 +45,8 @@ public struct GrowthConeSynapse: View {
                 draw(side: .right, in: &context, frame: frame, t: t, shift: shift)
                 context.opacity = 1
                 if starOpacity > 0 {
-                    // Grande: tapa el cruce de los filopodios, que queda debajo de la chispa.
-                    let r = 19 * max(star, 0) * frame.scale
+                    // Grande: tapa el punto donde se juntan los dos conos.
+                    let r = 23 * max(star, 0) * frame.scale
                     let c = frame.point(Self.mid, Self.contactY)
                     context.opacity = starOpacity
                     context.fill(SparkStar().path(in: CGRect(x: c.x - r, y: c.y - r, width: r * 2, height: r * 2)),
@@ -87,9 +88,9 @@ public struct GrowthConeSynapse: View {
         .init(angle: 76, length: 9, speed: 1.2, phase: 2.7),
     ]
 
-    /// Dónde queda el cono: separado (0) y tocándose (1). Tocándose quedan a 16 u del centro, y los filopodios
-    /// de adelante cruzan hasta meterse entre los del otro.
-    static let coneApart = 80.0, coneTouching = 104.0
+    /// Dónde queda el cono: separado (0), tocándose con las puntas de los filopodios (1) y, ya conectado,
+    /// pegado al otro debajo de la estrella.
+    static let coneApart = 80.0, coneTouching = 104.0, coneJoined = 114.0
 
     private func draw(side: Side, in context: inout GraphicsContext, frame: NeuralFrame, t: Double, shift: Double) {
         let seed: Double = side == .left ? 0 : 1.7
@@ -114,7 +115,7 @@ public struct GrowthConeSynapse: View {
                   with: ink, style: FillStyle(eoFill: true))
 
         // 2. El cono avanza hacia el centro y deriva un poco en vertical mientras tantea.
-        let coneX = Self.coneApart + (Self.coneTouching - Self.coneApart) * a
+        let coneX = Self.coneApart + (Self.coneTouching - Self.coneApart) * a + (Self.coneJoined - Self.coneTouching) * g
         let drift = 2.8 * sin(t * 0.45 + seed) * wander * (1 - 0.7 * a)
         let coneY = Self.axonStartY + (Self.contactY - Self.axonStartY) * a + drift
 
@@ -143,8 +144,8 @@ public struct GrowthConeSynapse: View {
         axon.closeSubpath()
         context.fill(axon, with: ink)
 
-        // 4. Los filopodios: se estiran y se retraen a destiempo. Al acercarse apuntan al otro y, al agarrarse,
-        //    los de adelante cruzan el centro en abanico (arriba y abajo de la estrella).
+        // 4. Los filopodios: se estiran y se retraen a destiempo y, al acercarse, apuntan al otro. Ya conectados
+        //    se retraen y se apagan: queda la unión limpia debajo de la estrella.
         let cone = pt(coneX, coneY)
         var tips: [CGPoint] = []
         for f in Self.filopodia {
@@ -153,14 +154,7 @@ public struct GrowthConeSynapse: View {
             let degrees = f.angle * spread + wobble
             let angle = degrees * .pi / 180
             let probe = 0.6 + 0.4 * sin(t * f.speed * 1.3 + f.phase * 1.7 + seed)
-            var length = f.length * 1.3 * probe
-            if abs(f.angle) < 45 {
-                // Hasta pasar el centro y meterse entre los filopodios del otro cono.
-                let reach = (Self.mid - coneX + 3 + 2 * sin(f.phase)) / max(cos(angle), 0.4)
-                length += (reach - length) * g
-            } else {
-                length *= 1 - 0.3 * g
-            }
+            let length = f.length * 1.3 * probe * (1 - g)
             let bend = 1.8 * sin(t * f.speed + f.phase) * wander
             let tipLocal = (x: coneX + cos(angle) * length, y: coneY + sin(angle) * length)
             let midLocal = (x: coneX + cos(angle) * length / 2 - sin(angle) * bend, y: coneY + sin(angle) * length / 2 + cos(angle) * bend)
@@ -169,7 +163,7 @@ public struct GrowthConeSynapse: View {
             var filo = Path()
             filo.move(to: cone)
             filo.addQuadCurve(to: tip, control: pt(midLocal.x, midLocal.y))
-            context.stroke(filo, with: ink, style: StrokeStyle(lineWidth: 1.15 * k, lineCap: .round))
+            context.stroke(filo, with: .color(Palette.ink.opacity(1 - g)), style: StrokeStyle(lineWidth: 1.15 * k, lineCap: .round))
         }
 
         // 5. La membrana entre los filopodios (lamelipodio) y el cuerpo del cono.
@@ -177,7 +171,7 @@ public struct GrowthConeSynapse: View {
         web.move(to: cone)
         web.addLines(tips)
         web.closeSubpath()
-        context.fill(web, with: .color(Palette.ink.opacity(0.28)))
+        context.fill(web, with: .color(Palette.ink.opacity(0.28 * (1 - g))))
         let rx = (5 + 0.5 * sin(t * 1.1 + seed) * wander) * k, ry = 3.8 * k
         context.fill(Path(ellipseIn: CGRect(x: cone.x - rx, y: cone.y - ry, width: rx * 2, height: ry * 2)), with: ink)
     }
